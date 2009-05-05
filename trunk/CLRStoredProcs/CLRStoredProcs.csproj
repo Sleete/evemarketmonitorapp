@@ -12,7 +12,7 @@
     <AssemblyName>CLRStoredProcs</AssemblyName>
     <RootNamespace>CLRStoredProcs</RootNamespace>
     <FileUpgradeFlags>0</FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
+    <OldToolsVersion>3.5</OldToolsVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
