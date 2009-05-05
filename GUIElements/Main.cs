@@ -1459,15 +1459,6 @@ namespace EveMarketMonitorApp.GUIElements
                         "(See logging\\exceptionlog.txt for more detailed information)", "Communication failure",
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-                try { Ping("www.eve-prices.net"); }
-                catch (EMMAException)
-                {
-                    Globals.EvePricesDown = true;
-                    MessageBox.Show("Failed to contact eve-prices.\r\n" +
-                        "Price updates from eve-prices will be disabled until EMMA is restarted.\r\n" +
-                        "(See logging\\exceptionlog.txt for more detailed information)", "Communication failure",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
                 try { Ping("www.eve-metrics.com"); }
                 catch (EMMAException)
                 {
@@ -1512,7 +1503,7 @@ namespace EveMarketMonitorApp.GUIElements
                 }
 
 
-                if (Globals.EMMAUpdateServer.Equals("") && Globals.EvePricesDown && Globals.EveAPIDown &&
+                if (Globals.EMMAUpdateServer.Equals("") && Globals.EveAPIDown &&
                     Globals.EveCentralDown)
                 {
                     if (MessageBox.Show("Connection checks to ALL servers have failed.\r\n" +

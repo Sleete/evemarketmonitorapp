@@ -361,17 +361,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                             }
                                         }
                                     }
-                                    else
-                                    {
-                                        // Use 'Eve-Prices.net'
-                                        value = EvePrices.GetValue(itemID);
-                                        if (this.ValueCalculationEvent != null)
-                                        {
-                                            ValueCalculationEvent(this, new ValueCalcEventArgs("eve-prices.net price: " + value.Value));
-                                        }
-                                    }
-
                                     webPrice = true;
+
                                     // Update the last update times.
                                     if (buyPrice)
                                     {
