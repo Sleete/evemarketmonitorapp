@@ -44,6 +44,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.rdbMaxBuy = new System.Windows.Forms.RadioButton();
             this.rdbMedianBuy = new System.Windows.Forms.RadioButton();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.lnkEveMetrics = new System.Windows.Forms.LinkLabel();
+            this.lnkEveCentral = new System.Windows.Forms.LinkLabel();
             this.rdbEveMetrics = new System.Windows.Forms.RadioButton();
             this.rdbEveCentral = new System.Windows.Forms.RadioButton();
             this.label2 = new System.Windows.Forms.Label();
@@ -62,8 +64,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.chkForceDefaultBuyPrice = new System.Windows.Forms.CheckBox();
             this.chkForceDefaultSellPrice = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lnkEveCentral = new System.Windows.Forms.LinkLabel();
-            this.lnkEveMetrics = new System.Windows.Forms.LinkLabel();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -191,9 +191,9 @@ namespace EveMarketMonitorApp.GUIElements
             this.chkEveMarketPrices.Location = new System.Drawing.Point(6, 19);
             this.chkEveMarketPrices.Name = "chkEveMarketPrices";
             this.chkEveMarketPrices.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.chkEveMarketPrices.Size = new System.Drawing.Size(395, 17);
+            this.chkEveMarketPrices.Size = new System.Drawing.Size(331, 17);
             this.chkEveMarketPrices.TabIndex = 13;
-            this.chkEveMarketPrices.Text = "Use market values or eve-prices when no other pricing information is available";
+            this.chkEveMarketPrices.Text = "Use market values when no other pricing information is available";
             this.chkEveMarketPrices.UseVisualStyleBackColor = true;
             // 
             // groupBox3
@@ -246,6 +246,28 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox4.TabIndex = 15;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Market Price Source";
+            // 
+            // lnkEveMetrics
+            // 
+            this.lnkEveMetrics.AutoSize = true;
+            this.lnkEveMetrics.Location = new System.Drawing.Point(227, 44);
+            this.lnkEveMetrics.Name = "lnkEveMetrics";
+            this.lnkEveMetrics.Size = new System.Drawing.Size(111, 13);
+            this.lnkEveMetrics.TabIndex = 18;
+            this.lnkEveMetrics.TabStop = true;
+            this.lnkEveMetrics.Text = "www.eve-metrics.com";
+            this.lnkEveMetrics.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkEveMetrics_LinkClicked);
+            // 
+            // lnkEveCentral
+            // 
+            this.lnkEveCentral.AutoSize = true;
+            this.lnkEveCentral.Location = new System.Drawing.Point(227, 21);
+            this.lnkEveCentral.Name = "lnkEveCentral";
+            this.lnkEveCentral.Size = new System.Drawing.Size(110, 13);
+            this.lnkEveCentral.TabIndex = 17;
+            this.lnkEveCentral.TabStop = true;
+            this.lnkEveCentral.Text = "www.eve-central.com";
+            this.lnkEveCentral.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkEveCentral_LinkClicked);
             // 
             // rdbEveMetrics
             // 
@@ -439,28 +461,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Pricing details";
-            // 
-            // lnkEveCentral
-            // 
-            this.lnkEveCentral.AutoSize = true;
-            this.lnkEveCentral.Location = new System.Drawing.Point(227, 21);
-            this.lnkEveCentral.Name = "lnkEveCentral";
-            this.lnkEveCentral.Size = new System.Drawing.Size(110, 13);
-            this.lnkEveCentral.TabIndex = 17;
-            this.lnkEveCentral.TabStop = true;
-            this.lnkEveCentral.Text = "www.eve-central.com";
-            this.lnkEveCentral.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkEveCentral_LinkClicked);
-            // 
-            // lnkEveMetrics
-            // 
-            this.lnkEveMetrics.AutoSize = true;
-            this.lnkEveMetrics.Location = new System.Drawing.Point(227, 44);
-            this.lnkEveMetrics.Name = "lnkEveMetrics";
-            this.lnkEveMetrics.Size = new System.Drawing.Size(111, 13);
-            this.lnkEveMetrics.TabIndex = 18;
-            this.lnkEveMetrics.TabStop = true;
-            this.lnkEveMetrics.Text = "www.eve-metrics.com";
-            this.lnkEveMetrics.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkEveMetrics_LinkClicked);
             // 
             // SelectItemsTraded
             // 
