@@ -89,7 +89,6 @@
     <Compile Include="AbstractionClasses\APISettingsAndStatus.cs" />
     <Compile Include="AbstractionClasses\EveCentral.cs" />
     <Compile Include="AbstractionClasses\EveMetrics.cs" />
-    <Compile Include="AbstractionClasses\EvePrices.cs" />
     <Compile Include="AbstractionClasses\Reg.cs" />
     <Compile Include="AbstractionClasses\TutorialData.cs" />
     <Compile Include="Common\Cache.cs" />
