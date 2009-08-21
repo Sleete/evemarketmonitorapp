@@ -1,6 +1,7 @@
 How to update EMMA with new data export:
 
 1. Download and extract .bak file.
+
 2. Copy EveData.mdf (and log file) somewhere like C:\Temp (I'll call this EVEDATA)
 3. Make another copy of EveData.mdf (and log file) somewhere like C:\Temp\Old (I'll call this OLDEVEDATA)
 4. Open SQL server management studio and attach both databases, change the 'attach as' property to EVEDATA and OLDEVEDATA for clarity
