@@ -1,21 +1,37 @@
 How to update EMMA with new data export:
 
+
+
 1. Download and extract .bak file.
 
 2. Copy EveData.mdf (and log file) somewhere like C:\Temp (I'll call this EVEDATA)
+
 3. Make another copy of EveData.mdf (and log file) somewhere like C:\Temp\Old (I'll call this OLDEVEDATA)
+
 4. Open SQL server management studio and attach both databases, change the 'attach as' property to EVEDATA and OLDEVEDATA for clarity
+
 5. Right click EVEDATA->Tasks->Restore->Database
+
 6. Select 'From a device' and browse to the datadump .bak file. Check the 'Restore' option, Click 'ok' and wait for it to finish.
+
 7. Open 'Tables' for both EVEDATA and OLDEVEDATA. Remove all tables from EVEDATA that are not in OLDEVEDATA.
+
 8. Select OLDEVEDATA->programmability->Stored Procedures. Select all except the system folder, then right click, Script->Create to->clipboard
+
 9. Right click EVEDATA -> new query
+
 10. ctrl+p to paste
+
 11. scroll to the top and change 'using OLDEVEDATA' to 'using EVEDATA'
+
 12. Click execute.
+
 13. Do the same for 'assemblies' and 'functions->table valued functions'
-14. Execute the stored procedure called 'INIT'. This sets up the jump distance tables based upon the new data and should take no
-more than a few seconds to complete.
+
+14. Execute the stored procedure called 'INIT'. This sets up the jump distance tables based upon the new data and should take no more than a few seconds to complete.
+
 15. Right click EVEDATA->tasks->shrink->database, check 'reorganise files' and click ok.
+
 16. Right click EVEDATA->tasks->detatch. check 'drop connection' and click ok.
+
 17. Copy the EVEDATA mdf and log files back to the EMMA folder.
