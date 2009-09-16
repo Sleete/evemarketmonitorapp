@@ -151,6 +151,16 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return str.ToString().GetHashCode();
         }
 
+        public EVEAccount GetAccount(int userID)
+        {
+            EVEAccount retVal = null;
+            foreach (EVEAccount account in _accounts)
+            {
+                if (account.UserID == userID) { retVal = account; }
+            }
+            return retVal;
+        }
+
         public APICharacter GetCharacter(int entityID)
         {
             bool corp = false;

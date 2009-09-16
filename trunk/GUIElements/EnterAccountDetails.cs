@@ -63,6 +63,7 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     SetEveAccount();
                 }
+                _account.ApiKey = txtApiKey.Text;
 
                 try
                 {
