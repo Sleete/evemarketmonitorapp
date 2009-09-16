@@ -92,6 +92,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         public string APIKey
         {
             get { return _apiKey; }
+            set { _apiKey = value; }
         }
 
         public bool CorpFinanceAccess

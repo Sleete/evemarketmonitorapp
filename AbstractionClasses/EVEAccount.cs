@@ -103,9 +103,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
         /// Update the local copy of the character XML document with the latest from the Eve API.
         /// </summary>
         /// <returns></returns>
-        public void UpdateCharList()
+        public void UpdateCharList(bool forceUpdate)
         {
-            if (DateTime.UtcNow.AddHours(-1).CompareTo(_lastcharListUpdate) > 0)
+            if (DateTime.UtcNow.AddHours(-1).CompareTo(_lastcharListUpdate) > 0 || forceUpdate)
             {
                 XmlDocument xml = EveAPI.GetXml(EveAPI.URL_EveApiBase + EveAPI.URL_CharsApi,
                     "userid=" + _userID + "&apiKey=" + _apiKey);
@@ -172,7 +172,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
             try
             {
-                this.UpdateCharList();
+                this.UpdateCharList(true);
                 retVal = true;
             }
             catch (EMMAEveAPIException emmaApiEx)
