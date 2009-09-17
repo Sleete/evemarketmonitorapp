@@ -167,12 +167,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     else
                     {
                         // If the entry is within the maximum time range for the current generation and
-                        // yet the supplied ID is more than five hundred million less than the current 
-                        // largest ID and the entry time is after our current generation end date 
-                        // then we must be dealing with a new generation. (uh oh!)
+                        // yet the supplied ID is more than 500 million less than the expected 
+                        // ID and the entry time is after our current generation end date then we must 
+                        // be dealing with a new generation. 
                         // (If the entry time is NOT after our current generation end date then it's simply
                         // a very old entry from the current generation)
-                        if (_currentLargestID - journalID > 500000000 && entryTime.CompareTo(_currentEndDate) >= 0)
+                        if (ExpectedID(entryTime) - journalID > 500000000 && entryTime.CompareTo(_currentEndDate) >= 0)
                         {
                             // Attempt to create a new generation entry by calculating the offset.
                             retVal = TryGetNewOffset(journalRow, fileDate);
@@ -222,15 +222,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             // entry time to estimate what the ID SHOULD be if it was part of the next 
             // generation (as opposed to an even later one).
 
-            double daysSoFar = ((TimeSpan)_currentEndDate.Subtract(_currentStartDate)).TotalDays;
-            // assume approx 250 mil IDs left over from the last generation when it was migrated.
-            // Use this to calulate the average number of IDs created each day.
-            double idsPerDay = (_currentLargestID - 250000000) / (daysSoFar > 0 ? daysSoFar : 1);
-
-            double daysToEntry = ((TimeSpan)entryTime.Subtract(_currentEndDate)).TotalDays;
-            // Take 1.2 bil off the estimated ID to account for the expected rough value of 
+            // Take 1.5 bil off the estimated ID to account for the expected rough value of 
             // the offset.
-            double estimatedID = (daysToEntry * idsPerDay + _currentLargestID) - 1500000000;
+            double estimatedID = ExpectedID(entryTime) - 1500000000;
 
             if (Math.Abs(estimatedID - journalID) < 800000000)
             {
@@ -248,17 +242,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 else
                 {
                     throw new EMMADataException(ExceptionSeverity.Critical, "The journal entries you are adding" +
-                        " appear to be for a generation after the latest one in the EMMA database. " +
-                        "You will be unable to update from the EveAPI until the EMMA database is updated " +
-                        "with newer journal generation data.");
+                        " appear to be for a generation after the latest one in the EMMA database.\r\n" +
+                        "A match cannot be found between existing journal entries and the ones being imported " +
+                        "so EMMA cannot workout the ID offset for the new generation.\r\n" +
+                        "You will be unable to import journal entries from the EveAPI until the EMMA database " +
+                        "is updated with newer journal generation data.");
                 }
             }
             else
             {
                 throw new EMMADataException(ExceptionSeverity.Critical, "The journal entries you are adding" +
-                    " appear to be for a generation after the latest one in the EMMA database. " +
-                    "You will be unable to update from the EveAPI until the EMMA database is updated " +
-                    "with newer journal generation data.");
+                    " appear to be for a generation after the latest one in the EMMA database.\r\n" +
+                    "You will be unable to import journal entries from the EveAPI until the EMMA database " +
+                    "is updated with newer journal generation data.");
             }
 
             return retVal;
@@ -298,16 +294,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <returns></returns>
         private static DateTime LatestAllowedDate()
         {
-            // Calculate how many days this generation has been active.
-            double daysSoFar = ((TimeSpan)_currentEndDate.Subtract(_currentStartDate)).TotalDays;
-            // If the database has a new generation in it but only 1 day's worth of data
-            // then the idsPerDay is way too high and causes entries to be rejected just a 
-            // few days older than the current end date.
-            // Instead, make sure we always assume a reasonable number of days...
-            if (daysSoFar < 10) { daysSoFar = 10; }
-            // assume approx 300 mil IDs left over from the last generation when it was migrated.
-            // Use this to calulate the average number of IDs created each day.
-            double idsPerDay = (_currentLargestID - 300000000) / (daysSoFar > 0 ? daysSoFar : 1);
+            double idsPerDay = GetIDsPerDay();
             // work out how many IDs are left in this generation and divide by the number 
             // of ids being created per cay.
             double daysLeft = (int.MaxValue - _currentLargestID) / (idsPerDay > 0 ? idsPerDay : 1);
@@ -317,6 +304,41 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return _currentEndDate.AddDays(daysLeft);
         }
 
+        /// <summary>
+        /// Get the expected ID value for a journal entry at the specified date/time assuming that
+        /// it is part of the current generation.
+        /// </summary>
+        /// <param name="IDDateTime"></param>
+        /// <returns></returns>
+        private static long ExpectedID(DateTime IDDateTime)
+        {
+            double idsPerDay = GetIDsPerDay();
+            // Get the number of days between the last entry of the current generation
+            // and the date/time we want to know the expected ID for.
+            double daysDifference = ((TimeSpan)IDDateTime.Subtract(_currentEndDate)).TotalDays;
+            long expectedID = (long)(_currentLargestID + daysDifference * idsPerDay);
+
+            return expectedID;
+        }
+
+        /// <summary>
+        /// Get the approximate number of journal IDs generated per day in the current generation
+        /// </summary>
+        /// <returns></returns>
+        private static double GetIDsPerDay()
+        {
+            // Calculate how many days this generation has been active.
+            double daysSoFar = ((TimeSpan)_currentEndDate.Subtract(_currentStartDate)).TotalDays;
+            // If the database has a new generation in it but only 1 day's worth of data
+            // then the idsPerDay is way too high and causes entries to be rejected just a 
+            // few days older than the current end date.
+            // Instead, make sure we always assume a reasonable number of days...
+            if (daysSoFar < 4) { daysSoFar = 4; }
+            // assume approx 350 mil IDs left over from the last generation when it was migrated.
+            // Use this to calulate the average number of IDs created each day.
+            double idsPerDay = (_currentLargestID - 350000000) / (daysSoFar > 0 ? daysSoFar : 1);
+            return idsPerDay;
+        }
 
 
         private static void CreateGeneration(long offset, long largetID, DateTime startDate, DateTime endDate)
