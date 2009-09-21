@@ -404,6 +404,20 @@ namespace EveMarketMonitorApp.GUIElements
                 _idMapper = idMapper;
             }
 
+
+            /// <summary>
+            /// This algorithm will optimize a sequence of waypoints to try and find the sequence that
+            /// will result in the fewest number of jumps required to visit all waypoints.
+            /// (i.e. the travelling salesman problem: http://en.wikipedia.org/wiki/Travelling_salesman_problem)
+            /// The approach used here is to run a genetic algorithm.
+            /// This works by 'cloning' the current sequence of waypoints to create a population. 
+            /// Each sequence then has different random changes made (mutations).
+            /// Once all mutations are complete, the best (shortest) sequence of waypoints is used 
+            /// as the basis for the next generation and the process repeats.
+            /// We only stop if we go for 6 generations without improving the route at all. 
+            /// At that point we probably have somthing close to the best sequence of waypoints though
+            /// this is not guaranteed.
+            /// </summary>
             public void Optimize()
             {
                 bool improvement = true;
@@ -440,38 +454,59 @@ namespace EveMarketMonitorApp.GUIElements
 
                         for (int r = 0; r < populationSize; r++)
                         {
+                            // For each potential route in this population, we first start by creating a
+                            // copy of the current route...
                             WPRoute currentRoute = new WPRoute(this, ref _nextFreeIndex, ref _jumps, _idMapper);
                             population.Add(currentRoute);
 
                             UpdateStatus(r, populationSize, "", "Processing generation " + generation, false);
 
-
+                            // We then try some mutations to try and get a better (shorter) route.
                             for (int i = 0; i < 4; i++)
                             {
                                 int oldLength, newLength;
+                                // select a random system in the route (we'll call this system A) 
+                                // Also select a random number of systems to after the selected system. 
+                                // We'll call the system at the end of this sequence, system 'B'.
                                 int startIndex = rand.Next(1, currentRoute.Count - 2);
                                 int length = rand.Next(2, currentRoute.Count - startIndex);
 
                                 oldLength = 0;
+                                // Calculate the number of jumps in the route from the system before A to A
                                 oldLength += GetRouteLength(currentRoute[startIndex - 1],
                                     currentRoute[startIndex], ref diagnostics);
+                                // Add the number of jumps between B and the system after B
                                 oldLength += GetRouteLength(currentRoute[startIndex + length - 1],
                                     currentRoute[startIndex + length], ref diagnostics);
 
+                                // Reverse all the waypoints between A and B (inclusive)
                                 currentRoute.Reverse(startIndex, length);
 
+                                // When the section of the route is reversed, all the jumps between systems within
+                                // that section will stay the same. Also, number of jumps between systems not 
+                                // included in that section will stay the same.
+                                // Therefore we only need to get the number of jumps between the systems at
+                                // the edge of reversed section (A and B) and thier non-reversed neighbours. 
                                 newLength = 0;
+                                // Calculate the new number of jumps in the route from the system 
+                                // before A's position to A's position
+                                // (Note that system B is now in system A's old position)
                                 newLength += GetRouteLength(currentRoute[startIndex - 1],
                                     currentRoute[startIndex], ref diagnostics);
+                                // As before, add the number of jumps between B's position and the 
+                                // position after B.
                                 newLength += GetRouteLength(currentRoute[startIndex + length - 1],
                                     currentRoute[startIndex + length], ref diagnostics);
 
+                                // If reversing the sequence of waypoints has given us a shorter route then keep
+                                // it. Otherwise, discard it.
                                 if (oldLength < newLength)
                                 {
                                     currentRoute.Reverse(startIndex, length);
                                 }
                             }
 
+                            // If the mutations are better than the current best route then record it
                             if (currentRoute.GetLength() < shortestLength)
                             {
                                 shortestLength = currentRoute.GetLength();
@@ -482,6 +517,8 @@ namespace EveMarketMonitorApp.GUIElements
 
                         if (improvement)
                         {
+                            // If there has been an improvement in this generation then convert the current
+                            // route to the best route and start the process again.
                             this.Clear();
                             this.AddRange(bestRoute);
                             noImprovementGen = 0;
@@ -491,6 +528,8 @@ namespace EveMarketMonitorApp.GUIElements
                         }
                         else
                         {
+                            // If we get no improvement for 6 consecutive generations then assume that
+                            // we've got the best route we are going to get and leave it at that.
                             if (noImprovementGen == 0) { noImprovementGen = generation; }
                             if (generation == noImprovementGen + 6)
                             {
