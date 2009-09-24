@@ -30,16 +30,16 @@ namespace EveMarketMonitorApp.GUIElements
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Reprocessor));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle40 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -62,6 +62,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.label7 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cmbContainers = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.cmbDefaultReprocessor = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -79,8 +81,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnCompleteReprocess = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnHistory = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
-            this.cmbContainers = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ReprocessResultsView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ItemsToReprocessView)).BeginInit();
@@ -164,16 +164,16 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // ResultMaxQuantityColumn
             // 
-            dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ResultMaxQuantityColumn.DefaultCellStyle = dataGridViewCellStyle31;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ResultMaxQuantityColumn.DefaultCellStyle = dataGridViewCellStyle1;
             this.ResultMaxQuantityColumn.HeaderText = "Max Quantity";
             this.ResultMaxQuantityColumn.Name = "ResultMaxQuantityColumn";
             this.ResultMaxQuantityColumn.ReadOnly = true;
             // 
             // ResultActualQuantityColumn
             // 
-            dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ResultActualQuantityColumn.DefaultCellStyle = dataGridViewCellStyle32;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ResultActualQuantityColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.ResultActualQuantityColumn.HeaderText = "Actual Quantity";
             this.ResultActualQuantityColumn.Name = "ResultActualQuantityColumn";
             this.ResultActualQuantityColumn.ReadOnly = true;
@@ -181,31 +181,31 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // StationTakesQuantityColumn
             // 
-            dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.StationTakesQuantityColumn.DefaultCellStyle = dataGridViewCellStyle33;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.StationTakesQuantityColumn.DefaultCellStyle = dataGridViewCellStyle3;
             this.StationTakesQuantityColumn.HeaderText = "Station Takes";
             this.StationTakesQuantityColumn.Name = "StationTakesQuantityColumn";
             this.StationTakesQuantityColumn.ReadOnly = true;
             // 
             // ResultFinalQuantityColumn
             // 
-            dataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ResultFinalQuantityColumn.DefaultCellStyle = dataGridViewCellStyle34;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ResultFinalQuantityColumn.DefaultCellStyle = dataGridViewCellStyle4;
             this.ResultFinalQuantityColumn.HeaderText = "Final Quantity";
             this.ResultFinalQuantityColumn.Name = "ResultFinalQuantityColumn";
             this.ResultFinalQuantityColumn.ReadOnly = true;
             // 
             // ResultValueColumn
             // 
-            dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ResultValueColumn.DefaultCellStyle = dataGridViewCellStyle35;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ResultValueColumn.DefaultCellStyle = dataGridViewCellStyle5;
             this.ResultValueColumn.HeaderText = "Unit Value";
             this.ResultValueColumn.Name = "ResultValueColumn";
             // 
             // ResultTotalValueColumn
             // 
-            dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ResultTotalValueColumn.DefaultCellStyle = dataGridViewCellStyle36;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ResultTotalValueColumn.DefaultCellStyle = dataGridViewCellStyle6;
             this.ResultTotalValueColumn.HeaderText = "Total Value";
             this.ResultTotalValueColumn.Name = "ResultTotalValueColumn";
             this.ResultTotalValueColumn.ReadOnly = true;
@@ -253,16 +253,16 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // QuantityColumn
             // 
-            dataGridViewCellStyle37.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.QuantityColumn.DefaultCellStyle = dataGridViewCellStyle37;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.QuantityColumn.DefaultCellStyle = dataGridViewCellStyle7;
             this.QuantityColumn.HeaderText = "Quantity";
             this.QuantityColumn.Name = "QuantityColumn";
             this.QuantityColumn.Width = 80;
             // 
             // UnitValueColumn
             // 
-            dataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.UnitValueColumn.DefaultCellStyle = dataGridViewCellStyle38;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.UnitValueColumn.DefaultCellStyle = dataGridViewCellStyle8;
             this.UnitValueColumn.HeaderText = "Unit Value";
             this.UnitValueColumn.Name = "UnitValueColumn";
             this.UnitValueColumn.ReadOnly = true;
@@ -270,8 +270,8 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // TotalValueColumn
             // 
-            dataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.TotalValueColumn.DefaultCellStyle = dataGridViewCellStyle39;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.TotalValueColumn.DefaultCellStyle = dataGridViewCellStyle9;
             this.TotalValueColumn.HeaderText = "Total Value";
             this.TotalValueColumn.Name = "TotalValueColumn";
             this.TotalValueColumn.ReadOnly = true;
@@ -279,8 +279,8 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // ReprocessValueColumn
             // 
-            dataGridViewCellStyle40.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ReprocessValueColumn.DefaultCellStyle = dataGridViewCellStyle40;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ReprocessValueColumn.DefaultCellStyle = dataGridViewCellStyle10;
             this.ReprocessValueColumn.HeaderText = "Reproc. Value";
             this.ReprocessValueColumn.Name = "ReprocessValueColumn";
             this.ReprocessValueColumn.ReadOnly = true;
@@ -350,6 +350,24 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Filters";
+            // 
+            // cmbContainers
+            // 
+            this.cmbContainers.FormattingEnabled = true;
+            this.cmbContainers.Location = new System.Drawing.Point(90, 72);
+            this.cmbContainers.Name = "cmbContainers";
+            this.cmbContainers.Size = new System.Drawing.Size(260, 21);
+            this.cmbContainers.Sorted = true;
+            this.cmbContainers.TabIndex = 25;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(7, 75);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(52, 13);
+            this.label9.TabIndex = 24;
+            this.label9.Text = "Container";
             // 
             // label4
             // 
@@ -479,7 +497,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(289, 13);
             this.label5.TabIndex = 0;
-            this.label5.Text = "Total estimated value of selected items before reporcessing:";
+            this.label5.Text = "Total estimated value of selected items before reprocessing:";
             // 
             // btnToggleReprocess
             // 
@@ -517,24 +535,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.toolTip1.SetToolTip(this.btnHistory, "Toggle all items to reprocess on/off");
             this.btnHistory.UseVisualStyleBackColor = true;
             this.btnHistory.Click += new System.EventHandler(this.btnHistory_Click);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(7, 75);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(52, 13);
-            this.label9.TabIndex = 24;
-            this.label9.Text = "Container";
-            // 
-            // cmbContainers
-            // 
-            this.cmbContainers.FormattingEnabled = true;
-            this.cmbContainers.Location = new System.Drawing.Point(90, 72);
-            this.cmbContainers.Name = "cmbContainers";
-            this.cmbContainers.Size = new System.Drawing.Size(260, 21);
-            this.cmbContainers.Sorted = true;
-            this.cmbContainers.TabIndex = 25;
             // 
             // Reprocessor
             // 

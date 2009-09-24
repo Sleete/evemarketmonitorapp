@@ -253,9 +253,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             EMMADataSet.ContractsDataTable contracts = new EMMADataSet.ContractsDataTable();
 
             long? ID = 0;
-            DateTime date = DateTime.UtcNow;
             contractsTableAdapter.CreateNew(contract.OwnerID, 1, contract.PickupStationID,
-                contract.DestinationStationID, contract.Collateral, contract.Reward, date, 
+                contract.DestinationStationID, contract.Collateral, contract.Reward, contract.IssueDate, 
                 (short)contract.Type, ref ID);
 
             if (ID.HasValue)
@@ -268,7 +267,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 foreach (ContractItem item in contract.Items)
                 {
                     contractItemsTableAdapter.CreateNew(ID, item.ItemID, item.Quantity, item.BuyPrice,
-                        item.SellPrice, date, item.TransactionID, item.ForcePrice);
+                        item.SellPrice, contract.IssueDate, item.TransactionID, item.ForcePrice);
                 }
 
                 contractsTableAdapter.FillByID(contracts, ID);

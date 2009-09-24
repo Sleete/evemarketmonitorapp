@@ -29,6 +29,7 @@ namespace EveMarketMonitorApp.GUIElements
 
         private BindingSource _itemsBindingSource;
         private Contract _contract;
+        public Contract FinalContract { get { return _contract; } }
         private bool _maintMode = false;
         private List<string> _recentStations;
         private List<string> _recentItems;
@@ -76,21 +77,26 @@ namespace EveMarketMonitorApp.GUIElements
         private void InitGUI()
         {
             this.Text = _contract.Type == ContractType.Courier ? "Courier Calculator" : "Create contract";
-            lblDropoff.Text = (_contract.Type == ContractType.Courier ? "Drop off:" : "Date/Time:");
-            cmbDestination.Visible = _contract.Type == ContractType.Courier;
+            lblDropoff.Text = (_contract.Type == ContractType.Courier || 
+                _contract.Type == ContractType.Cargo ? "Drop off:" : "Date/Time:");
+            cmbDestination.Visible = _contract.Type == ContractType.Courier || _contract.Type == ContractType.Cargo;
             dtpDate.Visible = _contract.Type == ContractType.ItemExchange;
-            lblPickup.Text = (_contract.Type == ContractType.Courier ? "Pickup:" : "Station:");
+            lblPickup.Text = (_contract.Type == ContractType.Courier || 
+                _contract.Type == ContractType.Cargo ? "Pickup:" : "Station:");
             lblBuyPrice.Visible = _contract.Type == ContractType.Courier;
             lblSellPrice.Text = (_contract.Type == ContractType.Courier ? "Sell Price:" : "Price");
+            lblSellPrice.Visible = _contract.Type != ContractType.Cargo;
             txtBuyPrice.Visible = _contract.Type == ContractType.Courier;
+            txtSellPrice.Visible = _contract.Type != ContractType.Cargo;
             VolPercentageColumn.Visible = _contract.Type == ContractType.Courier;
             ProfitPercentageColumn.Visible = _contract.Type == ContractType.Courier;
             btnExclude.Visible = _contract.Type == ContractType.Courier;
-            btnAuto.Visible = _contract.Type == ContractType.Courier;
-            lblVolume.Text = (_contract.Type == ContractType.Courier ? "Volume:" : "Buy/Sell:");
+            btnAuto.Visible = _contract.Type == ContractType.Courier || _contract.Type == ContractType.Cargo;
+            lblVolume.Text = (_contract.Type == ContractType.Courier || 
+                _contract.Type == ContractType.Cargo ? "Volume:" : "Buy/Sell:");
             cmbBuySell.Visible = _contract.Type == ContractType.ItemExchange;
             cmbBuySell.Location = txtVolume.Location;
-            txtVolume.Visible = _contract.Type == ContractType.Courier;
+            txtVolume.Visible = _contract.Type == ContractType.Courier || _contract.Type == ContractType.Cargo;
             txtJumps.Visible = _contract.Type == ContractType.Courier;
             chkLowSec.Visible = _contract.Type == ContractType.Courier;
             lblJumps.Visible = _contract.Type == ContractType.Courier;
@@ -101,9 +107,13 @@ namespace EveMarketMonitorApp.GUIElements
             lblReward.Visible = _contract.Type == ContractType.Courier;
             txtReward.Visible = _contract.Type == ContractType.Courier;
             lblCollateral.Text = (_contract.Type == ContractType.Courier ? "Collateral:" : "Total Price:");
+            lblCollateral.Visible = _contract.Type != ContractType.Cargo;
             SellPriceColumn.HeaderText = (_contract.Type == ContractType.Courier ? "Sell Price" : "Price");
+            SellPriceColumn.Visible = _contract.Type != ContractType.Cargo;
             BuyPriceColumn.HeaderText = (_contract.Type == ContractType.Courier ? "Buy Price" : "Est. Value");
+            BuyPriceColumn.Visible = _contract.Type != ContractType.Cargo;
             chkAutoCalcItemPrice.Visible = _contract.Type == ContractType.ItemExchange;
+            ProfitPercentageColumn.Visible = _contract.Type != ContractType.Cargo;
         }
 
         public void InitVariables()
@@ -360,6 +370,46 @@ namespace EveMarketMonitorApp.GUIElements
                         btnExclude.Enabled = false;
                         lblSellPrice.Enabled = false;
                     }
+                }
+            }
+            else if (_contract.Type == ContractType.Cargo)
+            {
+                if (_contract.DestinationStationID != 0 && _contract.PickupStationID != 0)
+                {
+                    btnAddItem.Enabled = true;
+                    btnAuto.Enabled = !_maintMode;
+                    txtItem.Enabled = true;
+                    txtQuantity.Enabled = true;
+                    btnCreateContract.Enabled = true;
+                    txtVolume.Enabled = true;
+                }
+                else
+                {
+                    btnAddItem.Enabled = false;
+                    btnAuto.Enabled = false;
+                    txtItem.Enabled = false;
+                    txtQuantity.Enabled = false;
+                    btnCreateContract.Enabled = false;
+                    txtVolume.Enabled = false;
+                }
+
+                if (contractItemsGrid.SelectedRows.Count == 1)
+                {
+                    ContractItem item = contractItemsGrid.SelectedRows[0].DataBoundItem as ContractItem;
+                    if (item != null)
+                    {
+                        txtQuantity.Text = item.Quantity.ToString();
+                    }
+                }
+                else if (contractItemsGrid.SelectedRows.Count != 0)
+                {
+                    // We have multiple items selected..
+                    txtQuantity.Text = "";
+                }
+                else
+                {
+                    // We have no items selected.
+                    txtQuantity.Text = "";
                 }
             }
         }
@@ -710,7 +760,7 @@ namespace EveMarketMonitorApp.GUIElements
                     _contract.DestinationStationID = destID;
                     RefreshGridView();
                 }
-                else
+                else if (_contract.Type == ContractType.ItemExchange)
                 {
                     CreateContract();
                 }
@@ -722,7 +772,8 @@ namespace EveMarketMonitorApp.GUIElements
 
             btnClose.Text = "Close";
 
-            if (_maintMode || _contract.Type == ContractType.ItemExchange)
+            if (_maintMode || _contract.Type == ContractType.ItemExchange ||
+                _contract.Type == ContractType.Cargo)
             {
                 this.DialogResult = DialogResult.OK;
                 this.Close();

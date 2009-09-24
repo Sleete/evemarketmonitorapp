@@ -229,7 +229,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
     {
         Any = 0,
         Courier = 1,
-        ItemExchange = 2
+        ItemExchange = 2,
+        Cargo = 3
     }
 
     public static class ContractTypes

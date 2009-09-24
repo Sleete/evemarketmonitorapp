@@ -44,6 +44,14 @@ namespace EveMarketMonitorApp.GUIElements
             try
             {
                 EMMADataSet.ContractTypeDataTable types = ContractTypes.GetAll();
+                // Remove the 'Cargo' type.
+                // This is used by the Delivery  planner and we don't want users either viewing
+                // or creating that type of contract.
+                /*DataRow[] cargoType = types.Select("ID = 3");
+                if (cargoType != null && cargoType.Length > 0)
+                {
+                    types.RemoveContractTypeRow((EMMADataSet.ContractTypeRow)cargoType[0]);
+                }*/
                 cmbType.DisplayMember = "Description";
                 cmbType.ValueMember = "ID";
                 cmbType.DataSource = types;
