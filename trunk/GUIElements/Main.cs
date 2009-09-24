@@ -1114,6 +1114,21 @@ namespace EveMarketMonitorApp.GUIElements
             }
         }
 
+        private void btnDeliveryPlanner_Click(object sender, EventArgs e)
+        {
+            /*Cursor = Cursors.WaitCursor;
+            try
+            {
+                DeliveryPlanner planner = new DeliveryPlanner();
+                planner.MdiParent = this;
+                planner.Show();
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }*/
+        }
+
         private void btnReprocessor_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
@@ -1617,6 +1632,7 @@ namespace EveMarketMonitorApp.GUIElements
                 Cursor = Cursors.Default;
             }
         }
+
 
     }
 

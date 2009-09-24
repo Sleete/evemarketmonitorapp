@@ -43,19 +43,21 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnContracts = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.btnInvestments = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnItemDetail = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.btnReports = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.btnRoutePlanner = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnDeliveryPlanner = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.btnReprocessor = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.notifyIconMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnItemDetail = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.mainToolstrip.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
@@ -88,12 +90,14 @@ namespace EveMarketMonitorApp.GUIElements
             this.toolStripSeparator8,
             this.btnRoutePlanner,
             this.toolStripSeparator9,
+            this.btnDeliveryPlanner,
+            this.toolStripSeparator12,
             this.btnReprocessor,
             this.toolStripSeparator11});
             this.mainToolstrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.mainToolstrip.Location = new System.Drawing.Point(0, 0);
             this.mainToolstrip.Name = "mainToolstrip";
-            this.mainToolstrip.Size = new System.Drawing.Size(1070, 30);
+            this.mainToolstrip.Size = new System.Drawing.Size(1193, 30);
             this.mainToolstrip.TabIndex = 0;
             // 
             // toolStripSeparator4
@@ -188,6 +192,21 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnInvestments.Text = "&Investments";
             this.btnInvestments.Click += new System.EventHandler(this.btnInvestments_Click);
             // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 30);
+            // 
+            // btnItemDetail
+            // 
+            this.btnItemDetail.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnItemDetail.Image = ((System.Drawing.Image)(resources.GetObject("btnItemDetail.Image")));
+            this.btnItemDetail.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnItemDetail.Name = "btnItemDetail";
+            this.btnItemDetail.Size = new System.Drawing.Size(92, 27);
+            this.btnItemDetail.Text = "Item &Detail";
+            this.btnItemDetail.Click += new System.EventHandler(this.btnItemDetail_Click);
+            // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
@@ -223,6 +242,22 @@ namespace EveMarketMonitorApp.GUIElements
             this.toolStripSeparator9.Name = "toolStripSeparator9";
             this.toolStripSeparator9.Size = new System.Drawing.Size(6, 30);
             // 
+            // btnDeliveryPlanner
+            // 
+            this.btnDeliveryPlanner.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnDeliveryPlanner.Enabled = false;
+            this.btnDeliveryPlanner.Image = ((System.Drawing.Image)(resources.GetObject("btnDeliveryPlanner.Image")));
+            this.btnDeliveryPlanner.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDeliveryPlanner.Name = "btnDeliveryPlanner";
+            this.btnDeliveryPlanner.Size = new System.Drawing.Size(138, 27);
+            this.btnDeliveryPlanner.Text = "&Delivery Planner";
+            this.btnDeliveryPlanner.Click += new System.EventHandler(this.btnDeliveryPlanner_Click);
+            // 
+            // toolStripSeparator12
+            // 
+            this.toolStripSeparator12.Name = "toolStripSeparator12";
+            this.toolStripSeparator12.Size = new System.Drawing.Size(6, 30);
+            // 
             // btnReprocessor
             // 
             this.btnReprocessor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -234,10 +269,10 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnReprocessor.ToolTipText = "Reprocessor";
             this.btnReprocessor.Click += new System.EventHandler(this.btnReprocessor_Click);
             // 
-            // toolStripSeparator10
+            // toolStripSeparator11
             // 
-            this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 30);
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            this.toolStripSeparator11.Size = new System.Drawing.Size(6, 30);
             // 
             // toolStripContainer1
             // 
@@ -246,13 +281,13 @@ namespace EveMarketMonitorApp.GUIElements
             // toolStripContainer1.ContentPanel
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.mainToolstrip);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1070, 30);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1193, 30);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Top;
             this.toolStripContainer1.LeftToolStripPanelVisible = false;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer1.Name = "toolStripContainer1";
             this.toolStripContainer1.RightToolStripPanelVisible = false;
-            this.toolStripContainer1.Size = new System.Drawing.Size(1070, 30);
+            this.toolStripContainer1.Size = new System.Drawing.Size(1193, 30);
             this.toolStripContainer1.TabIndex = 3;
             this.toolStripContainer1.Text = "toolStripContainer1";
             this.toolStripContainer1.TopToolStripPanelVisible = false;
@@ -279,27 +314,12 @@ namespace EveMarketMonitorApp.GUIElements
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
-            // btnItemDetail
-            // 
-            this.btnItemDetail.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnItemDetail.Image = ((System.Drawing.Image)(resources.GetObject("btnItemDetail.Image")));
-            this.btnItemDetail.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnItemDetail.Name = "btnItemDetail";
-            this.btnItemDetail.Size = new System.Drawing.Size(92, 27);
-            this.btnItemDetail.Text = "Item &Detail";
-            this.btnItemDetail.Click += new System.EventHandler(this.btnItemDetail_Click);
-            // 
-            // toolStripSeparator11
-            // 
-            this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(6, 30);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1070, 507);
+            this.ClientSize = new System.Drawing.Size(1193, 507);
             this.Controls.Add(this.toolStripContainer1);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -351,6 +371,8 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.ToolStripButton btnReprocessor;
         private System.Windows.Forms.ToolStripButton btnItemDetail;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
+        private System.Windows.Forms.ToolStripButton btnDeliveryPlanner;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
 
 
 
