@@ -970,7 +970,7 @@ namespace EveMarketMonitorApp.GUIElements
         {
             try
             {
-                Enforcer.LicenseManagement licenseMgt = new LicenseManagement();
+                /*Enforcer.LicenseManagement licenseMgt = new LicenseManagement();
                 _license = licenseMgt.GetLicenseType();
 
                 if (showDialogIfValid || (_license != LicenseType.Full && _license != LicenseType.Lite))
@@ -984,7 +984,8 @@ namespace EveMarketMonitorApp.GUIElements
                         MessageBox.Show("Your trial time has expired and you do not have a valid license key.");
                         this.Close();
                     }
-                }
+                }*/
+                _license = LicenseType.Full;
             }
             catch (Exception ex)
             {
