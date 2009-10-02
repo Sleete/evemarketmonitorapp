@@ -131,7 +131,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.lnkSourceForge.TabIndex = 4;
             this.lnkSourceForge.TabStop = true;
             this.lnkSourceForge.Text = "If you have any problems or sugestions for improvements then you can log them dir" +
-                "ectly at the sourceforge project pages.";
+                "ectly at the googlecode project pages.";
             this.lnkSourceForge.UseCompatibleTextRendering = true;
             this.lnkSourceForge.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkSourceForge_LinkClicked);
             // 

@@ -52,17 +52,6 @@ namespace EveMarketMonitorApp.GUIElements
                 txtStartSystem.Tag = 0;
                 txtStartSystem.Text = "";
 
-                List<string> locations = GroupLocations.GetLocationNames();
-                if (!locations.Contains("All Regions"))
-                {
-                    locations.Add("All Regions");
-                }
-                locations.Sort();
-                cmbLocation.Items.AddRange(locations.ToArray());
-                cmbLocation.AutoCompleteSource = AutoCompleteSource.ListItems;
-                cmbLocation.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                cmbLocation.SelectedItem = "All Regions";
-
                 List<CharCorpOption> charcorps = UserAccount.CurrentGroup.GetCharCorpOptions(APIDataType.Assets);
                 charcorps.Sort();
                 cmbOwner.DisplayMember = "Name";
@@ -169,48 +158,88 @@ namespace EveMarketMonitorApp.GUIElements
         }
 
 
-        /*private void lstWaypoints_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Delete && lstWaypoints.SelectedIndex >= 0)
-            {
-                lstWaypoints.Items.RemoveAt(lstWaypoints.SelectedIndex);
-            }
-        }*/
-
         private void cargoDataView_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Delete)
+            {
+                List<Contract> contractsToRemove = new List<Contract>();
+                foreach (DataGridViewRow row in cargoDataView.SelectedRows)
+                {
+                    Contract toRemove = row.DataBoundItem as Contract;
+                    if (toRemove != null)
+                    {
+                        contractsToRemove.Add(toRemove);
+                    }
+                }
+                RemoveCargoPickup(contractsToRemove);
 
+            }
         }
 
+        private void RemoveCargoPickup(List<Contract> contracts)
+        {
+            if (contracts.Count > 0)
+            {
+                foreach (Contract contract in contracts)
+                {
+                    _cargo.Remove(contract);
+                }
+                RefreshCargoList();
+            }
+        }
 
         private void btnAddAssets_Click(object sender, EventArgs e)
         {
             int ownerID = 0;
-            bool corp = false;
-            GroupLocation location = null;
 
             if (cmbOwner.SelectedItem != null)
             {
-                ownerID = ((CharCorpOption)cmbOwner.SelectedItem).CharacterObj.CharID;
-                corp = ((CharCorpOption)cmbOwner.SelectedItem).Corp;
-            }
-            if (cmbLocation.Text != "")
-            {
-                location = GroupLocations.GetLocationDetail(cmbLocation.Text);
+                ownerID = ((CharCorpOption)cmbOwner.SelectedItem).Data.ID;
             }
 
-            if (ownerID != 0 && location != null)
+            if (ownerID != 0)
             {
-                // Need to create contracts here instead of get system IDs.
-                EMMADataSet.IDTableDataTable systemIDs = Assets.GetInvolvedSystemIDs(ownerID, corp,
-                    location.Regions, location.Stations, !chkExcludeContainers.Checked, !chkExcludeContainers.Checked);
+                AutoContractor contractor = new AutoContractor();
+                ContractList contracts = contractor.GenerateContracts(ownerID);
 
-                foreach (EMMADataSet.IDTableRow idRow in systemIDs)
+                foreach (Contract contract in contracts)
                 {
-                    if (!chkHighSecAssetsOnly.Checked || !SolarSystems.IsLowSec(idRow.ID))
-                    {
-                        /// Need to add contracts to _cargo here.
-                    }
+                    _cargo.Add(contract);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select an assets owner to generate cargo pickup points for");
+            }
+        }
+
+        private void btnCourierSettings_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            try
+            {
+                CourierSettings settings = new CourierSettings();
+                settings.ShowDialog();
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private void cargoDataView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                Cursor = Cursors.WaitCursor;
+                try
+                {
+                    CourierCalc calc = new CourierCalc((Contract)cargoDataView.Rows[e.RowIndex].DataBoundItem, false);
+                    calc.ShowDialog();
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
                 }
             }
         }
@@ -226,9 +255,14 @@ namespace EveMarketMonitorApp.GUIElements
                 MessageBox.Show("You must specify a start system",
                     "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            if (_cargo.Count < 3)
+            else if (_cargo.Count < 3)
             {
                 MessageBox.Show("You must have at least 3 pickup points specified or there is nothing to optimise.",
+                    "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (_cargoHold.Containers.Count <= 0)
+            {
+                MessageBox.Show("You must specifiy at least one container or you will not be able to hold any cargo!",
                     "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
@@ -236,19 +270,14 @@ namespace EveMarketMonitorApp.GUIElements
                 Cursor = Cursors.WaitCursor;
                 try
                 {
-                    /*_nextFreeIndex = 0;
+                    _nextFreeIndex = 0;
                     _idMapper = new Dictionary<int, int>();
-                    _jumps = new short[lstWaypoints.Items.Count + 2, lstWaypoints.Items.Count + 2];
+                    _jumps = new short[_cargo.Count + 2, _cargo.Count + 2];
 
                     List<int> waypoints = new List<int>();
                     waypoints.Add(startSystemID);
-                    foreach (object item in lstWaypoints.Items)
-                    {
-                        SystemData system = item as SystemData;
-                        waypoints.Add(system.ID);
-                    }
-                    waypoints.Add(endSystemID);
-                    route = new CargoRoute(waypoints, ref _nextFreeIndex, ref _jumps, _idMapper);
+
+                    route = new CargoRoute(waypoints, ref _nextFreeIndex, ref _jumps, _idMapper, _cargo, _cargoHold);
 
                     Thread t0 = new Thread(new ThreadStart(route.Optimize));
                     ProgressDialog prg = new ProgressDialog("Generating route", route);
@@ -275,7 +304,7 @@ namespace EveMarketMonitorApp.GUIElements
                             lstRoute.Items.AddRange(route.GetCompleteRoute().ToArray());
                             lstRoute.EndUpdate();
                         }
-                    }*/
+                    }
                 }
                 finally
                 {
@@ -598,31 +627,32 @@ namespace EveMarketMonitorApp.GUIElements
             public event StatusChangeHandler StatusChange;
             private int _nextFreeIndex;
             private short[,] _jumps;
+            // The ID Mapper matches a solar system ID to an index in the '_jumps' array.
+            // This enables us to use an array, (which is much faster than other structures,) 
+            // to cache jump distance data. 
             private Dictionary<int, int> _idMapper;
+            private ContractList _contracts;
+            private bool _initialised = false;
+            private CargoHoldSpec _cargoHold;
 
+            private List<int> _pickupStations;
+            private List<int> _destinationStations;
 
             public CargoRoute(List<int> waypoints, ref int nextFreeIndex, ref short[,] jumps, 
-                Dictionary<int, int> idMapper)
-                : base(waypoints)
+                Dictionary<int, int> idMapper, ContractList contracts, CargoHoldSpec cargoHold) : base(waypoints)
             {
                 _nextFreeIndex = nextFreeIndex;
                 _jumps = jumps;
                 _idMapper = idMapper;
+                _contracts = contracts;
+                _cargoHold = cargoHold;
+                _destinationStations = new List<int>();
+                _pickupStations = new List<int>();
             }
 
 
             /// <summary>
-            /// This algorithm will optimize a sequence of waypoints to try and find the sequence that
-            /// will result in the fewest number of jumps required to visit all waypoints.
-            /// (i.e. the travelling salesman problem: http://en.wikipedia.org/wiki/Travelling_salesman_problem)
-            /// The approach used here is to run a genetic algorithm.
-            /// This works by 'cloning' the current sequence of waypoints to create a population. 
-            /// Each sequence then has different random changes made (mutations).
-            /// Once all mutations are complete, the best (shortest) sequence of waypoints is used 
-            /// as the basis for the next generation and the process repeats.
-            /// We only stop if we go for 6 generations without improving the route at all. 
-            /// At that point we probably have somthing close to the best sequence of waypoints though
-            /// this is not guaranteed.
+            /// 
             /// </summary>
             public void Optimize()
             {
@@ -636,7 +666,21 @@ namespace EveMarketMonitorApp.GUIElements
                 Thread.Sleep(500); 
                 UpdateStatus(0, 1, "Optimizing Route", "", false);
                 UpdateStatus(0, 1, "", "Pre-caching data", false);
-                SolarSystemDistances.PopulateJumpsArray(this, this, ref _jumps, _idMapper, ref _nextFreeIndex);
+                List<int> allSystems = new List<int>();
+                foreach (Contract contract in _contracts)
+                {
+                    if (!_pickupStations.Contains(contract.PickupStationID))
+                    {
+                        _pickupStations.Add(contract.PickupStationID);
+                    }
+                    int system1 = Stations.GetStation(contract.PickupStationID).solarSystemID;
+                    if (!allSystems.Contains(system1)) { allSystems.Add(system1); }
+                    int system2 = Stations.GetStation(contract.DestinationStationID).solarSystemID;
+                    if (!allSystems.Contains(system2)) { allSystems.Add(system2); }
+                }
+                SolarSystemDistances.PopulateJumpsArray(allSystems, allSystems, ref _jumps, _idMapper, 
+                    ref _nextFreeIndex);
+                allSystems.Clear();
                 UpdateStatus(0, 1, "", "Calculating initial route length", false);
                 UpdateStatus(0, 1, "", "Initial route length = " + GetLength() + " jumps", false);
 
@@ -828,6 +872,7 @@ namespace EveMarketMonitorApp.GUIElements
 
             public int GetLength()
             {
+                if (!_initialised) { Initialise(); }
                 int retVal = 0;
                 int[] tmp = new int[4];
                 for (int i = 0; i < this.Count - 1; i++)
@@ -835,6 +880,13 @@ namespace EveMarketMonitorApp.GUIElements
                     retVal += GetRouteLength(this[i], this[i + 1], ref tmp);
                 }
                 return retVal;
+            }
+
+            private void Initialise()
+            {
+                GenerateRoute(0);
+
+                _initialised = true;
             }
 
             public List<LocationData> GetCompleteRoute()
@@ -861,6 +913,17 @@ namespace EveMarketMonitorApp.GUIElements
                 return retVal;
             }
 
+            public void GenerateRoute(long seed)
+            {
+
+            }
+
+            private void PickupCargo(int stationID)
+            {
+
+            }
+
+
             public void UpdateStatus(int progress, int maxProgress, string section, string sectionStatus, bool done)
             {
                 if (StatusChange != null)
@@ -880,6 +943,10 @@ namespace EveMarketMonitorApp.GUIElements
 
         }
         #endregion
+
+
+
+
 
 
     }
