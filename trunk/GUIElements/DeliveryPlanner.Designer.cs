@@ -30,7 +30,7 @@ namespace EveMarketMonitorApp.GUIElements
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DeliveryPlanner));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -45,14 +45,13 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnClose = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.chkExcludeContainers = new System.Windows.Forms.CheckBox();
-            this.chkHighSecAssetsOnly = new System.Windows.Forms.CheckBox();
-            this.cmbLocation = new System.Windows.Forms.ComboBox();
-            this.btnAddAssets = new System.Windows.Forms.Button();
+            this.btnCourierSettings = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.btnAddAssets = new System.Windows.Forms.Button();
             this.cmbOwner = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnClearCotnainers = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.lstCargoHold = new System.Windows.Forms.ListBox();
@@ -66,7 +65,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtStartSystem = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.btnClearCotnainers = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -124,7 +122,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 128F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(844, 556);
@@ -212,6 +210,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnGenRoute.TabIndex = 1;
             this.btnGenRoute.Text = "Generate Route";
             this.btnGenRoute.UseVisualStyleBackColor = true;
+            this.btnGenRoute.Click += new System.EventHandler(this.btnGenRoute_Click);
             // 
             // btnClose
             // 
@@ -222,69 +221,59 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnClose.TabIndex = 0;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // panel3
             // 
             this.panel3.Controls.Add(this.groupBox2);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(0, 246);
+            this.panel3.Location = new System.Drawing.Point(0, 262);
             this.panel3.Margin = new System.Windows.Forms.Padding(0);
             this.panel3.Name = "panel3";
             this.panel3.Padding = new System.Windows.Forms.Padding(3);
-            this.panel3.Size = new System.Drawing.Size(422, 160);
+            this.panel3.Size = new System.Drawing.Size(422, 128);
             this.panel3.TabIndex = 9;
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.chkExcludeContainers);
-            this.groupBox2.Controls.Add(this.chkHighSecAssetsOnly);
-            this.groupBox2.Controls.Add(this.cmbLocation);
-            this.groupBox2.Controls.Add(this.btnAddAssets);
+            this.groupBox2.Controls.Add(this.btnCourierSettings);
             this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.btnAddAssets);
             this.groupBox2.Controls.Add(this.cmbOwner);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(416, 154);
+            this.groupBox2.Size = new System.Drawing.Size(416, 122);
             this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Add waypoints from assets ";
             // 
-            // chkExcludeContainers
+            // btnCourierSettings
             // 
-            this.chkExcludeContainers.AutoSize = true;
-            this.chkExcludeContainers.Location = new System.Drawing.Point(9, 42);
-            this.chkExcludeContainers.Name = "chkExcludeContainers";
-            this.chkExcludeContainers.Size = new System.Drawing.Size(333, 17);
-            this.chkExcludeContainers.TabIndex = 15;
-            this.chkExcludeContainers.Text = "Exclude unpackaged ships, fittings, containers and thier contents";
-            this.chkExcludeContainers.UseVisualStyleBackColor = true;
+            this.btnCourierSettings.Location = new System.Drawing.Point(280, 65);
+            this.btnCourierSettings.Name = "btnCourierSettings";
+            this.btnCourierSettings.Size = new System.Drawing.Size(62, 21);
+            this.btnCourierSettings.TabIndex = 15;
+            this.btnCourierSettings.Text = "Settings";
+            this.btnCourierSettings.UseVisualStyleBackColor = true;
+            this.btnCourierSettings.Click += new System.EventHandler(this.btnCourierSettings_Click);
             // 
-            // chkHighSecAssetsOnly
+            // label5
             // 
-            this.chkHighSecAssetsOnly.AutoSize = true;
-            this.chkHighSecAssetsOnly.Location = new System.Drawing.Point(9, 19);
-            this.chkHighSecAssetsOnly.Name = "chkHighSecAssetsOnly";
-            this.chkHighSecAssetsOnly.Size = new System.Drawing.Size(209, 17);
-            this.chkHighSecAssetsOnly.TabIndex = 14;
-            this.chkHighSecAssetsOnly.Text = "Only add waypoints for high-sec assets";
-            this.chkHighSecAssetsOnly.UseVisualStyleBackColor = true;
-            // 
-            // cmbLocation
-            // 
-            this.cmbLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbLocation.FormattingEnabled = true;
-            this.cmbLocation.Location = new System.Drawing.Point(6, 87);
-            this.cmbLocation.Name = "cmbLocation";
-            this.cmbLocation.Size = new System.Drawing.Size(333, 21);
-            this.cmbLocation.TabIndex = 0;
+            this.label5.Location = new System.Drawing.Point(6, 16);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(404, 46);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "This will automatically generate cargo pickup waypoints from your assets, based u" +
+                "pon the current auto-contractor settings.";
             // 
             // btnAddAssets
             // 
             this.btnAddAssets.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddAssets.Location = new System.Drawing.Point(348, 86);
+            this.btnAddAssets.Location = new System.Drawing.Point(348, 65);
             this.btnAddAssets.Name = "btnAddAssets";
             this.btnAddAssets.Size = new System.Drawing.Size(62, 21);
             this.btnAddAssets.TabIndex = 1;
@@ -292,22 +281,14 @@ namespace EveMarketMonitorApp.GUIElements
             this.toolTip1.SetToolTip(this.btnAddAssets, "Add all systems that contain assets and are in the given location to the list of " +
                     "waypoints.");
             this.btnAddAssets.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 71);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(48, 13);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Location";
+            this.btnAddAssets.Click += new System.EventHandler(this.btnAddAssets_Click);
             // 
             // cmbOwner
             // 
             this.cmbOwner.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbOwner.FormattingEnabled = true;
-            this.cmbOwner.Location = new System.Drawing.Point(6, 127);
+            this.cmbOwner.Location = new System.Drawing.Point(6, 92);
             this.cmbOwner.Name = "cmbOwner";
             this.cmbOwner.Size = new System.Drawing.Size(404, 21);
             this.cmbOwner.TabIndex = 13;
@@ -315,7 +296,7 @@ namespace EveMarketMonitorApp.GUIElements
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 111);
+            this.label7.Location = new System.Drawing.Point(3, 76);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(115, 13);
             this.label7.TabIndex = 12;
@@ -330,12 +311,23 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox3.Controls.Add(this.btnAddContainer);
             this.groupBox3.Controls.Add(this.txtVolume);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(3, 409);
+            this.groupBox3.Location = new System.Drawing.Point(3, 393);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(416, 102);
+            this.groupBox3.Size = new System.Drawing.Size(416, 118);
             this.groupBox3.TabIndex = 15;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Cargo hold details";
+            // 
+            // btnClearCotnainers
+            // 
+            this.btnClearCotnainers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClearCotnainers.Location = new System.Drawing.Point(348, 18);
+            this.btnClearCotnainers.Name = "btnClearCotnainers";
+            this.btnClearCotnainers.Size = new System.Drawing.Size(62, 21);
+            this.btnClearCotnainers.TabIndex = 5;
+            this.btnClearCotnainers.Text = "Clear";
+            this.btnClearCotnainers.UseVisualStyleBackColor = true;
+            this.btnClearCotnainers.Click += new System.EventHandler(this.btnClearCotnainers_Click);
             // 
             // label6
             // 
@@ -363,7 +355,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.lstCargoHold.FormattingEnabled = true;
             this.lstCargoHold.Location = new System.Drawing.Point(6, 45);
             this.lstCargoHold.Name = "lstCargoHold";
-            this.lstCargoHold.Size = new System.Drawing.Size(404, 43);
+            this.lstCargoHold.Size = new System.Drawing.Size(404, 56);
             this.lstCargoHold.TabIndex = 2;
             // 
             // btnAddContainer
@@ -409,8 +401,9 @@ namespace EveMarketMonitorApp.GUIElements
             this.cargoDataView.RowHeadersVisible = false;
             this.cargoDataView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.cargoDataView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.cargoDataView.Size = new System.Drawing.Size(416, 102);
+            this.cargoDataView.Size = new System.Drawing.Size(416, 118);
             this.cargoDataView.TabIndex = 16;
+            this.cargoDataView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.cargoDataView_CellDoubleClick);
             this.cargoDataView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cargoDataView_KeyDown);
             // 
             // cargoPickupColumn
@@ -429,8 +422,8 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // cargoVolumeColumn
             // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.cargoVolumeColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.cargoVolumeColumn.DefaultCellStyle = dataGridViewCellStyle3;
             this.cargoVolumeColumn.HeaderText = "Total Volume";
             this.cargoVolumeColumn.Name = "cargoVolumeColumn";
             this.cargoVolumeColumn.ReadOnly = true;
@@ -459,17 +452,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.label2.Size = new System.Drawing.Size(36, 13);
             this.label2.TabIndex = 19;
             this.label2.Text = "Route";
-            // 
-            // btnClearCotnainers
-            // 
-            this.btnClearCotnainers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClearCotnainers.Location = new System.Drawing.Point(348, 18);
-            this.btnClearCotnainers.Name = "btnClearCotnainers";
-            this.btnClearCotnainers.Size = new System.Drawing.Size(62, 21);
-            this.btnClearCotnainers.TabIndex = 5;
-            this.btnClearCotnainers.Text = "Clear";
-            this.btnClearCotnainers.UseVisualStyleBackColor = true;
-            this.btnClearCotnainers.Click += new System.EventHandler(this.btnClearCotnainers_Click);
             // 
             // DeliveryPlanner
             // 
@@ -506,16 +488,10 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button btnAddAssets;
-        private System.Windows.Forms.ComboBox cmbLocation;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnGenRoute;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ComboBox cmbOwner;
         private System.Windows.Forms.Button btnAutopilotSettings;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox chkHighSecAssetsOnly;
-        private System.Windows.Forms.CheckBox chkExcludeContainers;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.ListBox lstRoute;
@@ -534,5 +510,9 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.TextBox txtStartSystem;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnClearCotnainers;
+        private System.Windows.Forms.Button btnCourierSettings;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox cmbOwner;
+        private System.Windows.Forms.Label label7;
     }
 }

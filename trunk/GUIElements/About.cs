@@ -48,7 +48,7 @@ namespace EveMarketMonitorApp.GUIElements
         {
             lnkSourceForge.Links[lnkSourceForge.Links.IndexOf(e.Link)].Visited = true;
 
-            string target = @"https://sourceforge.net/tracker/?group_id=211375";
+            string target = @"http://code.google.com/p/evemarketmonitorapp/";
             System.Diagnostics.Process.Start(target);
         }
 
@@ -56,7 +56,7 @@ namespace EveMarketMonitorApp.GUIElements
         {
             lnkEMMAThread.Links[lnkEMMAThread.Links.IndexOf(e.Link)].Visited = true;
 
-            string target = @"http://myeve.eve-online.com/ingameboard.asp?a=topic&threadID=936258";
+            string target = @"http://www.eveonline.com/ingameboard.asp?a=topic&threadID=1180576";
             System.Diagnostics.Process.Start(target);
         }
 
