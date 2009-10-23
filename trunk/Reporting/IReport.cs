@@ -469,7 +469,7 @@ namespace EveMarketMonitorApp.Reporting
                 if (!ignoreIfMissing)
                 {
                     throw new EMMAReportingException(ExceptionSeverity.Error, "Cannot find specified row and column in" +
-                        " report.\r\nRow: " + rowName + "\r\n:Column: " + columnName);
+                        " report.\r\nRow: " + rowName + "\r\nColumn: " + columnName);
                 }
             }
         }
@@ -1021,7 +1021,7 @@ namespace EveMarketMonitorApp.Reporting
         }
         public void AddRow(int numColumns, string rowName, string rowText, ReportDataType dataType)
         {
-            ReportRow newRow = new ReportRow(numColumns, rowName, rowText, dataType);
+            ReportRow newRow = new ReportRow(numColumns, rowName.Trim(), rowText, dataType);
             newRow.NestingLevel = _nestingLevel + 1;
             newRow.Parent = this;
             AddToContainedRows(rowName);
