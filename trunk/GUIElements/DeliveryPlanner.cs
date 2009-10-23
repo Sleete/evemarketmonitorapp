@@ -469,14 +469,65 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 get { return _containers; }
             }
+
+            public void AddCargo(Contract contract)
+            {
+                bool packed = false;
+
+                // If the entire contract can fit into a container then just stick it all in.
+                foreach (CargoContainer container in _containers)
+                {
+                    if (!packed && contract.TotalVolume < container.RemainingVolume)
+                    {
+                        container.AddItems(contract);
+                        packed = true;
+                        contract.Items.Clear();
+                    }
+                }
+
+                // If it won't fit into one container then break it down and add items 
+                // individually.
+                if (!packed)
+                {
+                    for (int index = 0; index < contract.Items.Count; index++)
+                    {
+                        ContractItem item = contract.Items[index];
+                        decimal volumeRemaining = item.ItemVolume * item.Quantity;
+
+                        foreach (CargoContainer container in _containers)
+                        {
+                            if (container.RemainingVolume > item.ItemVolume)
+                            {
+                                int trueQ = ((container.RemainingVolume >= item.ItemVolume * item.Quantity) ?
+                                    item.Quantity : (int)Math.Floor(container.RemainingVolume / item.ItemVolume));
+                                if (trueQ != item.Quantity)
+                                {
+                                    if (trueQ != 0)
+                                    {
+                                        ContractItem breakDown = new ContractItem(item.ItemID, item.Quantity - trueQ, item.SellPrice, item.BuyPrice, contract);
+                                        item.Quantity = trueQ;
+                                        container.AddItem(item);
+                                        contract.Items.Add(breakDown);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+
+            }
         }
 
         private class CargoContainer
         {
-            private long _totalVolume;
+            private decimal _totalVolume;
             private List<ContractItem> _items;
+            private decimal _remainingVolume;
+            private bool _changed = true;
 
-            public CargoContainer(long volume)
+            public CargoContainer(decimal volume)
             {
                 _totalVolume = volume;
                 _items = new List<ContractItem>();
@@ -487,10 +538,42 @@ namespace EveMarketMonitorApp.GUIElements
                 _items.Clear();
             }
 
-            public long TotalVolume
+            public decimal TotalVolume
             {
                 get { return _totalVolume; }
                 set { _totalVolume = value; }
+            }
+
+            public decimal RemainingVolume
+            {
+                get 
+                {
+                    if (_changed)
+                    {
+                        decimal used = 0;
+                        foreach (ContractItem item in _items)
+                        {
+                            used += item.Quantity * item.ItemVolume;
+                        }
+                        _remainingVolume = _totalVolume - used;
+                        _changed = false;
+                    }
+                    return _remainingVolume;
+                }
+            }
+
+            public void AddItem(ContractItem item)
+            {
+                _items.Add(item);
+                _changed = true;
+            }
+
+            public void AddItems(Contract contract)
+            {
+                foreach (ContractItem item in contract.Items)
+                {
+                    _items.Add(item);
+                }
             }
         }
 
@@ -637,6 +720,8 @@ namespace EveMarketMonitorApp.GUIElements
 
             private List<int> _pickupStations;
             private List<int> _destinationStations;
+            private List<int> _pickupStationsRemaining;
+            private List<int> _destinationStationsRemaining;
 
             public CargoRoute(List<int> waypoints, ref int nextFreeIndex, ref short[,] jumps, 
                 Dictionary<int, int> idMapper, ContractList contracts, CargoHoldSpec cargoHold) : base(waypoints)
@@ -648,6 +733,8 @@ namespace EveMarketMonitorApp.GUIElements
                 _cargoHold = cargoHold;
                 _destinationStations = new List<int>();
                 _pickupStations = new List<int>();
+                _destinationStationsRemaining = new List<int>();
+                _pickupStationsRemaining = new List<int>();
             }
 
 
@@ -706,7 +793,7 @@ namespace EveMarketMonitorApp.GUIElements
                         {
                             // For each potential route in this population, we first start by creating a
                             // copy of the current route...
-                            CargoRoute currentRoute = new CargoRoute(this, ref _nextFreeIndex, ref _jumps, _idMapper);
+                            CargoRoute currentRoute = new CargoRoute(this, ref _nextFreeIndex, ref _jumps, _idMapper, _contracts, _cargoHold);
                             population.Add(currentRoute);
 
                             UpdateStatus(r, populationSize, "", "Processing generation " + generation, false);
@@ -918,8 +1005,23 @@ namespace EveMarketMonitorApp.GUIElements
 
             }
 
-            private void PickupCargo(int stationID)
+            private PickupResult PickupCargo(int stationID)
             {
+                PickupResult retVal = PickupResult.AllCollected;
+                return retVal;
+            }
+
+            private void TrimRoute()
+            {
+                _cargoHold.ClearAll();
+                bool done = false;
+                int locationIndex = 0;
+
+                while (!done)
+                {
+                    PickupResult result = PickupCargo(this[locationIndex]);
+                    locationIndex++;
+                }
 
             }
 
@@ -941,6 +1043,12 @@ namespace EveMarketMonitorApp.GUIElements
                 }
             }
 
+            private enum PickupResult
+            {
+                AllCollected,
+                NoneCollected,
+                SomeCollected
+            }
         }
         #endregion
 

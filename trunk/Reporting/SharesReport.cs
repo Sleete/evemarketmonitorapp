@@ -214,13 +214,13 @@ namespace EveMarketMonitorApp.Reporting
                         {
                             sharesOwnedVal = corpData.AmountInAccount;
                             profit = corpData.TotalInterest;
-                            profitPerc = (BankAccounts.GetTotalTransactionIsk(corpData.BankAccountID,
-                                BankTransactionType.Withdrawl) /
+                            profitPerc = ((BankAccounts.GetTotalTransactionIsk(corpData.BankAccountID,
+                                BankTransactionType.Withdrawl) * -1) /
                                 BankAccounts.GetTotalTransactionIsk(corpData.BankAccountID,
                                 BankTransactionType.Deposit)) - 1.0m;
-                            profitPercIncValue = ((sharesOwnedVal +
+                            profitPercIncValue = (((sharesOwnedVal +
                                 BankAccounts.GetTotalTransactionIsk(corpData.BankAccountID,
-                                BankTransactionType.Withdrawl)) /
+                                BankTransactionType.Withdrawl) * -1)) /
                                 BankAccounts.GetTotalTransactionIsk(corpData.BankAccountID,
                                 BankTransactionType.Deposit)) - 1.0m;
                             dailyProfit = profitPercIncValue / (decimal)BankAccounts.DaysAccountActive(

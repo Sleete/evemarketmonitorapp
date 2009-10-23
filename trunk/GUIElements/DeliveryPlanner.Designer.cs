@@ -30,7 +30,7 @@ namespace EveMarketMonitorApp.GUIElements
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DeliveryPlanner));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -422,8 +422,8 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // cargoVolumeColumn
             // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.cargoVolumeColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.cargoVolumeColumn.DefaultCellStyle = dataGridViewCellStyle1;
             this.cargoVolumeColumn.HeaderText = "Total Volume";
             this.cargoVolumeColumn.Name = "cargoVolumeColumn";
             this.cargoVolumeColumn.ReadOnly = true;

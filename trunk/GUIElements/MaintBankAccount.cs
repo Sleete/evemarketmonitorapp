@@ -313,6 +313,7 @@ namespace EveMarketMonitorApp.GUIElements
         private void btnRecalcInterest_Click(object sender, EventArgs e)
         {
             RecalcAllInterest();
+            DisplayData();
         }
 
         private void RecalcAllInterest()

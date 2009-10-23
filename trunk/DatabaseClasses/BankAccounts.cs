@@ -268,9 +268,26 @@ namespace EveMarketMonitorApp.DatabaseClasses
                             interestPaymentInterval);
                         decimal change = Math.Round(balance * (interestPercentage / 100.0m), 2);
 
-                        StoreBankTransaction(new BankTransaction(lastInterestPaymentDate,
-                            accountID, change, BankTransactionType.InterestPayment));
-                        balance += change;
+                        if (change >= 0.01m)
+                        {
+                            StoreBankTransaction(new BankTransaction(lastInterestPaymentDate,
+                                accountID, change, BankTransactionType.InterestPayment));
+                            balance += change;
+                        }
+
+                        // Apply any deposits or withdrawls made between the last payment date and the
+                        // next interest interval.
+                        if (table.Count > 0)
+                        {
+                            foreach (EMMADataSet.BankTransactionRow transaction in table)
+                            {
+                                if (transaction.DateTime.CompareTo(lastInterestPaymentDate) > 0 &&
+                                    transaction.DateTime.CompareTo(lastInterestPaymentDate.Add(interestPaymentInterval)) < 0)
+                                {
+                                    balance += transaction.Change;
+                                }
+                            }
+                        }
                     }
 
                     // Update the current balance figure on the account.
