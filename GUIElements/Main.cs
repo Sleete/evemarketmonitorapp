@@ -680,20 +680,23 @@ namespace EveMarketMonitorApp.GUIElements
                     OrdersList unack = Orders.LoadOrders(UserAccount.CurrentGroup.GetAssetAccessParams(
                         APIDataType.Orders), new List<int>(), new List<int>(),
                         (int)OrderState.ExpiredOrFilledAndUnacknowledged, "Any");
-                    if (_unackOrders == null && unack.Count > 0 ||
-                        (_unackOrders != null && !_unackOrders.Visible && 
-                        ((_unackOrders.LastNumberOfOrders() != unack.Count) || forceDisplay)))
+                    if (_unackOrders == null && unack.Count > 0)
                     {
                         _unackOrders = new ViewUnacknowledgedOrders();
                         _unackOrders.MdiParent = this;
                         showForm = true;
+                    }
+                    else if (_unackOrders != null && !_unackOrders.Visible &&
+                        ((_unackOrders.LastNumberOfOrders() != unack.Count) || forceDisplay))
+                    {
+                        showForm = true;
+                        updateForm = true;
                     }
                 }
                 else { updateForm = true; }
 
                 if (showForm)
                 {
-                    _unackOrders.MdiParent = this;
                     _unackOrders.Show();
                 }
                 if (updateForm)
