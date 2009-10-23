@@ -123,7 +123,7 @@ namespace EveMarketMonitorApp.Reporting
                                 {
                                     // If there is not already a row with this name then add it.
                                     section.AddRow(_columns.Length, rowName,
-                                        JournalRefTypes.GetReferenceDesc(refTypeID));
+                                        JournalRefTypes.GetReferenceDesc(refTypeID).Trim());
                                 }
 
                                 // Add the data for this row & column.
