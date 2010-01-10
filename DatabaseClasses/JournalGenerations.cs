@@ -294,6 +294,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <returns></returns>
         private static DateTime LatestAllowedDate()
         {
+            /*
             double idsPerDay = GetIDsPerDay();
             // work out how many IDs are left in this generation and divide by the number 
             // of ids being created per cay.
@@ -302,6 +303,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
             if (daysLeft > 10000) daysLeft = 10000;
 
             return _currentEndDate.AddDays(daysLeft);
+             * */
+
+            // CCP HAVE CHANGED EVE TO USE 64BIT IDS. THEREFORE, JOURNAL ID GENERATIONS ARE NO LONGER NEEDED.
+            return new DateTime(2100, 1, 1);
         }
 
         /// <summary>

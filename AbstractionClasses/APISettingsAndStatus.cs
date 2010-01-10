@@ -43,10 +43,10 @@ namespace EveMarketMonitorApp.AbstractionClasses
         private string _lastCorpAssetsUpdateError = "";
         private string _lastCorpOrdersUpdateError = "";
 
-        private int _highestCharTransID = 0;
-        private int _highestCorpTransID = 0;
-        private int _highestCharJournalID = 0;
-        private int _highestCorpJournalID = 0;
+        private long _highestCharTransID = 0;
+        private long _highestCorpTransID = 0;
+        private long _highestCharJournalID = 0;
+        private long _highestCorpJournalID = 0;
         #endregion
 
         public APISettingsAndStatus(int charID)
@@ -405,9 +405,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
         }
 
 
-        public int GetHighestID(CharOrCorp corc, APIDataType type)
+        public long GetHighestID(CharOrCorp corc, APIDataType type)
         {
-            int retVal = 0;
+            long retVal = 0;
             switch (corc)
             {
                 case CharOrCorp.Char:
@@ -442,7 +442,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
             return retVal;
         }
-        public void SetHighestID(CharOrCorp corc, APIDataType type, int id)
+        public void SetHighestID(CharOrCorp corc, APIDataType type, long id)
         {
             switch (corc)
             {
