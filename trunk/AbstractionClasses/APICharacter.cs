@@ -315,11 +315,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
         }
 
 
-        public int GetHighestID(CharOrCorp corc, APIDataType type)
+        public long GetHighestID(CharOrCorp corc, APIDataType type)
         {
             return _apiSettings.GetHighestID(corc, type);
         }
-        public void SetHighestID(CharOrCorp corc, APIDataType type, int id)
+        public void SetHighestID(CharOrCorp corc, APIDataType type, long id)
         {
             _apiSettings.SetHighestID(corc, type, id);
         }
@@ -1108,8 +1108,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
             DateTime earliestUpdate = GetLastAPIUpdateTime(corc, APIDataType.Journal).AddHours(1);
             EMMADataSet.JournalDataTable journalData = new EMMADataSet.JournalDataTable();
             bool fromFile = fileXML != null;
-            int highestIDSoFar = _apiSettings.GetHighestID(corc, APIDataType.Journal);
-            int highestID = 0;
+            long highestIDSoFar = _apiSettings.GetHighestID(corc, APIDataType.Journal);
+            long highestID = 0;
             DateTime fileDate = DateTime.UtcNow;
             bool noData = true;
             DateTime ticker = DateTime.UtcNow.AddSeconds(-10);
@@ -1305,7 +1305,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         EMMADataSet.JournalRow newRow1 =
                             BuildJournalEntry(journalData, firstEntry, 0, walletID, corc);
                         XmlNode entryIDNode = firstEntry.SelectSingleNode("@refID");
-                        int fileMaxID = int.Parse(entryIDNode.Value,
+                        long fileMaxID = long.Parse(entryIDNode.Value,
                             System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                         if (fileMaxID > highestID) { highestID = fileMaxID; }
 
