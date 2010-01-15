@@ -87,7 +87,16 @@ namespace EveMarketMonitorApp.GUIElements
                     Diagnostics.StartTimer("Updates");
                     // Update settings and user database if needed.
                     UpdateStatus(0, 0, "Initalising database", "", false);
-                    Updater.Update();
+                    try
+                    {
+                        Updater.Update();
+                    }
+                    catch (EMMAException emmaEx)
+                    {
+                        MessageBox.Show("Critical error updating EMMA database. For details, see " +
+                            "\"Logging/ExceptionLog.txt\"", "Ciritcal error", 
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                     Updater.InitDBs();
                     checkForUpdates = checkForUpdates && EveMarketMonitorApp.Properties.Settings.Default.AutoUpdate; 
                     if (checkForUpdates)

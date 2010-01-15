@@ -243,24 +243,36 @@ namespace EveMarketMonitorApp.DatabaseClasses
             // decimal value = 0;
             Dictionary<int, double> list = new Dictionary<int, double>();
 
-            EveDataSetTableAdapters.ReprocesResultsTableAdapter reproAdapter = 
-                new EveMarketMonitorApp.DatabaseClasses.EveDataSetTableAdapters.ReprocesResultsTableAdapter();
-            EveDataSet.ReprocesResultsDataTable reprocessResults = new EveDataSet.ReprocesResultsDataTable();
-
-            reproAdapter.Fill(reprocessResults, args.Key);
-
-            foreach (EveDataSet.ReprocesResultsRow row in reprocessResults)
+            try
             {
-                double quantity = row.quantity;
-                EveDataSet.invTypesRow item = Items.GetItem(args.Key);
-                int portion = (item.IsportionSizeNull() ? 0 : item.portionSize);
-                if (portion != 0)
-                {
-                    quantity /= portion;
-                }
-                //value += quantity * UserAccount.CurrentGroup.ItemsTraded.GetItemValue(row.requiredTypeID);
+                EveDataSetTableAdapters.ReprocesResultsTableAdapter reproAdapter =
+                    new EveMarketMonitorApp.DatabaseClasses.EveDataSetTableAdapters.ReprocesResultsTableAdapter();
+                EveDataSet.ReprocesResultsDataTable reprocessResults = new EveDataSet.ReprocesResultsDataTable();
 
-                list.Add(row.requiredTypeID, quantity);
+                reproAdapter.Fill(reprocessResults, args.Key);
+
+                foreach (EveDataSet.ReprocesResultsRow row in reprocessResults)
+                {
+                    double quantity = row.quantity;
+                    EveDataSet.invTypesRow item = Items.GetItem(args.Key);
+                    int portion = (item.IsportionSizeNull() ? 0 : item.portionSize);
+                    if (portion != 0)
+                    {
+                        quantity /= portion;
+                    }
+                    //value += quantity * UserAccount.CurrentGroup.ItemsTraded.GetItemValue(row.requiredTypeID);
+
+                    list.Add(row.requiredTypeID, quantity);
+                }
+            }
+            catch (Exception ex)
+            {
+                EMMAException emmaEx = ex as EMMAException;
+                if (emmaEx == null)
+                {
+                    new EMMAException(ExceptionSeverity.Error, "Problem getting reprocessor update for item '" +
+                        Items.GetItemName(args.Key) + "'", ex);
+                }
             }
 
             //args.Data = value;

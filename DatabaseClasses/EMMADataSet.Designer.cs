@@ -6010,10 +6010,10 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                         System.DateTime LastCharOrdersUpdate, 
                         System.DateTime LastCorpOrdersUpdate, 
                         bool CorpFinanceAccess, 
-                        int HighestCharTransID, 
-                        int HighestCorpTransID, 
-                        int HighestCharJournalID, 
-                        int HighestCorpJournalID) {
+                        long HighestCharTransID, 
+                        long HighestCorpTransID, 
+                        long HighestCharJournalID, 
+                        long HighestCorpJournalID) {
                 APICharactersRow rowAPICharactersRow = ((APICharactersRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ID,
@@ -6109,13 +6109,13 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 base.Columns.Add(this.columnLastCorpOrdersUpdate);
                 this.columnCorpFinanceAccess = new global::System.Data.DataColumn("CorpFinanceAccess", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCorpFinanceAccess);
-                this.columnHighestCharTransID = new global::System.Data.DataColumn("HighestCharTransID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnHighestCharTransID = new global::System.Data.DataColumn("HighestCharTransID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnHighestCharTransID);
-                this.columnHighestCorpTransID = new global::System.Data.DataColumn("HighestCorpTransID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnHighestCorpTransID = new global::System.Data.DataColumn("HighestCorpTransID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnHighestCorpTransID);
-                this.columnHighestCharJournalID = new global::System.Data.DataColumn("HighestCharJournalID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnHighestCharJournalID = new global::System.Data.DataColumn("HighestCharJournalID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnHighestCharJournalID);
-                this.columnHighestCorpJournalID = new global::System.Data.DataColumn("HighestCorpJournalID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnHighestCorpJournalID = new global::System.Data.DataColumn("HighestCorpJournalID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnHighestCorpJournalID);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnID}, true));
@@ -16280,9 +16280,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int HighestCharTransID {
+            public long HighestCharTransID {
                 get {
-                    return ((int)(this[this.tableAPICharacters.HighestCharTransIDColumn]));
+                    return ((long)(this[this.tableAPICharacters.HighestCharTransIDColumn]));
                 }
                 set {
                     this[this.tableAPICharacters.HighestCharTransIDColumn] = value;
@@ -16290,9 +16290,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int HighestCorpTransID {
+            public long HighestCorpTransID {
                 get {
-                    return ((int)(this[this.tableAPICharacters.HighestCorpTransIDColumn]));
+                    return ((long)(this[this.tableAPICharacters.HighestCorpTransIDColumn]));
                 }
                 set {
                     this[this.tableAPICharacters.HighestCorpTransIDColumn] = value;
@@ -16300,9 +16300,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int HighestCharJournalID {
+            public long HighestCharJournalID {
                 get {
-                    return ((int)(this[this.tableAPICharacters.HighestCharJournalIDColumn]));
+                    return ((long)(this[this.tableAPICharacters.HighestCharJournalIDColumn]));
                 }
                 set {
                     this[this.tableAPICharacters.HighestCharJournalIDColumn] = value;
@@ -16310,9 +16310,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int HighestCorpJournalID {
+            public long HighestCorpJournalID {
                 get {
-                    return ((int)(this[this.tableAPICharacters.HighestCorpJournalIDColumn]));
+                    return ((long)(this[this.tableAPICharacters.HighestCorpJournalIDColumn]));
                 }
                 set {
                     this[this.tableAPICharacters.HighestCorpJournalIDColumn] = value;
@@ -26938,10 +26938,10 @@ WHERE     (ID = @Original_ID) AND (OwnerID = @Original_OwnerID) AND (ForCorp = @
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LastCharOrdersUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCharOrdersUpdate", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LastCorpOrdersUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCorpOrdersUpdate", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CorpFinanceAccess", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpFinanceAccess", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_HighestCharTransID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "HighestCharTransID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_HighestCorpTransID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "HighestCorpTransID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_HighestCharJournalID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "HighestCharJournalID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_HighestCorpJournalID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "HighestCorpJournalID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_HighestCharTransID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "HighestCharTransID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_HighestCorpTransID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "HighestCorpTransID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_HighestCharJournalID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "HighestCharJournalID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_HighestCorpJournalID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "HighestCorpJournalID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
             this._adapter.InsertCommand.CommandText = "APICharInsert";
@@ -26961,10 +26961,10 @@ WHERE     (ID = @Original_ID) AND (OwnerID = @Original_OwnerID) AND (ForCorp = @
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharOrdersUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCharOrdersUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCorpOrdersUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCorpOrdersUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpFinanceAccess", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "CorpFinanceAccess", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharTransID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCharTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpTransID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCorpTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharJournalID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCharJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpJournalID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCorpJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharTransID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCharTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpTransID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCorpTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharJournalID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCharJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpJournalID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCorpJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
             this._adapter.UpdateCommand.CommandText = "APICharUpdate";
@@ -26984,10 +26984,10 @@ WHERE     (ID = @Original_ID) AND (OwnerID = @Original_OwnerID) AND (ForCorp = @
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharOrdersUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCharOrdersUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCorpOrdersUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCorpOrdersUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpFinanceAccess", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "CorpFinanceAccess", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharTransID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCharTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpTransID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCorpTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharJournalID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCharJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpJournalID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCorpJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharTransID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCharTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpTransID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCorpTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharJournalID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCharJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpJournalID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCorpJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
@@ -27109,10 +27109,10 @@ WHERE     (ID = @Original_ID) AND (OwnerID = @Original_OwnerID) AND (ForCorp = @
                     System.DateTime Original_LastCharOrdersUpdate, 
                     System.DateTime Original_LastCorpOrdersUpdate, 
                     bool Original_CorpFinanceAccess, 
-                    int Original_HighestCharTransID, 
-                    int Original_HighestCorpTransID, 
-                    int Original_HighestCharJournalID, 
-                    int Original_HighestCorpJournalID) {
+                    long Original_HighestCharTransID, 
+                    long Original_HighestCorpTransID, 
+                    long Original_HighestCharJournalID, 
+                    long Original_HighestCorpJournalID) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ID));
             this.Adapter.DeleteCommand.Parameters[1].Value = ((System.DateTime)(Original_LastCharSheetUpdate));
             this.Adapter.DeleteCommand.Parameters[2].Value = ((System.DateTime)(Original_LastCorpSheetUpdate));
@@ -27125,10 +27125,10 @@ WHERE     (ID = @Original_ID) AND (OwnerID = @Original_OwnerID) AND (ForCorp = @
             this.Adapter.DeleteCommand.Parameters[9].Value = ((System.DateTime)(Original_LastCharOrdersUpdate));
             this.Adapter.DeleteCommand.Parameters[10].Value = ((System.DateTime)(Original_LastCorpOrdersUpdate));
             this.Adapter.DeleteCommand.Parameters[11].Value = ((bool)(Original_CorpFinanceAccess));
-            this.Adapter.DeleteCommand.Parameters[12].Value = ((int)(Original_HighestCharTransID));
-            this.Adapter.DeleteCommand.Parameters[13].Value = ((int)(Original_HighestCorpTransID));
-            this.Adapter.DeleteCommand.Parameters[14].Value = ((int)(Original_HighestCharJournalID));
-            this.Adapter.DeleteCommand.Parameters[15].Value = ((int)(Original_HighestCorpJournalID));
+            this.Adapter.DeleteCommand.Parameters[12].Value = ((long)(Original_HighestCharTransID));
+            this.Adapter.DeleteCommand.Parameters[13].Value = ((long)(Original_HighestCorpTransID));
+            this.Adapter.DeleteCommand.Parameters[14].Value = ((long)(Original_HighestCharJournalID));
+            this.Adapter.DeleteCommand.Parameters[15].Value = ((long)(Original_HighestCorpJournalID));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -27163,10 +27163,10 @@ WHERE     (ID = @Original_ID) AND (OwnerID = @Original_OwnerID) AND (ForCorp = @
                     global::System.Nullable<global::System.DateTime> LastCharOrdersUpdate, 
                     global::System.Nullable<global::System.DateTime> LastCorpOrdersUpdate, 
                     global::System.Nullable<bool> CorpFinanceAccess, 
-                    global::System.Nullable<int> HighestCharTransID, 
-                    global::System.Nullable<int> HighestCorpTransID, 
-                    global::System.Nullable<int> HighestCharJournalID, 
-                    global::System.Nullable<int> HighestCorpJournalID) {
+                    global::System.Nullable<long> HighestCharTransID, 
+                    global::System.Nullable<long> HighestCorpTransID, 
+                    global::System.Nullable<long> HighestCharJournalID, 
+                    global::System.Nullable<long> HighestCorpJournalID) {
             if ((ID.HasValue == true)) {
                 this.Adapter.InsertCommand.Parameters[1].Value = ((int)(ID.Value));
             }
@@ -27252,25 +27252,25 @@ WHERE     (ID = @Original_ID) AND (OwnerID = @Original_OwnerID) AND (ForCorp = @
                 this.Adapter.InsertCommand.Parameters[14].Value = global::System.DBNull.Value;
             }
             if ((HighestCharTransID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[15].Value = ((int)(HighestCharTransID.Value));
+                this.Adapter.InsertCommand.Parameters[15].Value = ((long)(HighestCharTransID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[15].Value = global::System.DBNull.Value;
             }
             if ((HighestCorpTransID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[16].Value = ((int)(HighestCorpTransID.Value));
+                this.Adapter.InsertCommand.Parameters[16].Value = ((long)(HighestCorpTransID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[16].Value = global::System.DBNull.Value;
             }
             if ((HighestCharJournalID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[17].Value = ((int)(HighestCharJournalID.Value));
+                this.Adapter.InsertCommand.Parameters[17].Value = ((long)(HighestCharJournalID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[17].Value = global::System.DBNull.Value;
             }
             if ((HighestCorpJournalID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[18].Value = ((int)(HighestCorpJournalID.Value));
+                this.Adapter.InsertCommand.Parameters[18].Value = ((long)(HighestCorpJournalID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[18].Value = global::System.DBNull.Value;
@@ -27309,10 +27309,10 @@ WHERE     (ID = @Original_ID) AND (OwnerID = @Original_OwnerID) AND (ForCorp = @
                     global::System.Nullable<global::System.DateTime> LastCharOrdersUpdate, 
                     global::System.Nullable<global::System.DateTime> LastCorpOrdersUpdate, 
                     global::System.Nullable<bool> CorpFinanceAccess, 
-                    global::System.Nullable<int> HighestCharTransID, 
-                    global::System.Nullable<int> HighestCorpTransID, 
-                    global::System.Nullable<int> HighestCharJournalID, 
-                    global::System.Nullable<int> HighestCorpJournalID, 
+                    global::System.Nullable<long> HighestCharTransID, 
+                    global::System.Nullable<long> HighestCorpTransID, 
+                    global::System.Nullable<long> HighestCharJournalID, 
+                    global::System.Nullable<long> HighestCorpJournalID, 
                     global::System.Nullable<int> Original_ID) {
             if ((ID.HasValue == true)) {
                 this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(ID.Value));
@@ -27399,25 +27399,25 @@ WHERE     (ID = @Original_ID) AND (OwnerID = @Original_OwnerID) AND (ForCorp = @
                 this.Adapter.UpdateCommand.Parameters[14].Value = global::System.DBNull.Value;
             }
             if ((HighestCharTransID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[15].Value = ((int)(HighestCharTransID.Value));
+                this.Adapter.UpdateCommand.Parameters[15].Value = ((long)(HighestCharTransID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[15].Value = global::System.DBNull.Value;
             }
             if ((HighestCorpTransID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[16].Value = ((int)(HighestCorpTransID.Value));
+                this.Adapter.UpdateCommand.Parameters[16].Value = ((long)(HighestCorpTransID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[16].Value = global::System.DBNull.Value;
             }
             if ((HighestCharJournalID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[17].Value = ((int)(HighestCharJournalID.Value));
+                this.Adapter.UpdateCommand.Parameters[17].Value = ((long)(HighestCharJournalID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[17].Value = global::System.DBNull.Value;
             }
             if ((HighestCorpJournalID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[18].Value = ((int)(HighestCorpJournalID.Value));
+                this.Adapter.UpdateCommand.Parameters[18].Value = ((long)(HighestCorpJournalID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[18].Value = global::System.DBNull.Value;
@@ -27461,10 +27461,10 @@ WHERE     (ID = @Original_ID) AND (OwnerID = @Original_OwnerID) AND (ForCorp = @
                     global::System.Nullable<global::System.DateTime> LastCharOrdersUpdate, 
                     global::System.Nullable<global::System.DateTime> LastCorpOrdersUpdate, 
                     global::System.Nullable<bool> CorpFinanceAccess, 
-                    global::System.Nullable<int> HighestCharTransID, 
-                    global::System.Nullable<int> HighestCorpTransID, 
-                    global::System.Nullable<int> HighestCharJournalID, 
-                    global::System.Nullable<int> HighestCorpJournalID, 
+                    global::System.Nullable<long> HighestCharTransID, 
+                    global::System.Nullable<long> HighestCorpTransID, 
+                    global::System.Nullable<long> HighestCharJournalID, 
+                    global::System.Nullable<long> HighestCorpJournalID, 
                     global::System.Nullable<int> Original_ID) {
             return this.Update(Original_ID, LastCharSheetUpdate, CharSheet, LastCorpSheetUpdate, CorpSheet, LastCharTransUpdate, LastCorpTransUpdate, LastCharJournalUpdate, LastCorpJournalUpdate, LastCharAssetsUpdate, LastCorpAssetsUpdate, LastCharOrdersUpdate, LastCorpOrdersUpdate, CorpFinanceAccess, HighestCharTransID, HighestCorpTransID, HighestCharJournalID, HighestCorpJournalID, Original_ID);
         }
