@@ -3566,8 +3566,145 @@ AS
                     }
                     #endregion
                 }
+                // Note: 1.3.0.28 did exist and was the same 1.3.2.1 but missing the removal of constraints 
+                // that is required for SQL 2008 databases. 
+                if (dbVersion.CompareTo(new Version("1.3.2.1")) < 0)
+                {
+                    #region Change type various columns on APICharacters table from int to bigint
+                    commandText = @"alter table dbo.APICharacters 
+drop Constraint DF_APICharacters_HighestCharJournalID
+alter table dbo.APICharacters 
+drop Constraint DF_APICharacters_HighestCharTransID
+alter table dbo.APICharacters 
+drop Constraint DF_APICharacters_HighestCorpJournalID
+alter table dbo.APICharacters 
+drop Constraint DF_APICharacters_HighestCorpTransID
+alter table dbo.APICharacters 
+drop Constraint DF_APICharacters_LastCorpJournalUpdate
+alter table dbo.APICharacters 
+drop Constraint DF_APICharacters_LastCorpTransUpdate
+alter table dbo.APICharacters 
+drop Constraint DF_APICharacters_LastCharJournalUpdate";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem removing contraints from 'APICharacters' table", ex);
+                    }
+
+                    commandText =
+                            @"ALTER TABLE dbo.APICharacters
+                    ALTER COLUMN HighestCharTransID bigint NOT NULL;
+                    ALTER TABLE dbo.APICharacters
+                    ALTER COLUMN HighestCorpTransID bigint NOT NULL;
+                    ALTER TABLE dbo.APICharacters
+                    ALTER COLUMN HighestCharJournalID bigint NOT NULL;
+                    ALTER TABLE dbo.APICharacters
+                    ALTER COLUMN HighestCorpJournalID bigint NOT NULL;";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem changing type of APICharaters' columns to bigint.", ex);
+                    }
+
+                    commandText =
+                            @"ALTER PROCEDURE dbo.APICharInsert 
+	@ID						int,
+	@LastCharSheetUpdate	datetime,
+	@CharSheet				xml,
+	@LastCorpSheetUpdate	datetime,
+	@CorpSheet				xml,
+	@LastCharTransUpdate	datetime,
+	@LastCorpTransUpdate	datetime,
+	@LastCharJournalUpdate	datetime,
+	@LastCorpJournalUpdate	datetime,
+	@LastCharAssetsUpdate	datetime,
+	@LastCorpAssetsUpdate	datetime,
+	@LastCharOrdersUpdate	datetime,
+	@LastCorpOrdersUpdate	datetime,
+	@CorpFinanceAccess		bit,
+	@HighestCharTransID		bigint,
+	@HighestCorpTransID		bigint,
+	@HighestCharJournalID	bigint,
+	@HighestCorpJournalID	bigint
+AS
+	INSERT INTO [APICharacters] ([ID], [LastCharSheetUpdate], [CharSheet], [LastCorpSheetUpdate], [CorpSheet], [LastCharTransUpdate], [LastCorpTransUpdate], [LastCharJournalUpdate], [LastCorpJournalUpdate], [LastCharAssetsUpdate], [LastCorpAssetsUpdate], [LastCharOrdersUpdate], [LastCorpOrdersUpdate], [CorpFinanceAccess], [HighestCharTransID], [HighestCorpTransID], [HighestCharJournalID], [HighestCorpJournalID]) VALUES (@ID, @LastCharSheetUpdate, @CharSheet, @LastCorpSheetUpdate, @CorpSheet, @LastCharTransUpdate, @LastCorpTransUpdate, @LastCharJournalUpdate, @LastCorpJournalUpdate, @LastCharAssetsUpdate, @LastCorpAssetsUpdate, @LastCharOrdersUpdate, @LastCorpOrdersUpdate, @CorpFinanceAccess, @HighestCharTransID, @HighestCorpTransID, @HighestCharJournalID, @HighestCorpJournalID);
+	SELECT * 
+	FROM APICharacters 
+	WHERE (ID = @ID) 
+	RETURN";
+                    adapter = new SqlDataAdapter(commandText, connection);
 
 
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Unable to update stored procedure 'APICharInsert'.", ex);
+                    }
+
+                    commandText =
+        @"ALTER PROCEDURE dbo.APICharUpdate 
+	@ID						int,
+	@LastCharSheetUpdate	datetime,
+	@CharSheet				xml,
+	@LastCorpSheetUpdate	datetime,
+	@CorpSheet				xml,
+	@LastCharTransUpdate	datetime,
+	@LastCorpTransUpdate	datetime,
+	@LastCharJournalUpdate	datetime,
+	@LastCorpJournalUpdate	datetime,
+	@LastCharAssetsUpdate	datetime,
+	@LastCorpAssetsUpdate	datetime,
+	@LastCharOrdersUpdate	datetime,
+	@LastCorpOrdersUpdate	datetime,	
+	@CorpFinanceAccess		bit,
+	@HighestCharTransID		bigint,
+	@HighestCorpTransID		bigint,
+	@HighestCharJournalID	bigint,
+	@HighestCorpJournalID	bigint,
+	@Original_ID			int
+AS
+
+	UPDATE [APICharacters] SET [ID] = @ID, [LastCharSheetUpdate] = @LastCharSheetUpdate, [CharSheet] = @CharSheet, [LastCorpSheetUpdate] = @LastCorpSheetUpdate, [CorpSheet] = @CorpSheet, [LastCharTransUpdate] = @LastCharTransUpdate, [LastCorpTransUpdate] = @LastCorpTransUpdate, [LastCharJournalUpdate] = @LastCharJournalUpdate, [LastCorpJournalUpdate] = @LastCorpJournalUpdate, [LastCharAssetsUpdate] = @LastCharAssetsUpdate, [LastCorpAssetsUpdate] = @LastCorpAssetsUpdate, [LastCharOrdersUpdate] = @LastCharOrdersUpdate, [LastCorpOrdersUpdate] = @LastCorpOrdersUpdate, [CorpFinanceAccess] = @CorpFinanceAccess, [HighestCharTransID] = @HighestCharTransID, [HighestCorpTransID] = @HighestCorpTransID, [HighestCharJournalID] = @HighestCharJournalID, [HighestCorpJournalID] = @HighestCorpJournalID			 
+	WHERE ([ID] = @Original_ID);
+	
+	SELECT * 
+	FROM APICharacters 
+	WHERE (ID = @ID)
+	RETURN";
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                        SetDBVersion(connection, new Version("1.3.2.1"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Unable to update stored procedure 'APICharUpdate'.", ex);
+                    }
+                    #endregion
+                }
+
+                
                
             }
             catch (Exception ex)
@@ -3576,6 +3713,13 @@ AS
                 if (emmaEx == null)
                 {
                     new EMMAException(ExceptionSeverity.Error, "Problem updating database", ex);
+                }
+                else
+                {
+                    if (emmaEx.Severity == ExceptionSeverity.Critical)
+                    {
+                        throw;
+                    }
                 }
             }
             finally

@@ -16,6 +16,11 @@ namespace EveMarketMonitorApp.Common
         static string logFile = string.Format("{0}Logging{1}ExceptionLog.txt",
             AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
 
+        public ExceptionSeverity Severity 
+        {
+            get { return severity; }
+        }
+
         public EMMAException(ExceptionSeverity severity)
             : base("EMMA has encountered an unspecified error.")
         {

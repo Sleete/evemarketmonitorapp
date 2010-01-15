@@ -1697,8 +1697,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
             DateTime earliestUpdate = GetLastAPIUpdateTime(corc, APIDataType.Transactions).AddHours(1);
             EMMADataSet.TransactionsDataTable transData = new EMMADataSet.TransactionsDataTable();
             bool fromFile = fileXML != null;
-            int highestIDSoFar = _apiSettings.GetHighestID(corc, APIDataType.Transactions);
-            int highestID = 0;
+            long highestIDSoFar = _apiSettings.GetHighestID(corc, APIDataType.Transactions);
+            long highestID = 0;
             DateTime ticker = DateTime.UtcNow.AddSeconds(-10);
 
             try
@@ -1887,7 +1887,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         }
 
                         XmlNode entryIDNode = transEntries[0].SelectSingleNode("@transactionID");
-                        int fileMaxID = int.Parse(entryIDNode.Value,
+                        long fileMaxID = long.Parse(entryIDNode.Value,
                             System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                         if (fileMaxID > highestID) { highestID = fileMaxID; }
 
