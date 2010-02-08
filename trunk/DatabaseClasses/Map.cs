@@ -14,7 +14,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
     public static class Map
     {
         #region Class variables
-        private const int _numSystemsInEve = 10000;
+        private const int _numSystemsInEve = 20000;
         private const int _maxNeighbours = 8;
         private static bool _initalised = false;
         private static int[][] _systemNeighbours = new int[_numSystemsInEve][];
@@ -154,7 +154,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                 nextFreeIndex++;
                             }
                             int jumpCost = 1;
-                            float security = _systemSec[_idToIndex[system]];
+                            float security = 0;
+                            //if (_idToIndex.ContainsKey(system))
+                            //{
+                                security = _systemSec[_idToIndex[system]];
+                            //}
                             if (security <= 0)
                             {
                                 jumpCost = _nullSecCost;
@@ -167,6 +171,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                             {
                                 jumpCost = _lowSecCost;
                             }
+                            
 
                             short possible = (short)(distance[minIndex] + jumpCost);
                             if (possible < distance[idToIndex[system]])
