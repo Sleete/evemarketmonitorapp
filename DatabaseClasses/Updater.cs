@@ -3594,8 +3594,13 @@ drop Constraint DF_APICharacters_LastCharJournalUpdate";
                     }
                     catch (Exception ex)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem removing contraints from 'APICharacters' table", ex);
+                        // If the error contains the text "is not a constraint" then the constraints
+                        // we are trying to remove are not in the database anyway so just ignore it.
+                        if (!ex.Message.Contains("is not a constraint"))
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem removing contraints from 'APICharacters' table", ex);
+                        }
                     }
 
                     commandText =
