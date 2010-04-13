@@ -347,19 +347,19 @@ namespace EveMarketMonitorApp.Reporting
                     }
 
                     if (totSellVolume > 0 && (soldUnitsBuyPrice == 0 || 
-                        UserAccount.CurrentGroup.ItemsTraded.ForceDefaultBuyPriceGet(itemID)))
+                        UserAccount.CurrentGroup.ItemValues.ForceDefaultBuyPriceGet(itemID)))
                     {
                         // If we couldn't find a buy price for the sold items then try and 
                         // get a buy price from other sources
                         bool tmp = UserAccount.CurrentGroup.Settings.UseEveCentral;
                         UserAccount.CurrentGroup.Settings.UseEveCentral = false;
-                        soldUnitsBuyPrice = UserAccount.CurrentGroup.ItemsTraded.GetBuyPrice(itemID,
+                        soldUnitsBuyPrice = UserAccount.CurrentGroup.ItemValues.GetBuyPrice(itemID,
                             _regionIDs.Count == 1 ? _regionIDs[0] : -1);
                         UserAccount.CurrentGroup.Settings.UseEveCentral = tmp;
                     }
-                    if (UserAccount.CurrentGroup.ItemsTraded.ForceDefaultSellPriceGet(itemID))
+                    if (UserAccount.CurrentGroup.ItemValues.ForceDefaultSellPriceGet(itemID))
                     {
-                        avgSellPrice = UserAccount.CurrentGroup.ItemsTraded.DefaultPriceGet(itemID,
+                        avgSellPrice = UserAccount.CurrentGroup.ItemValues.DefaultPriceGet(itemID,
                             _regionIDs.Count == 1 ? _regionIDs[0] : -1);
                     }
 

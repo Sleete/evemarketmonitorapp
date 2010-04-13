@@ -164,12 +164,12 @@ namespace EveMarketMonitorApp.GUIElements
             int maxStatus = 7;
             string filename = (string)filenameData;
             string tmpLoadDir = string.Format("{0}Temp{1}Load{1}",
-                AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
+                Globals.AppDataDir, Path.DirectorySeparatorChar);
             UpdateStatus(0, maxStatus, "", "Decompressing files", false);
             try
             {
                 Directory.CreateDirectory(tmpLoadDir);
-                int saveVersion = Compression.DecompressDirectory(filename, tmpLoadDir);
+                float saveVersion = Compression.DecompressDirectory(filename, tmpLoadDir);
 
                 if (saveVersion == 0)
                 {

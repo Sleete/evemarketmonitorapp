@@ -10,11 +10,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
 {
     public delegate void ItemValueCalcEvent(object myObject, ValueCalcEventArgs args);
     
-    public class ItemsTraded
+    public class ItemValues
     {
-        private static EMMADataSetTableAdapters.TradedItemsTableAdapter tableAdapter =
-            new EveMarketMonitorApp.DatabaseClasses.EMMADataSetTableAdapters.TradedItemsTableAdapter();
-        private static EMMADataSet.TradedItemsDataTable table = new EMMADataSet.TradedItemsDataTable();
+        private static EMMADataSetTableAdapters.ItemValuesTableAdapter tableAdapter =
+            new EveMarketMonitorApp.DatabaseClasses.EMMADataSetTableAdapters.ItemValuesTableAdapter();
+        private static EMMADataSet.ItemValuesDataTable table = new EMMADataSet.ItemValuesDataTable();
 
         private int _reportGroupID;
 
@@ -23,7 +23,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
         public event ItemValueCalcEvent ValueCalculationEvent;
 
-        public ItemsTraded(int reportGroupID)
+        public ItemValues(int reportGroupID)
         {
             _reportGroupID = reportGroupID;
             lock (tableAdapter)
@@ -266,7 +266,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
                     if (value.Value == 0)
                     {
-                        EMMADataSet.TradedItemsRow itemData = table.FindByReportGroupIDItemIDRegionID(
+                        EMMADataSet.ItemValuesRow itemData = table.FindByReportGroupIDItemIDRegionID(
                             _reportGroupID, itemID, regionID);
                         if (this.ValueCalculationEvent != null)
                         {
@@ -287,7 +287,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
                         if (value == 0 && regionID != 0)
                         {
-                            EMMADataSet.TradedItemsRow itemData2 = table.FindByReportGroupIDItemIDRegionID(
+                            EMMADataSet.ItemValuesRow itemData2 = table.FindByReportGroupIDItemIDRegionID(
                                 _reportGroupID, itemID, 0);
 
                             if (itemData != null)
@@ -474,7 +474,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             int itemID = args.Key.ItemID;
             int regionID = args.Key.RegionID;
             // First just try and get the data for the specified item in the specified region...
-            EMMADataSet.TradedItemsRow itemData = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow itemData = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
 
             if (itemData == null)
@@ -530,7 +530,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             int itemID = args.Key.ItemID;
             int regionID = args.Key.RegionID;
             // First just try and get the data for the specified item in the specified region...
-            EMMADataSet.TradedItemsRow itemData = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow itemData = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
 
             if (itemData == null)
@@ -775,7 +775,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public EveDataSet.invTypesDataTable GetAllItems()
         {
             EveDataSet.invTypesDataTable retVal = new EveDataSet.invTypesDataTable();
-            foreach (EMMADataSet.TradedItemsRow item in table)
+            foreach (EMMADataSet.ItemValuesRow item in table)
             {
                 EveDataSet.invTypesRow existing = retVal.FindBytypeID((short)item.ItemID);
                 if (existing == null)
@@ -789,7 +789,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public List<int> GetAllItemIDs()
         {
             List<int> retVal = new List<int>();
-            foreach (EMMADataSet.TradedItemsRow item in table)
+            foreach (EMMADataSet.ItemValuesRow item in table)
             {
                 if (!retVal.Contains(item.ItemID))
                 {
@@ -799,9 +799,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return retVal;
         }
 
-        public EMMADataSet.TradedItemsRow GetItem(int itemID, int stationID)
+        public EMMADataSet.ItemValuesRow GetItem(int itemID, int stationID)
         {
-            EMMADataSet.TradedItemsRow retVal;
+            EMMADataSet.ItemValuesRow retVal;
             retVal = table.FindByReportGroupIDItemIDRegionID(_reportGroupID, itemID, stationID);
             if (retVal == null)
             {
@@ -839,10 +839,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
         private void AddItem(int itemID, int regionID)
         {
-            EMMADataSet.TradedItemsRow item = table.FindByReportGroupIDItemIDRegionID(_reportGroupID, itemID, regionID);
+            EMMADataSet.ItemValuesRow item = table.FindByReportGroupIDItemIDRegionID(_reportGroupID, itemID, regionID);
             if (item == null)
             {
-                item = table.NewTradedItemsRow();
+                item = table.NewItemValuesRow();
                 item.ReportGroupID = _reportGroupID;
                 item.ItemID = itemID;
                 item.RegionID = regionID;
@@ -855,7 +855,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 item.UseReprocessVal = false;
                 item.ForceDefaultBuyPrice = false;
                 item.ForceDefaultSellPrice = false;
-                table.AddTradedItemsRow(item);
+                table.AddItemValuesRow(item);
             }
             else if (item.RowState == System.Data.DataRowState.Deleted)
             {
@@ -865,9 +865,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
         public void RemoveItem(int itemID)
         {
-            EMMADataSet.TradedItemsDataTable toBeRemoved = new EMMADataSet.TradedItemsDataTable();
+            EMMADataSet.ItemValuesDataTable toBeRemoved = new EMMADataSet.ItemValuesDataTable();
             tableAdapter.FillByID(toBeRemoved, _reportGroupID, 0, itemID);
-            foreach (EMMADataSet.TradedItemsRow item in toBeRemoved)
+            foreach (EMMADataSet.ItemValuesRow item in toBeRemoved)
             {
                 table.FindByReportGroupIDItemIDRegionID(_reportGroupID, itemID, item.RegionID).Delete();
             }
@@ -877,7 +877,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             for (int i = 0; i < table.Count; i++)
             {
-                EMMADataSet.TradedItemsRow item = table[i];
+                EMMADataSet.ItemValuesRow item = table[i];
                 item.Delete();
             }
         }
@@ -885,7 +885,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public decimal DefaultPriceGet(int itemID, int regionID)
         {
             decimal retVal = 0;
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem != null) { retVal = tradedItem.DefaultSellPrice; }
             return retVal;
@@ -893,7 +893,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public void DefaultPriceSet(int itemID, int regionID, decimal newPrice)
         {
             if (regionID == 0) { regionID = -1; }
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem == null)
             {
@@ -909,7 +909,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             decimal retVal = 0;
             if (regionID == 0) { regionID = -1; }
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem != null) { retVal = tradedItem.DefaultBuyPrice; }
             return retVal;
@@ -917,7 +917,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public void DefaultBuyPriceSet(int itemID, int regionID, decimal newPrice)
         {
             if (regionID == 0) { regionID = -1; }
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem == null)
             {
@@ -933,7 +933,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             decimal retVal = 0;
             if (regionID == 0) { regionID = -1; }
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem != null) { retVal = tradedItem.CurrentSellPrice; }
             return retVal;
@@ -941,7 +941,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public void CalculatedSellPriceSet(int itemID, int regionID, decimal newPrice)
         {
             if (regionID == 0) { regionID = -1; }
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem == null)
             {
@@ -956,7 +956,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             DateTime retVal= new DateTime(2000, 1, 1);
             if (regionID == 0) { regionID = -1; }
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem != null) { retVal = tradedItem.LastSellPriceCalc; }
             return retVal;
@@ -964,7 +964,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public void CalculatedSellPriceLastUpdateSet(int itemID, int regionID, DateTime newDateTime)
         {
             if (regionID == 0) { regionID = -1; }
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem == null)
             {
@@ -979,7 +979,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             decimal retVal = 0;
             if (regionID == 0) { regionID = -1; }
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem != null) { retVal = tradedItem.CurrentBuyPrice; }
             return retVal;
@@ -987,7 +987,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public void CalculatedBuyPriceSet(int itemID, int regionID, decimal newPrice)
         {
             if (regionID == 0) { regionID = -1; }
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem == null)
             {
@@ -1002,7 +1002,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             DateTime retVal = new DateTime(2000, 1, 1);
             if (regionID == 0) { regionID = -1; }
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem != null) { retVal = tradedItem.LastBuyPriceCalc; }
             return retVal;
@@ -1010,7 +1010,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public void CalculatedBuyPriceLastUpdateSet(int itemID, int regionID, DateTime newDateTime)
         {
             if (regionID == 0) { regionID = -1; }
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem == null)
             {
@@ -1024,14 +1024,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public bool UseReprocessValGet(int itemID)
         {
             bool retVal = false;
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, -1);
             if (tradedItem != null) { retVal = tradedItem.UseReprocessVal; }
             return retVal;
         }
         public void UseReprocessValSet(int itemID, bool setting)
         {
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, -1);
             if (tradedItem == null)
             {
@@ -1046,14 +1046,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public bool ForceDefaultSellPriceGet(int itemID)
         {
             bool retVal = false;
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, -1);
             if (tradedItem != null) { retVal = tradedItem.ForceDefaultSellPrice; }
             return retVal;
         }
         public void ForceDefaultSellPriceSet(int itemID, bool setting)
         {
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, -1);
             if (tradedItem == null)
             {
@@ -1067,14 +1067,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public bool ForceDefaultBuyPriceGet(int itemID)
         {
             bool retVal = false;
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, -1);
             if (tradedItem != null) { retVal = tradedItem.ForceDefaultBuyPrice; }
             return retVal;
         }
         public void ForceDefaultBuyPriceSet(int itemID, bool setting)
         {
-            EMMADataSet.TradedItemsRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
+            EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, -1);
             if (tradedItem == null)
             {

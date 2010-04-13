@@ -401,16 +401,16 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         bool tmp = false;
                         if (_forceNoReproValAsUnitVal)
                         {
-                            tmp = UserAccount.CurrentGroup.ItemsTraded.UseReprocessValGet(_itemID);
+                            tmp = UserAccount.CurrentGroup.ItemValues.UseReprocessValGet(_itemID);
                             if (tmp)
                             {
-                                UserAccount.CurrentGroup.ItemsTraded.UseReprocessValSet(_itemID, false);
+                                UserAccount.CurrentGroup.ItemValues.UseReprocessValSet(_itemID, false);
                             }
                         }
-                        _unitValue = UserAccount.CurrentGroup.ItemsTraded.GetItemValue(_itemID, 10000002, false);
+                        _unitValue = UserAccount.CurrentGroup.ItemValues.GetItemValue(_itemID, 10000002, false);
                         if (_forceNoReproValAsUnitVal && tmp)
                         {
-                            UserAccount.CurrentGroup.ItemsTraded.UseReprocessValSet(_itemID, tmp);
+                            UserAccount.CurrentGroup.ItemValues.UseReprocessValSet(_itemID, tmp);
                         }
                     }
                     catch
@@ -471,11 +471,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     {
                         if (_locationID >= 60000000 && _locationID < 70000000)
                         {
-                            _unitBuyPrice = UserAccount.CurrentGroup.ItemsTraded.GetBuyPrice(_itemID, _locationID, true);
+                            _unitBuyPrice = UserAccount.CurrentGroup.ItemValues.GetBuyPrice(_itemID, _locationID, true);
                         }
                         else
                         {
-                            _unitBuyPrice = UserAccount.CurrentGroup.ItemsTraded.GetBuyPrice(_itemID, 0);
+                            _unitBuyPrice = UserAccount.CurrentGroup.ItemValues.GetBuyPrice(_itemID, 0);
                         }
                     }
                     catch

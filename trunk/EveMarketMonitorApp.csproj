@@ -125,6 +125,7 @@
     <Compile Include="DatabaseClasses\BankAccounts.cs" />
     <Compile Include="DatabaseClasses\BankTransaction.cs" />
     <Compile Include="DatabaseClasses\BankTransactionsList.cs" />
+    <Compile Include="DatabaseClasses\TradedItems.cs" />
     <Compile Include="DatabaseClasses\EMMADataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -144,7 +145,7 @@
     <Compile Include="DatabaseClasses\GroupLocation.cs" />
     <Compile Include="DatabaseClasses\GroupLocations.cs" />
     <Compile Include="DatabaseClasses\Items.cs" />
-    <Compile Include="DatabaseClasses\ItemsTraded.cs" />
+    <Compile Include="DatabaseClasses\ItemValues.cs" />
     <Compile Include="DatabaseClasses\Journal.cs" />
     <Compile Include="DatabaseClasses\JournalEntry.cs" />
     <Compile Include="DatabaseClasses\JournalGenerations.cs" />
@@ -216,6 +217,12 @@
     <Compile Include="GUIElements\AutoAddConfig.designer.cs">
       <DependentUpon>AutoAddConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUIElements\AutoUpdateCheck.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUIElements\AutoUpdateCheck.Designer.cs">
+      <DependentUpon>AutoUpdateCheck.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUIElements\AutoUpdateSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -227,6 +234,12 @@
     </Compile>
     <Compile Include="GUIElements\DeliveryPlanner.Designer.cs">
       <DependentUpon>DeliveryPlanner.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUIElements\AutoUpdateDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUIElements\AutoUpdateDetails.Designer.cs">
+      <DependentUpon>AutoUpdateDetails.cs</DependentUpon>
     </Compile>
     <Compile Include="GUIElements\ExportData.cs">
       <SubType>Form</SubType>
@@ -305,6 +318,12 @@
     </Compile>
     <Compile Include="GUIElements\RoutePlanner.Designer.cs">
       <DependentUpon>RoutePlanner.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUIElements\TradedItemsManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUIElements\TradedItemsManager.Designer.cs">
+      <DependentUpon>TradedItemsManager.cs</DependentUpon>
     </Compile>
     <Compile Include="GUIElements\Tutorial.cs">
       <SubType>Form</SubType>
@@ -501,11 +520,11 @@
     <Compile Include="GUIElements\RptParamsShareReport.designer.cs">
       <DependentUpon>RptParamsShareReport.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUIElements\SelectItemsTraded.cs">
+    <Compile Include="GUIElements\ItemValuesManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUIElements\SelectItemsTraded.designer.cs">
-      <DependentUpon>SelectItemsTraded.cs</DependentUpon>
+    <Compile Include="GUIElements\ItemValuesManager.designer.cs">
+      <DependentUpon>ItemValuesManager.cs</DependentUpon>
     </Compile>
     <Compile Include="GUIElements\SettingsMenu.cs">
       <SubType>Form</SubType>
@@ -599,12 +618,19 @@
       <DependentUpon>AutoAddConfig.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUIElements\AutoUpdateCheck.resx">
+      <DependentUpon>AutoUpdateCheck.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUIElements\AutoUpdateSettings.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AutoUpdateSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUIElements\DeliveryPlanner.resx">
       <DependentUpon>DeliveryPlanner.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUIElements\AutoUpdateDetails.resx">
+      <DependentUpon>AutoUpdateDetails.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GUIElements\ExportData.resx">
@@ -658,6 +684,9 @@
     <EmbeddedResource Include="GUIElements\RoutePlanner.resx">
       <SubType>Designer</SubType>
       <DependentUpon>RoutePlanner.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUIElements\TradedItemsManager.resx">
+      <DependentUpon>TradedItemsManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUIElements\Tutorial.resx">
       <SubType>Designer</SubType>
@@ -799,8 +828,8 @@
       <DependentUpon>RptParamsShareReport.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUIElements\SelectItemsTraded.resx">
-      <DependentUpon>SelectItemsTraded.cs</DependentUpon>
+    <EmbeddedResource Include="GUIElements\ItemValuesManager.resx">
+      <DependentUpon>ItemValuesManager.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GUIElements\SettingsMenu.resx">
@@ -886,6 +915,9 @@
     <Compile Include="Reporting\SharesReport.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\BACKUP INFO.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\EveData.mdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

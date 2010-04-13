@@ -64,8 +64,8 @@ namespace AutoUpdater
                     }
 
                     Form1 mainForm = new Form1(homeDir, server, betaUpdates);
-                    if (mainForm.UpdateNeeded)
-                    {
+                    //if (mainForm.UpdateNeeded)
+                    //{
                         try
                         {
                             Process p = Process.GetProcessById(parentProcess);
@@ -85,19 +85,19 @@ namespace AutoUpdater
                                 "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
 
-                        if (mainForm.UserHasAccess())
-                        {
+                        //if (mainForm.UserHasAccess())
+                        //{
                             Application.Run(mainForm);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Updates are available and you do not appear to have write " +
-                                "access to the EMMA directory.\r\nPlease start EMMA with administrator " +
-                                "privilages (right click the icon then choose 'run as administrator').\r\n" +
-                                "This will allow the update to be completed.", "Permissions",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                    }
+                        //}
+                        //else
+                        //{
+                        //    MessageBox.Show("Updates are available and you do not appear to have write " +
+                        //        "access to the EMMA directory.\r\nPlease start EMMA with administrator " +
+                        //        "privilages (right click the icon then choose 'run as administrator').\r\n" +
+                        //        "This will allow the update to be completed.", "Permissions",
+                        //        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        //}
+                    //}
                 }
                 catch (Exception ex)
                 {

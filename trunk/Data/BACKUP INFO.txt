@@ -1,0 +1,9 @@
+﻿The database files in this directory no longer contain active data, they are simply blank databases.
+In order to backup your data, make copies of the database files in your application directory instead.
+
+On Windows XP this will be something like: 
+C:\Documents and Settings\<username>\Application Data\EMMA\Data
+
+Vista & Windows 7:
+C:\users\<username>\appdata\roaming\EMMA\Data
+

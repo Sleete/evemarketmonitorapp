@@ -15,6 +15,9 @@ namespace AutoUpdater
 {
     public partial class Form1 : Form
     {
+        private static string _appDataDir = string.Format("{0}{1}EMMA", 
+            Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Path.DirectorySeparatorChar);
+
         private static string _homeDir = "";
         private static List<ComponentData> _components = new List<ComponentData>();
         private static List<ComponentData> _updateComponents = new List<ComponentData>();
@@ -28,10 +31,9 @@ namespace AutoUpdater
         private static int _currentFileNo = 0;
         private static bool _done = false;
 
-
-
         delegate void UpdateViewCallback();
         
+
         public Form1(string homeDirectory, string server, bool betaUpdates)
         {
             InitializeComponent();
@@ -71,6 +73,14 @@ namespace AutoUpdater
                         _updateComponents.Add(component);
                     }
                 }
+            }
+
+            // Add version history to list of files that are not up to date.
+            // The latest copy of it will then be included in the update.
+            if (_updateComponents.Count > 0)
+            {
+                _updateComponents.Add(new ComponentData("VersionHistory.rtf",
+                    _homeDir + Path.DirectorySeparatorChar + "VersionHistory.rtf"));
             }
         }
 
@@ -204,7 +214,7 @@ namespace AutoUpdater
         public string DownloadFile(string filename)
         {
             if (_betaUpdates) { filename = "Beta_" + filename; }
-            string tmpDir = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar +
+            string tmpDir = _appDataDir + Path.DirectorySeparatorChar +
                 "Temp" + Path.DirectorySeparatorChar;
             string tmpFile = tmpDir + filename;
             string tmpZip = tmpDir + filename.Remove(filename.LastIndexOf(".")) + ".zip";
@@ -279,7 +289,7 @@ namespace AutoUpdater
             return tmpFile;
         }
 
-        public bool UserHasAccess()
+        /*public bool UserHasAccess()
         {
             bool retVal = false;
 
@@ -302,7 +312,7 @@ namespace AutoUpdater
         public bool UpdateNeeded
         {
             get { return _updateComponents.Count != 0; }
-        }
+        }*/
 
         private void btnClose_Click(object sender, EventArgs e)
         {
@@ -311,32 +321,13 @@ namespace AutoUpdater
             this.Close();
         }
 
-        private void btnUpdate_Click(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
             prgProgress.Visible = true;
             btnClose.Visible = false;
-            btnUpdate.Visible = false;
-            btnDetails.Visible = false;
             Thread t1 = new Thread(new ThreadStart(DoUpdate));
             t1.Start();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            prgProgress.Visible = false;
-            lblInfo.Text = "An update for EMMA is available";
-            btnDetails.Focus();
-        }
-
-        private void btnDetails_Click(object sender, EventArgs e)
-        {
-            Details details = new Details(_components, this);
-            details.ShowDialog();
-        }
-
-        private void lblInfo_Enter(object sender, EventArgs e)
-        {
-            btnDetails.Focus();
-        }
     }
 }

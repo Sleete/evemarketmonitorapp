@@ -14,7 +14,7 @@ namespace EveMarketMonitorApp.Common
     {
         private ExceptionSeverity severity;
         static string logFile = string.Format("{0}Logging{1}ExceptionLog.txt",
-            AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
+            Globals.AppDataDir, Path.DirectorySeparatorChar);
 
         public ExceptionSeverity Severity 
         {

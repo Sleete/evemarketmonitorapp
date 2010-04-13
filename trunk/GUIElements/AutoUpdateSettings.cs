@@ -64,7 +64,19 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            if (!_main.CheckForUpdatesInProg())
+            AutoUpdateCheck checker = new AutoUpdateCheck(AppDomain.CurrentDomain.BaseDirectory,
+                Globals.EMMAUpdateServer, Properties.Settings.Default.BetaUpdates);
+            if (checker.UpdateNeeded)
+            {
+                checker.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("No updates are currently available.", "Notification",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            /*if (!_main.CheckForUpdatesInProg())
             {
                 if (MessageBox.Show("Running the updater will cause EMMA to close if updates are available." +
                     "Are you sure you wish to continue?", "Warning", MessageBoxButtons.YesNo,
@@ -99,7 +111,7 @@ namespace EveMarketMonitorApp.GUIElements
                             MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
-            }
+            }*/
         }
 
         private void btnServerDefaults_Click(object sender, EventArgs e)

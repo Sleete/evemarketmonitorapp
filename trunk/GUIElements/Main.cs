@@ -91,7 +91,7 @@ namespace EveMarketMonitorApp.GUIElements
                     {
                         Updater.Update();
                     }
-                    catch (EMMAException emmaEx)
+                    catch (EMMAException)
                     {
                         MessageBox.Show("Critical error updating EMMA database. For details, see " +
                             "\"Logging/ExceptionLog.txt\"", "Ciritcal error", 
@@ -258,42 +258,89 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void SetupEnvironment()
         {
-            // Make sure that required sub directories exist.
-            if (!Directory.Exists(string.Format("{0}Logging", AppDomain.CurrentDomain.BaseDirectory)))
+
+            if (!Directory.Exists(Globals.AppDataDir))
             {
-                Directory.CreateDirectory(string.Format("{0}Logging", AppDomain.CurrentDomain.BaseDirectory));
+                Directory.CreateDirectory(Globals.AppDataDir);
+            }
+
+            // Make sure that required sub directories exist.
+            if (!Directory.Exists(string.Format("{0}Logging", Globals.AppDataDir)))
+            {
+                Directory.CreateDirectory(string.Format("{0}Logging", Globals.AppDataDir));
             }
             if (!Directory.Exists(string.Format("{0}Logging{1}API Call History",
-                    AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar)))
+                    Globals.AppDataDir, Path.DirectorySeparatorChar)))
             {
                 Directory.CreateDirectory(string.Format("{0}Logging{1}API Call History",
-                    AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar));
+                    Globals.AppDataDir, Path.DirectorySeparatorChar));
             }
             if (!Directory.Exists(string.Format("{0}Logging{1}Eve Central History",
-                    AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar)))
+                    Globals.AppDataDir, Path.DirectorySeparatorChar)))
             {
                 Directory.CreateDirectory(string.Format("{0}Logging{1}Eve Central History",
-                    AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar));
+                    Globals.AppDataDir, Path.DirectorySeparatorChar));
             }
 
-            if (!Directory.Exists(string.Format("{0}Temp", AppDomain.CurrentDomain.BaseDirectory)))
+            if (!Directory.Exists(string.Format("{0}Temp", Globals.AppDataDir)))
             {
-                Directory.CreateDirectory(string.Format("{0}Temp", AppDomain.CurrentDomain.BaseDirectory));
+                Directory.CreateDirectory(string.Format("{0}Temp", Globals.AppDataDir));
             }
 
-            if (!Directory.Exists(string.Format("{0}Logging", AppDomain.CurrentDomain.BaseDirectory)) ||
+            if (!Directory.Exists(string.Format("{0}Logging", Globals.AppDataDir)) ||
                 !Directory.Exists(string.Format("{0}Logging{1}API Call History",
-                    AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar)) ||
+                    Globals.AppDataDir, Path.DirectorySeparatorChar)) ||
                 !Directory.Exists(string.Format("{0}Logging{1}Eve Central History",
-                    AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar)) ||
-                !Directory.Exists(string.Format("{0}Temp", AppDomain.CurrentDomain.BaseDirectory)))
+                    Globals.AppDataDir, Path.DirectorySeparatorChar)) ||
+                !Directory.Exists(string.Format("{0}Temp", Globals.AppDataDir)))
             {
-                MessageBox.Show("Unable to create required sub-directories.\r\n" +
-                    "It is recommended that you run EMMA on an admin account.", "Error",
+                MessageBox.Show("Unable to create required sub-directories.", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw new EMMAException(ExceptionSeverity.Critical, "Unable to create required " +
-                    "sub-directories.\r\nIt is recommended that you run EMMA on an admin account.");
+                    "sub-directories.");
             }
+
+            // This directory is used by the auto updater to temporarilly store a copy of itself.
+            // If it's present on the system then just remove it to keep things tidy.
+            string tmpDir = Globals.AppDataDir + Path.DirectorySeparatorChar + "Update";
+            if (Directory.Exists(tmpDir))
+            {
+                Directory.Delete(tmpDir, true);
+            }
+
+            if (!Directory.Exists(string.Format("{0}Data", Globals.AppDataDir)))
+            {
+                Directory.CreateDirectory(string.Format("{0}Data", Globals.AppDataDir));
+            }
+
+            if (Properties.Settings.Default.EMMA_DatabaseConnectionString.Contains("EMMA Database.mdf"))
+            {
+                string emmaDataFile = string.Format("{0}Data{1}EMMA Database.mdf",
+                    Globals.AppDataDir, Path.DirectorySeparatorChar);
+                string eveDataFile = string.Format("{0}Data{1}EveData.mdf",
+                    Globals.AppDataDir, Path.DirectorySeparatorChar);
+                if (!File.Exists(emmaDataFile))
+                {
+                    File.Copy(string.Format("{0}Data{1}EMMA Database.mdf",
+                        AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar), emmaDataFile);
+                    File.Copy(string.Format("{0}Data{1}EMMA Database_log.ldf",
+                        AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar), 
+                        string.Format("{0}Data{1}EMMA Database_log.ldf",
+                        Globals.AppDataDir, Path.DirectorySeparatorChar));
+                }
+                if (!File.Exists(eveDataFile))
+                {
+                    File.Copy(string.Format("{0}Data{1}EveData.mdf",
+                        AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar), eveDataFile);
+                    File.Copy(string.Format("{0}Data{1}EveData_log.ldf",
+                        AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar), 
+                        string.Format("{0}Data{1}EveData_log.ldf",
+                        Globals.AppDataDir, Path.DirectorySeparatorChar));
+                }
+            }
+
+            AppDomain.CurrentDomain.SetData("DataDirectory", Globals.AppDataDir);
+
 
             // Initalise the updates running structure. This keeps track of which database tables
             // are being updated and is used to enable/disable main menu items. 
@@ -319,7 +366,18 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void AutoUpdate()
         {
-            if (!Globals.EMMAUpdateServer.Equals(""))
+            AutoUpdateCheck checker = new AutoUpdateCheck(AppDomain.CurrentDomain.BaseDirectory, 
+                Globals.EMMAUpdateServer, Properties.Settings.Default.BetaUpdates);
+            if (checker.UpdateNeeded)
+            {
+                checker.ShowDialog();
+            }
+            else
+            {
+                checker = null;
+            }
+
+            /*if (!Globals.EMMAUpdateServer.Equals(""))
             {
                 string exeFile = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "AutoUpdater.exe";
                 if (File.Exists(exeFile))
@@ -362,7 +420,7 @@ namespace EveMarketMonitorApp.GUIElements
                     MessageBox.Show("Auto-updater cannot be found. EMMA will not be updated when new features " +
                         "become available.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-            }
+            }*/
         }
         #endregion
 

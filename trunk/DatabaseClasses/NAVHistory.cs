@@ -348,8 +348,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     {
                         // use the average of the item's value at the start and end of the period we're 
                         // looking at.
-                        retVal += ((UserAccount.CurrentGroup.ItemsTraded.GetItemValue(enumerator.Current.Key, 
-                            10000002, startDate) + UserAccount.CurrentGroup.ItemsTraded.GetItemValue(
+                        retVal += ((UserAccount.CurrentGroup.ItemValues.GetItemValue(enumerator.Current.Key, 
+                            10000002, startDate) + UserAccount.CurrentGroup.ItemValues.GetItemValue(
                             enumerator.Current.Key, 10000002, endDate)) / 2) *
                             enumerator.Current.Value;
                     }

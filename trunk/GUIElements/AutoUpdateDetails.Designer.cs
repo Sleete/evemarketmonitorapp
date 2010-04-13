@@ -1,6 +1,6 @@
-namespace AutoUpdater
+namespace EveMarketMonitorApp.GUIElements
 {
-    partial class Details
+    partial class AutoUpdateDetails
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@ namespace AutoUpdater
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Details));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AutoUpdateDetails));
             this.updatesGrid = new System.Windows.Forms.DataGridView();
             this.NameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.YourVersionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();

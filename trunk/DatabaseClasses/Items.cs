@@ -125,10 +125,22 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        static public EveDataSet.invTypesDataTable GetItemsTraded(List<FinanceAccessParams> accessList, int minVolume)
+        static public EveDataSet.invTypesDataTable GetItemsWithTransactions(List<FinanceAccessParams> accessList)
+        {
+            return GetItemsTraded(accessList, 0);
+        }
+        
+        static public EveDataSet.invTypesDataTable GetItemsTraded(List<FinanceAccessParams> accessList, int minTrans)
+        {
+            return GetItemsTraded(accessList, minTrans, 0, 0, new List<int>(), new List<int>(), 
+                new DateTime(1990, 1, 1));
+        }
+
+        static public EveDataSet.invTypesDataTable GetItemsTraded(List<FinanceAccessParams> accessList, int minTrans,
+            int minBuy, int minSell, List<int> buyStations, List<int> sellStations, DateTime startDate)
         {
             StringBuilder itemIDs = new StringBuilder("");
-            EMMADataSet.IDTableDataTable idTable = Transactions.GetInvolvedItemIDs(accessList, minVolume);
+            EMMADataSet.IDTableDataTable idTable = Transactions.GetInvolvedItemIDs(accessList, minTrans);
             foreach (EMMADataSet.IDTableRow id in idTable)
             {
                 itemIDs.Append(" ");
@@ -137,11 +149,6 @@ namespace EveMarketMonitorApp.DatabaseClasses
             EveDataSet.invTypesDataTable retVal = new EveDataSet.invTypesDataTable();
             retVal = GetItems(itemIDs.ToString());
             return retVal;
-        }
-
-        static public EveDataSet.invTypesDataTable GetItemsWithTransactions(List<FinanceAccessParams> accessList)
-        {
-            return GetItemsTraded(accessList, 0);
         }
 
         static public List<int> GetItemIDsWithTransactions(List<FinanceAccessParams> accessList)

@@ -1,6 +1,6 @@
 namespace EveMarketMonitorApp.GUIElements
 {
-    partial class SelectItemsTraded
+    partial class ItemValuesManager
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@ namespace EveMarketMonitorApp.GUIElements
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SelectItemsTraded));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemValuesManager));
             this.lstItems = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtItemName = new System.Windows.Forms.TextBox();
@@ -36,9 +36,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.btnAutoAdd = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
-            this.btnAutoAddConfig = new System.Windows.Forms.Button();
             this.chkEveMarketPrices = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.rdbMaxBuy = new System.Windows.Forms.RadioButton();
@@ -152,17 +150,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // btnAutoAdd
-            // 
-            this.btnAutoAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAutoAdd.Location = new System.Drawing.Point(12, 688);
-            this.btnAutoAdd.Name = "btnAutoAdd";
-            this.btnAutoAdd.Size = new System.Drawing.Size(96, 29);
-            this.btnAutoAdd.TabIndex = 7;
-            this.btnAutoAdd.Text = "Auto Add";
-            this.btnAutoAdd.UseVisualStyleBackColor = true;
-            this.btnAutoAdd.Click += new System.EventHandler(this.btnAutoAdd_Click);
-            // 
             // btnClear
             // 
             this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -173,17 +160,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnClear.Text = "Clear All";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
-            // 
-            // btnAutoAddConfig
-            // 
-            this.btnAutoAddConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAutoAddConfig.Location = new System.Drawing.Point(114, 688);
-            this.btnAutoAddConfig.Name = "btnAutoAddConfig";
-            this.btnAutoAddConfig.Size = new System.Drawing.Size(96, 29);
-            this.btnAutoAddConfig.TabIndex = 12;
-            this.btnAutoAddConfig.Text = "Auto Add Config";
-            this.btnAutoAddConfig.UseVisualStyleBackColor = true;
-            this.btnAutoAddConfig.Click += new System.EventHandler(this.btnAutoAddConfig_Click);
             // 
             // chkEveMarketPrices
             // 
@@ -462,7 +438,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Pricing details";
             // 
-            // SelectItemsTraded
+            // ItemValuesManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -470,10 +446,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.ClientSize = new System.Drawing.Size(528, 729);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.btnAutoAddConfig);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnClear);
-            this.Controls.Add(this.btnAutoAdd);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.lstItems);
@@ -482,7 +456,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "SelectItemsTraded";
+            this.Name = "ItemValuesManager";
             this.Text = "Item Value";
             this.Load += new System.EventHandler(this.SelectItemsTraded_Load);
             this.groupBox2.ResumeLayout(false);
@@ -507,9 +481,7 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnAutoAdd;
         private System.Windows.Forms.Button btnClear;
-        private System.Windows.Forms.Button btnAutoAddConfig;
         private System.Windows.Forms.CheckBox chkEveMarketPrices;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.RadioButton rdbMaxBuy;
