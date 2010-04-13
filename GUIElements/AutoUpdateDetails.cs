@@ -7,16 +7,14 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 
-namespace AutoUpdater
+namespace EveMarketMonitorApp.GUIElements
 {
-    public partial class Details : Form
+    public partial class AutoUpdateDetails : Form
     {
         private DataTable _data = new DataTable("Data");
-        private Form1 _parent;
 
-        public Details(List<ComponentData> components, Form1 parent)
+        public AutoUpdateDetails(List<ComponentData> components, AutoUpdateCheck parent)
         {
-            _parent = parent;
             InitializeComponent();
 
             _data.Columns.Add(new DataColumn("Name", typeof(String)));
@@ -40,16 +38,21 @@ namespace AutoUpdater
                 string tmpFile = parent.DownloadFile("VersionHistory.rtf");
                 richTextBox1.LoadFile(tmpFile);
 
-                try
-                {
-                    // Try and copy the latest version file into our work directory.
-                    // Someone might want to look at it or somthing.
-                    string versionFile = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar +
-                        "VersionHistory.rtf";
 
-                    File.Copy(tmpFile, versionFile, true);
-                }
-                catch { /* don't care */ }
+                // Note: Can't do this because EMMA runs under low privileges.
+                // Instead, the version history will be overwritten by the updater itself which
+                // runs under admin privileges.
+                //try
+                //{
+                //    // Try and copy the latest version file into our work directory.
+                //    // Someone might want to look at it or somthing.
+                //    string versionFile = Globals.AppDataDir + Path.DirectorySeparatorChar +
+                //        "VersionHistory.rtf";
+
+                //    File.Copy(tmpFile, versionFile, true);
+                //}
+                //catch { /* don't care */ }
+
             }
             catch (Exception ex)
             {

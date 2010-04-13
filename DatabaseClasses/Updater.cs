@@ -3708,9 +3708,301 @@ AS
                     }
                     #endregion
                 }
+                if (dbVersion.CompareTo(new Version("1.3.2.2")) < 0)
+                {
+                    #region Create 'ItemValues' table, move data from 'TradedItems' to 'ItemValues' then drop 'TradedItems'
+                    commandText = @"SET ANSI_NULLS ON
 
-                
-               
+SET QUOTED_IDENTIFIER ON
+
+CREATE TABLE [dbo].[ItemValues](
+	[ReportGroupID] [int] NOT NULL,
+	[ItemID] [int] NOT NULL,
+	[RegionID] [int] NOT NULL,
+	[DefaultSellPrice] [numeric](18, 2) NOT NULL,
+	[CurrentSellPrice] [numeric](18, 2) NOT NULL,
+	[LastSellPriceCalc] [datetime] NOT NULL,
+	[CurrentBuyPrice] [numeric](18, 2) NOT NULL,
+	[LastBuyPriceCalc] [datetime] NOT NULL,
+	[DefaultBuyPrice] [numeric](18, 2) NOT NULL,
+	[UseReprocessVal] [bit] NOT NULL,
+	[ForceDefaultSellPrice] [bit] NOT NULL,
+	[ForceDefaultBuyPrice] [bit] NOT NULL,
+ CONSTRAINT [PK_ItemValues] PRIMARY KEY CLUSTERED 
+(
+	[ReportGroupID] ASC,
+	[RegionID] ASC,
+	[ItemID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+
+ALTER TABLE [dbo].[ItemValues] ADD  CONSTRAINT [DF_ItemValues_OwnerID]  DEFAULT ((0)) FOR [ReportGroupID]
+
+ALTER TABLE [dbo].[ItemValues] ADD  CONSTRAINT [DF_ItemValues_CurrentSellPrice]  DEFAULT ((0)) FOR [CurrentSellPrice]
+
+ALTER TABLE [dbo].[ItemValues] ADD  CONSTRAINT [DF_ItemValues_CurrentBuyPrice]  DEFAULT ((0)) FOR [CurrentBuyPrice]
+
+ALTER TABLE [dbo].[ItemValues] ADD  CONSTRAINT [DF_ItemValues_LastBuyPriceCalc]  DEFAULT (((1)/(1))/(2000)) FOR [LastBuyPriceCalc]
+
+ALTER TABLE [dbo].[ItemValues] ADD  DEFAULT ((0)) FOR [DefaultBuyPrice]
+
+ALTER TABLE [dbo].[ItemValues] ADD  DEFAULT ((0)) FOR [UseReprocessVal]
+
+ALTER TABLE [dbo].[ItemValues] ADD  DEFAULT ((0)) FOR [ForceDefaultSellPrice]
+
+ALTER TABLE [dbo].[ItemValues] ADD  DEFAULT ((0)) FOR [ForceDefaultBuyPrice]";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                        SetDBVersion(connection, new Version("1.3.2.2"));
+                    }
+                    catch (Exception ex)
+                    {
+                         throw new EMMADataException(ExceptionSeverity.Critical,
+                             "Problem creating 'ItemValues' table", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.3.2.3")) < 0)
+                {
+                    #region Move data from 'TradedItems' to 'ItemValues'
+
+                    commandText =
+                            @"INSERT INTO [ItemValues]
+           ([ReportGroupID]
+           ,[ItemID]
+           ,[RegionID]
+           ,[DefaultSellPrice]
+           ,[CurrentSellPrice]
+           ,[LastSellPriceCalc]
+           ,[CurrentBuyPrice]
+           ,[LastBuyPriceCalc]
+           ,[DefaultBuyPrice]
+           ,[UseReprocessVal]
+           ,[ForceDefaultSellPrice]
+           ,[ForceDefaultBuyPrice])
+SELECT * FROM TradedItems";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                        SetDBVersion(connection, new Version("1.3.2.3"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem moving data from 'TradedItems' to 'ItemValues'", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.3.2.4")) < 0)
+                {
+                    #region Create ItemValueGetData stored procedure
+
+                    commandText =
+                            @"CREATE PROCEDURE [dbo].[ItemValueGetData]
+	@reportGroupID	int, 
+	@regionID		int,
+	@itemID			int
+AS
+	SELECT ItemValues.*
+	FROM ItemValues
+	WHERE ReportGroupID = @reportGroupID AND (RegionID = @regionID OR @regionID = 0) AND (ItemID = @itemID OR @itemID = 0)
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                        SetDBVersion(connection, new Version("1.3.2.4"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem creating 'ItemValueGetData' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.3.2.5")) < 0)
+                {
+                    #region Create ItemValuesClear stored procedure
+
+                    commandText = @"CREATE PROCEDURE [dbo].[ItemValuesClear]
+	@reportGroupID	int
+AS
+	DELETE FROM ItemValues
+	WHERE ReportGroupID = @reportGroupID
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                        SetDBVersion(connection, new Version("1.3.2.2"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem creating 'ItemValuesClear' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.3.2.6")) < 0)
+                {
+                    #region Drop TradedItems table
+
+                    commandText =
+                            @"DROP TABLE TradedItems";
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                        SetDBVersion(connection, new Version("1.3.2.6"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem dropping table 'TradedItems'", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.3.2.7")) < 0)
+                {
+                    #region Create new 'TradedItems' table
+                    commandText = @"SET ANSI_NULLS ON
+
+SET QUOTED_IDENTIFIER ON
+
+CREATE TABLE [dbo].[TradedItems](
+	[ReportGroupID] [int] NOT NULL,
+	[ItemID] [int] NOT NULL,
+ CONSTRAINT [PK_TradedItems] PRIMARY KEY CLUSTERED 
+(
+	[ReportGroupID] ASC,
+	[ItemID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                        SetDBVersion(connection, new Version("1.3.2.7"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem creating 'TradedItems' table", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.3.2.8")) < 0)
+                {
+                    #region Update 'TradedItemGet' stored proc
+
+                    commandText = @"ALTER PROCEDURE [dbo].[TradedItemGet]
+	@reportGroupID	int,
+	@itemID			int
+AS
+	SELECT TradedItems.*
+	FROM TradedItems
+	WHERE ReportGroupID = @reportGroupID AND (ItemID = @itemID OR @itemID = 0)
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                        SetDBVersion(connection, new Version("1.3.2.8"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'TradedItemGet' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.3.2.9")) < 0)
+                {
+                    #region Create 'AssetsLost' table
+                    commandText = @"SET ANSI_NULLS ON
+
+SET QUOTED_IDENTIFIER ON
+
+CREATE TABLE [dbo].[AssetsLost](
+	[ID] [bigint] NOT NULL,
+	[OwnerID] [int] NOT NULL,
+	[CorpAsset] [bit] NOT NULL,
+	[ItemID] [int] NOT NULL,
+	[LossDatetime] [datetime] NOT NULL,
+	[Quantity] [bigint] NOT NULL,
+ CONSTRAINT [PK_AssetsLost] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                        SetDBVersion(connection, new Version("1.3.2.9"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem creating 'AssetsLost' table", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.0.0")) < 0)
+                {
+                    #region Create 'AssetsProduced' table
+                    commandText = @"SET ANSI_NULLS ON
+
+SET QUOTED_IDENTIFIER ON
+
+CREATE TABLE [dbo].[AssetsProduced](
+	[ID] [bigint] NOT NULL,
+	[OwnerID] [int] NOT NULL,
+	[CorpAsset] [bit] NOT NULL,
+	[ItemID] [int] NOT NULL,
+	[ProductionDateTime] [datetime] NOT NULL,
+	[Cost] [numeric](18, 2) NOT NULL,
+ CONSTRAINT [PK_AssetsProduced] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                        SetDBVersion(connection, new Version("1.4.0.0"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem creating 'AssetsProduced' table", ex);
+                    }
+                    #endregion
+                }
+                               
             }
             catch (Exception ex)
             {

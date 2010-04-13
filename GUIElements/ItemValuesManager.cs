@@ -14,14 +14,14 @@ using EveMarketMonitorApp.Reporting;
 
 namespace EveMarketMonitorApp.GUIElements
 {
-    public partial class SelectItemsTraded : Form
+    public partial class ItemValuesManager : Form
     {
         EveDataSet.invTypesDataTable itemsList = new EveDataSet.invTypesDataTable();
-        EMMADataSet.TradedItemsRow currentItem;
-        ItemsTraded itemsTraded;
+        EMMADataSet.ItemValuesRow currentItem;
+        ItemValues itemValues;
         bool _resetCache = false;
 
-        public SelectItemsTraded()
+        public ItemValuesManager()
         {
             InitializeComponent();
             lblCalculatedSellPrice.Text = "";
@@ -48,8 +48,8 @@ namespace EveMarketMonitorApp.GUIElements
             cmbStation.DataSource = regions;
             cmbStation.SelectedValue = -1;
 
-            itemsTraded = UserAccount.CurrentGroup.ItemsTraded;
-            itemsList = itemsTraded.GetAllItems();
+            itemValues = UserAccount.CurrentGroup.ItemValues;
+            itemsList = itemValues.GetAllItems();
 
             lstItems.DisplayMember = "typeName";
             lstItems.ValueMember = "typeID";
@@ -77,7 +77,7 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            itemsTraded.CancelChanges();
+            itemValues.CancelChanges();
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
@@ -92,7 +92,7 @@ namespace EveMarketMonitorApp.GUIElements
         private void SaveAll()
         {
             StoreDefaultPrices();
-            itemsTraded.Store();
+            itemValues.Store();
             bool oldEveCentralVal = UserAccount.CurrentGroup.Settings.UseEveCentral;
             bool oldEveMetricsVal = UserAccount.CurrentGroup.Settings.UseEveMetrics;
 
@@ -133,7 +133,7 @@ namespace EveMarketMonitorApp.GUIElements
             }
             if (_resetCache)
             {
-                itemsTraded.ClearValueCache();
+                itemValues.ClearValueCache();
                 _resetCache = false;
             }
         }
@@ -162,37 +162,12 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 currentItem = null;
                 itemsList.Clear();
-                itemsTraded.ClearAllItems();
+                itemValues.ClearAllItems();
                 //RefreshList();
                 RefreshDefaultPrices();
             }
         }
 
-        private void btnAutoAdd_Click(object sender, EventArgs e)
-        {
-            Cursor = Cursors.WaitCursor;
-            try
-            {
-                EveDataSet.invTypesDataTable newItems = Items.GetItemsTraded(
-                    UserAccount.CurrentGroup.GetFinanceAccessParams(APIDataType.Full), 
-                    UserAccount.CurrentGroup.Settings.AutoAddMin);
-                foreach (EveDataSet.invTypesRow item in newItems)
-                {
-                    EveDataSet.invTypesRow existing = itemsList.FindBytypeID(item.typeID);
-                    if (existing == null)
-                    {
-                        itemsList.ImportRow(item);
-                        itemsTraded.AddItem(item.typeID);
-                        itemsTraded.GetItemValue(item.typeID);
-                    }
-                }
-                RefreshDefaultPrices();
-            }
-            finally
-            {
-                Cursor = Cursors.Default;
-            }
-        }
 
         private void txtItemName_KeyDown(object sender, KeyEventArgs e)
         {
@@ -209,7 +184,7 @@ namespace EveMarketMonitorApp.GUIElements
                 EveDataSet.invTypesRow item = (EveDataSet.invTypesRow)((DataRowView)lstItems.SelectedItem).Row;
 
                 currentItem = null;
-                itemsTraded.RemoveItem(item.typeID);
+                itemValues.RemoveItem(item.typeID);
                 itemsList.RemoveinvTypesRow(itemsList.FindBytypeID(item.typeID));
                 //RefreshList();
                 RefreshDefaultPrices();
@@ -228,7 +203,7 @@ namespace EveMarketMonitorApp.GUIElements
                     if (existing == null)
                     {
                         itemsList.ImportRow(newItem);
-                        itemsTraded.AddItem(newItem.typeID);
+                        itemValues.AddItem(newItem.typeID);
                         lstItems.SelectedValue = newItem.typeID;
                         //RefreshList();
                         lstItems.Focus();
@@ -301,19 +276,19 @@ namespace EveMarketMonitorApp.GUIElements
         {
             if (currentItem != null)
             {
-                itemsTraded.UseReprocessValSet(currentItem.ItemID, chkUseReprocessVal.Checked);
-                bool oldVal = itemsTraded.ForceDefaultBuyPriceGet(currentItem.ItemID);
+                itemValues.UseReprocessValSet(currentItem.ItemID, chkUseReprocessVal.Checked);
+                bool oldVal = itemValues.ForceDefaultBuyPriceGet(currentItem.ItemID);
                 if (oldVal != chkForceDefaultBuyPrice.Checked) { _resetCache = true; }
-                itemsTraded.ForceDefaultBuyPriceSet(currentItem.ItemID, chkForceDefaultBuyPrice.Checked);
-                bool oldVal2 = itemsTraded.ForceDefaultSellPriceGet(currentItem.ItemID);
+                itemValues.ForceDefaultBuyPriceSet(currentItem.ItemID, chkForceDefaultBuyPrice.Checked);
+                bool oldVal2 = itemValues.ForceDefaultSellPriceGet(currentItem.ItemID);
                 if (oldVal2 != chkForceDefaultSellPrice.Checked) { _resetCache = true; }
-                itemsTraded.ForceDefaultSellPriceSet(currentItem.ItemID, chkForceDefaultSellPrice.Checked);
-                decimal oldVal3 = itemsTraded.DefaultPriceGet(currentItem.ItemID, currentItem.RegionID);
+                itemValues.ForceDefaultSellPriceSet(currentItem.ItemID, chkForceDefaultSellPrice.Checked);
+                decimal oldVal3 = itemValues.DefaultPriceGet(currentItem.ItemID, currentItem.RegionID);
                 if (oldVal3 != currentItem.DefaultSellPrice) { _resetCache = true; }
-                itemsTraded.DefaultPriceSet(currentItem.ItemID, currentItem.RegionID, currentItem.DefaultSellPrice);
-                decimal oldVal4 = itemsTraded.DefaultBuyPriceGet(currentItem.ItemID, currentItem.RegionID);
+                itemValues.DefaultPriceSet(currentItem.ItemID, currentItem.RegionID, currentItem.DefaultSellPrice);
+                decimal oldVal4 = itemValues.DefaultBuyPriceGet(currentItem.ItemID, currentItem.RegionID);
                 if (oldVal4 != currentItem.DefaultBuyPrice) { _resetCache = true; }
-                itemsTraded.DefaultBuyPriceSet(currentItem.ItemID, currentItem.RegionID, currentItem.DefaultBuyPrice);
+                itemValues.DefaultBuyPriceSet(currentItem.ItemID, currentItem.RegionID, currentItem.DefaultBuyPrice);
             }
         }
 
@@ -329,7 +304,7 @@ namespace EveMarketMonitorApp.GUIElements
                 chkForceDefaultSellPrice.Enabled = true;
 
                 int itemID = ((EveDataSet.invTypesRow)(((DataRowView)lstItems.SelectedItem).Row)).typeID;
-                currentItem = itemsTraded.GetItem(itemID, (int)cmbStation.SelectedValue);
+                currentItem = itemValues.GetItem(itemID, (int)cmbStation.SelectedValue);
 
                 txtItemSellPrice.Text = new IskAmount(currentItem.DefaultSellPrice).ToString();
                 txtDefaultBuyPrice.Text = new IskAmount(currentItem.DefaultBuyPrice).ToString();
@@ -337,9 +312,9 @@ namespace EveMarketMonitorApp.GUIElements
                 lblLastUpdated.Text = currentItem.LastSellPriceCalc.ToString();
                 // For this setting, get the value from the static class as it must always be for 
                 // the -1 'Any region' setting.
-                chkUseReprocessVal.Checked = itemsTraded.UseReprocessValGet(itemID);
-                chkForceDefaultBuyPrice.Checked = itemsTraded.ForceDefaultBuyPriceGet(itemID);
-                chkForceDefaultSellPrice.Checked = itemsTraded.ForceDefaultSellPriceGet(itemID);
+                chkUseReprocessVal.Checked = itemValues.UseReprocessValGet(itemID);
+                chkForceDefaultBuyPrice.Checked = itemValues.ForceDefaultBuyPriceGet(itemID);
+                chkForceDefaultSellPrice.Checked = itemValues.ForceDefaultSellPriceGet(itemID);
             }
             else
             {
@@ -350,12 +325,6 @@ namespace EveMarketMonitorApp.GUIElements
                 chkForceDefaultBuyPrice.Enabled = false;
                 chkForceDefaultSellPrice.Enabled = false;
             }
-        }
-
-        private void btnAutoAddConfig_Click(object sender, EventArgs e)
-        {
-            AutoAddConfig addConfig = new AutoAddConfig();
-            addConfig.ShowDialog();
         }
 
         private void btnValueHist_Click(object sender, EventArgs e)

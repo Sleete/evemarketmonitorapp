@@ -247,7 +247,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 if (errorNode != null)
                 {
                     string file = string.Format("{0}Logging{1}APIError.xml",
-                        AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
+                        Globals.AppDataDir, Path.DirectorySeparatorChar);
                     xml.Save(file);
 
                     XmlNode errCodeNode = errorNode.SelectSingleNode("@code");
@@ -310,7 +310,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 if (errorNode != null)
                 {
                     string file = string.Format("{0}Logging{1}APIError.xml",
-                        AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
+                        Globals.AppDataDir, Path.DirectorySeparatorChar);
                     lock (Globals.APIErrorFileLock)
                     {
                         xml.Save(file);
@@ -489,7 +489,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                     }
                                 }
                                 string xmlLogFile = string.Format("{0}Logging{1}API Call History{1}{2} {3}.xml",
-                                    AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar,
+                                    Globals.AppDataDir, Path.DirectorySeparatorChar,
                                     desc, DateTime.UtcNow.Ticks.ToString());
                                 xml.Save(xmlLogFile);
                             }
@@ -498,7 +498,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             try
                             {
                                 string[] files = Directory.GetFiles(string.Format("{0}Logging{1}API Call History",
-                                    AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar));
+                                    Globals.AppDataDir, Path.DirectorySeparatorChar));
                                 foreach (string file in files)
                                 {
                                     try

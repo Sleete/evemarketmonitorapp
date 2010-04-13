@@ -12,6 +12,9 @@ namespace EveMarketMonitorApp.Common
     {
         private const int BUFFERSIZE = 100000;
         private const long FOURGIG = 4000000000;
+        private static string _tempDataDir = string.Format("{0}Temp{1}Compression{1}",
+                    Globals.AppDataDir, Path.DirectorySeparatorChar);
+        private static string _tempDataFile = string.Format("{0}Data.tmp", _tempDataDir);
 
         /// <summary>
         /// Uncompress the specified compound file and write the individual files to the specified destination
@@ -19,17 +22,21 @@ namespace EveMarketMonitorApp.Common
         /// </summary>
         /// <param name="srcFile"></param>
         /// <param name="dstDir"></param>
-        public static int DecompressDirectory(string srcFile, string dstDir)
+        public static float DecompressDirectory(string srcFile, string dstDir)
         {
-            string tempDataFile = string.Format("{0}Temp{1}Data.tmp",
-                    AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
+            if (!dstDir.EndsWith(Path.DirectorySeparatorChar.ToString()))
+            {
+                dstDir = dstDir + Path.DirectorySeparatorChar;
+            }
+            if (!Directory.Exists(_tempDataDir)) { Directory.CreateDirectory(_tempDataDir); }
+
 
             // First, decompress the file.
-            DecompressFile(srcFile, tempDataFile);
+            DecompressFile(srcFile, _tempDataFile);
             // Build destination directory and files.
-            int fileVersion = BuildDirFromFile(tempDataFile, dstDir);
+            float fileVersion = BuildDirFromFile(_tempDataFile, dstDir);
 
-            File.Delete(tempDataFile);
+            File.Delete(_tempDataFile);
 
             return fileVersion;
         }
@@ -39,30 +46,30 @@ namespace EveMarketMonitorApp.Common
         /// </summary>
         /// <param name="srcFile"></param>
         /// <param name="dstDir"></param>
-        public static int BuildDirFromFile(string srcFile, string dstDir)
+        private static float BuildDirFromFile(string srcFile, string dstDir)
         {
-            int charsInBuffer = 0;
-            int charsSoFar = 0;
-            char[] buffer = new char[BUFFERSIZE];
+            int bytesInBuffer = 0;
+            long bytesSoFar = 0;
+            byte[] buffer = new byte[BUFFERSIZE];
             string line = "";
             string currentFileName = "";
-            int currentFileSize = 0;
-            int fileVersion = 0;
-            StreamReader reader = File.OpenText(srcFile);
+            long currentFileSize = 0;
+            float fileVersion = 0;
+            FileStream reader = File.OpenRead(srcFile);
 
             try
             {
-                string firstLine = reader.ReadLine();
+                string firstLine = ReadLineFromStream(reader);
                 // First, make sure it's an EMMA save file..
                 if (!firstLine.StartsWith("**-- EMMA Compound Save File"))
                 {
-                    throw new EMMACompressionException(ExceptionSeverity.Error, "Supplied file is not an EMMA" +
-                        " save data file. (" + srcFile + ")");
+                    throw new EMMACompressionException(ExceptionSeverity.Error,
+                        "Supplied file is not an EMMA compound file. (" + srcFile + ")");
                 }
 
                 if (firstLine.Contains("Version:"))
                 {
-                    fileVersion = int.Parse(firstLine.Substring(firstLine.IndexOf("Version:") + 8), 
+                    fileVersion = float.Parse(firstLine.Substring(firstLine.IndexOf("Version:") + 8),
                         System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 }
 
@@ -77,11 +84,11 @@ namespace EveMarketMonitorApp.Common
                     Directory.CreateDirectory(dstDir);
                 }
 
-                while (!reader.EndOfStream)
+                while (reader.Position < reader.Length)
                 {
-                    line = reader.ReadLine();
-                    StreamWriter writer = null;
-                    charsSoFar = 0;
+                    line = ReadLineFromStream(reader);
+                    FileStream writer = null;
+                    bytesSoFar = 0;
 
                     try
                     {
@@ -91,27 +98,27 @@ namespace EveMarketMonitorApp.Common
                             int fileNameLoc = line.IndexOf("FileName:") + 9;
                             int fileSizeLoc = line.IndexOf("FileSize:") + 9;
                             currentFileName = line.Substring(fileNameLoc, (fileSizeLoc - 9) - fileNameLoc);
-                            currentFileSize = int.Parse(line.Substring(fileSizeLoc, line.Length - fileSizeLoc), 
+                            currentFileSize = long.Parse(line.Substring(fileSizeLoc, line.Length - fileSizeLoc),
                                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
 
-                            writer = File.CreateText(dstDir + currentFileName);
+                            writer = File.Create(dstDir + currentFileName);
                         }
                         // If a file header has been identified then extract the data and write the file.
                         while (!currentFileName.Equals(""))
                         {
                             // Read a block of data into the buffer but do not go past the end of this file
                             // within the compound file.
-                            charsInBuffer = reader.ReadBlock(buffer, 0,
-                                Math.Min(currentFileSize - charsSoFar, BUFFERSIZE));
-                            charsSoFar += charsInBuffer;
+                            bytesInBuffer = reader.Read(buffer, 0,
+                                (int)Math.Min(currentFileSize - bytesSoFar, (long)BUFFERSIZE));
+                            bytesSoFar += bytesInBuffer;
 
                             // write out the data in the buffer to the destination file.
-                            writer.Write(buffer, 0, charsInBuffer);
+                            writer.Write(buffer, 0, bytesInBuffer);
 
                             // If we've reached the end of the file within the compound file then clear the
                             // current file variables to allow us to go back round and start looking for the 
                             // next file.
-                            if (charsInBuffer < BUFFERSIZE)
+                            if (bytesInBuffer < BUFFERSIZE)
                             {
                                 currentFileName = "";
                                 currentFileSize = 0;
@@ -121,7 +128,7 @@ namespace EveMarketMonitorApp.Common
                     }
                     finally
                     {
-                        if(writer != null) writer.Close();
+                        if (writer != null) writer.Close();
                     }
                 }
 
@@ -133,6 +140,35 @@ namespace EveMarketMonitorApp.Common
 
             return fileVersion;
         }
+
+
+        private static string ReadLineFromStream(FileStream reader)
+        {
+            string retVal = "";
+            List<byte> line = new List<byte>();
+            bool done = false;
+            System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+
+            while (!done)
+            {
+                if (reader.Position < reader.Length)
+                {
+                    byte newByte = (byte)reader.ReadByte();
+                    line.Add(newByte);
+                    byte[] byteArray = { newByte };
+                    string newChar = encoding.GetString(byteArray);
+                    if (newChar.Equals("\n")) { done = true; }
+                }
+                else
+                {
+                    done = true;
+                }
+            }
+
+            retVal = encoding.GetString(line.ToArray());
+            return retVal;
+        }
+
 
         /// <summary>
         /// Produce a compressed file containing all of the files in the specified directory.
@@ -161,15 +197,14 @@ namespace EveMarketMonitorApp.Common
                     "contains total data of more than four gigabytes. (" + srcDir + ")");
             }
 
-            string tempDataFile = string.Format("{0}Temp{1}Data.tmp",
-                    AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
-
             try
             {
+                if (!Directory.Exists(_tempDataDir)) { Directory.CreateDirectory(_tempDataDir); }
+
                 // Build the single large temp file with all the other files inside it.
-                BuildFileFromDir(srcDir, tempDataFile);
+                BuildFileFromDir(srcDir, _tempDataFile);
                 // Compress the large file and write out to the destination location.
-                CompressFile(tempDataFile, dstFile);
+                CompressFile(_tempDataFile, dstFile);
 
                 if (deleteSrcDir)
                 {
@@ -185,7 +220,7 @@ namespace EveMarketMonitorApp.Common
             finally
             {
                 // Delete the temp file.
-                File.Delete(tempDataFile);
+                File.Delete(_tempDataFile);
             }
         }
 
@@ -198,54 +233,34 @@ namespace EveMarketMonitorApp.Common
         private static void BuildFileFromDir(string srcDir, string dstFile)
         {
             int charsInBuffer = 0;
-            char[] buffer = new char[BUFFERSIZE];
+            byte[] buffer = new byte[BUFFERSIZE];
             string[] files = Directory.GetFiles(srcDir);
-            StreamWriter writer = File.CreateText(dstFile);
+            FileStream writer = File.Create(dstFile);
 
             try
             {
-                writer.WriteLine("**-- EMMA Compound Save File Version: 1.2");
+                byte[] bytesToWrite = StrToByteArray("**-- EMMA Compound Save File Version: 1.2");
+                writer.Write(bytesToWrite, 0, bytesToWrite.Length);
 
                 foreach (string file in files)
                 {
                     // Loop through all files in the source directory
                     FileInfo fileInfo = new FileInfo(file);
-                    StreamReader reader = File.OpenText(file);
-                    int realFileSize = 0;
-
-                    // This seems to be the only way to get an accurate count of the 
-                    // number of characters in a file
-                    //--------------------------------------------------------
-                    try
-                    {
-                        // Read blocks of the source file and count up the total chars read.
-                        while (!reader.EndOfStream)
-                        {
-                            charsInBuffer = reader.ReadBlock(buffer, 0, BUFFERSIZE);
-                            realFileSize += charsInBuffer;
-                        }
-                    }
-                    finally
-                    {
-                        reader.Close();
-                    }
-                    //--------------------------------------------------------
-
-                    // Open the same file again to copy out the data... lame.
-                    reader = File.OpenText(file);
+                    FileStream reader = File.OpenRead(file);
+                    long realFileSize = reader.Length;
 
                     try
                     {
                         // write the header for this file.
-                        writer.WriteLine();
-                        writer.WriteLine(string.Format("**-- FileName:{0} FileSize:{1}",
-                            fileInfo.Name, realFileSize)); //reader.BaseStream.Length));
+                        byte[] bytesToWrite2 = StrToByteArray(string.Format("\r\n**-- FileName:{0} FileSize:{1}\r\n",
+                            fileInfo.Name, realFileSize));
+                        writer.Write(bytesToWrite2, 0, bytesToWrite2.Length); //reader.BaseStream.Length));
 
                         // Read blocks of the source file and write them out to the destination file.
-                        while (!reader.EndOfStream)
+                        charsInBuffer = BUFFERSIZE;
+                        while (charsInBuffer == BUFFERSIZE)
                         {
-                            charsInBuffer = reader.ReadBlock(buffer, 0, BUFFERSIZE);
-
+                            charsInBuffer = reader.Read(buffer, 0, BUFFERSIZE);
                             writer.Write(buffer, 0, charsInBuffer);
                         }
                     }
@@ -377,6 +392,12 @@ namespace EveMarketMonitorApp.Common
             //}
 
             return retVal;
+        }
+
+        public static byte[] StrToByteArray(string str)
+        {
+            System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+            return encoding.GetBytes(str);
         }
 
     }

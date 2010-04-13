@@ -21,7 +21,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private bool _public;
         private GroupAccess _accessLevel;
         private ReportGroupSettings _settings = null;
-        private ItemsTraded _itemsTraded = null;
+        private ItemValues _itemValues = null;
+        private TradedItems _tradedItems = null;
 
         /// <summary>
         /// Class constructor
@@ -245,9 +246,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public void StoreItemsTraded()
         {
             // If it's null then it's not been accessed and there are no changes to store..
-            if (_itemsTraded != null)
+            if (_itemValues != null)
             {
-                _itemsTraded.Store();
+                _itemValues.Store();
             }
         }
        
@@ -303,15 +304,27 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        public ItemsTraded ItemsTraded
+        public ItemValues ItemValues
         {
             get
             {
-                if (_itemsTraded == null)
+                if (_itemValues == null)
                 {
-                    _itemsTraded = new ItemsTraded(_id);
+                    _itemValues = new ItemValues(_id);
                 }
-                return _itemsTraded;
+                return _itemValues;
+            }
+        }
+
+        public TradedItems TradedItems
+        {
+            get
+            {
+                if (_tradedItems == null)
+                {
+                    _tradedItems = new TradedItems(_id);
+                }
+                return _tradedItems;
             }
         }
     }

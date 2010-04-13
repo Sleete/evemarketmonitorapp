@@ -32,9 +32,7 @@ namespace AutoUpdater
             this.prgProgress = new System.Windows.Forms.ProgressBar();
             this.lblInfo = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.btnDetails = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.btnUpdate = new System.Windows.Forms.Button();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -59,7 +57,6 @@ namespace AutoUpdater
             this.lblInfo.TabIndex = 0;
             this.lblInfo.Text = "information";
             this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblInfo.Enter += new System.EventHandler(this.lblInfo_Enter);
             // 
             // splitContainer1
             // 
@@ -75,46 +72,22 @@ namespace AutoUpdater
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.btnDetails);
             this.splitContainer1.Panel2.Controls.Add(this.btnClose);
-            this.splitContainer1.Panel2.Controls.Add(this.btnUpdate);
             this.splitContainer1.Panel2.Controls.Add(this.prgProgress);
             this.splitContainer1.Size = new System.Drawing.Size(382, 164);
             this.splitContainer1.SplitterDistance = 63;
             this.splitContainer1.TabIndex = 0;
             // 
-            // btnDetails
-            // 
-            this.btnDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDetails.Location = new System.Drawing.Point(139, 58);
-            this.btnDetails.Name = "btnDetails";
-            this.btnDetails.Size = new System.Drawing.Size(73, 27);
-            this.btnDetails.TabIndex = 0;
-            this.btnDetails.Text = "Details";
-            this.btnDetails.UseVisualStyleBackColor = true;
-            this.btnDetails.Click += new System.EventHandler(this.btnDetails_Click);
-            // 
             // btnClose
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.Location = new System.Drawing.Point(297, 58);
+            this.btnClose.Location = new System.Drawing.Point(295, 58);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(73, 27);
+            this.btnClose.Size = new System.Drawing.Size(75, 27);
             this.btnClose.TabIndex = 2;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // btnUpdate
-            // 
-            this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUpdate.Location = new System.Drawing.Point(218, 58);
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(73, 27);
-            this.btnUpdate.TabIndex = 1;
-            this.btnUpdate.Text = "Update";
-            this.btnUpdate.UseVisualStyleBackColor = true;
-            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // Form1
             // 
@@ -140,8 +113,6 @@ namespace AutoUpdater
         private System.Windows.Forms.Label lblInfo;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Button btnUpdate;
-        private System.Windows.Forms.Button btnDetails;
     }
 }
 

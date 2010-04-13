@@ -34,7 +34,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 int counter = 0;
                 //long nextID = long.MaxValue;
 
-                ItemsTraded itemsTraded = UserAccount.CurrentGroup.ItemsTraded;
+                ItemValues itemsTraded = UserAccount.CurrentGroup.ItemValues;
                 decimal collateralPerc = UserAccount.CurrentGroup.Settings.CollateralPercentage;
                 decimal minCollateral = UserAccount.CurrentGroup.Settings.AutoCon_MinCollateral * 0.95m;
                 decimal minReward = UserAccount.CurrentGroup.Settings.AutoCon_MinReward * 0.95m;
@@ -457,7 +457,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
         public static decimal GetSellPrice(int itemID, int destinationStation)
         {
-            decimal sellPrice = UserAccount.CurrentGroup.ItemsTraded.GetItemValue(itemID, destinationStation);
+            decimal sellPrice = UserAccount.CurrentGroup.ItemValues.GetItemValue(itemID, destinationStation);
             return sellPrice;
         }
 
@@ -472,16 +472,16 @@ namespace EveMarketMonitorApp.DatabaseClasses
             List<int> stationIDs = new List<int>();
             stationIDs.Add(stationID);
 
-            if (!UserAccount.CurrentGroup.ItemsTraded.UseReprocessValGet(itemID) && 
-                !UserAccount.CurrentGroup.ItemsTraded.ForceDefaultBuyPriceGet(itemID))
+            if (!UserAccount.CurrentGroup.ItemValues.UseReprocessValGet(itemID) && 
+                !UserAccount.CurrentGroup.ItemValues.ForceDefaultBuyPriceGet(itemID))
             {
                 Transactions.GetAverageBuyPrice(financeAccessParams, itemIDs, stationIDs, new List<int>(), quantity,
                     recentPurchasesToIgnore, ref retVal, ref blank1, true);
             }
 
-            if (retVal == 0 || UserAccount.CurrentGroup.ItemsTraded.ForceDefaultBuyPriceGet(itemID))
+            if (retVal == 0 || UserAccount.CurrentGroup.ItemValues.ForceDefaultBuyPriceGet(itemID))
             {
-                retVal = UserAccount.CurrentGroup.ItemsTraded.GetBuyPrice(itemID, 
+                retVal = UserAccount.CurrentGroup.ItemValues.GetBuyPrice(itemID, 
                     Stations.GetStation(stationID).regionID);
             }
             //if (retVal == 0)

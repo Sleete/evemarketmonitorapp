@@ -69,7 +69,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 foreach (EMMADataSet.AssetsRow asset in assets)
                 {
                     // Use The forge to value items if possible.
-                    decimal value = UserAccount.CurrentGroup.ItemsTraded.GetItemValue(asset.ItemID, 10000002, true);
+                    decimal value = UserAccount.CurrentGroup.ItemValues.GetItemValue(asset.ItemID, 10000002, true);
                     retVal += value * asset.Quantity;
                     //log.WriteLine(Items.GetItemName(asset.ItemID) + ", " + asset.Quantity + ", " + value); 
                 }

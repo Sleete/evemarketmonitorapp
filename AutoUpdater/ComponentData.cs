@@ -19,6 +19,12 @@ namespace AutoUpdater
         private string _description;
         private bool _exists;
 
+        public ComponentData(string name, string fullPath)
+        {
+            _name = name;
+            _fullPath = fullPath;
+        }
+
         public ComponentData(XmlNode xml, string homeDir)
         {
             bool error = false;
@@ -26,6 +32,12 @@ namespace AutoUpdater
             XmlNode subpathnode = xml.SelectSingleNode("@subpath");
             string subpath = (subpathnode == null ? "" : subpathnode.Value + Path.DirectorySeparatorChar);
             _fullPath = homeDir + Path.DirectorySeparatorChar + subpath + _name;
+            // Eve Data files need to go in the user's applciation directory location instead.
+            if (_name.Equals("EveData.mdf") || _name.Equals("EveData_log.ldf"))
+            {
+                _fullPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + 
+                    Path.DirectorySeparatorChar + "EMMA" + Path.DirectorySeparatorChar + subpath + _name;
+            }
             _latestVersion = new Version(xml.SelectSingleNode("@version").Value);
             _description = xml.SelectSingleNode("@description").Value;
             if (File.Exists(_fullPath))

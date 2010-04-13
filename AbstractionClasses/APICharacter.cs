@@ -458,7 +458,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 if (errorNode != null)
                 {
                     string file = string.Format("{0}Logging{1}APIError.xml",
-                        AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
+                        Globals.AppDataDir, Path.DirectorySeparatorChar);
                     lock (Globals.APIErrorFileLock)
                     {
                         xml.Save(file);

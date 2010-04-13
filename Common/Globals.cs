@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 using EveMarketMonitorApp.GUIElements;
 
@@ -8,12 +9,18 @@ namespace EveMarketMonitorApp.Common
 {
     static class Globals
     {
+        private static string _appDataDir = string.Format("{0}{1}EMMA{1}", 
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Path.DirectorySeparatorChar);
         private static string _autoLoginFile =
-            string.Format("{0}AutoLogin.xml", AppDomain.CurrentDomain.BaseDirectory);
+            string.Format("{0}AutoLogin.xml", _appDataDir);
 
         public static string AutoLoginFile
         {
             get { return Globals._autoLoginFile; }
+        }
+        public static string AppDataDir
+        {
+            get { return Globals._appDataDir; }
         }
 
         // Put a few global locks to resources in here to control multi-threaded access to

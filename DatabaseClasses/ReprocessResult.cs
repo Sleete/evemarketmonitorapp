@@ -119,7 +119,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 if (!_gotUnitSellPrice)
                 {
-                    _unitSellPrice = UserAccount.CurrentGroup.ItemsTraded.GetItemValue(_itemID, 10000002, false);
+                    _unitSellPrice = UserAccount.CurrentGroup.ItemValues.GetItemValue(_itemID, 10000002, false);
                     _gotUnitSellPrice = true;
                 }
                 return _unitSellPrice;

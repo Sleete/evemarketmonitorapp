@@ -601,7 +601,7 @@ namespace EveMarketMonitorApp.GUIElements
                     ContractItemList items = _contract.Items;
                     foreach (ContractItem item in items)
                     {
-                        item.BuyPrice = UserAccount.CurrentGroup.ItemsTraded.GetItemValue(item.ItemID);
+                        item.BuyPrice = UserAccount.CurrentGroup.ItemValues.GetItemValue(item.ItemID);
                         totalValue += (item.ForcePrice ? 0 : item.Quantity * item.BuyPrice);
                         totalCash -= (item.ForcePrice ? item.Quantity * item.SellPrice : 0);
                     }
@@ -1011,7 +1011,7 @@ namespace EveMarketMonitorApp.GUIElements
                             }
                             if (_contract.DestinationStationID != 0)
                             {
-                                item.SellPrice = UserAccount.CurrentGroup.ItemsTraded.GetItemValue(
+                                item.SellPrice = UserAccount.CurrentGroup.ItemValues.GetItemValue(
                                     item.ItemID, _contract.DestinationStationID);
                             }
                         }

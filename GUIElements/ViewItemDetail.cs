@@ -74,7 +74,7 @@ namespace EveMarketMonitorApp.GUIElements
                 chkOwners.SelectedIndexChanged += new EventHandler(chkOwners_SelectedIndexChanged);
                 RefreshCharList();
 
-                EveDataSet.invTypesDataTable allitems = UserAccount.CurrentGroup.ItemsTraded.GetAllItems();
+                EveDataSet.invTypesDataTable allitems = UserAccount.CurrentGroup.ItemValues.GetAllItems();
                 ItemInfo[] info = new ItemInfo[allitems.Count];
                 for(int i = 0 ; i < allitems.Count; i++)
                 {

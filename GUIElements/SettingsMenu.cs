@@ -62,7 +62,7 @@ namespace EveMarketMonitorApp.GUIElements
         private void btnItemsTradedSettings_Click(object sender, EventArgs e)
         {
             if (_cp != null) { _cp.Focus(); }
-            SelectItemsTraded sit = new SelectItemsTraded();
+            ItemValuesManager sit = new ItemValuesManager();
             sit.ShowDialog();
         }
 

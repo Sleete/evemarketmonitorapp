@@ -152,7 +152,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                 }
 
                                 string xmlLogFile = string.Format("{0}Logging{1}Eve Central History{1}{2} {3}.xml",
-                                    AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar,
+                                    Globals.AppDataDir, Path.DirectorySeparatorChar,
                                     desc, DateTime.UtcNow.Ticks.ToString());
                                 xml.Save(xmlLogFile);
                             }
@@ -161,7 +161,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             try
                             {
                                 string[] files = Directory.GetFiles(string.Format("{0}Logging{1}Eve Central History",
-                                    AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar));
+                                    Globals.AppDataDir, Path.DirectorySeparatorChar));
                                 foreach (string file in files)
                                 {
                                     try

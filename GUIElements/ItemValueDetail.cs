@@ -14,7 +14,7 @@ namespace EveMarketMonitorApp.GUIElements
 {
     public partial class ItemValueDetail : Form
     {
-        private ItemsTraded _itemsTraded = null;
+        private ItemValues _itemsTraded = null;
         private List<string> _recentItems = new List<string>();
         private string _lastItem = "";
         private int _defaultItem = 0;
@@ -28,7 +28,7 @@ namespace EveMarketMonitorApp.GUIElements
         {
             InitializeComponent();
             _defaultItem = itemID;
-            _itemsTraded = UserAccount.CurrentGroup.ItemsTraded;
+            _itemsTraded = UserAccount.CurrentGroup.ItemValues;
         }
 
         private void ItemValueDetail_Load(object sender, EventArgs e)

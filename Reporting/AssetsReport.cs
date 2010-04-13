@@ -256,15 +256,15 @@ namespace EveMarketMonitorApp.Reporting
                         // Get values from database
                         Transactions.GetAverageBuyPrice(_financeAccessParams, itemIDs, _stationsIDs, _regionIDs,
                             quantity, 0, ref avgBuyPrice, ref blank1, true);
-                        avgSellPrice = UserAccount.CurrentGroup.ItemsTraded.GetItemValue(item.typeID, _valueRegionID, false);
+                        avgSellPrice = UserAccount.CurrentGroup.ItemValues.GetItemValue(item.typeID, _valueRegionID, false);
 
                         // If we couldn't find a buy price for the sold items then try and 
                         // get a buy price from other sources
-                        if (avgBuyPrice == 0 || UserAccount.CurrentGroup.ItemsTraded.ForceDefaultBuyPriceGet(itemID))
+                        if (avgBuyPrice == 0 || UserAccount.CurrentGroup.ItemValues.ForceDefaultBuyPriceGet(itemID))
                         {
                             bool tmp = UserAccount.CurrentGroup.Settings.UseEveCentral;
                             UserAccount.CurrentGroup.Settings.UseEveCentral = false;
-                            avgBuyPrice = UserAccount.CurrentGroup.ItemsTraded.GetBuyPrice(itemID,
+                            avgBuyPrice = UserAccount.CurrentGroup.ItemValues.GetBuyPrice(itemID,
                                 _regionIDs.Count == 1 ? _regionIDs[0] : 0);
                             UserAccount.CurrentGroup.Settings.UseEveCentral = tmp;
 
