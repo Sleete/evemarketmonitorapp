@@ -282,10 +282,11 @@ namespace EveMarketMonitorApp.GUIElements
                     Globals.AppDataDir, Path.DirectorySeparatorChar));
             }
 
-            if (!Directory.Exists(string.Format("{0}Temp", Globals.AppDataDir)))
+            if (Directory.Exists(string.Format("{0}Temp", Globals.AppDataDir)))
             {
-                Directory.CreateDirectory(string.Format("{0}Temp", Globals.AppDataDir));
+                Directory.Delete(string.Format("{0}Temp", Globals.AppDataDir));
             }
+            Directory.CreateDirectory(string.Format("{0}Temp", Globals.AppDataDir));
 
             if (!Directory.Exists(string.Format("{0}Logging", Globals.AppDataDir)) ||
                 !Directory.Exists(string.Format("{0}Logging{1}API Call History",
@@ -583,6 +584,11 @@ namespace EveMarketMonitorApp.GUIElements
                     _tutorialThread.Abort();
                     _tutorialThread.Join();
                 }
+
+                string tmpDir = Globals.AppDataDir + "Temp";
+                if (Directory.Exists(tmpDir)) { Directory.Delete(tmpDir, true); }
+                string updateDir = Globals.AppDataDir + "Update";
+                if (Directory.Exists(updateDir)) { Directory.Delete(updateDir, true); }
             }
             finally
             {
