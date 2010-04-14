@@ -143,7 +143,7 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     emmaex = new EMMAException(ExceptionSeverity.Critical, "Error setting up transactions form", ex);
                 }
-                MessageBox.Show("Problem setting up transactions view.\r\nCheck \\Logging\\ExceptionLog.txt" +
+                MessageBox.Show("Problem setting up transactions view.\r\nCheck " + Globals.AppDataDir + "Logging\\ExceptionLog.txt" +
                     " for details.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

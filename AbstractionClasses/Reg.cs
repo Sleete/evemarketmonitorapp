@@ -7,6 +7,7 @@ using EveMarketMonitorApp.Common;
 
 namespace EveMarketMonitorApp.AbstractionClasses
 {
+    /*
     public static class Reg
     {
         public static string ReadLM(string KeyName)
@@ -66,5 +67,5 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     "Problem setting up values in registry", ex);
             }
         }
-    }
+    }*/
 }

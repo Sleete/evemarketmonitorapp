@@ -33,7 +33,7 @@ namespace AutoUpdater
             string subpath = (subpathnode == null ? "" : subpathnode.Value + Path.DirectorySeparatorChar);
             _fullPath = homeDir + Path.DirectorySeparatorChar + subpath + _name;
             // Eve Data files need to go in the user's applciation directory location instead.
-            if (_name.Equals("EveData.mdf") || _name.Equals("EveData_log.ldf"))
+            if (_name.ToUpper().Equals("EVEDATA.MDF") || _name.ToUpper().Equals("EVEDATA_LOG.LDF"))
             {
                 _fullPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + 
                     Path.DirectorySeparatorChar + "EMMA" + Path.DirectorySeparatorChar + subpath + _name;

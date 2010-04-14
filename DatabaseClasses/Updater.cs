@@ -3968,7 +3968,7 @@ CREATE TABLE [dbo].[AssetsLost](
                     }
                     #endregion
                 }
-                if (dbVersion.CompareTo(new Version("1.4.0.0")) < 0)
+                if (dbVersion.CompareTo(new Version("1.4.1.0")) < 0)
                 {
                     #region Create 'AssetsProduced' table
                     commandText = @"SET ANSI_NULLS ON
@@ -3993,7 +3993,7 @@ CREATE TABLE [dbo].[AssetsProduced](
                     try
                     {
                         adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.4.0.0"));
+                        SetDBVersion(connection, new Version("1.4.1.0"));
                     }
                     catch (Exception ex)
                     {

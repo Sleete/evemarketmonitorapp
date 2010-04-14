@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="textBox2.Text" xml:space="preserve">
-    <value>Add to the list by typing in an item name or part of an item name in the box below. Remove items from the list by selecting them and pressing the delete key.
-The 'Auto Add' button will add any items that meet the requirements defined in 'Auto Add Config'.
-You can assign a default buy or sell value for each item in any region. These values are used by various reports and tools. To use Eve-central prices instead, simply leave the default values set to 0.</value>
+    <value>This list of items is used to build the Item Report, list of items in the Item Detail screen and a few similar places. 
+Add to the list by typing in an item name or part of an item name in the box below. Remove items from the list by selecting them and pressing the delete key.
+The 'Auto Add' button will add any items that meet the requirements defined in 'Auto Add Config'.</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

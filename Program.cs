@@ -54,7 +54,7 @@ namespace EveMarketMonitorApp
                 {
                     emmaex = new EMMAException(ExceptionSeverity.Critical, "Unhandled exception", ex);
                 }
-                MessageBox.Show("An unexpected error has occured.\r\nCheck \\Logging\\ExceptionLog.txt" +
+                MessageBox.Show("An unexpected error has occured.\r\nCheck " + Globals.AppDataDir + "Logging\\ExceptionLog.txt" +
                     " for details.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 try

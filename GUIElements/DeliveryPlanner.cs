@@ -70,7 +70,7 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     emmaex = new EMMAException(ExceptionSeverity.Critical, "Error setting up delivery planner", ex);
                 }
-                MessageBox.Show("Problem setting up delivery planner.\r\nCheck \\Logging\\ExceptionLog.txt" +
+                MessageBox.Show("Problem setting up delivery planner.\r\nCheck " + Globals.AppDataDir + "Logging\\ExceptionLog.txt" +
                     " for details.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 

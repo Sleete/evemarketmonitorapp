@@ -741,6 +741,33 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
         /// <summary>
+        /// Get a datatable containing the IDs of items that are involved in transactions that meet
+        /// the specifeid criteria
+        /// </summary>
+        /// <param name="accessParams"></param>
+        /// <returns></returns>
+        public static EMMADataSet.IDTableDataTable GetInvolvedItemIDs(List<FinanceAccessParams> accessParams,
+            int minVolume, DateTime minDate, DateTime maxDate, int minBuy, int minSell, List<int> buyStations,
+            List<int> sellStations)
+        {
+            EMMADataSet.IDTableDataTable retVal = new EMMADataSet.IDTableDataTable();
+            EMMADataSet.TransactionsDataTable table = GetTransData(accessParams, null, null, null,
+                minDate, maxDate, "");
+            Dictionary<int, long> qTotalBuy = new Dictionary<int, long>();
+            Dictionary<int, long> qTotalSell = new Dictionary<int, long>();
+            Dictionary<string, long> qStationBuy = new Dictionary<string, long>();
+            Dictionary<string, long> qStationSell = new Dictionary<string, long>();
+
+            foreach (EMMADataSet.TransactionsRow trans in table)
+            {
+
+            }
+
+            return retVal;
+        }
+
+
+        /// <summary>
         /// Get a datatable containing the IDs of stations that are involved in transactions that meet
         /// the specifeid criteria
         /// </summary>
@@ -920,7 +947,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="stationIDs"></param>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
-        /// <param name="type"></param>
+        /// <param name="type">If value is 'buy' or 'sell' then only the relevant transactions are returned. Any other values returns both buy and sell transactions</param>
         /// <returns></returns>
         public static EMMADataSet.TransactionsDataTable GetTransData(List<FinanceAccessParams> accessList,
             List<int> itemIDs, List<int> regionIDs, List<int> stationIDs, 

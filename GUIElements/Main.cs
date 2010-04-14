@@ -94,7 +94,7 @@ namespace EveMarketMonitorApp.GUIElements
                     catch (EMMAException)
                     {
                         MessageBox.Show("Critical error updating EMMA database. For details, see " +
-                            "\"Logging/ExceptionLog.txt\"", "Ciritcal error", 
+                            "\"Logging/ExceptionLog.txt\"", "Ciritcal error",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     Updater.InitDBs();
@@ -132,7 +132,7 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     emmaEx = new EMMAException(ExceptionSeverity.Critical, "Error during startup", ex);
                 }
-                MessageBox.Show("Problem during EMMA startup.\r\nCheck \\Logging\\ExceptionLog.txt" +
+                MessageBox.Show("Problem during EMMA startup.\r\nCheck " + Globals.AppDataDir + "Logging\\exceptionlog.txt" +
                     " for details.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
             }
@@ -1255,7 +1255,7 @@ namespace EveMarketMonitorApp.GUIElements
             catch (EMMAException)
             {
                 MessageBox.Show("There was an error while checking if SQL server express is installed and " +
-                    "running. (Check Logging\\ExceptionLog.txt for details)\r\nEMMA will attempt to " +
+                    "running. (Check " + Globals.AppDataDir + "Logging\\exceptionlog.txt for details)\r\nEMMA will attempt to " +
                     "continue but if things don't work then that's probably the reason.", 
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -1533,7 +1533,7 @@ namespace EveMarketMonitorApp.GUIElements
                     Globals.EveAPIDown = true;
                     MessageBox.Show("Failed to contact the Eve API.\r\nAPI updates " +
                         "will be disabled until EMMA is restarted.\r\n" +
-                        "(See logging\\exceptionlog.txt for more detailed information)", "Communication failure",
+                        "(See " + Globals.AppDataDir + "Logging\\exceptionlog.txt for more detailed information)", "Communication failure",
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 try { Ping("www.eve-central.com"); }
@@ -1542,7 +1542,7 @@ namespace EveMarketMonitorApp.GUIElements
                     Globals.EveCentralDown = true;
                     MessageBox.Show("Failed to contact eve-central.\r\n" +
                         "Price updates from eve-central will be disabled until EMMA is restarted.\r\n" +
-                        "(See logging\\exceptionlog.txt for more detailed information)", "Communication failure",
+                        "(See " + Globals.AppDataDir + "Logging\\ExceptionLog.txt for more detailed information)", "Communication failure",
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 try { Ping("www.eve-metrics.com"); }
@@ -1551,7 +1551,7 @@ namespace EveMarketMonitorApp.GUIElements
                     Globals.EveMetricsDown = true;
                     MessageBox.Show("Failed to contact eve-metrics.\r\n" +
                         "Price updates from eve-metrics will be disabled until EMMA is restarted.\r\n" +
-                        "(See logging\\exceptionlog.txt for more detailed information)", "Communication failure",
+                        "(See " + Globals.AppDataDir + "Logging\\ExceptionLog.txt for more detailed information)", "Communication failure",
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
@@ -1584,7 +1584,7 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     MessageBox.Show("Failed to contact any auto-update server.\r\n" +
                         "EMMA will be unable to update until it is restarted.\r\n" +
-                        "(See logging\\exceptionlog.txt for more detailed information)", "Communication failure",
+                        "(See " + Globals.AppDataDir + "Logging\\ExceptionLog.txt for more detailed information)", "Communication failure",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
