@@ -159,7 +159,7 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     emmaex = new EMMAException(ExceptionSeverity.Critical, "Error setting up journal form", ex);
                 }
-                MessageBox.Show("Problem setting up journal view.\r\nCheck \\Logging\\ExceptionLog.txt" +
+                MessageBox.Show("Problem setting up journal view.\r\nCheck " + Globals.AppDataDir + "Logging\\ExceptionLog.txt" +
                     " for details.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

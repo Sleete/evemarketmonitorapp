@@ -132,7 +132,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
         
         static public EveDataSet.invTypesDataTable GetItemsTraded(List<FinanceAccessParams> accessList, int minTrans)
         {
-            return GetItemsTraded(accessList, minTrans, 0, 0, new List<int>(), new List<int>(), 
+            List<int> buyStations = new List<int>();
+            buyStations.Add(0);
+            List<int> sellStations = new List<int>();
+            sellStations.Add(0);
+            return GetItemsTraded(accessList, minTrans, 0, 0, buyStations, sellStations, 
                 new DateTime(1990, 1, 1));
         }
 

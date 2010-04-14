@@ -11,6 +11,7 @@ using System.Net;
 using System.Diagnostics;
 using System.Threading;
 
+
 namespace AutoUpdater
 {
     public partial class Form1 : Form
@@ -32,7 +33,8 @@ namespace AutoUpdater
         private static bool _done = false;
 
         delegate void UpdateViewCallback();
-        
+
+
 
         public Form1(string homeDirectory, string server, bool betaUpdates)
         {
@@ -111,6 +113,8 @@ namespace AutoUpdater
 
         private void DoUpdate()
         {
+            // wait for half a second to allow the form to finish loading 
+            Thread.Sleep(500);
             try
             {
                 bool error = false;
@@ -133,17 +137,20 @@ namespace AutoUpdater
 
                 if (!error)
                 {
-                    MessageBox.Show("Update completed successfully, EMMA will now restart.", "Success",
+                    MessageBox.Show("Update completed successfully. Please restart EMMA.", "Success",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    MessageBox.Show("Update was not sucessfull, EMMA will now restart.", "Fail",
+                    MessageBox.Show("Update was not sucessfull. Please restart EMMA.", "Fail",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-
+                
+                /*UserAccountControl.CreateProcessAsStandardUser(
+                    _homeDir + Path.DirectorySeparatorChar + "EveMarketMonitorApp.exe",
+                    @"/u False");
                 Process p2 = Process.Start(_homeDir + Path.DirectorySeparatorChar + "EveMarketMonitorApp.exe",
-                    "/u False");
+                    "/u False");*/
             }
             catch (Exception ex)
             {
@@ -316,8 +323,11 @@ namespace AutoUpdater
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            Process p2 = Process.Start(_homeDir + Path.DirectorySeparatorChar + "EveMarketMonitorApp.exe",
-                "/u False");
+            /*UserAccountControl.CreateProcessAsStandardUser(
+                _homeDir + Path.DirectorySeparatorChar + "EveMarketMonitorApp.exe",
+                @"/u False");*/
+            /*Process p2 = Process.Start(_homeDir + Path.DirectorySeparatorChar + "EveMarketMonitorApp.exe",
+                "/u False");*/
             this.Close();
         }
 
@@ -328,6 +338,7 @@ namespace AutoUpdater
             Thread t1 = new Thread(new ThreadStart(DoUpdate));
             t1.Start();
         }
+
 
     }
 }

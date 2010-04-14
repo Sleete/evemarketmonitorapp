@@ -96,16 +96,20 @@ namespace EveMarketMonitorApp.GUIElements
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             string exeFile = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "AutoUpdater.exe";
-            if (File.Exists(exeFile))
+            //string uacHelper = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + 
+            //    "UacHelpers.UserAccountControl.dll";
+            if (File.Exists(exeFile))// && File.Exists(uacHelper))
             {
                 string tmpDir = Globals.AppDataDir + "Update";
                 string exeTmp = tmpDir + Path.DirectorySeparatorChar + "AutoUpdater.exe";
+                //string uacHelperTmp = tmpDir + Path.DirectorySeparatorChar + "UacHelpers.UserAccountControl.dll";
                 if (Directory.Exists(tmpDir))
                 {
                     Directory.Delete(tmpDir, true);
                 }
                 Directory.CreateDirectory(tmpDir);
                 File.Copy(exeFile, exeTmp);
+                //File.Copy(uacHelper, uacHelperTmp);
 
                 string parameters = "/p " + System.Diagnostics.Process.GetCurrentProcess().Id +
                     " /s " + Globals.EMMAUpdateServer +
@@ -113,7 +117,11 @@ namespace EveMarketMonitorApp.GUIElements
                     " /h \"" + AppDomain.CurrentDomain.BaseDirectory + "\"";
                 try
                 {
-                    System.Diagnostics.Process updateProcess = System.Diagnostics.Process.Start(exeTmp, parameters);
+                    ProcessStartInfo updateProcessInfo = new ProcessStartInfo();
+                    //updateProcessInfo.Verb = "runas";
+                    updateProcessInfo.FileName = exeTmp;
+                    updateProcessInfo.Arguments = parameters;
+                    System.Diagnostics.Process updateProcess = System.Diagnostics.Process.Start(updateProcessInfo);
                     while (!updateProcess.HasExited) { }
                 }
                 catch (Win32Exception ex)
@@ -235,7 +243,7 @@ namespace EveMarketMonitorApp.GUIElements
             string subpath = (subpathnode == null ? "" : subpathnode.Value + Path.DirectorySeparatorChar);
             _fullPath = homeDir + subpath + _name;
             // Eve Data files need to go in the user's applciation directory location instead.
-            if (_name.Equals("EveData.mdf") || _name.Equals("EveData_log.ldf"))
+            if (_name.ToUpper().Equals("EVEDATA.MDF") || _name.ToUpper().Equals("EVEDATA_LOG.LDF"))
             {
                 _fullPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                     Path.DirectorySeparatorChar + "EMMA" + Path.DirectorySeparatorChar + subpath + _name;

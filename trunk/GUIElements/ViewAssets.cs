@@ -133,7 +133,7 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     emmaex = new EMMAException(ExceptionSeverity.Critical, "Error setting up assets form", ex);
                 }
-                MessageBox.Show("Problem setting up assets view.\r\nCheck \\Logging\\ExceptionLog.txt" +
+                MessageBox.Show("Problem setting up assets view.\r\nCheck " + Globals.AppDataDir + "Logging\\ExceptionLog.txt" +
                     " for details.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 

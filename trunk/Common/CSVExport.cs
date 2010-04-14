@@ -143,7 +143,7 @@ namespace EveMarketMonitorApp.Common
                 {
                     emmaex = new EMMAException(ExceptionSeverity.Error, "Error exporting to CSV", ex);
                 }
-                UpdateStatus(0, 0, "Error", "Problem exporting to CSV.\r\nCheck \\Logging\\ExceptionLog.txt" +
+                UpdateStatus(0, 0, "Error", "Problem exporting to CSV.\r\nCheck " + Globals.AppDataDir + "Logging\\ExceptionLog.txt" +
                     " for details.", true);
             }
         }

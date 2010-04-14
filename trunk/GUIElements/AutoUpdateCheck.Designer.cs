@@ -91,6 +91,7 @@
             this.Controls.Add(this.lblInfo);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AutoUpdateCheck";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Auto-Update Check";
             this.Load += new System.EventHandler(this.AutoUpdateCheck_Load);
             this.ResumeLayout(false);
