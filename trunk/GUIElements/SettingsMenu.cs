@@ -138,5 +138,12 @@ namespace EveMarketMonitorApp.GUIElements
             settings.ShowDialog();
         }
 
+        private void btnTradedItems_Click(object sender, EventArgs e)
+        {
+            if (_cp != null) { _cp.Focus(); }
+            TradedItemsManager settings = new TradedItemsManager();
+            settings.ShowDialog();
+        }
+
     }
 }

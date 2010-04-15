@@ -284,7 +284,7 @@ namespace EveMarketMonitorApp.GUIElements
 
             if (Directory.Exists(string.Format("{0}Temp", Globals.AppDataDir)))
             {
-                Directory.Delete(string.Format("{0}Temp", Globals.AppDataDir));
+                Directory.Delete(string.Format("{0}Temp", Globals.AppDataDir), true);
             }
             Directory.CreateDirectory(string.Format("{0}Temp", Globals.AppDataDir));
 

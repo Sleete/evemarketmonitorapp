@@ -721,9 +721,24 @@ namespace EveMarketMonitorApp.DatabaseClasses
             bool excludeContainers)
         {
             EMMADataSet.AssetsDataTable retVal = new EMMADataSet.AssetsDataTable();
+
+            List<int> itemIDs = new List<int>();
+            if (itemIDs == null || itemIDs.Count == 0) { itemIDs = new List<int>(); itemIDs.Add(0); }
+            if (UserAccount.CurrentGroup.Settings.AutoCon_TradedItems)
+            {
+                itemIDs = UserAccount.CurrentGroup.TradedItems.GetAllItemIDs();
+            }
+            StringBuilder itemsString = new StringBuilder("");
+            foreach (int itemID in itemIDs)
+            {
+                if (itemsString.Length > 0) { itemsString.Append(","); }
+                itemsString.Append(itemID);
+            }
+            
             lock (assetsTableAdapter)
             {
-                assetsTableAdapter.FillByAutoCon(retVal, charID, corpAssets, stationID, excludeContainers);
+                assetsTableAdapter.FillByAutoCon(retVal, charID, corpAssets, stationID, 
+                    itemsString.ToString(), excludeContainers);
             }
             return retVal;
         }
@@ -750,11 +765,24 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 stationsString.Append(stationID);
             }
 
+            List<int> itemIDs = new List<int>();
+            if (itemIDs == null || itemIDs.Count == 0) { itemIDs = new List<int>(); itemIDs.Add(0); }
+            if (UserAccount.CurrentGroup.Settings.AutoCon_TradedItems)
+            {
+                itemIDs = UserAccount.CurrentGroup.TradedItems.GetAllItemIDs();
+            }
+            StringBuilder itemsString = new StringBuilder("");
+            foreach (int itemID in itemIDs)
+            {
+                if (itemsString.Length > 0) { itemsString.Append(","); }
+                itemsString.Append(itemID);
+            }            
+
             EMMADataSet.AssetsDataTable retVal = new EMMADataSet.AssetsDataTable();
             lock (assetsTableAdapter)
             {
                 assetsTableAdapter.FillByAutoConAny(retVal, charID, corpAssets, stationsString.ToString(),
-                    regionsString.ToString(), excludeContainers);
+                    regionsString.ToString(), itemsString.ToString(), excludeContainers);
             }
             return retVal;
         }

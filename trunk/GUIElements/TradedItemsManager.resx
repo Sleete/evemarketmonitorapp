@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="textBox2.Text" xml:space="preserve">
-    <value>This list of items is used to build the Item Report, list of items in the Item Detail screen and a few similar places. 
+    <value>This list of items is used to build the Item Report and the list of items in the Item Detail screen. It is also used by the auto contractor to determine which items are processed. 
 Add to the list by typing in an item name or part of an item name in the box below. Remove items from the list by selecting them and pressing the delete key.
 The 'Auto Add' button will add any items that meet the requirements defined in 'Auto Add Config'.</value>
   </data>

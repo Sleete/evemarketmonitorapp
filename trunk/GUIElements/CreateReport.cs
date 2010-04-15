@@ -195,6 +195,7 @@ namespace EveMarketMonitorApp.GUIElements
                     Thread t1 = new Thread(BuildReport);
                     t1.SetApartmentState(ApartmentState.STA);
                     ProgressDialog prgDialog = new ProgressDialog("Building Report...", reportToRun);
+                    Thread.Sleep(100);
                     t1.Start();
                     if (prgDialog.ShowDialog() == DialogResult.OK)
                     {

@@ -12,6 +12,7 @@ namespace EveMarketMonitorApp.Reporting
     class ItemReport : ReportBase
     {
         private bool _byItemGroup;
+        private bool _tradedItemsOnly;
         private EveDataSet.invMarketGroupsDataTable _marketGroups = new EveDataSet.invMarketGroupsDataTable();
         private static string[] _allColumnNames = { "Average Buy Price", "Average Sell Price", 
             "Units Bought", "Units Sold", "Cost Of Units Sold",
@@ -28,7 +29,7 @@ namespace EveMarketMonitorApp.Reporting
             _title = "Item Report";
             _allowSort = !byGroup;
 
-            _expectedParams = new string[9];
+            _expectedParams = new string[10];
             _expectedParams[0] = "StartDate";
             _expectedParams[1] = "EndDate";
             _expectedParams[2] = "RegionIDs";
@@ -38,6 +39,7 @@ namespace EveMarketMonitorApp.Reporting
             _expectedParams[6] = "UseMostRecentBuyPrice";
             _expectedParams[7] = "FinanceAccessParams";
             _expectedParams[8] = "AssetAccessParams";
+            _expectedParams[9] = "TradedItemsOnly";
 
             _byItemGroup = byGroup;
         }
@@ -58,6 +60,16 @@ namespace EveMarketMonitorApp.Reporting
                 // Note that an additonal root section 'Non-market items' may be added during
                 // GetDataFromDatabase if it is required.
                 List<int> itemIDs = Items.GetItemIDsWithTransactions(_financeAccessParams);
+                List<int> tmpItemIDs = new List<int>();
+                if (_tradedItemsOnly)
+                {
+                    List<int> tradedItemIDs = UserAccount.CurrentGroup.TradedItems.GetAllItemIDs();
+                    foreach (int itemID in itemIDs)
+                    {
+                        if (tradedItemIDs.Contains(itemID)) { tmpItemIDs.Add(itemID); }
+                    }
+                    itemIDs = tmpItemIDs;
+                }
                 _marketGroups = MarketGroups.GetGroupsForItems(itemIDs);
                 DataRow[] rootGroups = _marketGroups.Select("parentGroupID IS null");
                 int counter = 0;
@@ -167,6 +179,7 @@ namespace EveMarketMonitorApp.Reporting
                         _financeAccessParams = (List<FinanceAccessParams>)paramValue;
                     if (_expectedParams[i].Equals("AssetAccessParams"))
                         _assetAccessParams = (List<AssetAccessParams>)paramValue;
+                    if (_expectedParams[i].Equals("TradedItemsOnly")) _tradedItemsOnly = (bool)paramValue;
                 }
             }
             catch (Exception)
@@ -436,7 +449,6 @@ namespace EveMarketMonitorApp.Reporting
                     }
                 }
             }
-
         }
 
 

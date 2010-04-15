@@ -72,6 +72,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.rpt_TitleFont);
             GetValue(Setting.autoAddItemsBy);
             GetValue(Setting.autoAddMin);
+            GetValue(Setting.autoAddBuyMin);
+            GetValue(Setting.autoAddSellMin);
+            GetValue(Setting.autoAddStartDate);
+            GetValue(Setting.autoAddBuyStations);
+            GetValue(Setting.autoAddSellStations);
             GetValue(Setting.autocon_allowStackSplitting);
             GetValue(Setting.autocon_destinationStation);
             GetValue(Setting.autocon_pickupLocations);
@@ -81,6 +86,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.autocon_minReward);
             GetValue(Setting.autocon_minVolume);
             GetValue(Setting.autocon_excludeContainers);
+            GetValue(Setting.autocon_tradedItems);
             GetValue(Setting.collateralBasedOn);
             GetValue(Setting.collateralPercentage);
             GetValue(Setting.rewardBasedOn);
@@ -227,9 +233,30 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 case Setting.autoAddMin:
                     retVal = "10";
                     break;
+                case Setting.autoAddBuyMin:
+                    retVal = "0";
+                    break;
+                case Setting.autoAddSellMin:
+                    retVal = "0";
+                    break;
+                case Setting.autoAddStartDate:
+                    retVal = (UserAccount.Settings.UseLocalTimezone ? 
+                        DateTime.Now.Subtract(new TimeSpan(14, 0, 0, 0)) :
+                        DateTime.UtcNow.Subtract(new TimeSpan(14, 0, 0, 0))).ToString(
+                        System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                    break;
+                case Setting.autoAddBuyStations:
+                    retVal = "";
+                    break;
+                case Setting.autoAddSellStations:
+                    retVal = "";
+                    break;
                 // Courier contract settings
                 case Setting.autocon_allowStackSplitting:
                     retVal = bool.TrueString;
+                    break;
+                case Setting.autocon_tradedItems:
+                    retVal = bool.FalseString;
                     break;
                 case Setting.autocon_destinationStation:
                     retVal = "60003760";
@@ -628,7 +655,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set { SetValue(Setting.ordersNotifySell, value.ToString()); }
         }
         #endregion
-        #region Contractor Settings
+        #region Traded items auto add settings
         public string AutoAddItemsBy
         {
             get { return GetValue(Setting.autoAddItemsBy); }
@@ -648,7 +675,107 @@ namespace EveMarketMonitorApp.DatabaseClasses
                   value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
             }
         }
-
+        public int AutoAddBuyMin
+        {
+            get
+            {
+                return int.Parse(GetValue(Setting.autoAddBuyMin),
+                  System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            }
+            set
+            {
+                SetValue(Setting.autoAddBuyMin,
+                  value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
+            }
+        }
+        public int AutoAddSellMin
+        {
+            get
+            {
+                return int.Parse(GetValue(Setting.autoAddSellMin),
+                  System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            }
+            set
+            {
+                SetValue(Setting.autoAddSellMin,
+                  value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
+            }
+        }
+        public DateTime AutoAddStartDate
+        {
+            get
+            {
+                return DateTime.Parse(GetValue(Setting.autoAddStartDate),
+                  System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+            }
+            set
+            {
+                SetValue(Setting.autoAddStartDate,
+                  value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
+            }
+        }
+        public List<int> AutoAddBuyStations
+        {
+            get
+            {
+                List<int> retVal = new List<int>();
+                string textList = GetValue(Setting.autoAddBuyStations);
+                char[] delim = { '|' };
+                string[] stations = textList.Split(delim);
+                foreach(string station in stations) 
+                {
+                    if (station.Trim().Length > 0)
+                    {
+                        retVal.Add(int.Parse(station,
+                            System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
+                    }
+                }
+                return retVal;
+            }
+            set
+            {
+                StringBuilder newList = new StringBuilder();
+                foreach (int station in value)
+                {
+                    if (newList.ToString().Length != 0) { newList.Append("|"); }
+                    newList.Append(station.ToString(
+                        System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
+                }
+                SetValue(Setting.autoAddBuyStations, newList.ToString());
+            }
+        }
+        public List<int> AutoAddSellStations
+        {
+            get
+            {
+                List<int> retVal = new List<int>();
+                string textList = GetValue(Setting.autoAddSellStations);
+                char[] delim = { '|' };
+                string[] stations = textList.Split(delim);
+                foreach(string station in stations) 
+                {
+                    if (station.Trim().Length > 0)
+                    {
+                        retVal.Add(int.Parse(station,
+                            System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
+                    }
+                }
+                return retVal;
+            }
+            set
+            {
+                StringBuilder newList = new StringBuilder();
+                foreach (int station in value)
+                {
+                    if (newList.ToString().Length != 0) { newList.Append("|"); }
+                    newList.Append(station.ToString(
+                        System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
+                }
+                SetValue(Setting.autoAddSellStations, newList.ToString());
+            }
+        }
+        #endregion
+        #region Contractor Settings
         public bool AutoCon_AllowStackSplitting
         {
             get { return bool.Parse(GetValue(Setting.autocon_allowStackSplitting)); }
@@ -658,6 +785,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             get { return bool.Parse(GetValue(Setting.autocon_excludeContainers)); }
             set { SetValue(Setting.autocon_excludeContainers, value.ToString()); }
+        }
+        public bool AutoCon_TradedItems
+        {
+            get { return bool.Parse(GetValue(Setting.autocon_tradedItems)); }
+            set { SetValue(Setting.autocon_tradedItems, value.ToString()); }
         }
         public int AutoCon_DestiantionStation
         {
@@ -1522,7 +1654,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
             reproc_spodumainprocessing,
             reproc_veldsparprocessing,
             reproc_reprocessor,
-            useEveMetrics
+            useEveMetrics,
+            autoAddBuyMin,
+            autoAddSellMin,
+            autoAddStartDate,
+            autoAddBuyStations,
+            autoAddSellStations,
+            autocon_tradedItems
         }
 
 

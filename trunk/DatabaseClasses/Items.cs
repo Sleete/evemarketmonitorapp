@@ -144,7 +144,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             int minBuy, int minSell, List<int> buyStations, List<int> sellStations, DateTime startDate)
         {
             StringBuilder itemIDs = new StringBuilder("");
-            EMMADataSet.IDTableDataTable idTable = Transactions.GetInvolvedItemIDs(accessList, minTrans);
+            DateTime endData = DateTime.UtcNow.Add(new TimeSpan(1, 0, 0, 0));
+            EMMADataSet.IDTableDataTable idTable = Transactions.GetInvolvedItemIDs(accessList, minTrans, startDate,
+                DateTime.UtcNow, minBuy, minSell, buyStations, sellStations);
             foreach (EMMADataSet.IDTableRow id in idTable)
             {
                 itemIDs.Append(" ");

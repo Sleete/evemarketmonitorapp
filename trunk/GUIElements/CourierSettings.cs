@@ -101,6 +101,7 @@ namespace EveMarketMonitorApp.GUIElements
             cmbPickupLocation.SelectedItem = _settings.AutoCon_PickupLocations; 
             chkSplitStack.Checked = _settings.AutoCon_AllowStackSplitting;
             chkExcludeContainers.Checked = _settings.AutoCon_ExcludeContainers;
+            chkTradedItems.Checked = _settings.AutoCon_TradedItems;
 
             txtExampleJumps.Tag = new TagData(TagDataType.Numeric, 5);
             txtExamplePurchase.Tag = new TagData(TagDataType.IskAmount, 70000000);
@@ -181,6 +182,7 @@ namespace EveMarketMonitorApp.GUIElements
             }
             _settings.AutoCon_AllowStackSplitting = chkSplitStack.Checked;
             _settings.AutoCon_ExcludeContainers = chkExcludeContainers.Checked;
+            _settings.AutoCon_TradedItems = chkTradedItems.Checked;
 
             EveMarketMonitorApp.Properties.Settings.Default.Save();
         }
@@ -375,6 +377,11 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 helpText = "Enter example values in order to calculate collateral/reward with the" +
                     " currenct settings";
+            }
+            if (field == chkTradedItems)
+            {
+                helpText = "Include only traded items: If enabled, the auto contractor will only create contracts " +
+                    "for items that are on the list of traded items (configure this list in settings->traded items)";
             }
 
             lblFieldText.Text = helpText;
