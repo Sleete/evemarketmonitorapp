@@ -34,7 +34,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 int counter = 0;
                 //long nextID = long.MaxValue;
 
-                ItemValues itemsTraded = UserAccount.CurrentGroup.ItemValues;
+                ItemValues itemValues = UserAccount.CurrentGroup.ItemValues;
                 decimal collateralPerc = UserAccount.CurrentGroup.Settings.CollateralPercentage;
                 decimal minCollateral = UserAccount.CurrentGroup.Settings.AutoCon_MinCollateral * 0.95m;
                 decimal minReward = UserAccount.CurrentGroup.Settings.AutoCon_MinReward * 0.95m;
@@ -98,7 +98,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         }
 
                         // increase the rough totals counters for each asset at this station.
-                        collateralTotal += itemsTraded.GetItemValue(asset.ItemID) * asset.Quantity;
+                        collateralTotal += itemValues.GetItemValue(asset.ItemID) * asset.Quantity;
                         volumeTotal += (decimal)(asset.Quantity * Items.GetItemVolume(asset.ItemID));
                         stationID = asset.LocationID;
                     }

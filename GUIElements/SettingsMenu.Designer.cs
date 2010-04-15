@@ -41,6 +41,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnAutoUpdateSettings = new System.Windows.Forms.Button();
             this.btnAPIUpdateSettings = new System.Windows.Forms.Button();
             this.btnReprocessSettings = new System.Windows.Forms.Button();
+            this.btnTradedItems = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnReportStyleSettings
@@ -68,7 +69,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnStandings
             // 
-            this.btnStandings.Location = new System.Drawing.Point(12, 273);
+            this.btnStandings.Location = new System.Drawing.Point(11, 302);
             this.btnStandings.Name = "btnStandings";
             this.btnStandings.Size = new System.Drawing.Size(140, 23);
             this.btnStandings.TabIndex = 2;
@@ -79,7 +80,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnCourierSettings
             // 
-            this.btnCourierSettings.Location = new System.Drawing.Point(12, 70);
+            this.btnCourierSettings.Location = new System.Drawing.Point(11, 99);
             this.btnCourierSettings.Name = "btnCourierSettings";
             this.btnCourierSettings.Size = new System.Drawing.Size(140, 23);
             this.btnCourierSettings.TabIndex = 3;
@@ -90,7 +91,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnLocations
             // 
-            this.btnLocations.Location = new System.Drawing.Point(12, 99);
+            this.btnLocations.Location = new System.Drawing.Point(11, 128);
             this.btnLocations.Name = "btnLocations";
             this.btnLocations.Size = new System.Drawing.Size(140, 23);
             this.btnLocations.TabIndex = 4;
@@ -101,7 +102,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnOrderNotifySettings
             // 
-            this.btnOrderNotifySettings.Location = new System.Drawing.Point(12, 128);
+            this.btnOrderNotifySettings.Location = new System.Drawing.Point(11, 157);
             this.btnOrderNotifySettings.Name = "btnOrderNotifySettings";
             this.btnOrderNotifySettings.Size = new System.Drawing.Size(140, 23);
             this.btnOrderNotifySettings.TabIndex = 5;
@@ -112,7 +113,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnAutopilot
             // 
-            this.btnAutopilot.Location = new System.Drawing.Point(12, 186);
+            this.btnAutopilot.Location = new System.Drawing.Point(11, 215);
             this.btnAutopilot.Name = "btnAutopilot";
             this.btnAutopilot.Size = new System.Drawing.Size(140, 23);
             this.btnAutopilot.TabIndex = 6;
@@ -123,7 +124,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnAutoUpdateSettings
             // 
-            this.btnAutoUpdateSettings.Location = new System.Drawing.Point(12, 244);
+            this.btnAutoUpdateSettings.Location = new System.Drawing.Point(11, 273);
             this.btnAutoUpdateSettings.Name = "btnAutoUpdateSettings";
             this.btnAutoUpdateSettings.Size = new System.Drawing.Size(140, 23);
             this.btnAutoUpdateSettings.TabIndex = 7;
@@ -134,7 +135,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnAPIUpdateSettings
             // 
-            this.btnAPIUpdateSettings.Location = new System.Drawing.Point(12, 157);
+            this.btnAPIUpdateSettings.Location = new System.Drawing.Point(11, 186);
             this.btnAPIUpdateSettings.Name = "btnAPIUpdateSettings";
             this.btnAPIUpdateSettings.Size = new System.Drawing.Size(140, 23);
             this.btnAPIUpdateSettings.TabIndex = 8;
@@ -145,7 +146,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnReprocessSettings
             // 
-            this.btnReprocessSettings.Location = new System.Drawing.Point(12, 215);
+            this.btnReprocessSettings.Location = new System.Drawing.Point(11, 244);
             this.btnReprocessSettings.Name = "btnReprocessSettings";
             this.btnReprocessSettings.Size = new System.Drawing.Size(140, 23);
             this.btnReprocessSettings.TabIndex = 9;
@@ -154,11 +155,24 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnReprocessSettings.UseVisualStyleBackColor = true;
             this.btnReprocessSettings.Click += new System.EventHandler(this.btnReprocessSettings_Click);
             // 
+            // btnTradedItems
+            // 
+            this.btnTradedItems.Location = new System.Drawing.Point(12, 70);
+            this.btnTradedItems.Name = "btnTradedItems";
+            this.btnTradedItems.Size = new System.Drawing.Size(140, 23);
+            this.btnTradedItems.TabIndex = 10;
+            this.btnTradedItems.Text = "Traded Items";
+            this.toolTip1.SetToolTip(this.btnTradedItems, "Configure the list of traded items. This is used by the item detail screen, auto " +
+                    "contractor, etc");
+            this.btnTradedItems.UseVisualStyleBackColor = true;
+            this.btnTradedItems.Click += new System.EventHandler(this.btnTradedItems_Click);
+            // 
             // SettingsMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(163, 308);
+            this.ClientSize = new System.Drawing.Size(163, 337);
+            this.Controls.Add(this.btnTradedItems);
             this.Controls.Add(this.btnReprocessSettings);
             this.Controls.Add(this.btnAPIUpdateSettings);
             this.Controls.Add(this.btnAutoUpdateSettings);
@@ -190,5 +204,6 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.Button btnAutoUpdateSettings;
         private System.Windows.Forms.Button btnAPIUpdateSettings;
         private System.Windows.Forms.Button btnReprocessSettings;
+        private System.Windows.Forms.Button btnTradedItems;
     }
 }

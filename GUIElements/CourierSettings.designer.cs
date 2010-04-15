@@ -93,6 +93,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtExamplePurchase = new System.Windows.Forms.TextBox();
             this.txtExampleSale = new System.Windows.Forms.TextBox();
             this.lblExample = new System.Windows.Forms.Label();
+            this.chkTradedItems = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -134,8 +135,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtVolumePerc.Name = "txtVolumePerc";
             this.txtVolumePerc.Size = new System.Drawing.Size(159, 20);
             this.txtVolumePerc.TabIndex = 7;
-            this.txtVolumePerc.Enter += new System.EventHandler(this.field_Enter);
             this.txtVolumePerc.Leave += new System.EventHandler(this.field_Leave);
+            this.txtVolumePerc.Enter += new System.EventHandler(this.field_Enter);
             // 
             // label13
             // 
@@ -152,8 +153,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtMinPerc.Name = "txtMinPerc";
             this.txtMinPerc.Size = new System.Drawing.Size(159, 20);
             this.txtMinPerc.TabIndex = 4;
-            this.txtMinPerc.Enter += new System.EventHandler(this.field_Enter);
             this.txtMinPerc.Leave += new System.EventHandler(this.field_Leave);
+            this.txtMinPerc.Enter += new System.EventHandler(this.field_Enter);
             // 
             // label6
             // 
@@ -170,8 +171,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtLowSecPerc.Name = "txtLowSecPerc";
             this.txtLowSecPerc.Size = new System.Drawing.Size(159, 20);
             this.txtLowSecPerc.TabIndex = 8;
-            this.txtLowSecPerc.Enter += new System.EventHandler(this.field_Enter);
             this.txtLowSecPerc.Leave += new System.EventHandler(this.field_Leave);
+            this.txtLowSecPerc.Enter += new System.EventHandler(this.field_Enter);
             // 
             // txtJumpPerc
             // 
@@ -179,8 +180,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtJumpPerc.Name = "txtJumpPerc";
             this.txtJumpPerc.Size = new System.Drawing.Size(159, 20);
             this.txtJumpPerc.TabIndex = 6;
-            this.txtJumpPerc.Enter += new System.EventHandler(this.field_Enter);
             this.txtJumpPerc.Leave += new System.EventHandler(this.field_Leave);
+            this.txtJumpPerc.Enter += new System.EventHandler(this.field_Enter);
             // 
             // lblLowSecPerc
             // 
@@ -215,8 +216,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtMaxPerc.Name = "txtMaxPerc";
             this.txtMaxPerc.Size = new System.Drawing.Size(159, 20);
             this.txtMaxPerc.TabIndex = 5;
-            this.txtMaxPerc.Enter += new System.EventHandler(this.field_Enter);
             this.txtMaxPerc.Leave += new System.EventHandler(this.field_Leave);
+            this.txtMaxPerc.Enter += new System.EventHandler(this.field_Enter);
             // 
             // rdbProfit
             // 
@@ -228,8 +229,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.rdbProfit.TabStop = true;
             this.rdbProfit.Text = "Expected profit";
             this.rdbProfit.UseVisualStyleBackColor = true;
-            this.rdbProfit.Enter += new System.EventHandler(this.field_Enter);
             this.rdbProfit.Leave += new System.EventHandler(this.field_Leave);
+            this.rdbProfit.Enter += new System.EventHandler(this.field_Enter);
             // 
             // rdbCollateral
             // 
@@ -241,8 +242,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.rdbCollateral.TabStop = true;
             this.rdbCollateral.Text = "Collateral";
             this.rdbCollateral.UseVisualStyleBackColor = true;
-            this.rdbCollateral.Enter += new System.EventHandler(this.field_Enter);
             this.rdbCollateral.Leave += new System.EventHandler(this.field_Leave);
+            this.rdbCollateral.Enter += new System.EventHandler(this.field_Enter);
             // 
             // label3
             // 
@@ -259,8 +260,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtMinReward.Name = "txtMinReward";
             this.txtMinReward.Size = new System.Drawing.Size(159, 20);
             this.txtMinReward.TabIndex = 2;
-            this.txtMinReward.Enter += new System.EventHandler(this.field_Enter);
             this.txtMinReward.Leave += new System.EventHandler(this.field_Leave);
+            this.txtMinReward.Enter += new System.EventHandler(this.field_Enter);
             // 
             // txtMaxReward
             // 
@@ -268,8 +269,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtMaxReward.Name = "txtMaxReward";
             this.txtMaxReward.Size = new System.Drawing.Size(159, 20);
             this.txtMaxReward.TabIndex = 3;
-            this.txtMaxReward.Enter += new System.EventHandler(this.field_Enter);
             this.txtMaxReward.Leave += new System.EventHandler(this.field_Leave);
+            this.txtMaxReward.Enter += new System.EventHandler(this.field_Enter);
             // 
             // label2
             // 
@@ -309,8 +310,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtCollateralPerc.Name = "txtCollateralPerc";
             this.txtCollateralPerc.Size = new System.Drawing.Size(156, 20);
             this.txtCollateralPerc.TabIndex = 2;
-            this.txtCollateralPerc.Enter += new System.EventHandler(this.field_Enter);
             this.txtCollateralPerc.Leave += new System.EventHandler(this.field_Leave);
+            this.txtCollateralPerc.Enter += new System.EventHandler(this.field_Enter);
             // 
             // label5
             // 
@@ -331,8 +332,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.rdbBuy.TabStop = true;
             this.rdbBuy.Text = "Purchase price";
             this.rdbBuy.UseVisualStyleBackColor = true;
-            this.rdbBuy.Enter += new System.EventHandler(this.field_Enter);
             this.rdbBuy.Leave += new System.EventHandler(this.field_Leave);
+            this.rdbBuy.Enter += new System.EventHandler(this.field_Enter);
             // 
             // rdbSell
             // 
@@ -344,8 +345,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.rdbSell.TabStop = true;
             this.rdbSell.Text = "Estimated sale price";
             this.rdbSell.UseVisualStyleBackColor = true;
-            this.rdbSell.Enter += new System.EventHandler(this.field_Enter);
             this.rdbSell.Leave += new System.EventHandler(this.field_Leave);
+            this.rdbSell.Enter += new System.EventHandler(this.field_Enter);
             // 
             // label4
             // 
@@ -382,6 +383,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.chkTradedItems);
             this.groupBox3.Controls.Add(this.btnModifyLocation);
             this.groupBox3.Controls.Add(this.btnNewLocation);
             this.groupBox3.Controls.Add(this.cmbPickupLocation);
@@ -447,7 +449,7 @@ namespace EveMarketMonitorApp.GUIElements
             // chkExcludeContainers
             // 
             this.chkExcludeContainers.AutoSize = true;
-            this.chkExcludeContainers.Location = new System.Drawing.Point(115, 291);
+            this.chkExcludeContainers.Location = new System.Drawing.Point(37, 291);
             this.chkExcludeContainers.Name = "chkExcludeContainers";
             this.chkExcludeContainers.Size = new System.Drawing.Size(190, 17);
             this.chkExcludeContainers.TabIndex = 18;
@@ -460,8 +462,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtAutoMinVolume.Name = "txtAutoMinVolume";
             this.txtAutoMinVolume.Size = new System.Drawing.Size(190, 20);
             this.txtAutoMinVolume.TabIndex = 2;
-            this.txtAutoMinVolume.Enter += new System.EventHandler(this.field_Enter);
             this.txtAutoMinVolume.Leave += new System.EventHandler(this.field_Leave);
+            this.txtAutoMinVolume.Enter += new System.EventHandler(this.field_Enter);
             // 
             // label12
             // 
@@ -475,14 +477,14 @@ namespace EveMarketMonitorApp.GUIElements
             // chkSplitStack
             // 
             this.chkSplitStack.AutoSize = true;
-            this.chkSplitStack.Location = new System.Drawing.Point(115, 268);
+            this.chkSplitStack.Location = new System.Drawing.Point(37, 268);
             this.chkSplitStack.Name = "chkSplitStack";
             this.chkSplitStack.Size = new System.Drawing.Size(123, 17);
             this.chkSplitStack.TabIndex = 6;
             this.chkSplitStack.Text = "Allow splitting stacks";
             this.chkSplitStack.UseVisualStyleBackColor = true;
-            this.chkSplitStack.Enter += new System.EventHandler(this.field_Enter);
             this.chkSplitStack.Leave += new System.EventHandler(this.field_Leave);
+            this.chkSplitStack.Enter += new System.EventHandler(this.field_Enter);
             // 
             // cmbAutoStation
             // 
@@ -511,8 +513,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtAutoMaxVolume.Name = "txtAutoMaxVolume";
             this.txtAutoMaxVolume.Size = new System.Drawing.Size(190, 20);
             this.txtAutoMaxVolume.TabIndex = 4;
-            this.txtAutoMaxVolume.Enter += new System.EventHandler(this.field_Enter);
             this.txtAutoMaxVolume.Leave += new System.EventHandler(this.field_Leave);
+            this.txtAutoMaxVolume.Enter += new System.EventHandler(this.field_Enter);
             // 
             // label11
             // 
@@ -529,8 +531,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtAutoMaxCollateral.Name = "txtAutoMaxCollateral";
             this.txtAutoMaxCollateral.Size = new System.Drawing.Size(190, 20);
             this.txtAutoMaxCollateral.TabIndex = 3;
-            this.txtAutoMaxCollateral.Enter += new System.EventHandler(this.field_Enter);
             this.txtAutoMaxCollateral.Leave += new System.EventHandler(this.field_Leave);
+            this.txtAutoMaxCollateral.Enter += new System.EventHandler(this.field_Enter);
             // 
             // txtAutoMinReward
             // 
@@ -538,8 +540,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtAutoMinReward.Name = "txtAutoMinReward";
             this.txtAutoMinReward.Size = new System.Drawing.Size(190, 20);
             this.txtAutoMinReward.TabIndex = 1;
-            this.txtAutoMinReward.Enter += new System.EventHandler(this.field_Enter);
             this.txtAutoMinReward.Leave += new System.EventHandler(this.field_Leave);
+            this.txtAutoMinReward.Enter += new System.EventHandler(this.field_Enter);
             // 
             // txtAutoMinCollateral
             // 
@@ -547,8 +549,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtAutoMinCollateral.Name = "txtAutoMinCollateral";
             this.txtAutoMinCollateral.Size = new System.Drawing.Size(190, 20);
             this.txtAutoMinCollateral.TabIndex = 0;
-            this.txtAutoMinCollateral.Enter += new System.EventHandler(this.field_Enter);
             this.txtAutoMinCollateral.Leave += new System.EventHandler(this.field_Leave);
+            this.txtAutoMinCollateral.Enter += new System.EventHandler(this.field_Enter);
             // 
             // label9
             // 
@@ -726,8 +728,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.chkExampleLowSec.TabIndex = 0;
             this.chkExampleLowSec.Text = "Low sec pickup";
             this.chkExampleLowSec.UseVisualStyleBackColor = true;
-            this.chkExampleLowSec.Enter += new System.EventHandler(this.field_Enter);
             this.chkExampleLowSec.Leave += new System.EventHandler(this.field_Leave);
+            this.chkExampleLowSec.Enter += new System.EventHandler(this.field_Enter);
             // 
             // txtExampleJumps
             // 
@@ -735,8 +737,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtExampleJumps.Name = "txtExampleJumps";
             this.txtExampleJumps.Size = new System.Drawing.Size(159, 20);
             this.txtExampleJumps.TabIndex = 2;
-            this.txtExampleJumps.Enter += new System.EventHandler(this.field_Enter);
             this.txtExampleJumps.Leave += new System.EventHandler(this.field_Leave);
+            this.txtExampleJumps.Enter += new System.EventHandler(this.field_Enter);
             // 
             // txtExampleVolume
             // 
@@ -744,8 +746,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtExampleVolume.Name = "txtExampleVolume";
             this.txtExampleVolume.Size = new System.Drawing.Size(159, 20);
             this.txtExampleVolume.TabIndex = 4;
-            this.txtExampleVolume.Enter += new System.EventHandler(this.field_Enter);
             this.txtExampleVolume.Leave += new System.EventHandler(this.field_Leave);
+            this.txtExampleVolume.Enter += new System.EventHandler(this.field_Enter);
             // 
             // txtExamplePurchase
             // 
@@ -753,8 +755,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtExamplePurchase.Name = "txtExamplePurchase";
             this.txtExamplePurchase.Size = new System.Drawing.Size(129, 20);
             this.txtExamplePurchase.TabIndex = 1;
-            this.txtExamplePurchase.Enter += new System.EventHandler(this.field_Enter);
             this.txtExamplePurchase.Leave += new System.EventHandler(this.field_Leave);
+            this.txtExamplePurchase.Enter += new System.EventHandler(this.field_Enter);
             // 
             // txtExampleSale
             // 
@@ -762,8 +764,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtExampleSale.Name = "txtExampleSale";
             this.txtExampleSale.Size = new System.Drawing.Size(129, 20);
             this.txtExampleSale.TabIndex = 3;
-            this.txtExampleSale.Enter += new System.EventHandler(this.field_Enter);
             this.txtExampleSale.Leave += new System.EventHandler(this.field_Leave);
+            this.txtExampleSale.Enter += new System.EventHandler(this.field_Enter);
             // 
             // lblExample
             // 
@@ -773,6 +775,18 @@ namespace EveMarketMonitorApp.GUIElements
             this.lblExample.TabIndex = 0;
             this.lblExample.Text = "Use the fields below to see what collateral and reward values would be given for " +
                 "different contracts.";
+            // 
+            // chkTradedItems
+            // 
+            this.chkTradedItems.AutoSize = true;
+            this.chkTradedItems.Location = new System.Drawing.Point(37, 314);
+            this.chkTradedItems.Name = "chkTradedItems";
+            this.chkTradedItems.Size = new System.Drawing.Size(268, 17);
+            this.chkTradedItems.TabIndex = 24;
+            this.chkTradedItems.Text = "Only include items if they are on the traded items list";
+            this.chkTradedItems.UseVisualStyleBackColor = true;
+            this.chkTradedItems.Leave += new System.EventHandler(this.field_Leave);
+            this.chkTradedItems.Enter += new System.EventHandler(this.field_Enter);
             // 
             // CourierSettings
             // 
@@ -871,5 +885,6 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.Button btnNewLocation;
         private System.Windows.Forms.ComboBox cmbPickupLocation;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.CheckBox chkTradedItems;
     }
 }

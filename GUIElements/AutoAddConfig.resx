@@ -117,6 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label6.Text" xml:space="preserve">
+    <value>Here you can configure how the 'auto add' button on the traded items screen will function.
+The auto add button will analyse transactions to try and work out what items you are interested in seeing in other screens. i.e. which items you are actively trading.
+This can be difficult to achieve and depends heavily on trading style. This screen allows you to customise the filters that the auto add process uses to figure out which items to include.</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

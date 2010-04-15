@@ -59,7 +59,12 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 EveDataSet.invTypesDataTable newItems = Items.GetItemsTraded(
                     UserAccount.CurrentGroup.GetFinanceAccessParams(APIDataType.Full),
-                    UserAccount.CurrentGroup.Settings.AutoAddMin);
+                    UserAccount.CurrentGroup.Settings.AutoAddMin, 
+                    UserAccount.CurrentGroup.Settings.AutoAddBuyMin,
+                    UserAccount.CurrentGroup.Settings.AutoAddSellMin,
+                    UserAccount.CurrentGroup.Settings.AutoAddBuyStations,
+                    UserAccount.CurrentGroup.Settings.AutoAddSellStations,
+                    UserAccount.CurrentGroup.Settings.AutoAddStartDate);
                 foreach (EveDataSet.invTypesRow item in newItems)
                 {
                     EveDataSet.invTypesRow existing = _itemsList.FindBytypeID(item.typeID);

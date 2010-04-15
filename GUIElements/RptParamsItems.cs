@@ -139,9 +139,13 @@ namespace EveMarketMonitorApp.GUIElements
                 List<int> itemIds = new List<int>();
                 EMMADataSet.IDTableDataTable ids = Transactions.GetInvolvedItemIDs(this._financeAccessParams,
                     1, dtpStartDate.Value.ToUniversalTime(), dtpEndDate.Value.ToUniversalTime());
+                List<int> tradedItemIDs = UserAccount.CurrentGroup.TradedItems.GetAllItemIDs();
                 foreach (EMMADataSet.IDTableRow id in ids)
                 {
-                    itemIds.Add(id.ID);
+                    if (!chkTradedItems.Checked || tradedItemIDs.Contains(id.ID))
+                    {
+                        itemIds.Add(id.ID);
+                    }
                 }
                 _parameters.Add("ItemIDs", itemIds);
 
@@ -153,6 +157,7 @@ namespace EveMarketMonitorApp.GUIElements
                 }
                 _parameters.Add("ColumnsVisible", colsVisible);
                 _parameters.Add("UseMostRecentBuyPrice", chkUseRecentBuyPrices.Checked);
+                _parameters.Add("TradedItemsOnly", chkTradedItems.Checked);
 
                 _report = new ItemReport(chkItemsByGroup.Checked);
 

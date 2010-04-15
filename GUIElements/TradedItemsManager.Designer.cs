@@ -80,6 +80,7 @@
             this.textBox2.TabIndex = 0;
             this.textBox2.TabStop = false;
             this.textBox2.Text = resources.GetString("textBox2.Text");
+            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // txtItemName
             // 

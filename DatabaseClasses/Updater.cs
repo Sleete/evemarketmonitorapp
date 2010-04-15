@@ -4002,7 +4002,77 @@ CREATE TABLE [dbo].[AssetsProduced](
                     }
                     #endregion
                 }
-                               
+                if (dbVersion.CompareTo(new Version("1.4.1.1")) < 0)
+                {
+                    #region Update 'AssetsGetAutoConByAny' stored procedure
+                    commandText = @"ALTER PROCEDURE dbo.AssetsGetAutoConByAny
+	@ownerID			int,
+	@corpAsset			bit,
+	@stationIDs			varchar(max),
+	@regionIDs			varchar(max),
+	@itemIDs			varchar(max),
+	@excludeContainers	bit
+AS
+
+	SELECT Assets.*
+	FROM Assets
+	JOIN CLR_intlist_split(@stationIDs) s ON (Assets.LocationID = s.number OR s.number = 0)
+	JOIN CLR_intlist_split(@regionIDs) r ON (Assets.RegionID = r.number OR r.number = 0)
+	JOIN CLR_intlist_split(@itemIDs) i ON (Assets.ItemID = i.number OR i.number = 0)
+	WHERE (OwnerID = @ownerID AND CorpAsset = @corpAsset AND 
+		(AutoConExclude = 0) AND (Status = 1) AND (@excludeContainers = 0 OR (ContainerID = 0 AND IsContainer = 0)) AND Quantity > 0)
+	ORDER BY LocationID
+RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                        SetDBVersion(connection, new Version("1.4.1.1"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'AssetsGetAutoConByAny' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.1.2")) < 0)
+                {
+                    #region Update 'AssetsGetAutoConByOwner' stored procedure
+                    commandText = @"ALTER PROCEDURE dbo.AssetsGetAutoConByOwner
+	@ownerID			int,
+	@corpAsset			bit,
+	@stationID			int,
+	@itemIDs			varchar(max),
+	@excludeContainers	bit
+AS
+
+	SELECT Assets.*
+	FROM Assets
+	JOIN CLR_intlist_split(@itemIDs) i ON (Assets.ItemID = i.number OR i.number = 0)
+	WHERE (OwnerID = @ownerID AND CorpAsset = @corpAsset AND (LocationID = @stationID OR @stationID = 0) AND (AutoConExclude = 0) AND (Status = 1) AND (@excludeContainers = 0 OR (ContainerID = 0 AND IsContainer = 0)) AND (Quantity > 0))
+	ORDER BY LocationID
+RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                        SetDBVersion(connection, new Version("1.4.1.2"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'AssetsGetAutoConByOwner' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                          
+    
+                
             }
             catch (Exception ex)
             {

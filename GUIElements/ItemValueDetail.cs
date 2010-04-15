@@ -14,7 +14,7 @@ namespace EveMarketMonitorApp.GUIElements
 {
     public partial class ItemValueDetail : Form
     {
-        private ItemValues _itemsTraded = null;
+        private ItemValues _itemValues = null;
         private List<string> _recentItems = new List<string>();
         private string _lastItem = "";
         private int _defaultItem = 0;
@@ -28,12 +28,12 @@ namespace EveMarketMonitorApp.GUIElements
         {
             InitializeComponent();
             _defaultItem = itemID;
-            _itemsTraded = UserAccount.CurrentGroup.ItemValues;
+            _itemValues = UserAccount.CurrentGroup.ItemValues;
         }
 
         private void ItemValueDetail_Load(object sender, EventArgs e)
         {
-            _itemsTraded.ValueCalculationEvent += new ItemValueCalcEvent(ItemsTraded_ValueCalculationEvent);
+            _itemValues.ValueCalculationEvent += new ItemValueCalcEvent(ItemsTraded_ValueCalculationEvent);
 
             EveDataSet.mapRegionsDataTable regions = Regions.GetAllRegions();
             EveDataSet.mapRegionsRow newRow = regions.NewmapRegionsRow();
@@ -128,7 +128,7 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 UserAccount.CurrentGroup.Settings.RecentItems = _recentItems;
             }
-            _itemsTraded.ValueCalculationEvent -= this.ItemsTraded_ValueCalculationEvent;
+            _itemValues.ValueCalculationEvent -= this.ItemsTraded_ValueCalculationEvent;
         }
 
         private void btnCalculate_Click(object sender, EventArgs e)
@@ -160,11 +160,11 @@ namespace EveMarketMonitorApp.GUIElements
 
             if (values.buyPrice)
             {
-                _itemsTraded.GetBuyPrice(values.itemID, values.regionID);
+                _itemValues.GetBuyPrice(values.itemID, values.regionID);
             }
             else
             {
-                _itemsTraded.GetItemValue(values.itemID, values.regionID, false);
+                _itemValues.GetItemValue(values.itemID, values.regionID, false);
             }
         }
         
@@ -194,7 +194,7 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void btnClearCache_Click(object sender, EventArgs e)
         {
-            _itemsTraded.ClearValueCache();
+            _itemValues.ClearValueCache();
         }
 
         private void btnClose_Click(object sender, EventArgs e)

@@ -742,7 +742,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
         /// <summary>
         /// Get a datatable containing the IDs of items that are involved in transactions that meet
-        /// the specifeid criteria
+        /// the specifeid criteria.
         /// </summary>
         /// <param name="accessParams"></param>
         /// <returns></returns>
@@ -755,12 +755,74 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 minDate, maxDate, "");
             Dictionary<int, long> qTotalBuy = new Dictionary<int, long>();
             Dictionary<int, long> qTotalSell = new Dictionary<int, long>();
-            Dictionary<string, long> qStationBuy = new Dictionary<string, long>();
-            Dictionary<string, long> qStationSell = new Dictionary<string, long>();
+            List<int> allItems = new List<int>();
 
             foreach (EMMADataSet.TransactionsRow trans in table)
             {
+                int itemID = trans.ItemID;
+                if (!allItems.Contains(itemID)) { allItems.Add(itemID); }
+                int stationID = trans.StationID;
+                bool buyTrans = false;
+                bool sellTrans = false;
+                // Determine if this transaction is buy, sell or both for the characters passed in
+                foreach (FinanceAccessParams accessDetails in accessParams)
+                {
+                    if (accessDetails.OwnerID == trans.BuyerID || accessDetails.OwnerID == trans.BuyerCharacterID)
+                    {
+                        buyTrans = true;
+                    }
+                    if (accessDetails.OwnerID == trans.SellerID || accessDetails.OwnerID == trans.SellerCharacterID)
+                    {
+                        sellTrans = true;
+                    }
+                }
 
+                if (buyTrans)
+                {
+                    // Keep a count of the total amount of each item that has been bought in the 
+                    // specified buy stations
+                    if (buyStations.Count == 0 || buyStations.Contains(trans.StationID))
+                    {
+                        if (qTotalBuy.ContainsKey(itemID))
+                        {
+                            qTotalBuy[itemID] = qTotalBuy[itemID] + trans.Quantity;
+                        }
+                        else
+                        {
+                            qTotalBuy.Add(itemID, trans.Quantity);
+                        }
+                    }
+                }
+                if (sellTrans)
+                {
+                    // Keep a count of the total amount of each item that has been sold in the 
+                    // specified sell stations
+                    if (sellStations.Count == 0 || sellStations.Contains(stationID))
+                    {
+                        if (qTotalSell.ContainsKey(itemID))
+                        {
+                            qTotalSell[itemID] = qTotalSell[itemID] + trans.Quantity;
+                        }
+                        else
+                        {
+                            qTotalSell.Add(itemID, trans.Quantity);
+                        }
+                    }
+                }
+            }
+
+            foreach (int itemID in allItems)
+            {
+                long qBuy = 0;
+                long qSell = 0;
+                if (qTotalBuy.ContainsKey(itemID)) { qBuy = qTotalBuy[itemID]; }
+                if (qTotalSell.ContainsKey(itemID)) { qSell = qTotalSell[itemID]; }
+                if (qBuy + qSell > minVolume && qBuy > minBuy && qSell > minSell)
+                {
+                    EMMADataSet.IDTableRow newID = retVal.NewIDTableRow();
+                    newID.ID = itemID;
+                    retVal.AddIDTableRow(newID);
+                }                
             }
 
             return retVal;
@@ -964,6 +1026,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
             if (endDate.CompareTo(SqlDateTime.MinValue.Value) < 0) endDate = SqlDateTime.MinValue.Value;
             if (startDate.CompareTo(SqlDateTime.MaxValue.Value) > 0) startDate = SqlDateTime.MaxValue.Value;
             if (endDate.CompareTo(SqlDateTime.MaxValue.Value) > 0) endDate = SqlDateTime.MaxValue.Value;
+
+            if (itemIDs == null) { itemIDs = new List<int>(); }
+            if (regionIDs == null) { regionIDs = new List<int>(); }
+            if (stationIDs == null) { stationIDs = new List<int>(); }
 
             if (itemIDs.Count == 0) { itemIDs.Add(0); }
             if (regionIDs.Count == 0) { regionIDs.Add(0); }

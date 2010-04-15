@@ -58,6 +58,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
             _station = "NO ORDER";
             _gotState = true;
             _state = "NO ORDER";
+            _gotSystem = true;
+            _system = "NO ORDER";
+            _gotRegion = true;
+            _region = "NO ORDER";
             _walletID = 0;
             _date = DateTime.Now;
             _price = 0;

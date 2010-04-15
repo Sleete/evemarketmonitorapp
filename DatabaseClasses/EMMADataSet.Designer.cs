@@ -37981,6 +37981,7 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@excludeContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[7].Connection = this.Connection;
@@ -37991,6 +37992,7 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@excludeContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[8] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[8].Connection = this.Connection;
@@ -38421,7 +38423,7 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByAutoCon(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<bool> corpAsset, global::System.Nullable<int> stationID, global::System.Nullable<bool> excludeContainers) {
+        public virtual int FillByAutoCon(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<bool> corpAsset, global::System.Nullable<int> stationID, string itemIDs, global::System.Nullable<bool> excludeContainers) {
             this.Adapter.SelectCommand = this.CommandCollection[6];
             if ((ownerID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
@@ -38441,11 +38443,17 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
-            if ((excludeContainers.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((bool)(excludeContainers.Value));
+            if ((itemIDs == null)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+                this.Adapter.SelectCommand.Parameters[4].Value = ((string)(itemIDs));
+            }
+            if ((excludeContainers.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((bool)(excludeContainers.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
             }
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -38457,7 +38465,7 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.AssetsDataTable GetDataByAutoCon(global::System.Nullable<int> ownerID, global::System.Nullable<bool> corpAsset, global::System.Nullable<int> stationID, global::System.Nullable<bool> excludeContainers) {
+        public virtual EMMADataSet.AssetsDataTable GetDataByAutoCon(global::System.Nullable<int> ownerID, global::System.Nullable<bool> corpAsset, global::System.Nullable<int> stationID, string itemIDs, global::System.Nullable<bool> excludeContainers) {
             this.Adapter.SelectCommand = this.CommandCollection[6];
             if ((ownerID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
@@ -38477,11 +38485,17 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
-            if ((excludeContainers.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((bool)(excludeContainers.Value));
+            if ((itemIDs == null)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+                this.Adapter.SelectCommand.Parameters[4].Value = ((string)(itemIDs));
+            }
+            if ((excludeContainers.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((bool)(excludeContainers.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
             }
             EMMADataSet.AssetsDataTable dataTable = new EMMADataSet.AssetsDataTable();
             this.Adapter.Fill(dataTable);
@@ -38491,7 +38505,7 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByAutoConAny(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<bool> corpAsset, string stationIDs, string regionIDs, global::System.Nullable<bool> excludeContainers) {
+        public virtual int FillByAutoConAny(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<bool> corpAsset, string stationIDs, string regionIDs, string itemIDs, global::System.Nullable<bool> excludeContainers) {
             this.Adapter.SelectCommand = this.CommandCollection[7];
             if ((ownerID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
@@ -38517,11 +38531,17 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = ((string)(regionIDs));
             }
-            if ((excludeContainers.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((bool)(excludeContainers.Value));
+            if ((itemIDs == null)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+                this.Adapter.SelectCommand.Parameters[5].Value = ((string)(itemIDs));
+            }
+            if ((excludeContainers.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[6].Value = ((bool)(excludeContainers.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[6].Value = global::System.DBNull.Value;
             }
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -38533,7 +38553,7 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.AssetsDataTable GetDataByAutoConAny(global::System.Nullable<int> ownerID, global::System.Nullable<bool> corpAsset, string stationIDs, string regionIDs, global::System.Nullable<bool> excludeContainers) {
+        public virtual EMMADataSet.AssetsDataTable GetDataByAutoConAny(global::System.Nullable<int> ownerID, global::System.Nullable<bool> corpAsset, string stationIDs, string regionIDs, string itemIDs, global::System.Nullable<bool> excludeContainers) {
             this.Adapter.SelectCommand = this.CommandCollection[7];
             if ((ownerID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
@@ -38559,11 +38579,17 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = ((string)(regionIDs));
             }
-            if ((excludeContainers.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((bool)(excludeContainers.Value));
+            if ((itemIDs == null)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+                this.Adapter.SelectCommand.Parameters[5].Value = ((string)(itemIDs));
+            }
+            if ((excludeContainers.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[6].Value = ((bool)(excludeContainers.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[6].Value = global::System.DBNull.Value;
             }
             EMMADataSet.AssetsDataTable dataTable = new EMMADataSet.AssetsDataTable();
             this.Adapter.Fill(dataTable);

@@ -276,7 +276,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 {
                     try
                     {
-                        _regionID = SolarSystems.GetSystem(SystemID).regionID;
+                        EveDataSet.mapSolarSystemsRow system = SolarSystems.GetSystem(SystemID);
+                        if (system != null) { _regionID = system.regionID; }
                     }
                     catch (EMMADataMissingException)
                     {
