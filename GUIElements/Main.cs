@@ -93,6 +93,7 @@ namespace EveMarketMonitorApp.GUIElements
                     }
                     catch (EMMAException)
                     {
+                        UpdateStatus(0, 0, "Done", "", true);
                         MessageBox.Show("Critical error updating EMMA database. For details, see " +
                             "\"Logging/ExceptionLog.txt\"", "Ciritcal error",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -132,6 +133,7 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     emmaEx = new EMMAException(ExceptionSeverity.Critical, "Error during startup", ex);
                 }
+                UpdateStatus(0, 0, "Done", "", true);
                 MessageBox.Show("Problem during EMMA startup.\r\nCheck " + Globals.AppDataDir + "Logging\\exceptionlog.txt" +
                     " for details.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
@@ -295,6 +297,7 @@ namespace EveMarketMonitorApp.GUIElements
                     Globals.AppDataDir, Path.DirectorySeparatorChar)) ||
                 !Directory.Exists(string.Format("{0}Temp", Globals.AppDataDir)))
             {
+                UpdateStatus(0, 0, "Done", "", true);
                 MessageBox.Show("Unable to create required sub-directories.", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw new EMMAException(ExceptionSeverity.Critical, "Unable to create required " +
@@ -886,6 +889,7 @@ namespace EveMarketMonitorApp.GUIElements
                 }
                 catch(Exception ex)
                 {
+                    UpdateStatus(0, 0, "Done", "", true);
                     MessageBox.Show("Problem during auto login: " + ex.Message, "Error", MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                 }
@@ -1234,24 +1238,26 @@ namespace EveMarketMonitorApp.GUIElements
                     if (!isSQLExpressInstalled())
                     {
                         retVal = false;
-                        MessageBox.Show("You do not have SQL Express 2005 SP2 installed.\r\nYou can download " +
+                        /*MessageBox.Show("You do not have SQL Express 2005 SP2 installed.\r\nYou can download " +
                             "it from Microsoft for free: http://www.microsoft.com/express/2005/sql/download" +
                             "/default.aspx\r\nIf you wish to skip this check in the future then you can " +
                             "disable it in the 'EveMarketMonitorApp.exe.config' file.\r\nEMMA will now close.",
-                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);*/
                     }
-                    if (!isSQLExpressRunning())
+                    if (retVal && !isSQLExpressRunning())
                     {
                         retVal = false;
-                        MessageBox.Show("It appears that the SQL Express service is not running and cannot be "+
+                        UpdateStatus(0, 0, "Done", "", true);
+                        MessageBox.Show("It appears that the SQL Express service is not running and cannot be " +
                             "started.\r\nIf you wish to skip this " +
                             "check in the future then you can disable it in the "+
                             "'EveMarketMonitorApp.exe.config' file.\r\nEMMA will now close.",
                             "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    if (!waitForSQLAcknowledge())
+                    if (retVal && !waitForSQLAcknowledge())
                     {
                         retVal = false;
+                        UpdateStatus(0, 0, "Done", "", true);
                         MessageBox.Show("EMMA is unable to connect to the database. Please try restarting " +
                             "if the problem persists then more detail can be found in " +
                             "Logging/ExceptionLog.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1260,6 +1266,7 @@ namespace EveMarketMonitorApp.GUIElements
             }
             catch (EMMAException)
             {
+                UpdateStatus(0, 0, "Done", "", true);
                 MessageBox.Show("There was an error while checking if SQL server express is installed and " +
                     "running. (Check " + Globals.AppDataDir + "Logging\\exceptionlog.txt for details)\r\nEMMA will attempt to " +
                     "continue but if things don't work then that's probably the reason.", 
@@ -1329,7 +1336,45 @@ namespace EveMarketMonitorApp.GUIElements
 
         private bool isSQLExpressInstalled()
         {
+            bool retVal = false;
+
             try
+            {
+                SQLVersion version = SQLExpressChecks.GetSQLVersion();
+
+                switch (version)
+                {
+                    case SQLVersion.None:
+                        UpdateStatus(0, 0, "Done", "", true);
+                        MessageBox.Show("EMMA requires SQL Express 2008. " +
+                            "Please download and install it from here: http://www.microsoft.com/express/database/",
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        
+                        break;
+                    case SQLVersion.SQL2005:
+                        UpdateStatus(0, 0, "Done", "", true);
+                        MessageBox.Show("You only have SQL Express 2005 installed. EMMA requires SQL Express 2008. " +
+                            "Please download and install it from here: http://www.microsoft.com/express/database/",
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case SQLVersion.SQL2008:
+                        retVal = true;
+                        break;
+                    case SQLVersion.Later:
+                        retVal = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new EMMAException(ExceptionSeverity.Error, "Problem detecting SQL installation", ex);
+            }
+
+            return retVal;
+
+            /*try
             {
                 using (RegistryKey Key = Registry.LocalMachine.OpenSubKey(
                     "Software\\Microsoft\\Microsoft SQL Server\\", false))
@@ -1358,67 +1403,8 @@ namespace EveMarketMonitorApp.GUIElements
             catch (Exception ex)
             {
                 throw new EMMAException(ExceptionSeverity.Error, "Problem detecting SQL Server Install", ex);
-            }
-
-
-
-
-            // This is supposedly the 'correct' way to check. Sadly, it crashes if SQL express is 
-            // not installed. Not so great.
-
-            /*const string edition = "Express Edition";
-            const string instance = "MSSQL$SQLEXPRESS";
-            const int spLevel = 2;
-
-            bool fCheckEdition = false;
-            bool fCheckSpLevel = false;
-
-            try
-            {
-                // Run a WQL query to return information about SKUNAME and SPLEVEL about installed instances
-                // of the SQL Engine.
-                ManagementObjectSearcher getSqlExpress =
-                    new ManagementObjectSearcher("root\\Microsoft\\SqlServer\\ComputerManagement",
-                    "select * from SqlServiceAdvancedProperty where SQLServiceType = 1 and ServiceName = '"
-                    + instance + "' and (PropertyName = 'SKUNAME' or PropertyName = 'SPLEVEL')");
-
-                // If nothing is returned, SQL Express isn't installed.
-                if (getSqlExpress.Get().Count == 0)
-                {
-                    return false;
-                }
-
-                // If something is returned, verify it is the correct edition and SP level.
-                foreach (ManagementObject sqlEngine in getSqlExpress.Get())
-                {
-                    if (sqlEngine["ServiceName"].ToString().Equals(instance))
-                    {
-                        switch (sqlEngine["PropertyName"].ToString())
-                        {
-                            case "SKUNAME":
-                                // Check if this is Express Edition or Express Edition with Advanced Services
-                                fCheckEdition = sqlEngine["PropertyStrValue"].ToString().Contains(edition);
-                                break;
-
-                            case "SPLEVEL":
-                                // Check if the instance matches the specified level
-                                fCheckSpLevel = int.Parse(sqlEngine["PropertyNumValue"].ToString()) >= spLevel;
-                                break;
-                        }
-                    }
-                }
-
-                if (fCheckEdition & fCheckSpLevel)
-                {
-
-                    return true;
-                }
-                return false;
-            }
-            catch (ManagementException e)
-            {
-                throw new EMMAException(ExceptionSeverity.Error, "Problem detecting SQL Server Express", e);
             }*/
+
 
         }
         #endregion
@@ -1537,6 +1523,7 @@ namespace EveMarketMonitorApp.GUIElements
                 catch (EMMAException)
                 {
                     Globals.EveAPIDown = true;
+                    UpdateStatus(0, 0, "Done", "", true);
                     MessageBox.Show("Failed to contact the Eve API.\r\nAPI updates " +
                         "will be disabled until EMMA is restarted.\r\n" +
                         "(See " + Globals.AppDataDir + "Logging\\exceptionlog.txt for more detailed information)", "Communication failure",
@@ -1546,6 +1533,7 @@ namespace EveMarketMonitorApp.GUIElements
                 catch (EMMAException)
                 {
                     Globals.EveCentralDown = true;
+                    UpdateStatus(0, 0, "Done", "", true);
                     MessageBox.Show("Failed to contact eve-central.\r\n" +
                         "Price updates from eve-central will be disabled until EMMA is restarted.\r\n" +
                         "(See " + Globals.AppDataDir + "Logging\\ExceptionLog.txt for more detailed information)", "Communication failure",
@@ -1555,6 +1543,7 @@ namespace EveMarketMonitorApp.GUIElements
                 catch (EMMAException)
                 {
                     Globals.EveMetricsDown = true;
+                    UpdateStatus(0, 0, "Done", "", true);
                     MessageBox.Show("Failed to contact eve-metrics.\r\n" +
                         "Price updates from eve-metrics will be disabled until EMMA is restarted.\r\n" +
                         "(See " + Globals.AppDataDir + "Logging\\ExceptionLog.txt for more detailed information)", "Communication failure",
@@ -1588,6 +1577,7 @@ namespace EveMarketMonitorApp.GUIElements
                 if (Globals.EMMAUpdateServer.Equals("") &&
                     updateServers.Count > 0)
                 {
+                    UpdateStatus(0, 0, "Done", "", true);
                     MessageBox.Show("Failed to contact any auto-update server.\r\n" +
                         "EMMA will be unable to update until it is restarted.\r\n" +
                         "(See " + Globals.AppDataDir + "Logging\\ExceptionLog.txt for more detailed information)", "Communication failure",
@@ -1598,6 +1588,7 @@ namespace EveMarketMonitorApp.GUIElements
                 if (Globals.EMMAUpdateServer.Equals("") && Globals.EveAPIDown &&
                     Globals.EveCentralDown)
                 {
+                    UpdateStatus(0, 0, "Done", "", true);
                     if (MessageBox.Show("Connection checks to ALL servers have failed.\r\n" +
                         "Do you wish to skip these checks in future?", "Communication failure",
                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)

@@ -114,6 +114,7 @@
     </Compile>
     <Compile Include="Common\SortableCollection.cs" />
     <Compile Include="Common\SortableObject.cs" />
+    <Compile Include="Common\SQLExpressChecks.cs" />
     <Compile Include="DatabaseClasses\AccessParams.cs" />
     <Compile Include="DatabaseClasses\APICharacters.cs" />
     <Compile Include="DatabaseClasses\APICharSettings.cs" />

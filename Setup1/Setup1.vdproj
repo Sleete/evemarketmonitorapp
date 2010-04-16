@@ -94,12 +94,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F5609F3A35171BC6FAFE2CC02B767AA4"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_B8BD6762BD1981B4626141A40A42A8CF"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -107,6 +101,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_9A12855318CC0EBF59A05CD755E3F001"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F5609F3A35171BC6FAFE2CC02B767AA4"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -182,11 +182,6 @@
                     {
                     "Name" = "8:.NET Framework 3.5 SP1"
                     "ProductCode" = "8:Microsoft.Net.Framework.3.5.SP1"
-                    }
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Sql.Server.Express.9.2"
-                    {
-                    "Name" = "8:SQL Server 2005 Express Edition SP2 (x86)"
-                    "ProductCode" = "8:Microsoft.Sql.Server.Express.9.2"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
                     {
@@ -450,7 +445,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AutoUpdater, Version=1.4.0.0, Culture=neutral, PublicKeyToken=dfecf55f48824e30, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:AutoUpdater, Version=1.4.1.0, Culture=neutral, PublicKeyToken=dfecf55f48824e30, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_F5609F3A35171BC6FAFE2CC02B767AA4"
@@ -556,7 +551,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EMMA"
         "ProductCode" = "8:{1F933688-3B65-47FB-A5AE-28A22EBDFBA3}"
-        "PackageCode" = "8:{B3F7F64B-E513-4B70-9150-8EA481E129EA}"
+        "PackageCode" = "8:{1909A95F-F054-4557-8716-90AB8EBD08EA}"
         "UpgradeCode" = "8:{4DB9B68F-95EE-473F-B3EE-465EFC0F7593}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
