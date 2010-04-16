@@ -705,13 +705,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             get
             {
-                return DateTime.Parse(GetValue(Setting.autoAddStartDate),
-                  System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                DateTime retVal = DateTime.Now;
+                try
+                {
+                    retVal = DateTime.Parse(GetValue(Setting.autoAddStartDate),
+                      System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                }
+                catch (FormatException) { }
+                return retVal;
             }
             set
             {
                 SetValue(Setting.autoAddStartDate,
-                  value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
+                  value.ToString(System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat));
             }
         }
         public List<int> AutoAddBuyStations
