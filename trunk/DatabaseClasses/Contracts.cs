@@ -81,10 +81,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             foreach (ContractItem item in items)
             {
+                // When removing assets from a stack, cost is not affected so just use zero..
+                Assets.ChangeAssets(contract.OwnerID, corp, contract.DestinationStationID, item.ItemID, 
+                    0, 2, false, -1 * item.Quantity, 0);
                 Assets.ChangeAssets(contract.OwnerID, corp, contract.DestinationStationID, item.ItemID,
-                    0, 2, false, -1 * item.Quantity);
-                Assets.ChangeAssets(contract.OwnerID, corp, contract.DestinationStationID, item.ItemID,
-                    0, 1, false, item.Quantity);
+                    0, 1, false, item.Quantity, item.BuyPrice);
             }
 
             if (contracts.Count > 0)
@@ -119,7 +120,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             foreach (ContractItem item in items)
             {
                 Assets.ChangeAssets(contract.OwnerID, corp, contract.DestinationStationID, item.ItemID,
-                    0, 2, false, -1 * item.Quantity);
+                    0, 2, false, -1 * item.Quantity, 0);
             }
 
             if (contracts.Count > 0)
@@ -232,9 +233,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 foreach (ContractItem item in items)
                 {
                     Assets.ChangeAssets(contract.OwnerID, corp, contract.PickupStationID, item.ItemID,
-                        0, 1, false, (reverse ? 1 : -1) * item.Quantity);
+                        0, 1, false, (reverse ? 1 : -1) * item.Quantity, item.BuyPrice);
                     Assets.ChangeAssets(contract.OwnerID, corp, contract.DestinationStationID, item.ItemID,
-                        0, 2, false, (reverse ? -1 : 1) * item.Quantity);
+                        0, 2, false, (reverse ? -1 : 1) * item.Quantity, item.BuyPrice);
                 }
             }
         }
@@ -283,7 +284,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 Transactions.NewTransaction(contract.IssueDate, item.Quantity, item.ItemID, Math.Abs(item.SellPrice),
                     contract.Collateral > 0 ? 0 : contract.OwnerID, contract.Collateral < 0 ? 0 : contract.OwnerID,
                     0, 0, contract.PickupStationID, Stations.GetStation(contract.PickupStationID).regionID, 
-                    false, false, 1000, 1000, ref transID);
+                    false, false, 1000, 1000, item.Profit / item.Quantity, ref transID);
                 item.TransactionID = transID;
             }
         }

@@ -2041,11 +2041,14 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     {
                         UpdateStatus(0, 1, "Updating assets from new transactions", "", false);
                     }
-
+                    
                     long minID = (corc == CharOrCorp.Char ? Settings.CharAssetsTransUpdateID : Settings.CorpAssetsTransUpdateID);
                     minID += 1;
                     long maxID = 0;
                     // Need to update assets with the data from the transactions we've just added.
+                    // (This is done because assets can only be updated once every 24 hours or so but
+                    // transactions can be updated every hour, using those transactions to modify the 
+                    // assets data allows EMMA to give a more up-to-date view)
                     if (minID > 1)
                     {
                         // If we've already updated assets from transactions since the last direct assets update
@@ -2148,6 +2151,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 newRow.SellerForCorp = charID != 0;
                 newRow.SellerCharacterID = charID;
                 newRow.SellerWalletID = 0;
+                newRow.SellerUnitProfit = 0;
             }
             else
             {
@@ -2159,6 +2163,23 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 newRow.SellerForCorp = forCorp;
                 newRow.SellerCharacterID = forCorp ? _charID : 0;
                 newRow.SellerWalletID = (walletID == 0 ? (short)1000 : walletID);
+                // Calculate unit profit
+                EMMADataSet.AssetsDataTable existingAssets = new EMMADataSet.AssetsDataTable();
+                int stationID = newRow.StationID;
+                decimal unitProfit = 0;
+                try
+                {
+                    Assets.GetAssets(existingAssets, UserAccount.CurrentGroup.GetAssetAccessParams(APIDataType.Full),
+                        stationID, Stations.GetStation(stationID).solarSystemID, newRow.ItemID);
+                    if (existingAssets != null && existingAssets.Count > 0)
+                    {
+                        Asset existingAsset = new Asset(existingAssets[0], null);
+                        unitProfit = newRow.Price - existingAsset.UnitBuyPrice;
+                    }
+                }
+                catch { }
+
+                newRow.SellerUnitProfit = unitProfit;
             }
 
             // Get the IDs and associated names in this transaction.

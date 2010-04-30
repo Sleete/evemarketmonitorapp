@@ -70,7 +70,10 @@ namespace EveMarketMonitorApp.GUIElements
                     if (_account.VerifyAccount())
                     {
                         this.DialogResult = DialogResult.OK;
-                        /*if (_newAccount) {*/ EveAccounts.Store(_account); /*}*/
+                        //if (_newAccount)
+                        //{
+                            EveAccounts.Store(_account);
+                        //}
                         Close();
                     }
                     else

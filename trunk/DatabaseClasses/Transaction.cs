@@ -78,6 +78,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             _sellerForCorp = dataRow.SellerForCorp;
             _buyerWalletID = dataRow.BuyerWalletID;
             _sellerWalletID = dataRow.SellerWalletID;
+            _profit = dataRow.SellerUnitProfit;
+            _gotProfit = _profit != 0;
         }
 
 
@@ -435,14 +437,6 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             get
             {
-                return GrossProfit / _quantity;
-            }
-        }
-
-        public decimal GrossProfit
-        {
-            get
-            {
                 if (!_gotProfit)
                 {
                     List<AssetAccessParams> assetAccessParams = 
@@ -462,7 +456,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                             new List<int>(), _quantity, historyQuantity,
                             ref buyPrice, ref blank1, true);
 
-                        _profit = (_price - buyPrice) * _quantity;
+                        _profit = _price - buyPrice;
                     }
                     else
                     {
@@ -472,6 +466,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     _gotProfit = true;
                 }
                 return _profit;
+            }
+            set
+            {
+                _profit = value;
+                _gotProfit = true;
+            }
+        }
+
+        public decimal GrossProfit
+        {
+            get
+            {
+                return GrossUnitProfit * _quantity;
             }
         }
     }

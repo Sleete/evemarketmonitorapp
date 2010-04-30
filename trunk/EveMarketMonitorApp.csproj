@@ -120,12 +120,20 @@
     <Compile Include="DatabaseClasses\APICharSettings.cs" />
     <Compile Include="DatabaseClasses\Asset.cs" />
     <Compile Include="DatabaseClasses\AssetList.cs" />
+    <Compile Include="DatabaseClasses\AssetProduced.cs" />
     <Compile Include="DatabaseClasses\Assets.cs" />
+    <Compile Include="DatabaseClasses\AssetsLost.cs" />
+    <Compile Include="DatabaseClasses\AssetsProduced.cs" />
+    <Compile Include="DatabaseClasses\AssetsProducedList.cs" />
     <Compile Include="DatabaseClasses\AssetStatus.cs" />
     <Compile Include="DatabaseClasses\AutoContractor.cs" />
     <Compile Include="DatabaseClasses\BankAccounts.cs" />
     <Compile Include="DatabaseClasses\BankTransaction.cs" />
     <Compile Include="DatabaseClasses\BankTransactionsList.cs" />
+    <Compile Include="DatabaseClasses\EMMADataSet.cs">
+      <DependentUpon>EMMADataSet.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DatabaseClasses\TradedItems.cs" />
     <Compile Include="DatabaseClasses\EMMADataSet.Designer.cs">
       <AutoGen>True</AutoGen>

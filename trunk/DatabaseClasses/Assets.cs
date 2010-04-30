@@ -82,6 +82,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return retVal;
         }
 
+
+        
         /// <summary>
         /// Update the assets table based on the transactions meeting the specified criteria.
         /// </summary>
@@ -126,14 +128,20 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             foreach (EMMADataSet.TransactionsRow trans in transactions)
             {
-                int deltaQuantity = trans.Quantity;
-                if (trans.SellerID == ownerID) { deltaQuantity *= -1; }
-                ChangeAssets(charID, useCorp, trans.StationID, trans.ItemID, 0, 1, false, deltaQuantity);
-                if (trans.ID > maxID) { maxID = trans.ID; }
+                // If the ID is greater than 9000000000000000000 then it must have been created by EMMA as part of
+                // an item exchange contract. These should be ignored here.
+                if (trans.ID < 9000000000000000000)
+                {
+                    int deltaQuantity = trans.Quantity;
+                    if (trans.SellerID == ownerID) { deltaQuantity *= -1; }
+                    ChangeAssets(charID, useCorp, trans.StationID, trans.ItemID, 0, 1, false, deltaQuantity, trans.Price);
+                    if (trans.ID > maxID) { maxID = trans.ID; }
+                }
             }
 
             return maxID;
         }
+        
 
         /// <summary>
         /// Get a list of changes that would be made to assets by the transactions meeting the 
@@ -468,7 +476,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 assetsTableAdapter.Insert(row.OwnerID, row.CorpAsset, row.LocationID, row.ItemID, row.SystemID,
                     row.RegionID, row.ContainerID, row.Quantity, row.Status, row.Processed, row.AutoConExclude,
-                    row.IsContainer, row.ReprocExclude, out retVal);
+                    row.IsContainer, row.ReprocExclude, row.Cost, row.CostCalc, out retVal);
             }
             return retVal.HasValue ? retVal.Value : 0;
         }
@@ -648,7 +656,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="autoConExclude"></param>
         /// <param name="deltaQuatnity"></param>
         static public void ChangeAssets(int ownerID, bool corpAsset, int locationID, int itemID,
-            long containerID, int status, bool autoConExclude, long deltaQuantity)
+            long containerID, int status, bool autoConExclude, long deltaQuantity, decimal addedItemsCost)
         {
             int systemID = 0, regionID = 0;
             EveDataSet.staStationsRow station = Stations.GetStation(locationID);
@@ -667,7 +675,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             lock (assetsTableAdapter)
             {
                 assetsTableAdapter.AddQuantity(ownerID, corpAsset, itemID, locationID, systemID,
-                    regionID, status, 0, autoConExclude, deltaQuantity);
+                    regionID, status, 0, autoConExclude, deltaQuantity, addedItemsCost, true);
             }
         }
         
