@@ -73,7 +73,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             // A bug in SQL/CLR interaction means that SQL will treat output parameters of
             // type decimal as decimal(s,p) where s and p are defined at run-time by the value
             // passed in rather than the definition in the actual procedure.
-            // i.e. If sumVal is set to zero, errors will occur then SQL tries to put anything
+            // i.e. If sumVal is set to zero, errors will occur when SQL tries to put anything
             // bigger than 9 in it...
             decimal? sumVal = 1234567890123456.00m;
             startDate = startDate.ToUniversalTime();

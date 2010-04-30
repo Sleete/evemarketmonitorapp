@@ -4070,9 +4070,775 @@ RETURN";
                     }
                     #endregion
                 }
-                          
-    
+                if (dbVersion.CompareTo(new Version("1.4.1.4")) < 0)
+                {
+                    #region Add 'Quantity' column to AssetsProduced table
+                    commandText =
+                            "ALTER TABLE dbo.AssetsProduced\r\n" +
+                            "ADD Quantity bigint NOT NULL DEFAULT 0";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.1.4"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem adding 'Quantity' column to AssetsProduced table", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.1.7")) < 0)
+                {
+                    #region Create 'AssetsLostNew' stored procedure
+                    commandText = @"CREATE PROCEDURE dbo.AssetsLostNew
+	@OwnerID			int,
+	@CorpAsset			bit,
+	@ItemID				int,
+	@LossDateTime	    datetime,
+	@Quantity			int,
+	@newID				bigint		OUTPUT
+AS
+	SELECT @newID =
+	(SELECT MAX(ID) AS MaxID
+		FROM AssetsLost) + 1
+		
+	IF(@newID IS NULL)
+	BEGIN
+		SET @newID = 1
+	END
+	
+	INSERT INTO AssetsLost (ID, OwnerID, CorpAsset, ItemID, LossDateTime, Quantity)
+	VALUES (@newID, @OwnerID, @CorpAsset, @ItemID, @LossDateTime, @Quantity)
+
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                        SetDBVersion(connection, new Version("1.4.1.7"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem creating 'AssetsLostNew' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.1.10")) < 0)
+                {
+                    #region Create 'AssetsProducedNew' stored procedure
+                    commandText = @"CREATE PROCEDURE dbo.AssetsProducedNew
+	@OwnerID			int,
+	@CorpAsset			bit,
+	@ItemID				int,
+	@ProductionDateTime	datetime,
+	@Cost				decimal(18, 2),
+    @Quantity           bigint,
+	@newID				bigint		OUTPUT
+AS
+	SELECT @newID =
+	(SELECT MAX(ID) AS MaxID
+		FROM AssetsProduced) + 1
+		
+	IF(@newID IS NULL)
+	BEGIN
+		SET @newID = 1
+	END
+	
+	INSERT INTO AssetsProduced (ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity)
+	VALUES (@newID, @OwnerID, @CorpAsset, @ItemID, @ProductionDateTime, @Cost, @Quantity)
+
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+                        SetDBVersion(connection, new Version("1.4.1.10"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem creating 'AssetsProducedNew' stored procedure", ex);
+                    }
+                    #endregion
+                }
+
+
+                if (dbVersion.CompareTo(new Version("1.4.1.12")) < 0)
+                {
+                    #region Add 'Cost' column to Assets table
+                    commandText =
+                            @"ALTER TABLE dbo.Assets
+ADD Cost decimal(18, 2) NOT NULL DEFAULT 0
+
+ALTER TABLE dbo.Assets
+ADD CostCalc bit NOT NULL DEFAULT 0";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.1.12"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem adding 'Cost' column to Assets table", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.1.13")) < 0)
+                {
+                    #region Update 'AssetsAddQuantity' stored procedure
+                    commandText =
+                            @"ALTER PROCEDURE dbo.AssetsAddQuantity 
+	@ownerID		int,
+	@corpAsset		bit,
+	@itemID			int,
+	@stationID		int,
+	@systemID		int,
+	@regionID		int,
+	@status			int,
+	@containerID	int,
+	@autoConExclude	bit,
+	@deltaQuantity	bigint,
+	@addedItemsCost	decimal(18,2),
+    @costCalc       bit
+AS
+	DECLARE @oldQuantity bigint, @newQuantity bigint
+	DECLARE	@assetID bigint
+	DECLARE @oldCost decimal(18, 2), @newCost decimal(18, 2)
+    DECLARE @oldCostCalc bit, @newCostCalc bit
+		
+	SET @assetID = 0
+	SELECT @oldQuantity = Quantity, @assetID = ID, @oldCost = Cost, @oldCostCalc = CostCalc
+	FROM Assets
+	WHERE OwnerID = @ownerID AND CorpAsset = @corpAsset AND LocationID = @stationID AND ItemID = @itemID AND Status = @status AND ContainerID = @containerID AND AutoConExclude = @autoConExclude
+	
+	IF(@assetID = 0)
+	BEGIN
+		INSERT INTO [Assets] ([OwnerID], [CorpAsset], [LocationID], [ItemID], [SystemID], [RegionID], [ContainerID], [Quantity], [Status], [AutoConExclude], [Processed], [IsContainer], [Cost], [CostCalc]) 
+		VALUES (@ownerID, @corpAsset, @stationID, @itemID, @systemID, @regionID, 0, @deltaQuantity, @status, @autoConExclude, 0, 0, @addedItemsCost, @costCalc);
+	END 
+	ELSE
+	BEGIN
+		SET @newQuantity = @oldQuantity + @deltaQuantity
+		IF(@deltaQuantity > 0)
+		BEGIN
+            -- If new items are being added to the stack then calculate the average cost from the 
+            -- old and new values.
+            -- If the old cost had not been calculated then just use the new cost
+            SET @newCostCalc = 1
+            IF(@oldCostCalc = 0 AND @costCalc = 0)
+            BEGIN
+                SET @newCost = 0
+                SET @newCostCalc = 0
+            END
+            ELSE IF(@oldCostCalc = 1 AND @costCalc = 0)
+            BEGIN
+                SET @newCost = @oldCost
+            END
+            ELSE IF(@oldCostCalc = 0 AND @costCalc = 1)
+            BEGIN
+                SET @newCost = @addedItemsCost
+            END
+            ELSE IF(@oldCostCalc = 1 AND @costCalc = 1)
+            BEGIN
+			    SET @newCost = (@oldCost * @oldQuantity + @addedItemsCost * @deltaQuantity) / (@oldQuantity + @deltaQuantity)
+		    END
+        END
+		ELSE
+		BEGIN
+            -- If items are being removed from the stack then just use the old cost value
+			SET @newCost = @oldCost
+            SET @newCostCalc = @oldCostCalc
+		END		
+		
+		UPDATE [Assets] SET [Quantity] = @newQuantity, [Cost] = @newCost, [CostCalc] = @newCostCalc
+		WHERE [OwnerID] = @ownerID AND [CorpAsset] = @corpAsset AND [LocationID] = @stationID AND [ItemID] = @itemID AND [Status] = @status AND [ContainerID] = @containerID AND [AutoConExclude] = @autoConExclude
+	END
+	
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.1.13"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'AssetsAddQuantity' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.1.14")) < 0)
+                {
+                    #region Update 'AssetsBuildResults' stored procedure
+                    commandText =
+                            @"ALTER PROCEDURE [dbo].[AssetsBuildResults]
+	@accessList			varchar(max),
+	@itemIDs			varchar(max),
+	@status				int,
+	@groupBy			varchar(50)
+    --@totalRows          int         OUTPUT
+AS
+SET NOCOUNT ON
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tmp_AssetResults]') AND type in (N'U'))
+DROP TABLE [dbo].[tmp_AssetResults]
+
+IF(@groupBy LIKE 'Owner')
+BEGIN
+	SELECT MIN(Assets.ID) AS ID, Assets.OwnerID, Assets.CorpAsset, 
+		0 AS LocationID, Assets.ItemID, 0 AS SystemID, 
+		0 AS RegionID, 0 AS ContainerID, 
+		SUM(Assets.Quantity) AS Quantity, 0 AS Status, 
+		CAST(0 AS bit) AS AutoConExclude, CAST(0 AS bit) AS Processed, 
+		CAST(0 AS bit) AS ISContainer, CAST(0 AS bit) AS ReprocExclude, 
+		SUM(Assets.Cost * Assets.Quantity * Assets.CostCalc) / SUM(Assets.Quantity * Assets.CostCalc) AS Cost,
+		MAX(CAST(Assets.CostCalc as int)) AS CostCalc,
+        row_number() OVER(ORDER BY Assets.OwnerID) as RowNumber
+	INTO tmp_AssetResults
+	FROM Assets 
+		JOIN CLR_accesslist_split(@accessList) a ON (Assets.OwnerID = a.ownerID AND ((a.includeCorporate = 1 AND Assets.CorpAsset = 1) OR (a.includePersonal = 1 AND Assets.CorpAsset = 0)))
+		JOIN CLR_intlist_split(@itemIDs) i ON (i.number = 0 OR Assets.ItemID = i.number)
+	WHERE (Assets.Status = @status OR @status = 0)
+	GROUP BY Assets.ItemID, Assets.OwnerID, Assets.CorpAsset
+END
+ELSE IF(@groupBy LIKE 'Region')
+BEGIN
+	SELECT MIN(Assets.ID) AS ID, Assets.OwnerID, Assets.CorpAsset, 
+		0 AS LocationID, Assets.ItemID, 0 AS SystemID, 
+		Assets.RegionID, 0 AS ContainerID, 
+		SUM(Assets.Quantity) AS Quantity, 0 AS Status, 
+		CAST(0 AS bit) AS AutoConExclude, CAST(0 AS bit) AS Processed, 
+		CAST(0 AS bit) AS ISContainer, CAST(0 AS bit) AS ReprocExclude, 
+		SUM(Assets.Cost * Assets.Quantity * Assets.CostCalc) / SUM(Assets.Quantity * Assets.CostCalc) AS Cost,
+		MAX(CAST(Assets.CostCalc as int)) AS CostCalc,
+		row_number() OVER(ORDER BY Assets.OwnerID) as RowNumber
+	INTO tmp_AssetResults
+	FROM Assets 
+		JOIN CLR_accesslist_split(@accessList) a ON (Assets.OwnerID = a.ownerID AND ((a.includeCorporate = 1 AND Assets.CorpAsset = 1) OR (a.includePersonal = 1 AND Assets.CorpAsset = 0)))
+		JOIN CLR_intlist_split(@itemIDs) i ON (i.number = 0 OR Assets.ItemID = i.number)
+	WHERE (Assets.Status = @status OR @status = 0)
+	GROUP BY Assets.ItemID, Assets.RegionID, Assets.OwnerID, Assets.CorpAsset
+END
+ELSE IF(@groupBy LIKE 'System')
+BEGIN
+	SELECT MIN(Assets.ID) AS ID, Assets.OwnerID, Assets.CorpAsset, 
+		0 AS LocationID, Assets.ItemID, Assets.SystemID, 
+		MAX(Assets.RegionID) AS RegionID, 0 AS ContainerID, 
+		SUM(Assets.Quantity) AS Quantity, 0 AS Status, 
+		CAST(0 AS bit) AS AutoConExclude, CAST(0 AS bit) AS Processed, 
+		CAST(0 AS bit) AS ISContainer, CAST(0 AS bit) AS ReprocExclude, 
+		SUM(Assets.Cost * Assets.Quantity * Assets.CostCalc) / SUM(Assets.Quantity * Assets.CostCalc) AS Cost,
+		MAX(CAST(Assets.CostCalc as int)) AS CostCalc,
+		row_number() OVER(ORDER BY Assets.OwnerID) as RowNumber
+	INTO tmp_AssetResults
+	FROM Assets 
+		JOIN CLR_accesslist_split(@accessList) a ON (Assets.OwnerID = a.ownerID AND ((a.includeCorporate = 1 AND Assets.CorpAsset = 1) OR (a.includePersonal = 1 AND Assets.CorpAsset = 0)))
+		JOIN CLR_intlist_split(@itemIDs) i ON (i.number = 0 OR Assets.ItemID = i.number)
+	WHERE (Assets.Status = @status OR @status = 0)
+	GROUP BY Assets.ItemID, Assets.SystemID, Assets.OwnerID, Assets.CorpAsset
+END
+ELSE
+BEGIN
+	SELECT Assets.*, row_number() OVER(ORDER BY Assets.OwnerID) as RowNumber
+	INTO tmp_AssetResults
+	FROM Assets 
+		JOIN CLR_accesslist_split(@accessList) a ON (Assets.OwnerID = a.ownerID AND ((a.includeCorporate = 1 AND Assets.CorpAsset = 1) OR (a.includePersonal = 1 AND Assets.CorpAsset = 0)))
+		JOIN CLR_intlist_split(@itemIDs) i ON (i.number = 0 OR Assets.ItemID = i.number)
+	WHERE (Assets.Status = @status OR @status = 0)
+END
+
+CREATE CLUSTERED INDEX [PK_tmp_AssetResults] ON [dbo].[tmp_AssetResults] 
+(
+	[RowNumber]
+)WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) ON [PRIMARY]	
+ 
+RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.1.14"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'AssetsBuildResults' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.1.15")) < 0)
+                {
+                    #region Update 'AssetsGetResultsPage' stored procedure
+                    commandText =
+                            @"IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tmp_AssetResults]') AND type in (N'U'))
+DROP TABLE [dbo].[tmp_AssetResults]
+
+
+CREATE TABLE [dbo].[tmp_AssetResults](
+	[ID] [bigint] IDENTITY(1,1) NOT NULL,
+	[OwnerID] [int] NOT NULL,
+	[CorpAsset] [bit] NOT NULL,
+	[LocationID] [int] NOT NULL,
+	[ItemID] [int] NOT NULL,
+	[SystemID] [int] NOT NULL,
+	[RegionID] [int] NOT NULL,
+	[ContainerID] [bigint] NOT NULL,
+	[Quantity] [bigint] NOT NULL,
+	[Status] [int] NOT NULL,
+	[AutoConExclude] [bit] NOT NULL,
+	[Processed] [bit] NOT NULL,
+	[IsContainer] [bit] NOT NULL,
+	[ReprocExclude] [bit] NOT NULL,
+	[Cost] [decimal](18,2) NOT NULL,
+    [CostCalc] [bit] NOT NULL,
+	[RowNumber] [bigint] NULL
+) ON [PRIMARY]";
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        commandText =
+                                @"ALTER PROCEDURE [dbo].[AssetsGetResultsPage]
+    @startRow           int,
+    @pageSize           int
+    --@totalRows          int         OUTPUT
+AS
+SET NOCOUNT ON
+
+	SELECT ID, OwnerID, CorpAsset, LocationID, ItemID, SystemID, RegionID, ContainerID,
+		Quantity, Status, AutoConExclude, Processed, IsContainer, ReprocExclude, Cost, CostCalc
+	FROM tmp_AssetResults
+	WHERE RowNumber BETWEEN (@startRow) AND (@startRow + @pageSize - 1)
+	ORDER BY RowNumber";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.1.15"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'AssetsGetResultsPage' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.1.16")) < 0)
+                {
+                    #region Update 'AssetsInsert' stored procedure
+                    commandText =
+                            @"ALTER PROCEDURE dbo.AssetsInsert
+	@OwnerID		int,
+	@CorpAsset		bit,
+	@LocationID		int,
+	@ItemID			int,
+	@SystemID		int,
+	@RegionID		int,
+	@ContainerID	bigint,
+	@Quantity		bigint,
+	@Status			int,
+	@Processed		bit,
+	@AutoConExclude	bit,
+	@IsContainer	bit,
+    @ReprocExclude  bit,
+    @Cost			decimal(18, 2),
+    @CostCalc       bit,
+	@newID			bigint OUT
+AS
+	INSERT INTO [Assets] ([OwnerID], [CorpAsset], [LocationID], [ItemID], [SystemID], [RegionID], [ContainerID], [Quantity], [Status], [AutoConExclude], [Processed], [IsContainer], [ReprocExclude], [Cost], [CostCalc]) 
+	VALUES (@OwnerID, @CorpAsset, @LocationID, @ItemID, @SystemID, @RegionID, @ContainerID, @Quantity, @Status, @AutoConExclude, @Processed, @IsContainer, @ReprocExclude, @Cost, @CostCalc);
+
+	SET @newID = SCOPE_IDENTITY()
+
+	SELECT * 
+	FROM Assets 
+	WHERE (ID = @newID)
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.1.16"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'AssetsInsert' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.1.17")) < 0)
+                {
+                    #region Update 'AssetsUpdate' stored procedure
+                    commandText =
+                            @"ALTER PROCEDURE dbo.AssetsUpdate
+	@ID				bigint,
+	@OwnerID		int,
+	@CorpAsset		bit,
+	@LocationID		int,
+	@ItemID			int,
+	@SystemID		int,
+	@RegionID		int,
+	@ContainerID	bigint,
+	@Quantity		bigint,
+	@Status			int,
+	@Processed		bit,
+	@AutoConExclude	bit,
+	@IsContainer	bit,
+    @ReprocExclude  bit,
+    @Cost			decimal(18,2),
+    @CostCalc       bit, 
+	@Original_ID	bigint
+AS
+	UPDATE [Assets] SET [OwnerID] = @OwnerID, [CorpAsset] = @CorpAsset, [LocationID] = @LocationID, [ItemID] = @ItemID, [SystemID] = @SystemID, [RegionID] = @RegionID, [ContainerID] = @ContainerID, [Quantity] = @Quantity, [Status] = @Status, [AutoConExclude] = @AutoConExclude, [Processed] = @Processed, [IsContainer] = @IsContainer, [ReprocExclude] = @ReprocExclude, [Cost] = @Cost, [CostCalc] = @CostCalc
+	WHERE ([ID] = @Original_ID);
+	
+	SELECT * 
+	FROM Assets 
+	WHERE (ID = @ID)
+	
+	RETURN   ";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.1.17"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'AssetsUpdate' stored procedure", ex);
+                    }
+                    #endregion
+                }
                 
+
+                if (dbVersion.CompareTo(new Version("1.4.1.30")) < 0)
+                {
+                    #region Add 'SellerUnitProfit' column to Transactions table
+                    commandText =
+                            @"ALTER TABLE dbo.Transactions
+ADD SellerUnitProfit decimal(18, 2) NOT NULL DEFAULT 0";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.1.13"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem adding 'SellerUnitProfit' column to Transactions table", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.1.31")) < 0)
+                {
+                    #region Update 'TransGetResultsPage' stored procedure
+                    commandText =
+                            @"IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tmp_TransResults]') AND type in (N'U'))
+DROP TABLE [dbo].[tmp_TransResults]
+
+
+CREATE TABLE [dbo].[tmp_TransResults](
+	[ID] [bigint] NOT NULL,
+	[DateTime] [datetime] NOT NULL,
+	[Quantity] [int] NOT NULL,
+	[ItemID] [int] NOT NULL,
+	[Price] [decimal](18, 2) NOT NULL,
+	[BuyerID] [int] NOT NULL,
+	[SellerID] [int] NOT NULL,
+	[BuyerCharacterID] [int] NOT NULL,
+	[SellerCharacterID] [int] NOT NULL,
+	[StationID] [int] NOT NULL,
+	[RegionID] [int] NOT NULL,
+	[BuyerForCorp] [bit] NOT NULL,
+	[SellerForCorp] [bit] NOT NULL,
+	[BuyerWalletID] [smallint] NOT NULL,
+	[SellerWalletID] [smallint] NOT NULL,
+	[SellerUnitProfit] [decimal](18,2) NOT NULL,
+	[RowNumber] [bigint] NULL
+) ON [PRIMARY]";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        commandText =
+                                @"ALTER PROCEDURE [dbo].[TransGetResultsPage]
+    @startRow           int,
+    @pageSize           int
+AS
+SET NOCOUNT ON
+
+	SELECT ID, DateTime, Quantity, ItemID, Price, BuyerID, SellerID, BuyerCharacterID,
+		SellerCharacterID, StationID, RegionID, BuyerForCorp, SellerForCorp,
+		BuyerWalletID, SellerWalletID, SellerUnitProfit
+	FROM tmp_TransResults
+	WHERE RowNumber BETWEEN (@startRow) AND (@startRow + @pageSize - 1)
+	ORDER BY RowNumber
+RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.1.31"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'TransGetResultsPage' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.1.32")) < 0)
+                {
+                    #region Update 'TransInsert' stored procedure
+                    commandText =
+                            @"ALTER PROCEDURE dbo.TransInsert 
+	@ID					bigint,
+	@DateTime			datetime,
+	@Quantity			int,
+	@ItemID				int,
+	@Price				decimal(18,2),
+	@BuyerID			int,
+	@SellerID			int,
+	@BuyerCharacterID	int,
+	@SellerCharacterID	int,
+	@StationID			int,
+	@RegionID			int,
+	@BuyerForCorp		bit,
+	@SellerForCorp		bit,
+	@BuyerWalletID		smallint,
+	@SellerWalletID		smallint,
+	@SellerUnitProfit	decimal(18,2)
+AS
+	INSERT INTO [dbo].[Transactions] ([ID], [DateTime], [Quantity], [ItemID], [Price], [BuyerID], [SellerID], [BuyerCharacterID], [SellerCharacterID], [StationID], [RegionID], [BuyerForCorp], [SellerForCorp], [BuyerWalletID], [SellerWalletID], [SellerUnitProfit]) 
+	VALUES (@ID, @DateTime, @Quantity, @ItemID, @Price, @BuyerID, @SellerID, @BuyerCharacterID, @SellerCharacterID, @StationID, @RegionID, @BuyerForCorp, @SellerForCorp, @BuyerWalletID, @SellerWalletID, @SellerUnitProfit);
+	
+	SELECT *
+	FROM Transactions 
+	WHERE (ID = @ID)
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.1.32"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'TransInsert' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.1.33")) < 0)
+                {
+                    #region Update 'TransNew' stored procedure
+                    commandText =
+                            @"ALTER PROCEDURE dbo.TransNew
+	@datetime		datetime,
+	@quantity		int,
+	@itemID			int,
+	@price			decimal(18, 2),
+	@buyerID		int,
+	@sellerID		int,
+	@buyerCharID	int,
+	@sellerCharID	int,
+	@stationID		int,
+	@regionID		int,
+	@buyerForCorp	bit,
+	@sellerForCorp	bit,
+	@buyerWalletID	smallint,
+	@sellerWalletID	smallint,
+	@sellerUnitProfit	decimal(18, 2),
+	@newID			bigint		OUTPUT
+AS
+	SELECT @newID =
+	(SELECT MAX(ID) AS MaxID
+		FROM Transactions
+		WHERE ID >= 9000000000000000000
+		) + 1
+		
+	IF(@newID IS NULL OR @newID < 9000000000000000000)
+	BEGIN
+		SET @newID = 9000000000000000000
+	END
+	
+	INSERT INTO Transactions (ID, DateTime, Quantity, ItemID, Price, BuyerID, SellerID, 
+		BuyerCharacterID, SellerCharacterID, StationID, RegionID, BuyerForCorp, SellerForCorp, 
+		BuyerWalletID, SellerWalletID, SellerUnitProfit)
+	VALUES (@newID, @datetime, @quantity, @itemID, @price, @buyerID, @sellerID, @buyerCharID, @sellerCharID,
+		@stationID, @regionID, @buyerForCorp, @sellerForCorp, @buyerWalletID, @sellerWalletID, @sellerUnitProfit)
+
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.1.33"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'TransNew' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.1.34")) < 0)
+                {
+                    #region Update 'TransUpdate' stored procedure
+                    commandText =
+                            @"ALTER PROCEDURE dbo.TransUpdate 
+	@ID					bigint,
+	@DateTime			datetime,
+	@Quantity			int,
+	@ItemID				int,
+	@Price				decimal(18,2),
+	@BuyerID			int,
+	@SellerID			int,
+	@BuyerCharacterID	int,
+	@SellerCharacterID	int,
+	@StationID			int,
+	@RegionID			int,
+	@BuyerForCorp		bit,
+	@SellerForCorp		bit,
+	@BuyerWalletID		smallint,
+	@SellerWalletID		smallint,
+	@SellerUnitProfit	decimal(18,2),
+	@Original_ID		bigint
+AS
+	UPDATE [Transactions] SET [ID] = @ID, [DateTime] = @DateTime, [Quantity] = @Quantity, [ItemID] = @ItemID, [Price] = @Price, [BuyerID] = @BuyerID, [SellerID] = @SellerID, [BuyerCharacterID] = @BuyerCharacterID, [SellerCharacterID] = @SellerCharacterID, [StationID] = @StationID, [RegionID] = @RegionID, [BuyerForCorp] = @BuyerForCorp, [SellerForCorp] = @SellerForCorp, [BuyerWalletID] = @BuyerWalletID, [SellerWalletID] = @SellerWalletID, [SellerUnitProfit] = @SellerUnitProfit 
+	WHERE ([ID] = @Original_ID);
+
+	SELECT *
+	FROM Transactions 
+	WHERE (ID = @ID)
+	
+	RETURN
+";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.1.34"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'TransUpdate' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                
+                if (dbVersion.CompareTo(new Version("1.4.1.40")) < 0)
+                {
+                    #region Add 'For Sale Via Contract' state to AssetStatuses table
+                    commandText =
+                            @"INSERT INTO AssetStatuses ([StatusID], [Description])
+VALUES (3, 'For Sale Via Contract                             ')";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.1.40"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem adding 'For Sale Via Contract' state to AssetStatuses table", ex);
+                    }
+                    #endregion
+                }
+
+                if (dbVersion.CompareTo(new Version("1.4.1.41")) < 0)
+                {
+                    #region Update 'JournalSumAmtByType' stored procedure
+                    commandText =
+                            @"ALTER PROCEDURE dbo.JournalSumAmtByType 
+	@accessParams	varchar(MAX),
+	@refType		int,
+	@startTime		DateTime,
+	@endTime		DateTime,
+	@type			varchar(7),	-- 'revenue' or 'expense'. Setting this param to anything else will return both types.
+	@sumAmt			decimal(18,2)	OUTPUT
+AS
+	SELECT @sumAmt = SUM(Journal.Amount)
+	FROM Journal
+	JOIN CLR_financelist_split(@accessParams) a ON(
+		(@type != 'revenue' AND ((Journal.SenderID = a.ownerID AND Journal.SCorpID = 0) OR Journal.SCorpID = a.ownerID) AND (a.walletID1 = 0 OR (Journal.SWalletID = a.walletID1 OR Journal.SWalletID = a.walletID2 OR Journal.SWalletID = a.walletID3 OR Journal.SWalletID = a.walletID4 OR Journal.SWalletID = a.walletID5 OR Journal.SWalletID = a.walletID6))) OR 
+		(@type != 'expense' AND ((Journal.RecieverID = a.ownerID AND Journal.RCorpID = 0) OR Journal.RCorpID = a.ownerID) AND (a.walletID1 = 0 OR  (Journal.RWalletID = a.walletID1 OR Journal.RWalletID = a.walletID2 OR Journal.RWalletID = a.walletID3 OR Journal.RWalletID = a.walletID4 OR Journal.RWalletID = a.walletID5 OR Journal.RWalletID = a.walletID6))) OR a.ownerID = 0) 
+	WHERE ((Journal.Date > @startTime) AND 
+		(Journal.Date <= @endTime) AND 
+		(Journal.TypeID = @refType OR @refType = 0))
+	
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.1.41"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'JournalSumAmtByType' stored procedure", ex);
+                    }
+                    #endregion
+                }
+
+                
+
             }
             catch (Exception ex)
             {

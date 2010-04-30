@@ -72,6 +72,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 _regionID = dataRow.RegionID;
                 _systemID = dataRow.SystemID;
                 _contents = new AssetList();
+                _unitBuyPrice = dataRow.Cost;
+                _gotUnitBuyPrice = dataRow.CostCalc;
             }
         }
 
@@ -109,6 +111,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             _contents = new AssetList();
             _container = container;
             _contents = new AssetList();
+            _unitBuyPrice = 0;
+            _gotUnitBuyPrice = false;
 
             if (_isContainer)
             {
@@ -439,44 +443,46 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             get
             {
+                /// Usually, unit buy price will have been obtained when the asset was originally added 
+                /// to the user's database.
+                /// However, any assets added before version 1.4.2.0 will not have this data. Even those
+                /// added after may be missing it in some cases.
+                /// Consequently, we need to try and work out what was paid for the item.
                 if (!_gotUnitBuyPrice)
                 {
-                    /*List<int> itemIDs = new List<int>();
-                    itemIDs.Add(_itemID);
-                    List<int> stationIDs = new List<int>();
-                    stationIDs.Add(_locationID);
-                    decimal blank1;
-                    // First try getting the price by looking at the most recent buy transactions
-                    // at the asset's location.
-                    Transactions.GetAverageBuyPrice(UserAccount.CurrentGroup.GetFinanceAccessParams(
-                        APIDataType.Transactions), itemIDs, stationsIDs, new List<int>(),
-                        _quantity, 0, ref _unitBuyPrice, ref blank1);
-
-                    if (_unitBuyPrice == 0)
-                    {
-                        // If we don't find anything then get the price from the buy price of the x 
-                        // transactions that occured before the most recent y transactions.
-                        // where x is quantity and y is total quantity of this item in all locations.
-                        Transactions.GetAverageBuyPrice(UserAccount.CurrentGroup.GetFinanceAccessParams(
-                            APIDataType.Transactions), itemIDs, new List<int>(), new List<int>(),
-                            _quantity, Assets.GetTotalQuantity(UserAccount.CurrentGroup.GetFinanceAccessParams(
-                            APIDataType.Assets), _itemID), ref _unitBuyPrice, ref blank1);
-                    }
-
-                    if (_unitBuyPrice == 0)
-                    {
-                        _unitBuyPrice = UserAccount.CurrentGroup.ItemsTraded.GetBuyPrice(_itemID, 0);
-                    }*/
-
                     try
                     {
-                        if (_locationID >= 60000000 && _locationID < 70000000)
+                        List<int> itemIDs = new List<int>();
+                        itemIDs.Add(_itemID);
+                        List<int> stationIDs = new List<int>();
+                        stationIDs.Add(_locationID);
+                        decimal blank1 = 0;
+                        // First try getting the price by looking at the most recent buy transactions
+                        // at the asset's location.
+                        Transactions.GetAverageBuyPrice(UserAccount.CurrentGroup.GetFinanceAccessParams(
+                            APIDataType.Transactions), itemIDs, stationIDs, new List<int>(),
+                            _quantity, 0, ref _unitBuyPrice, ref blank1, false);
+
+                        // If we don't find anything then just use the most recent buy transaction 
+                        // at any location.
+                        if (_unitBuyPrice == 0)
                         {
-                            _unitBuyPrice = UserAccount.CurrentGroup.ItemValues.GetBuyPrice(_itemID, _locationID, true);
+                            Transactions.GetAverageBuyPrice(UserAccount.CurrentGroup.GetFinanceAccessParams(
+                                APIDataType.Transactions), itemIDs, new List<int>(), new List<int>(),
+                                _quantity, 0, ref _unitBuyPrice, ref blank1, false);
                         }
-                        else
+
+                        // If we still don't have anything then use the ItemValues object
+                        if (_unitBuyPrice == 0)
                         {
-                            _unitBuyPrice = UserAccount.CurrentGroup.ItemValues.GetBuyPrice(_itemID, 0);
+                            if (_locationID >= 60000000 && _locationID < 70000000)
+                            {
+                                _unitBuyPrice = UserAccount.CurrentGroup.ItemValues.GetBuyPrice(_itemID, _locationID, true);
+                            }
+                            else
+                            {
+                                _unitBuyPrice = UserAccount.CurrentGroup.ItemValues.GetBuyPrice(_itemID, 0);
+                            }
                         }
                     }
                     catch
@@ -487,6 +493,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     _gotUnitBuyPrice = true;
                 }
                 return _unitBuyPrice;
+            }
+            set
+            {
+                _unitBuyPrice = value;
+                _gotUnitBuyPrice = true;
             }
         }
 
@@ -527,6 +538,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             _reprocessPrices = prices;
         }
+
         #endregion
 
         #region Overriden object methods

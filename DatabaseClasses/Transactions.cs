@@ -128,13 +128,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         public static void NewTransaction(DateTime datetime, int quantity, int itemID, decimal price, 
             int buyerID, int sellerID, int buyerCharID, int sellerCharID, int stationID, int regionID,
-            bool buyerForCorp, bool sellerForCorp, short buyerWalletID, short sellerWalletID, ref long newID)
+            bool buyerForCorp, bool sellerForCorp, short buyerWalletID, short sellerWalletID, 
+            decimal sellerUnitProfit, ref long newID)
         {
             long? ID = 0;
             lock (tableAdapter)
             {
                 tableAdapter.New(datetime, quantity,itemID, price, buyerID, sellerID, buyerCharID, sellerCharID,
-                    stationID, regionID, buyerForCorp, sellerForCorp, buyerWalletID, sellerWalletID, ref ID);
+                    stationID, regionID, buyerForCorp, sellerForCorp, buyerWalletID, sellerWalletID, 
+                    sellerUnitProfit, ref ID);
             }
             newID = ID.HasValue ? ID.Value : -1;
         }

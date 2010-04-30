@@ -26,7 +26,9 @@ namespace EveMarketMonitorApp.GUIElements
             InitializeComponent();
             _group = UserAccount.CurrentGroup;
             _removedAccounts = new List<EVEAccount>();
+            UpdateCharLists();
         }
+
 
         private void ReportGroupSetup_Load(object sender, EventArgs e)
         {
@@ -42,22 +44,22 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     foreach (EVEAccount account in _accounts)
                     {
-                        try
-                        {
-                            account.UpdateCharList(false);
-                        }
-                        catch (EMMAEveAPIException apiEx) 
-                        { 
-                            // If we get an API error updating the list of characters then let the user know.
-                            // We still want to allow them to continue because this is most likley due to an
-                            // API key change and we want to allow them to update it.
-                            MessageBox.Show("Warning: The list of characters on account '" + account.UserID + 
-                                "' could not be updated.\r\n" +
-                                "Eve API error: " + apiEx.EveCode + ", " + apiEx.EveDescription + "\r\n" +
-                                "This may mean that the list of characters displayed here is not the " +
-                                "same as the characters that are actually on this account.", "Warning",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
+                        //try
+                        //{
+                        //    account.UpdateCharList(false);
+                        //}
+                        //catch (EMMAEveAPIException apiEx) 
+                        //{ 
+                        //    // If we get an API error updating the list of characters then let the user know.
+                        //    // We still want to allow them to continue because this is most likley due to an
+                        //    // API key change and we want to allow them to update it.
+                        //    MessageBox.Show("Warning: The list of characters on account '" + account.UserID + 
+                        //        "' could not be updated.\r\n" +
+                        //        "Eve API error: " + apiEx.EveCode + ", " + apiEx.EveDescription + "\r\n" +
+                        //        "This may mean that the list of characters displayed here is not the " +
+                        //        "same as the characters that are actually on this account.", "Warning",
+                        //        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        //}
                         foreach (APICharacter apiChar in account.Chars)
                         {
                             bool x = apiChar.CharIncWithRptGroup;
@@ -81,6 +83,36 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 lblNoAccounts.Visible = false;
                 eveAccountsGrid.SelectAll();
+            }
+        }
+
+        private void UpdateCharLists()
+        {
+            if (_accounts == null)
+            {
+                _accounts = _group.Accounts;
+                if (_accounts != null)
+                {
+                    foreach (EVEAccount account in _accounts)
+                    {
+                        try
+                        {
+                            account.UpdateCharList(true);
+                        }
+                        catch (EMMAEveAPIException apiEx)
+                        {
+                            // If we get an API error updating the list of characters then let the user know.
+                            // We still want to allow them to continue because this is most likley due to an
+                            // API key change and we want to allow them to update it.
+                            MessageBox.Show("Warning: The list of characters on account '" + account.UserID +
+                                "' could not be updated.\r\n" +
+                                "Eve API error: " + apiEx.EveCode + ", " + apiEx.EveDescription + "\r\n" +
+                                "This may mean that the list of characters displayed here is not the " +
+                                "same as the characters that are actually on this account.", "Warning",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                }
             }
         }
 
@@ -128,6 +160,7 @@ namespace EveMarketMonitorApp.GUIElements
             EnterAccountDetails details = new EnterAccountDetails();
             if (details.ShowDialog() != DialogResult.Cancel)
             {
+                details.Account.UpdateCharList(true);
                 _accounts.Add(details.Account);
                 if (_removedAccounts.Contains(details.Account))
                 {

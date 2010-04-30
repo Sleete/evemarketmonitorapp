@@ -350,7 +350,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 {
                     // Get the date/time that the assets data is cached until and then subtract
                     // 23 hours to get the date/time that the snapshot was actually taken.
-                    retVal = DateTime.Parse(timeNode.InnerText, System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                    retVal = DateTime.Parse(timeNode.InnerText, 
+                        System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                     retVal = retVal.AddHours(-23);
                 }
             }

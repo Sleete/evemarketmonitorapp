@@ -15,9 +15,10 @@ namespace EveMarketMonitorApp.AbstractionClasses
     /// </summary>
     public static class EveMetrics
     {
-        private const string developmentApiKey = "75AF4D882523F9D766A6C";
+        //private const string developmentApiKey = "75AF4D882523F9D766A6C";
+        private const string developmentApiKey = "E8B06707A4BDC5A588F6F";
 
-        private const string URL_PriceStats = @"http://www.eve-metrics.com/market_reports/price_data.xml";
+        private const string URL_PriceStats = @"http://www.eve-metrics.com/api/item.xml";
 
         public static decimal GetPrice(int itemID, int regionID, bool buyPrice)
         {
@@ -88,7 +89,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                 request = (HttpWebRequest)HttpWebRequest.Create(url);
                 request.ContentType = "application/x-www-form-urlencoded";
-                request.UserAgent = "EMMA 1.0";
+                request.UserAgent = "EMMA";
                 request.Method = "POST";
                 ASCIIEncoding enc = new ASCIIEncoding();
                 data = enc.GetBytes(parameters);

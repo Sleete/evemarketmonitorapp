@@ -187,7 +187,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
             Diagnostics.StopTimer("GenerateContract.Part1");
             int lastAssetCount = -1;
 
-            while (assets.Count > 0 && lastAssetCount != assets.Count)
+            // Had to remove this condition.
+            // Consider the case where 9 mil units of trit are sat at a station.
+            // Max volume limit is set to 30k m3 so the autocontractor wants to create 
+            // 3 contracts for 3 mil units each.
+            // However, this condition will cause the system to drop into the infinite loop
+            // diagnostics after the first contract.
+            while (assets.Count > 0) // && lastAssetCount != assets.Count)
             {
                 complete = true;
                 relax = false;
@@ -309,6 +315,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 {
                     retVal.Add(contract);
                 }
+                //else
+                //{
+                //    UpdateStatus(0, 0, "", 
+                //        "A contract (" + diag_contracts +  ") has been generated that does not meet the minimum " +
+                //        "requirements." +
+                //        (reward <= minAllowedReward ? " The reward (" + reward + ") is less than " + 
+                //        minAllowedReward + "." : "") +
+                //        (totCollateral <= minAllowedCollateral ? " The collateral (" + totCollateral + 
+                //        ") is less than " + minAllowedCollateral + "." : "") +
+                //        (totVolume <= minAllowedVolume ? " The volume (" + totVolume + ") is less than " + 
+                //        minAllowedVolume + "." : ""), 
+                //        false);
+                //}
 
                 Diagnostics.StartTimer("GenerateContract.Part5");
                 if (!complete)
@@ -372,6 +391,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 }
                 errorText.Append("\r\n\t");
                 errorText.Append("Contracts created:");
+                if (retVal.Count == 0) { errorText.Append("\r\n\t\t"); errorText.Append("NONE"); }
                 foreach (Contract contract in retVal)
                 {
                     errorText.Append("\r\n\t\t");

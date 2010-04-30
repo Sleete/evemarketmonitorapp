@@ -47,7 +47,7 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 dtpStartDate.Value = DateTime.Now.AddDays(-7);
                 dtpEndDate.Value = DateTime.Now;
-                dtpEndDate.Enabled = false;
+                //dtpEndDate.Enabled = false;
                 chkItemsByGroup.Checked = false;
 
                 string[] columns = ItemReport.GetPossibleColumns();
