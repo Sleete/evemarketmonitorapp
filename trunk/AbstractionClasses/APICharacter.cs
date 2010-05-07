@@ -870,6 +870,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         // EMMA merges these since we don't care how things are stacked and it makes
                         // things a little easier.)
                         assetRow.Quantity = assetRow.Quantity + quantity;
+
+                        // ********** recalculate cost? ***********
                     }
                     else
                     {
@@ -889,6 +891,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             // All we need to do is update the quantity and set the processed flag.
                             assetRow.Quantity = quantity;
                             assetRow.Processed = true;
+
+                            // ********** recalculate cost? ***********
                         }
                     }
                 }
@@ -904,6 +908,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     assetRow.Processed = true;
                     assetRow.AutoConExclude = false;
                     assetRow.ReprocExclude = false;
+                    assetRow.Cost = 0;
+                    assetRow.CostCalc = false;
+
                     int systemID = 0, regionID = 0;
                     if (locationID >= 30000000 && locationID < 40000000)
                     {
