@@ -333,11 +333,31 @@ namespace EveMarketMonitorApp.GUIElements
                 }
                 _lastUpdateAttempt.Add(dataType, DateTime.UtcNow);
                 _character.UpdateDataFromAPI(corc, dataType);
+                if (corc == CharOrCorp.Corp && dataType == APIDataType.Orders)
+                {
+                    // If we're dealing with corporate orders then we need to grab corporate orders for 
+                    // all characters in this report group that are part of the corp.
+                    // This is because orders will only be returned that were actually created by
+                    // the character we are retrieving data for.
+                    foreach (EVEAccount account in UserAccount.CurrentGroup.Accounts)
+                    {
+                        foreach(APICharacter character in account.Chars) 
+                        {
+                            if (character.CorpID == _character.CorpID && character.CharID != _character.CharID)
+                            {
+                                if (character.CharHasCorporateAccess(APIDataType.Orders))
+                                {
+                                    character.UpdateDataFromAPI(corc, dataType);
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             // Make sure the state of the auto update checkboxes reflects the true values.
             // This only needs to be done for corps because the only way the auto-update
-            // setting can change without use intervention is if a char does not have corp
+            // setting can change without user intervention is if a char does not have corp
             // data access.
             if (corc == CharOrCorp.Corp)
             {
