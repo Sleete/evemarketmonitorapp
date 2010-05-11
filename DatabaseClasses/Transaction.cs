@@ -48,6 +48,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private bool _gotType = false;
         private decimal _profit = 0;
         private bool _gotProfit = false;
+        private bool _calcProfitFromAssets = false;
 
         public Transaction(EMMADataSet.TransactionsRow dataRow)
         {
@@ -80,6 +81,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             _sellerWalletID = dataRow.SellerWalletID;
             _profit = dataRow.SellerUnitProfit;
             _gotProfit = _profit != 0;
+            _calcProfitFromAssets = dataRow.CalcProfitFromAssets;
         }
 
 
@@ -480,6 +482,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 return GrossUnitProfit * _quantity;
             }
+        }
+
+        public bool CalcProfitFromAssets
+        {
+            get { return _calcProfitFromAssets; }
+            set { _calcProfitFromAssets = value; }
         }
     }
 

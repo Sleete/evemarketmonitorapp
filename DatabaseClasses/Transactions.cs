@@ -8,6 +8,7 @@ using System.Data;
 using System.Xml;
 
 using EveMarketMonitorApp.Common;
+using EveMarketMonitorApp.AbstractionClasses;
 
 namespace EveMarketMonitorApp.DatabaseClasses
 {
@@ -19,6 +20,118 @@ namespace EveMarketMonitorApp.DatabaseClasses
             new EveMarketMonitorApp.DatabaseClasses.EMMADataSetTableAdapters.IDTableTableAdapter();
 
         public event StatusChangeHandler StatusChange;
+
+        /// <summary>
+        /// This is used for calculating per unit profit when adding sell transactions from the API. 
+        /// It should not be used outside of that context.
+        /// </summary>
+        /// <param name="transData"></param>
+        /// <param name="newRow"></param>
+        /// <returns></returns>
+        public static decimal CalcProfit(int charID, bool corp, EMMADataSet.TransactionsDataTable transData,
+            EMMADataSet.TransactionsRow newRow)
+        {
+            decimal retVal = 0;
+            EMMADataSet.AssetsDataTable existingAssets = new EMMADataSet.AssetsDataTable();
+            int stationID = newRow.StationID;
+
+            try
+            {
+                // If there are matching assets for the specified character or corp at the 
+                // transaction location then use the cost of those assets to calculate profit. 
+                List<AssetAccessParams> assetAccessParams = new List<AssetAccessParams>();
+                assetAccessParams.Add(new AssetAccessParams(charID, !corp, corp));
+                Assets.GetAssets(existingAssets, assetAccessParams, stationID, 
+                    Stations.GetStation(stationID).solarSystemID, newRow.ItemID);
+                if (existingAssets != null)
+                {
+                    decimal totalBuyPrice = 0;
+                    long qToFind = newRow.Quantity;
+                    foreach (EMMADataSet.AssetsRow existingAsset in existingAssets)
+                    {
+                        // If possible, use data from assets that are currently for sale via the market.
+                        if (existingAsset.Status == (int)AssetStatus.States.ForSaleViaMarket && 
+                            existingAsset.Quantity > 0)
+                        {
+                            Asset asset = new Asset(existingAsset, null);
+                            long q = Math.Min(qToFind, asset.Quantity);
+                            qToFind -= q;
+                            totalBuyPrice += asset.UnitBuyPrice * q;
+
+                            // Adjust assets data in accordance with items that were sold.
+                            long deltaQuantity = -1 * q;
+                            Assets.ChangeAssets(charID, corp, newRow.StationID, newRow.ItemID, 
+                                existingAsset.ContainerID, existingAsset.Status, existingAsset.AutoConExclude,
+                                deltaQuantity, 0);
+                        }
+                    }
+                    // If we could not find enough assets 'ForSaleViaMarket' to match the 
+                    // sell transaction then look at assets that are in transit or just sat 
+                    // in the hanger.
+                    if (qToFind > 0)
+                    {
+                        foreach (EMMADataSet.AssetsRow existingAsset in existingAssets)
+                        {
+                            if (existingAsset.Status != (int)AssetStatus.States.ForSaleViaMarket &&
+                                existingAsset.Status != (int)AssetStatus.States.ForSaleViaContract &&
+                                existingAsset.Quantity > 0)
+                            {
+                                Asset asset = new Asset(existingAsset, null);
+                                long q = Math.Min(qToFind, asset.Quantity);
+                                qToFind -= q;
+                                totalBuyPrice += asset.UnitBuyPrice * q;
+
+                                // Adjust assets data in accordance with items that were sold.
+                                long deltaQuantity = -1 * q;
+                                Assets.ChangeAssets(charID, corp, newRow.StationID, newRow.ItemID, 
+                                    existingAsset.ContainerID, existingAsset.Status, existingAsset.AutoConExclude, 
+                                    deltaQuantity, 0);
+                            }
+                        }
+                    }
+                    if (qToFind < newRow.Quantity)
+                    {
+                        decimal unitBuyPrice = totalBuyPrice / (newRow.Quantity - qToFind);
+                        retVal = newRow.Price - unitBuyPrice;
+                    }
+                }
+                else
+                {
+                    // If there are no assets that match what was sold then look at other
+                    // buy transactions that are in the process of being added to the database.
+                    DataRow[] purchases = transData.Select("ItemID = " + newRow.ItemID +
+                        " AND StationID = " + newRow.StationID);
+                    int buyQuantity = 0;
+                    decimal buyPrice = 0;
+                    if (purchases.Length > 0)
+                    {
+                        foreach (DataRow purchase in purchases)
+                        {
+                            EMMADataSet.TransactionsRow trans = purchase as EMMADataSet.TransactionsRow;
+                            buyQuantity += trans.Quantity;
+                            buyPrice += trans.Quantity * trans.Price;
+                        }
+                        buyPrice /= buyQuantity;
+                        retVal = newRow.Price - buyPrice;
+                    }
+                    else
+                    {
+                        // If there are no assets at the station where the sell took place and no 
+                        // buy transactions waiting to be added for that station either, then flag
+                        // the transaction to have it's profit calculated when the next assets 
+                        // update is performed.
+                        newRow.CalcProfitFromAssets = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                new EMMADataException(ExceptionSeverity.Error, 
+                    "Problem calculating profit for new sell transaction.", ex);
+            }
+
+            return retVal;
+        }
 
         public static void BuildResults(List<FinanceAccessParams> accessParams, List<int> itemIDs,
             List<int> regionIDs, List<int> stationIDs, DateTime startDate, DateTime endDate, string transType)
@@ -129,14 +242,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public static void NewTransaction(DateTime datetime, int quantity, int itemID, decimal price, 
             int buyerID, int sellerID, int buyerCharID, int sellerCharID, int stationID, int regionID,
             bool buyerForCorp, bool sellerForCorp, short buyerWalletID, short sellerWalletID, 
-            decimal sellerUnitProfit, ref long newID)
+            decimal sellerUnitProfit, bool calcProfitFromAssets, ref long newID)
         {
             long? ID = 0;
             lock (tableAdapter)
             {
                 tableAdapter.New(datetime, quantity,itemID, price, buyerID, sellerID, buyerCharID, sellerCharID,
                     stationID, regionID, buyerForCorp, sellerForCorp, buyerWalletID, sellerWalletID, 
-                    sellerUnitProfit, ref ID);
+                    sellerUnitProfit, calcProfitFromAssets, ref ID);
             }
             newID = ID.HasValue ? ID.Value : -1;
         }

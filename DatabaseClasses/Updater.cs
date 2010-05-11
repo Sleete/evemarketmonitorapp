@@ -4837,8 +4837,266 @@ AS
                     #endregion
                 }
 
-                
 
+                if (dbVersion.CompareTo(new Version("1.4.2.0")) < 0)
+                {
+                    #region Add 'CalcProfitFromAssets' column to Transactions table
+                    commandText =
+                            @"ALTER TABLE dbo.Transactions
+ADD CalcProfitFromAssets bit NOT NULL DEFAULT 0";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.2.0"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem adding 'CalcProfitFromAssets' column to Transactions table", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.2.1")) < 0)
+                {
+                    #region Update 'TransGetResultsPage' stored procedure
+                    commandText =
+                            @"IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tmp_TransResults]') AND type in (N'U'))
+DROP TABLE [dbo].[tmp_TransResults]
+
+
+CREATE TABLE [dbo].[tmp_TransResults](
+	[ID] [bigint] NOT NULL,
+	[DateTime] [datetime] NOT NULL,
+	[Quantity] [int] NOT NULL,
+	[ItemID] [int] NOT NULL,
+	[Price] [decimal](18, 2) NOT NULL,
+	[BuyerID] [int] NOT NULL,
+	[SellerID] [int] NOT NULL,
+	[BuyerCharacterID] [int] NOT NULL,
+	[SellerCharacterID] [int] NOT NULL,
+	[StationID] [int] NOT NULL,
+	[RegionID] [int] NOT NULL,
+	[BuyerForCorp] [bit] NOT NULL,
+	[SellerForCorp] [bit] NOT NULL,
+	[BuyerWalletID] [smallint] NOT NULL,
+	[SellerWalletID] [smallint] NOT NULL,
+	[SellerUnitProfit] [decimal](18,2) NOT NULL,
+    [CalcProfitFromAssets] [bit] NOT NULL,
+	[RowNumber] [bigint] NULL
+) ON [PRIMARY]";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        commandText =
+                                @"ALTER PROCEDURE [dbo].[TransGetResultsPage]
+    @startRow           int,
+    @pageSize           int
+AS
+SET NOCOUNT ON
+
+	SELECT ID, DateTime, Quantity, ItemID, Price, BuyerID, SellerID, BuyerCharacterID,
+		SellerCharacterID, StationID, RegionID, BuyerForCorp, SellerForCorp,
+		BuyerWalletID, SellerWalletID, SellerUnitProfit, CalcProfitFromAssets
+	FROM tmp_TransResults
+	WHERE RowNumber BETWEEN (@startRow) AND (@startRow + @pageSize - 1)
+	ORDER BY RowNumber
+RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.2.1"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'TransGetResultsPage' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.2.2")) < 0)
+                {
+                    #region Update 'TransInsert' stored procedure
+                    commandText =
+                            @"ALTER PROCEDURE dbo.TransInsert 
+	@ID					bigint,
+	@DateTime			datetime,
+	@Quantity			int,
+	@ItemID				int,
+	@Price				decimal(18,2),
+	@BuyerID			int,
+	@SellerID			int,
+	@BuyerCharacterID	int,
+	@SellerCharacterID	int,
+	@StationID			int,
+	@RegionID			int,
+	@BuyerForCorp		bit,
+	@SellerForCorp		bit,
+	@BuyerWalletID		smallint,
+	@SellerWalletID		smallint,
+	@SellerUnitProfit	decimal(18,2),
+    @CalcProfitFromAssets   bit
+AS
+	INSERT INTO [dbo].[Transactions] ([ID], [DateTime], [Quantity], [ItemID], [Price], [BuyerID], [SellerID], [BuyerCharacterID], [SellerCharacterID], [StationID], [RegionID], [BuyerForCorp], [SellerForCorp], [BuyerWalletID], [SellerWalletID], [SellerUnitProfit], [CalcProfitFromAssets]) 
+	VALUES (@ID, @DateTime, @Quantity, @ItemID, @Price, @BuyerID, @SellerID, @BuyerCharacterID, @SellerCharacterID, @StationID, @RegionID, @BuyerForCorp, @SellerForCorp, @BuyerWalletID, @SellerWalletID, @SellerUnitProfit, @CalcProfitFromAssets);
+	
+	SELECT *
+	FROM Transactions 
+	WHERE (ID = @ID)
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.2.2"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'TransInsert' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.2.3")) < 0)
+                {
+                    #region Update 'TransNew' stored procedure
+                    commandText =
+                            @"ALTER PROCEDURE dbo.TransNew
+	@datetime		datetime,
+	@quantity		int,
+	@itemID			int,
+	@price			decimal(18, 2),
+	@buyerID		int,
+	@sellerID		int,
+	@buyerCharID	int,
+	@sellerCharID	int,
+	@stationID		int,
+	@regionID		int,
+	@buyerForCorp	bit,
+	@sellerForCorp	bit,
+	@buyerWalletID	smallint,
+	@sellerWalletID	smallint,
+	@sellerUnitProfit	decimal(18, 2),
+    @calcProfitFromAssets   bit,
+	@newID			bigint		OUTPUT
+AS
+	SELECT @newID =
+	(SELECT MAX(ID) AS MaxID
+		FROM Transactions
+		WHERE ID >= 9000000000000000000
+		) + 1
+		
+	IF(@newID IS NULL OR @newID < 9000000000000000000)
+	BEGIN
+		SET @newID = 9000000000000000000
+	END
+	
+	INSERT INTO Transactions (ID, DateTime, Quantity, ItemID, Price, BuyerID, SellerID, 
+		BuyerCharacterID, SellerCharacterID, StationID, RegionID, BuyerForCorp, SellerForCorp, 
+		BuyerWalletID, SellerWalletID, SellerUnitProfit, CalcProfitFromAssets)
+	VALUES (@newID, @datetime, @quantity, @itemID, @price, @buyerID, @sellerID, @buyerCharID, @sellerCharID,
+		@stationID, @regionID, @buyerForCorp, @sellerForCorp, @buyerWalletID, @sellerWalletID, @sellerUnitProfit, 
+        @calcProfitFromAssets)
+
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.2.3"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'TransNew' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.4.2.4")) < 0)
+                {
+                    #region Update 'TransUpdate' stored procedure
+                    commandText =
+                            @"ALTER PROCEDURE dbo.TransUpdate 
+	@ID					bigint,
+	@DateTime			datetime,
+	@Quantity			int,
+	@ItemID				int,
+	@Price				decimal(18,2),
+	@BuyerID			int,
+	@SellerID			int,
+	@BuyerCharacterID	int,
+	@SellerCharacterID	int,
+	@StationID			int,
+	@RegionID			int,
+	@BuyerForCorp		bit,
+	@SellerForCorp		bit,
+	@BuyerWalletID		smallint,
+	@SellerWalletID		smallint,
+	@SellerUnitProfit	decimal(18,2),
+    @CalcProfitFromAssets   bit,
+	@Original_ID		bigint
+AS
+	UPDATE [Transactions] SET [ID] = @ID, [DateTime] = @DateTime, [Quantity] = @Quantity, [ItemID] = @ItemID, [Price] = @Price, [BuyerID] = @BuyerID, [SellerID] = @SellerID, [BuyerCharacterID] = @BuyerCharacterID, [SellerCharacterID] = @SellerCharacterID, [StationID] = @StationID, [RegionID] = @RegionID, [BuyerForCorp] = @BuyerForCorp, [SellerForCorp] = @SellerForCorp, [BuyerWalletID] = @BuyerWalletID, [SellerWalletID] = @SellerWalletID, [SellerUnitProfit] = @SellerUnitProfit, [CalcProfitFromAssets] = @CalcProfitFromAssets 
+	WHERE ([ID] = @Original_ID);
+
+	SELECT *
+	FROM Transactions 
+	WHERE (ID = @ID)
+	
+	RETURN
+";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.2.4"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'TransUpdate' stored procedure", ex);
+                    }
+                    #endregion
+                }
+
+                if (dbVersion.CompareTo(new Version("1.4.2.5")) < 0)
+                {
+                    #region Add 'For Sale Via Market' state to AssetStatuses table
+                    commandText =
+                            @"INSERT INTO AssetStatuses ([StatusID], [Description])
+VALUES (4, 'For Sale Via Market                               ')";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.2.5"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem adding 'For Sale Via Market' state to AssetStatuses table", ex);
+                    }
+                    #endregion
+                }
             }
             catch (Exception ex)
             {
