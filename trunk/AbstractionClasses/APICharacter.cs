@@ -9,6 +9,7 @@ using System.IO;
 using EveMarketMonitorApp.DatabaseClasses;
 using EveMarketMonitorApp.Common;
 using EveMarketMonitorApp.GUIElements;
+using System.Data;
 
 namespace EveMarketMonitorApp.AbstractionClasses
 {
@@ -711,29 +712,12 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                 if (assetList != null)
                 {
-                    /*bool attemptToMatchContracts = Contracts.OwnerHasContractsInProgress(
-                        corc == CharOrCorp.Char ? _charID : _corpID);
-                    Dictionary<int, Dictionary<int, long>> expectedChages = 
+                    Dictionary<int, Dictionary<int, long>> changes = 
                         new Dictionary<int, Dictionary<int, long>>();
-                    if (attemptToMatchContracts)
-                    {
-                        // If a transaction update is running then wait until it has finished before
-                        // doing this bit...
-                        while (GetLastAPIUpdateError(corc, APIDataType.Transactions).Equals("UPDAING"))
-                        {
-                            Thread.Sleep(100);
-                        }
 
-                        int minID = corc == CharOrCorp.Char ? Settings.CharAssetsTransUpdateID :
-                            Settings.CorpAssetsTransUpdateID;
-                        DateTime effectiveDate = corc == CharOrCorp.Char ? Settings.CharAssetsEffectiveDate :
-                            Settings.CorpAssetsEffectiveDate;
-                        if (minID == 0) { minID = -1; }
-                        expectedChages = Assets.GetQuantityChangesFromTransactions(
-                            _charID, _corpID, corc == CharOrCorp.Corp, minID, effectiveDate);
-                    }*/
-
-                    UpdateAssets(assetData, assetList, 0, corc, 0);//, expectedChages);
+                    UpdateAssets(assetData, assetList, 0, corc, 0, changes);
+                    Assets.ProcessSellOrders(assetData, _charID, corc == CharOrCorp.Corp);
+                    Assets.AnalyseChanges(assetData, changes);
 
                     Assets.UpdateDatabase(assetData);
                     // Clear any assets not processed. i.e. those that are currently in the database but are
@@ -750,8 +734,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     // Update the assets effective date setting.
                     if (corc == CharOrCorp.Char) { Settings.CharAssetsEffectiveDate = fileDate; }
                     else { Settings.CorpAssetsEffectiveDate = fileDate; }
-                    long maxID = Assets.UpdateFromTransactions(_charID, _corpID, corc == CharOrCorp.Corp, fileDate);
+
                     // Set maxID to the latest transaction ID used when updating the assets.
+                    long maxID = Assets.UpdateFromTransactions(_charID, _corpID, corc == CharOrCorp.Corp, fileDate);
                     if (corc == CharOrCorp.Char) { Settings.CharAssetsTransUpdateID = maxID; }
                     else { Settings.CorpAssetsTransUpdateID = maxID; }
 
@@ -801,7 +786,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         /// <param name="containerID"></param>
         /// <param name="expectedChanges"></param>
         private void UpdateAssets(EMMADataSet.AssetsDataTable assetData, XmlNodeList assetList, int locationID,
-            CharOrCorp corc, long containerID/*, Dictionary<int, Dictionary<int, long>> expectedChanges*/)
+            CharOrCorp corc, long containerID, Dictionary<int, Dictionary<int, long>> changes)
         {
             int counter = 0;
             if (containerID == 0)
@@ -845,19 +830,22 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 needNewRow = true;
 
                 if (Assets.AssetExists(assetData, _charID, corc == CharOrCorp.Corp, locationID,
-                    itemID, 1, containerID != 0, containerID, isContainer, false, !isContainer, false, ref assetID))
+                    itemID, (int)AssetStatus.States.Normal, containerID != 0, containerID, isContainer, 
+                    false, !isContainer, false, ref assetID))
                 {
                     needNewRow = false;
                 }
                 else
                 {
                     if (Assets.AssetExists(assetData, _charID, corc == CharOrCorp.Corp, locationID,
-                        itemID, 1, containerID != 0, containerID, isContainer, false, !isContainer, true, ref assetID))
+                        itemID, (int)AssetStatus.States.Normal, containerID != 0, containerID, isContainer,
+                        false, !isContainer, true, ref assetID))
                     {
                         needNewRow = false;
                     }
                 }
 
+                Dictionary<int, long> change = new Dictionary<int, long>();
                 if (!needNewRow)
                 {
                     assetRow = assetData.FindByID(assetID);
@@ -871,7 +859,15 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         // things a little easier.)
                         assetRow.Quantity = assetRow.Quantity + quantity;
 
-                        // ********** recalculate cost? ***********
+                        // Store the changes that are being made to the quantity of 
+                        // items here. 
+                        // This means that once the update processing is complete, we
+                        // can try and work out where these items came from.
+                        change = new Dictionary<int, long>();
+                        if (changes.ContainsKey(locationID)) { change = changes[locationID]; }
+                        else { changes.Add(locationID, change); }
+                        if (change.ContainsKey(itemID)) { change[itemID] = change[itemID] + quantity; }
+                        else { change.Add(itemID, quantity); }
                     }
                     else
                     {
@@ -892,7 +888,15 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             assetRow.Quantity = quantity;
                             assetRow.Processed = true;
 
-                            // ********** recalculate cost? ***********
+                            // Store the changes that are being made to the quantity of 
+                            // items here. 
+                            // This means that once the update processing is complete, we
+                            // can try and work out where these items came from.
+                            change = new Dictionary<int, long>();
+                            if (changes.ContainsKey(locationID)) { change = changes[locationID]; }
+                            else { changes.Add(locationID, change); }
+                            if (change.ContainsKey(itemID)) { change[itemID] = quantity; }
+                            else { change.Add(itemID, quantity); }
                         }
                     }
                 }
@@ -965,17 +969,21 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         assetData.AddAssetsRow(assetRow);
                     }
 
-                    //if (expectedChanges.Count > 0)
-                    //{
-                    //    UpdateExpectedChanges(expectedChanges, assetRow.LocationID, assetRow.ItemID, assetRow.Quantity);
-                    //}
-
+                    // Store the changes that are being made to the quantity of 
+                    // items here. 
+                    // This means that once the update processing is complete, we
+                    // can try and work out where these items came from.
+                    change = new Dictionary<int, long>();
+                    if (changes.ContainsKey(locationID)) { change = changes[locationID]; }
+                    else { changes.Add(locationID, change); }
+                    if (change.ContainsKey(itemID)) { change[itemID] = quantity; }
+                    else { change.Add(itemID, quantity); }
                 }
 
                 if (isContainer)
                 {
                     XmlNodeList contained = asset.SelectNodes("rowset/row");
-                    UpdateAssets(assetData, contained, locationID, corc, assetID);//, expectedChanges);
+                    UpdateAssets(assetData, contained, locationID, corc, assetID, changes);
                 }
                 else
                 {
@@ -2044,35 +2052,40 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 {
                     Transactions.Store(transData);
 
-                    if (fromFile)
-                    {
-                        UpdateStatus(0, 1, "Updating assets from new transactions", "", false);
-                    }
-                    
-                    long minID = (corc == CharOrCorp.Char ? Settings.CharAssetsTransUpdateID : Settings.CorpAssetsTransUpdateID);
-                    minID += 1;
-                    long maxID = 0;
+                    //if (fromFile)
+                    //{
+                    //    UpdateStatus(0, 1, "Updating assets from new transactions", "", false);
+                    //}
+
+                    // Don't use this anymore, instead, assets are updated in the Transactions.CalcProfit 
+                    // method called within 'BuildTransRow' below
+
+                    //long minID = (corc == CharOrCorp.Char ? Settings.CharAssetsTransUpdateID : Settings.CorpAssetsTransUpdateID);
+                    //minID += 1;
+                    //long maxID = 0;
+
                     // Need to update assets with the data from the transactions we've just added.
                     // (This is done because assets can only be updated once every 24 hours or so but
                     // transactions can be updated every hour, using those transactions to modify the 
                     // assets data allows EMMA to give a more up-to-date view)
-                    if (minID > 1)
-                    {
-                        // If we've already updated assets from transactions since the last direct assets update
-                        // then use the ID of the last transactions used to update the assets last time as
-                        // the cutoff point.
-                        maxID = Assets.UpdateFromTransactions(_charID, _corpID, corc == CharOrCorp.Corp, minID);
-                    }
-                    else
-                    {
-                        // Otherwise, use the effective date of the last assets update as the cutoff point.
-                        // i.e. update assets with any transactions after that date/time.
-                        DateTime assetsValid = (corc == CharOrCorp.Char ? Settings.CharAssetsEffectiveDate : Settings.CorpAssetsEffectiveDate);
-                        maxID = Assets.UpdateFromTransactions(_charID, _corpID, corc == CharOrCorp.Corp, assetsValid);
-                    }
+                    //if (minID > 1)
+                    //{
+                    //    // If we've already updated assets from transactions since the last direct assets update
+                    //    // then use the ID of the last transactions used to update the assets last time as
+                    //    // the cutoff point.
+                    //    maxID = Assets.UpdateFromTransactions(_charID, _corpID, corc == CharOrCorp.Corp, minID);
+                    //}
+                    //else
+                    //{
+                    //    // Otherwise, use the effective date of the last assets update as the cutoff point.
+                    //    // i.e. update assets with any transactions after that date/time.
+                    //    DateTime assetsValid = (corc == CharOrCorp.Char ? Settings.CharAssetsEffectiveDate : 
+                    //        Settings.CorpAssetsEffectiveDate);
+                    //    maxID = Assets.UpdateFromTransactions(_charID, _corpID, corc == CharOrCorp.Corp, assetsValid);
+                    //}
 
-                    if (corc == CharOrCorp.Char) { Settings.CharAssetsTransUpdateID = maxID; }
-                    else { Settings.CorpAssetsTransUpdateID = maxID; }
+                    //if (corc == CharOrCorp.Char) { Settings.CharAssetsTransUpdateID = maxID; }
+                    //else { Settings.CorpAssetsTransUpdateID = maxID; }
 
                     if (fromFile)
                     {
@@ -2148,6 +2161,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             bool forCorp =
                 transEntry.SelectSingleNode("@transactionFor").Value.Equals("personal") ? false : true;
 
+            newRow.CalcProfitFromAssets = false;
             if (transType.ToLower().Equals("buy"))
             {
                 newRow.BuyerID = forCorp ? _corpID : _charID;
@@ -2170,23 +2184,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 newRow.SellerForCorp = forCorp;
                 newRow.SellerCharacterID = forCorp ? _charID : 0;
                 newRow.SellerWalletID = (walletID == 0 ? (short)1000 : walletID);
-                // Calculate unit profit
-                EMMADataSet.AssetsDataTable existingAssets = new EMMADataSet.AssetsDataTable();
-                int stationID = newRow.StationID;
-                decimal unitProfit = 0;
-                try
-                {
-                    Assets.GetAssets(existingAssets, UserAccount.CurrentGroup.GetAssetAccessParams(APIDataType.Full),
-                        stationID, Stations.GetStation(stationID).solarSystemID, newRow.ItemID);
-                    if (existingAssets != null && existingAssets.Count > 0)
-                    {
-                        Asset existingAsset = new Asset(existingAssets[0], null);
-                        unitProfit = newRow.Price - existingAsset.UnitBuyPrice;
-                    }
-                }
-                catch { }
-
-                newRow.SellerUnitProfit = unitProfit;
+                newRow.SellerUnitProfit = Transactions.CalcProfit(_charID, forCorp, transData, newRow);
             }
 
             // Get the IDs and associated names in this transaction.
@@ -2201,6 +2199,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
             return newRow;
         }
+
         #endregion
 
         #region Update Orders
@@ -2450,6 +2449,10 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                     if (orderData.Count > 0)
                     {
+                        // Update assets based on changes to orders.
+                        // Note that sold assets will be updated by the transactions API update
+                        // so this only needs to update assets based on cancelled/expired orders.
+                        Assets.UpdateFromOrders();
                         Orders.Store(orderData);
                     }
 

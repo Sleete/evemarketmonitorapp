@@ -284,7 +284,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 Transactions.NewTransaction(contract.IssueDate, item.Quantity, item.ItemID, Math.Abs(item.SellPrice),
                     contract.Collateral > 0 ? 0 : contract.OwnerID, contract.Collateral < 0 ? 0 : contract.OwnerID,
                     0, 0, contract.PickupStationID, Stations.GetStation(contract.PickupStationID).regionID, 
-                    false, false, 1000, 1000, item.Profit / item.Quantity, ref transID);
+                    false, false, 1000, 1000, item.Profit / item.Quantity, false, ref transID);
                 item.TransactionID = transID;
             }
         }

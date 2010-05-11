@@ -20,6 +20,167 @@ namespace EveMarketMonitorApp.DatabaseClasses
             new EveMarketMonitorApp.DatabaseClasses.EMMADataSetTableAdapters.IDTableTableAdapter();
 
         /// <summary>
+        /// Try to work out which assets have simply moved location and which have been added or lost.
+        /// Additionally, if items have moved, make sure we update the cost of the item stack.
+        /// 
+        /// </summary>
+        /// <param name="changes"></param>
+        /// <param name="assetData"></param>
+        public static void AnalyseChanges(EMMADataSet.AssetsDataTable assetData, 
+            Dictionary<int, Dictionary<int, long>> changes)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        /// <summary>
+        /// This ensures that items in sell orders appear in the list of the player's assets.
+        /// It is called just after new asset XML from the API has been processed but before
+        /// the update is applied to the database.
+        /// 
+        /// </summary>
+        public static void ProcessSellOrders(EMMADataSet.AssetsDataTable assetData, int charID, bool corp)
+        {
+            List<int> itemIDs = new List<int>();
+            itemIDs.Add(0);
+            List<int> stationIDs = new List<int>();
+            stationIDs.Add(0);
+            List<AssetAccessParams> accessParams = new List<AssetAccessParams>();
+            accessParams.Add(new AssetAccessParams(charID, !corp, corp));
+            // Get active sell orders
+            OrdersList sellOrders = Orders.LoadOrders(accessParams, itemIDs, stationIDs, 999, "Sell");
+            EMMADataSet.AssetsDataTable assets = new EMMADataSet.AssetsDataTable();
+            EMMADataSet.AssetsRow changedAsset = null;
+            Dictionary<int, Dictionary<int, long>> removedAssets = new Dictionary<int, Dictionary<int, long>>();
+
+            foreach (Order sellOrder in sellOrders)
+            {
+                bool orderDone = false;
+                long assetID = 0;
+
+
+                // If there is already an asset row with a state of 'ForSaleViaMarket' in the same location,
+                // same item type and same quantity then just use that and set it to processed
+                // (Note that transaction updates should have updated the asset values to match whatever
+                // the remaining volume of the order is) 
+                // Above is correct. However, if there are multiple sell orders in the same station for the 
+                // same item then the asset quantity will be the combined total volume of all the orders.
+                if (Assets.AssetExists(assets, charID, corp, sellOrder.StationID, sellOrder.ItemID,
+                    (int)AssetStatus.States.ForSaleViaMarket, false, 0, false, false, true, true, ref assetID))
+                {
+                    changedAsset = assets.FindByID(assetID);
+                    if (changedAsset.Quantity <= sellOrder.RemainingVol)
+                    {
+                        if (!changedAsset.Processed)
+                        {
+                            if (changedAsset.Quantity < sellOrder.RemainingVol)
+                            {
+                                // If the quantities do not match then store how many units
+                                // we are removing, the most likely cause is more than
+                                // one sell order for this item and this location.
+                                Dictionary<int, long> itemVolRemoved = new Dictionary<int, long>();
+                                if (removedAssets.ContainsKey(sellOrder.StationID))
+                                {
+                                    itemVolRemoved = removedAssets[sellOrder.StationID];
+                                }
+                                else
+                                {
+                                    removedAssets.Add(sellOrder.StationID, itemVolRemoved);
+                                }
+                                if (itemVolRemoved.ContainsKey(sellOrder.ItemID))
+                                {
+                                    itemVolRemoved[sellOrder.ItemID] = changedAsset.Quantity - sellOrder.RemainingVol;
+                                }
+                                else
+                                {
+                                    itemVolRemoved.Add(sellOrder.ItemID, changedAsset.Quantity - sellOrder.RemainingVol);
+                                }
+                                changedAsset.Quantity = sellOrder.RemainingVol;
+                            }
+                            changedAsset.Processed = true;
+                            orderDone = true;
+                        }
+                        else
+                        {
+                            // The asset record has already been processed.
+                            // This means that there must be more than one sell order for the same item 
+                            // at this station.
+                            // Use the 'removedAssets' dictionary to validate the amounts rather than just 
+                            // adding them blindly.
+                            if (removedAssets.ContainsKey(sellOrder.StationID))
+                            {
+                                Dictionary<int, long> itemVolRemoved = removedAssets[sellOrder.StationID];
+                                if (itemVolRemoved.ContainsKey(sellOrder.ItemID))
+                                {
+                                    long remainingRemoved = itemVolRemoved[sellOrder.ItemID];
+                                    if (remainingRemoved >= sellOrder.RemainingVol)
+                                    {
+                                        remainingRemoved -= sellOrder.RemainingVol;
+                                        itemVolRemoved[sellOrder.ItemID] = remainingRemoved;
+                                        changedAsset.Quantity += sellOrder.RemainingVol;
+                                        orderDone = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                // We havn't managed to match the order to and existing 'ForSaleViaMarket' stack in
+                // the database.
+                // As such, we need to work out where the items in the sell order have come from in
+                // order to calculate the correct 'cost' value.
+                if(!orderDone)
+                {
+                    // Find any unprocessed asset stacks of the same item as the sell order
+                    decimal assetCost = 0;
+                    long qToFind = sellOrder.RemainingVol;
+                    EMMADataSet.AssetsDataTable unprocMatches = new EMMADataSet.AssetsDataTable();
+                    Assets.GetAssets(unprocMatches, accessParams, sellOrder.StationID, sellOrder.SystemID,
+                        sellOrder.ItemID);
+                    // Work through the unprocessed stacks until we've found enough items 
+                    // to match the sell order.
+                    foreach (EMMADataSet.AssetsRow unprocMatch in unprocMatches)
+                    {
+                        if(qToFind > 0)
+                        {
+                            long q = Math.Min(qToFind, unprocMatch.Quantity);
+                            qToFind -= q;
+                            Asset unproc = new Asset(unprocMatch, null);
+                            assetCost += q * unproc.UnitBuyPrice;
+
+                            // remove the matching unprocessed items from the database.
+                            Assets.ChangeAssets(charID, corp, unprocMatch.LocationID, unprocMatch.ItemID,
+                                unprocMatch.ContainerID, unprocMatch.Status, unprocMatch.AutoConExclude, -1 * q, 0);
+                        }
+                    }
+
+                    // Create the new asset row..
+                    changedAsset = assets.NewAssetsRow();
+                    changedAsset.AutoConExclude = true;
+                    changedAsset.ContainerID = 0;
+                    changedAsset.CorpAsset = corp;
+                    changedAsset.Cost = assetCost / (sellOrder.TotalVol - qToFind);
+                    changedAsset.CostCalc = true;
+                    changedAsset.IsContainer = false;
+                    changedAsset.ItemID = sellOrder.ItemID;
+                    changedAsset.LocationID = sellOrder.StationID;
+                    changedAsset.OwnerID = sellOrder.OwnerID;
+                    changedAsset.Processed = true;
+                    changedAsset.Quantity = sellOrder.RemainingVol;
+                    changedAsset.RegionID = sellOrder.RegionID;
+                    changedAsset.ReprocExclude = true;
+                    changedAsset.SystemID = sellOrder.SystemID;
+                    changedAsset.Status = (int)AssetStatus.States.ForSaleViaMarket;
+
+                    assets.AddAssetsRow(changedAsset);
+
+                }                
+            }
+        }
+
+        /// <summary>
         /// GroupBy can be 'Region', 'Owner', 'System' or 'None'.
         /// Gruoping by region or system will also group by owner.
         /// </summary>
@@ -134,7 +295,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 {
                     int deltaQuantity = trans.Quantity;
                     if (trans.SellerID == ownerID) { deltaQuantity *= -1; }
-                    ChangeAssets(charID, useCorp, trans.StationID, trans.ItemID, 0, 1, false, deltaQuantity, trans.Price);
+                    // We just adjust the 'normal' assets pile even though the change (particularaly
+                    // where items are being removed) is likely to affect a different pile 
+                    // (e.g. 'ForSaleViaMarket')
+                    ChangeAssets(charID, useCorp, trans.StationID, trans.ItemID, 0, (int)AssetStatus.States.Normal, 
+                        false, deltaQuantity, trans.Price);
                     if (trans.ID > maxID) { maxID = trans.ID; }
                 }
             }

@@ -23,5 +23,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             tableAdapter.Fill(table);
         }
+
+        public enum States : int
+        {
+            Normal =1,
+            InTransit =2,
+            ForSaleViaContract = 3,
+            ForSaleViaMarket = 4
+        }
     }
 }
