@@ -133,6 +133,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
         #endregion
 
         #region Property accessors
+        public long ContainerID
+        {
+            get { return _container.ID; }
+        }
         public Asset Container
         {
             get { return _container; }
@@ -174,6 +178,18 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
             set { _owner = value; }
         }
+
+        public int LocationID
+        {
+            get { return _locationID; }
+            set
+            {
+                _locationID = value; _gotLocation = false;
+                _systemID = 0; _regionID = 0;
+                _gotSystem = false; _gotRegion = false;
+            }
+        }
+        
 
         public string Location
         {
@@ -327,6 +343,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
+        public int StatusID
+        {
+            get { return _statusID; }
+            set { _statusID = value; _gotStatus = false; }
+        }
         public string Status
         {
             get

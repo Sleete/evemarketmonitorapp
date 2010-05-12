@@ -32,26 +32,32 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtAssetsHours = new System.Windows.Forms.TextBox();
+            this.txtAssetsMins = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtOrdersHours = new System.Windows.Forms.TextBox();
+            this.txtOrdersMins = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtJournHours = new System.Windows.Forms.TextBox();
+            this.txtJournMins = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtTransHours = new System.Windows.Forms.TextBox();
+            this.txtTransMins = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
-            this.txtTransMins = new System.Windows.Forms.TextBox();
-            this.txtTransHours = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtJournHours = new System.Windows.Forms.TextBox();
-            this.txtJournMins = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.txtOrdersHours = new System.Windows.Forms.TextBox();
-            this.txtOrdersMins = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.txtAssetsHours = new System.Windows.Forms.TextBox();
-            this.txtAssetsMins = new System.Windows.Forms.TextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.txtAssetsUpdateMaxMinutes = new System.Windows.Forms.TextBox();
+            this.btnRecommend = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -79,8 +85,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // groupBox2
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.txtAssetsHours);
@@ -100,10 +105,102 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Location = new System.Drawing.Point(12, 95);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(276, 130);
+            this.groupBox2.Size = new System.Drawing.Size(276, 131);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Time between updates";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(156, 102);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(10, 13);
+            this.label9.TabIndex = 15;
+            this.label9.Text = ":";
+            // 
+            // txtAssetsHours
+            // 
+            this.txtAssetsHours.Location = new System.Drawing.Point(112, 99);
+            this.txtAssetsHours.Name = "txtAssetsHours";
+            this.txtAssetsHours.Size = new System.Drawing.Size(37, 20);
+            this.txtAssetsHours.TabIndex = 14;
+            // 
+            // txtAssetsMins
+            // 
+            this.txtAssetsMins.Location = new System.Drawing.Point(172, 98);
+            this.txtAssetsMins.Name = "txtAssetsMins";
+            this.txtAssetsMins.Size = new System.Drawing.Size(37, 20);
+            this.txtAssetsMins.TabIndex = 13;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(156, 76);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(10, 13);
+            this.label8.TabIndex = 12;
+            this.label8.Text = ":";
+            // 
+            // txtOrdersHours
+            // 
+            this.txtOrdersHours.Location = new System.Drawing.Point(112, 73);
+            this.txtOrdersHours.Name = "txtOrdersHours";
+            this.txtOrdersHours.Size = new System.Drawing.Size(37, 20);
+            this.txtOrdersHours.TabIndex = 11;
+            // 
+            // txtOrdersMins
+            // 
+            this.txtOrdersMins.Location = new System.Drawing.Point(172, 72);
+            this.txtOrdersMins.Name = "txtOrdersMins";
+            this.txtOrdersMins.Size = new System.Drawing.Size(37, 20);
+            this.txtOrdersMins.TabIndex = 10;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(156, 50);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(10, 13);
+            this.label7.TabIndex = 9;
+            this.label7.Text = ":";
+            // 
+            // txtJournHours
+            // 
+            this.txtJournHours.Location = new System.Drawing.Point(112, 47);
+            this.txtJournHours.Name = "txtJournHours";
+            this.txtJournHours.Size = new System.Drawing.Size(37, 20);
+            this.txtJournHours.TabIndex = 8;
+            // 
+            // txtJournMins
+            // 
+            this.txtJournMins.Location = new System.Drawing.Point(172, 46);
+            this.txtJournMins.Name = "txtJournMins";
+            this.txtJournMins.Size = new System.Drawing.Size(37, 20);
+            this.txtJournMins.TabIndex = 7;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(156, 24);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(10, 13);
+            this.label6.TabIndex = 6;
+            this.label6.Text = ":";
+            // 
+            // txtTransHours
+            // 
+            this.txtTransHours.Location = new System.Drawing.Point(112, 21);
+            this.txtTransHours.Name = "txtTransHours";
+            this.txtTransHours.Size = new System.Drawing.Size(37, 20);
+            this.txtTransHours.TabIndex = 5;
+            // 
+            // txtTransMins
+            // 
+            this.txtTransMins.Location = new System.Drawing.Point(172, 20);
+            this.txtTransMins.Name = "txtTransMins";
+            this.txtTransMins.Size = new System.Drawing.Size(37, 20);
+            this.txtTransMins.TabIndex = 4;
             // 
             // label5
             // 
@@ -144,7 +241,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(209, 231);
+            this.btnCancel.Location = new System.Drawing.Point(209, 414);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(79, 30);
             this.btnCancel.TabIndex = 2;
@@ -155,7 +252,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(124, 231);
+            this.btnOk.Location = new System.Drawing.Point(124, 414);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(79, 30);
             this.btnOk.TabIndex = 3;
@@ -163,103 +260,64 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
-            // txtTransMins
+            // groupBox3
             // 
-            this.txtTransMins.Location = new System.Drawing.Point(172, 20);
-            this.txtTransMins.Name = "txtTransMins";
-            this.txtTransMins.Size = new System.Drawing.Size(37, 20);
-            this.txtTransMins.TabIndex = 4;
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.btnRecommend);
+            this.groupBox3.Controls.Add(this.txtAssetsUpdateMaxMinutes);
+            this.groupBox3.Controls.Add(this.label11);
+            this.groupBox3.Controls.Add(this.label10);
+            this.groupBox3.Location = new System.Drawing.Point(12, 232);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(276, 161);
+            this.groupBox3.TabIndex = 4;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Assets Update Detail";
             // 
-            // txtTransHours
+            // label10
             // 
-            this.txtTransHours.Location = new System.Drawing.Point(112, 21);
-            this.txtTransHours.Name = "txtTransHours";
-            this.txtTransHours.Size = new System.Drawing.Size(37, 20);
-            this.txtTransHours.TabIndex = 5;
+            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label10.Location = new System.Drawing.Point(6, 16);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(264, 111);
+            this.label10.TabIndex = 0;
+            this.label10.Text = resources.GetString("label10.Text");
+            this.label10.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // label6
+            // label11
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(156, 24);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(10, 13);
-            this.label6.TabIndex = 6;
-            this.label6.Text = ":";
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 133);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(44, 13);
+            this.label11.TabIndex = 1;
+            this.label11.Text = "Minutes";
             // 
-            // label7
+            // txtAssetsUpdateMaxMinutes
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(156, 50);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(10, 13);
-            this.label7.TabIndex = 9;
-            this.label7.Text = ":";
+            this.txtAssetsUpdateMaxMinutes.Location = new System.Drawing.Point(56, 130);
+            this.txtAssetsUpdateMaxMinutes.Name = "txtAssetsUpdateMaxMinutes";
+            this.txtAssetsUpdateMaxMinutes.Size = new System.Drawing.Size(50, 20);
+            this.txtAssetsUpdateMaxMinutes.TabIndex = 2;
             // 
-            // txtJournHours
+            // btnRecommend
             // 
-            this.txtJournHours.Location = new System.Drawing.Point(112, 47);
-            this.txtJournHours.Name = "txtJournHours";
-            this.txtJournHours.Size = new System.Drawing.Size(37, 20);
-            this.txtJournHours.TabIndex = 8;
-            // 
-            // txtJournMins
-            // 
-            this.txtJournMins.Location = new System.Drawing.Point(172, 46);
-            this.txtJournMins.Name = "txtJournMins";
-            this.txtJournMins.Size = new System.Drawing.Size(37, 20);
-            this.txtJournMins.TabIndex = 7;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(156, 76);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(10, 13);
-            this.label8.TabIndex = 12;
-            this.label8.Text = ":";
-            // 
-            // txtOrdersHours
-            // 
-            this.txtOrdersHours.Location = new System.Drawing.Point(112, 73);
-            this.txtOrdersHours.Name = "txtOrdersHours";
-            this.txtOrdersHours.Size = new System.Drawing.Size(37, 20);
-            this.txtOrdersHours.TabIndex = 11;
-            // 
-            // txtOrdersMins
-            // 
-            this.txtOrdersMins.Location = new System.Drawing.Point(172, 72);
-            this.txtOrdersMins.Name = "txtOrdersMins";
-            this.txtOrdersMins.Size = new System.Drawing.Size(37, 20);
-            this.txtOrdersMins.TabIndex = 10;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(156, 102);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(10, 13);
-            this.label9.TabIndex = 15;
-            this.label9.Text = ":";
-            // 
-            // txtAssetsHours
-            // 
-            this.txtAssetsHours.Location = new System.Drawing.Point(112, 99);
-            this.txtAssetsHours.Name = "txtAssetsHours";
-            this.txtAssetsHours.Size = new System.Drawing.Size(37, 20);
-            this.txtAssetsHours.TabIndex = 14;
-            // 
-            // txtAssetsMins
-            // 
-            this.txtAssetsMins.Location = new System.Drawing.Point(172, 98);
-            this.txtAssetsMins.Name = "txtAssetsMins";
-            this.txtAssetsMins.Size = new System.Drawing.Size(37, 20);
-            this.txtAssetsMins.TabIndex = 13;
+            this.btnRecommend.Location = new System.Drawing.Point(159, 132);
+            this.btnRecommend.Name = "btnRecommend";
+            this.btnRecommend.Size = new System.Drawing.Size(111, 23);
+            this.btnRecommend.TabIndex = 3;
+            this.btnRecommend.Text = "Recommendations";
+            this.btnRecommend.UseVisualStyleBackColor = true;
+            this.btnRecommend.Click += new System.EventHandler(this.btnRecommend_Click);
             // 
             // APIUpdateSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 273);
+            this.ClientSize = new System.Drawing.Size(300, 456);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.groupBox2);
@@ -272,6 +330,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -299,5 +359,10 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtTransHours;
         private System.Windows.Forms.TextBox txtTransMins;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txtAssetsUpdateMaxMinutes;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button btnRecommend;
     }
 }

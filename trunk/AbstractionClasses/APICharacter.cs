@@ -544,13 +544,34 @@ namespace EveMarketMonitorApp.AbstractionClasses
         private void RetrieveAPIAssets(object param)
         {
             CharOrCorp corc = (CharOrCorp)param;
-            // Note, the sync lock is used to make sure that a transaction and assets update do
-            // not run at the same time for a character. 
-            lock (_syncLock)
-            {
-                SetLastAPIUpdateError(corc, APIDataType.Assets, "UPDATING");
 
-                RetrieveAssets(corc, null);
+            // Only allow the assets update to run if there has been an update to transactions and 
+            // orders within the last x minutes, the number of minutes is specified by the user.
+            bool updateAllowed = false;
+            while (!updateAllowed)
+            {
+                TimeSpan timeSinceTransUpdate = DateTime.Now.Subtract(
+                    GetLastAPIUpdateTime(corc, APIDataType.Transactions));
+                TimeSpan timeSinceOrdersUpdate = DateTime.Now.Subtract(
+                    GetLastAPIUpdateTime(corc, APIDataType.Orders));
+                int minutes = UserAccount.Settings.AssetsUpdateMaxMinutes;
+
+                if (minutes == 0 ||
+                    (timeSinceOrdersUpdate.TotalMinutes < minutes && timeSinceTransUpdate.TotalMinutes < minutes))
+                {
+                    updateAllowed = true;
+                    // Note, the sync lock is used to make sure that a transaction, assets or orders update do
+                    // not run at the same time for a character. 
+                    lock (_syncLock)
+                    {
+                        SetLastAPIUpdateError(corc, APIDataType.Assets, "UPDATING");
+
+                        RetrieveAssets(corc, null);
+                    }
+                }
+
+                // Wait for half a second before checking order/transaction update times again.
+                Thread.Sleep(500);
             }
 
             try
@@ -593,11 +614,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
             try
             {
-                // Set the 'processed' flag to false for all of this char/corp's assets except ones in transit.
-                // This is done because we do not expect to find the in transit assets in the file.
-                // If we do find them then we'll need to change thier status.
-                Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, 1, false);
-                Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, 2, true);
+                // Set the 'processed' flag to false for all of this char/corp's assets.
+                Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, (int)AssetStatus.States.Normal, false);
+                Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, (int)AssetStatus.States.ForSaleViaMarket, false);
+                Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, (int)AssetStatus.States.ForSaleViaContract, false);
+                Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, (int)AssetStatus.States.InTransit, false);
                 // Remove containers and all thier contents
                 //Assets.ClearUnProcessed(_charID, corc == CharOrCorp.Char, corc == CharOrCorp.Corp, true);
 
@@ -712,16 +733,30 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                 if (assetList != null)
                 {
-                    Dictionary<int, Dictionary<int, long>> changes = 
-                        new Dictionary<int, Dictionary<int, long>>();
+                    AssetList changes = new AssetList();
 
                     UpdateAssets(assetData, assetList, 0, corc, 0, changes);
                     Assets.ProcessSellOrders(assetData, _charID, corc == CharOrCorp.Corp);
-                    Assets.AnalyseChanges(assetData, changes);
+                    AssetList gained = new AssetList();
+                    AssetList lost = new AssetList();
+                    Assets.AnalyseChanges(assetData, _charID, corc == CharOrCorp.Corp, changes, out gained, out lost);
 
                     Assets.UpdateDatabase(assetData);
-                    // Clear any assets not processed. i.e. those that are currently in the database but are
-                    // not in the XML message.
+                    // Set all 'for sale via contract' and 'in transit' assets in the database to processed.
+                    // These types of assets would not be expected to show up in either the XML from the
+                    // API or the list of current market orders.
+                    // Any assets of these types that have been moved to a different state (e.g. in transit 
+                    // items that have arrived or contracts that have expired) will have been updated already 
+                    // in this method or ProcessSellOrders.
+                    // Therefore, the ones that are left are still in the same situation as before.
+                    // i.e. either 'for sale via contract' or 'in transit'.
+                    // We set them to processed to prevent them from being removed along with other
+                    // unprocessed assets.
+                    Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, 
+                        (int)AssetStatus.States.ForSaleViaContract, true);
+                    Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, 
+                        (int)AssetStatus.States.InTransit, true);                    
+                    // Clear any assets remaining assets that have not been processed.
                     Assets.ClearUnProcessed(_charID, corc == CharOrCorp.Char, corc == CharOrCorp.Corp, false);
                     Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, 0, false);
 
@@ -786,7 +821,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         /// <param name="containerID"></param>
         /// <param name="expectedChanges"></param>
         private void UpdateAssets(EMMADataSet.AssetsDataTable assetData, XmlNodeList assetList, int locationID,
-            CharOrCorp corc, long containerID, Dictionary<int, Dictionary<int, long>> changes)
+            CharOrCorp corc, long containerID, AssetList changes)
         {
             int counter = 0;
             if (containerID == 0)
@@ -845,7 +880,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     }
                 }
 
-                Dictionary<int, long> change = new Dictionary<int, long>();
+                Asset change = null;
                 if (!needNewRow)
                 {
                     assetRow = assetData.FindByID(assetID);
@@ -863,11 +898,33 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         // items here. 
                         // This means that once the update processing is complete, we
                         // can try and work out where these items came from.
-                        change = new Dictionary<int, long>();
-                        if (changes.ContainsKey(locationID)) { change = changes[locationID]; }
-                        else { changes.Add(locationID, change); }
-                        if (change.ContainsKey(itemID)) { change[itemID] = change[itemID] + quantity; }
-                        else { change.Add(itemID, quantity); }
+                        #region Store changes
+                        changes.ItemFilter = "ItemID = " + itemID + " AND LocationID = " + locationID +
+                            " AND ContainerID = " + containerID;
+                        if (changes.FiltredItems.Count > 0)
+                        {
+                            change = (Asset)changes.FiltredItems[0];
+                            change.Quantity += quantity;
+                        }
+                        else
+                        {
+                            // This should never happen but cater for it just in case...
+                            change = new Asset();
+                            change.ItemID = itemID;
+                            change.LocationID = locationID;
+                            change.Quantity = quantity;
+                            change.Processed = false;
+                            change.IsContainer = isContainer;
+                            change.StatusID = assetRow.Status;
+                            change.AutoConExclude = assetRow.AutoConExclude;
+                            if (containerID != 0)
+                            {
+                                change.Container = new Asset();
+                                change.Container.ID = containerID;
+                            }
+                            changes.Add(change);
+                        }
+                        #endregion
                     }
                     else
                     {
@@ -877,6 +934,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             // set the processed flag on the database directly and remove the row 
                             // from the dataset without setting it to be deleted when the database 
                             // is updated.
+                            // Note the processed flag MUST be set on the database for later routines
+                            // to work correctly. (e.g. Assets.ProcessSellOrders)
                             Assets.SetProcessedFlag(assetID, true);
                             assetData.RemoveAssetsRow(assetRow);
                         }
@@ -884,19 +943,44 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         {
                             // The row already exists in the database, has not yet been processed
                             // and the quantity does not match what we've got from the XML.
-                            // All we need to do is update the quantity and set the processed flag.
-                            assetRow.Quantity = quantity;
-                            assetRow.Processed = true;
 
                             // Store the changes that are being made to the quantity of 
                             // items here. 
                             // This means that once the update processing is complete, we
                             // can try and work out where these items came from.
-                            change = new Dictionary<int, long>();
-                            if (changes.ContainsKey(locationID)) { change = changes[locationID]; }
-                            else { changes.Add(locationID, change); }
-                            if (change.ContainsKey(itemID)) { change[itemID] = quantity; }
-                            else { change.Add(itemID, quantity); }
+                            #region Store changes
+                            changes.ItemFilter = "ItemID = " + itemID + " AND LocationID = " + locationID +
+                                " AND ContainerID = " + containerID;
+                            if (changes.FiltredItems.Count > 0)
+                            {
+                                change = (Asset)changes.FiltredItems[0];
+                                change.Quantity = quantity - assetRow.Quantity;
+                            }
+                            else
+                            {
+                                change = new Asset();
+                                change.ItemID = itemID;
+                                change.LocationID = locationID;
+                                change.Quantity = quantity - assetRow.Quantity;
+                                change.Processed = false;
+                                change.IsContainer = isContainer;
+                                change.StatusID = assetRow.Status;
+                                change.AutoConExclude = assetRow.AutoConExclude;
+                                if (containerID != 0)
+                                {
+                                    change.Container = new Asset();
+                                    change.Container.ID = containerID;
+                                }
+                                changes.Add(change);
+                            }
+                            #endregion
+
+                            // All we need to do is update the quantity and set the processed flag.
+                            assetRow.Quantity = quantity;
+                            assetRow.Processed = true;
+                            // Also set the processed flag on the database directly. This will
+                            // stop us from picking up this row later on (e.g. Assets.ProcessSellOrders)
+                            Assets.SetProcessedFlag(assetID, true);
                         }
                     }
                 }
@@ -973,11 +1057,32 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     // items here. 
                     // This means that once the update processing is complete, we
                     // can try and work out where these items came from.
-                    change = new Dictionary<int, long>();
-                    if (changes.ContainsKey(locationID)) { change = changes[locationID]; }
-                    else { changes.Add(locationID, change); }
-                    if (change.ContainsKey(itemID)) { change[itemID] = quantity; }
-                    else { change.Add(itemID, quantity); }
+                    #region Store changes
+                    changes.ItemFilter = "ItemID = " + itemID + " AND LocationID = " + locationID +
+                        " AND ContainerID = " + containerID;
+                    if (changes.FiltredItems.Count > 0)
+                    {
+                        change = (Asset)changes.FiltredItems[0];
+                        change.Quantity = quantity;
+                    }
+                    else
+                    {
+                        change = new Asset();
+                        change.ItemID = itemID;
+                        change.LocationID = locationID;
+                        change.Quantity = quantity;
+                        change.Processed = false;
+                        change.IsContainer = isContainer;
+                        change.StatusID = assetRow.Status;
+                        change.AutoConExclude = assetRow.AutoConExclude;
+                        if (containerID != 0)
+                        {
+                            change.Container = new Asset();
+                            change.Container.ID = containerID;
+                        }
+                        changes.Add(change);
+                    }
+                    #endregion
                 }
 
                 if (isContainer)
@@ -1659,8 +1764,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
             // cash to each other.
             lock (Globals.TransactionAPIUpdateLock)
             {
-                // The sync lock is used to make sure that a transaction and assets update do
-                // not run at the same time for a single character. 
+                // Note, the sync lock is used to make sure that a transaction, assets or orders update do
+                // not run at the same time for a character. 
                 lock (_syncLock)
                 {
                     SetLastAPIUpdateError(corc, APIDataType.Transactions, "UPDATING");
@@ -2206,9 +2311,15 @@ namespace EveMarketMonitorApp.AbstractionClasses
         private void RetrieveAPIOrders(object param)
         {
             CharOrCorp corc = (CharOrCorp)param;
-            SetLastAPIUpdateError(corc, APIDataType.Orders, "UPDATING");
 
-            RetrieveOrders(corc, null);
+            // Note, the sync lock is used to make sure that a transaction, assets or orders update do
+            // not run at the same time for a character. 
+            lock (_syncLock)
+            {
+                SetLastAPIUpdateError(corc, APIDataType.Orders, "UPDATING");
+
+                RetrieveOrders(corc, null);
+            }
 
             APICharacters.Store(this);
             if (GetLastAPIUpdateError(corc, APIDataType.Orders).Equals("UPDATING"))

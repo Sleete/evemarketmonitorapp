@@ -5097,6 +5097,44 @@ VALUES (4, 'For Sale Via Market                               ')";
                     }
                     #endregion
                 }
+
+                if (dbVersion.CompareTo(new Version("1.4.2.6")) < 0)
+                {
+                    #region Create 'AssetsGetByProcessed' stored procedure
+                    commandText =
+                            @"CREATE PROCEDURE dbo.AssetsGetByProcessed
+	@accessList			varchar(max),
+	@systemID			int,
+	@locationID			int,
+	@itemID				int,
+	@status				int,
+	@processed			bit
+AS
+	SELECT Assets.*
+	FROM Assets 
+	JOIN CLR_accesslist_split(@accessList) a ON (Assets.OwnerID = a.ownerID AND ((a.includeCorporate = 1 AND Assets.CorpAsset = 1) OR (a.includePersonal = 1 AND Assets.CorpAsset = 0)))
+	WHERE (Assets.Status = @status OR @status = 0) AND (Assets.SystemID = @systemID OR @systemID = 0) AND (Assets.LocationID = @locationID OR @locationID = 0) AND (Assets.ItemID = @itemID OR @itemID = 0) AND (Assets.Processed = @processed)
+
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.2.6"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem creating 'AssetsGetByProcessed' stored procedure", ex);
+                    }
+                    #endregion
+                }
+
+
+                
             }
             catch (Exception ex)
             {
