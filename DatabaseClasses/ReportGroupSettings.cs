@@ -1102,6 +1102,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
         #endregion
+        #region Other settings
+        #endregion
 
         #region Row header font
         public Font Rpt_RowHeaderFont

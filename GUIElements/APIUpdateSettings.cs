@@ -28,6 +28,7 @@ namespace EveMarketMonitorApp.GUIElements
             txtOrdersMins.Text = UserAccount.Settings.APIOrderUpdatePeriod.Minutes.ToString();
             txtTransHours.Text = UserAccount.Settings.APITransUpdatePeriod.Hours.ToString();
             txtTransMins.Text = UserAccount.Settings.APITransUpdatePeriod.Minutes.ToString();
+            txtAssetsUpdateMaxMinutes.Text = UserAccount.Settings.AssetsUpdateMaxMinutes.ToString();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -47,6 +48,7 @@ namespace EveMarketMonitorApp.GUIElements
                     int.Parse(txtOrdersMins.Text), 0);
                 UserAccount.Settings.APITransUpdatePeriod = new TimeSpan(int.Parse(txtTransHours.Text),
                     int.Parse(txtTransMins.Text), 0);
+                UserAccount.Settings.AssetsUpdateMaxMinutes = int.Parse(txtAssetsUpdateMaxMinutes.Text);
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -160,8 +162,28 @@ namespace EveMarketMonitorApp.GUIElements
                     "update time has been reset to the default 1 hour.",
                     "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+             // ----- Assets update max miuntes setting -----
+            try
+            {
+                int mins = int.Parse(txtAssetsUpdateMaxMinutes.Text);
+            }
+            catch
+            {
+                retVal = false;
+                txtAssetsUpdateMaxMinutes.Text = "10";
+                MessageBox.Show("Problem parsing assets update maximum minutes value.\r\n" +
+                    "value has been reset to the default 10 minutes.",
+                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
 
             return retVal;
+        }
+
+        private void btnRecommend_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(@"Ideally, this setting should be as low as possible (i.e. 1 would be the 'best' value).
+However, setting teh value so low may cause an asset update to never occur.
+The reason to set it as low as possible is that it will reduce conflicts between what assets EMMA believes you have and what assets you actually have. These conflicts are unavoidable but can be reduced by keeping the orders, transactions and assets updates close together." 
         }
 
     }

@@ -72,6 +72,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.UseLocalTimezone);
             GetValue(Setting.GridCalcEnabled);
             GetValue(Setting.CSVExportDir);
+            GetValue(Setting.api_assetsUpdateMaxMinutes);
         }
 
         /// <summary>
@@ -254,6 +255,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 case Setting.CSVExportDir:
                     retVal = System.Environment.CurrentDirectory;
                     break;
+                case Setting.api_assetsUpdateMaxMinutes:
+                    retVal = "10";
+                    break;
                 default:
                     break;
             }
@@ -433,6 +437,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 SetValue(Setting.APIAssetUpdatePeriod, newVal.ToString());
             }
         }
+        public int AssetsUpdateMaxMinutes
+        {
+            get
+            {
+                return int.Parse(GetValue(Setting.api_assetsUpdateMaxMinutes),
+                  System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            }
+            set
+            {
+                SetValue(Setting.api_assetsUpdateMaxMinutes, value.ToString(
+                    System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
+            }
+        }
 
         public string CSVExportDir
         {
@@ -580,8 +597,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             APIAssetUpdatePeriod,
             UseLocalTimezone,
             GridCalcEnabled,
-            CSVExportDir
-        }
+            CSVExportDir,
+            api_assetsUpdateMaxMinutes
+       }
 
     }
 
