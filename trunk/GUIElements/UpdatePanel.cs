@@ -188,9 +188,10 @@ namespace EveMarketMonitorApp.GUIElements
             bool doUpdate = false;
             bool checkForAccess = false;
 
-            if (label.Text.ToUpper().Equals("UPDATING") && !errorText.ToUpper().Equals("UPDATING"))
+            if (label.Text.ToUpper().Equals("UPDATING") && !errorText.ToUpper().Equals("UPDATING")
+                && !errorText.ToUpper().Equals("BLOCKED"))
             {
-                // If the label currently says 'updating' but the error text no longer says 'updating'
+                // If the label currently says 'updating' but the error text no longer says 'updating' (or blocked)
                 // then fire the update completed event.
                 if (UpdateEvent != null)
                 {
@@ -246,15 +247,47 @@ namespace EveMarketMonitorApp.GUIElements
             }
             else if (errorText.ToUpper().Equals("UPDATING"))
             {
+                // The update is in progress.
                 label.Text = "Updating";
                 label.BackColor = _updatingColour;
                 otherLabel.BackColor = _updatingColour;
             }
             else if (errorText.ToUpper().Equals("QUEUED"))
             {
+                // The thread performing the update has been started but is currently waiting 
+                // for some other update to complete before it can proceed.
+                // No transaction, orders or assets update can be running at the same time for a particular 
+                // character or corp.
+                // No journal update can be running at the same time for ANY character or corp.
                 label.Text = "Queued";
                 label.BackColor = _updatingColour;
                 otherLabel.BackColor = _updatingColour;
+            }
+            else if (errorText.ToUpper().Equals("BLOCKED"))
+            {
+                // An assets update has been blocked because the most recent transaction and orders 
+                // updates are not within the timeframe specified.
+                // Ask the user if they want to reconifugre this to always allow asset updates. 
+                if (!label.Text.Equals("Blocked, Retrying.."))
+                {
+                    label.Text = "Blocked, Retrying..";
+                    label.BackColor = _updatingColour;
+                    otherLabel.BackColor = _updatingColour;
+                    DialogResult result = MessageBox.Show("An assets update for " + (corc == CharOrCorp.Char ?
+                        _character.CharName : _character.CorpName) + " has been blocked because transaction " +
+                        " & orders updates have not occured within the last " +
+                        UserAccount.Settings.AssetsUpdateMaxMinutes + " minutes.\r\n" +
+                        "The assets update is only allowed to run when the number of minutes since transactions & " +
+                        "orders updates is less than a configured number. This setting can be changed in " +
+                        "Settings -> API Update Settings.\r\n" +
+                        "Do you wish to set this to zero now? (i.e. always allow assets updates regardless of " +
+                        "the last time a transaction/orders update occured)", "Question",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        UserAccount.Settings.AssetsUpdateMaxMinutes = 0;
+                    }
+                }
             }
             else
             {

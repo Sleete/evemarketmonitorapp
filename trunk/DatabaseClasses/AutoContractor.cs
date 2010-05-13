@@ -485,30 +485,48 @@ namespace EveMarketMonitorApp.DatabaseClasses
             long quantity, long recentPurchasesToIgnore)
         {
             decimal retVal = 0, blank1 = 0;
-            List<FinanceAccessParams> financeAccessParams = new List<FinanceAccessParams>();
-            financeAccessParams.Add(new FinanceAccessParams(ownerID));
-            List<int> itemIDs = new List<int>();
-            itemIDs.Add(itemID);
-            List<int> stationIDs = new List<int>();
-            stationIDs.Add(stationID);
 
-            if (!UserAccount.CurrentGroup.ItemValues.UseReprocessValGet(itemID) && 
-                !UserAccount.CurrentGroup.ItemValues.ForceDefaultBuyPriceGet(itemID))
+            // First try and get an asset stack at this location and use it's cost.
+            EMMADataSet.AssetsDataTable assets = new EMMADataSet.AssetsDataTable();
+            List<AssetAccessParams> accessParams = new List<AssetAccessParams>();
+            bool corp = false;
+            APICharacter charObj = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);
+            accessParams.Add(new AssetAccessParams(charObj.CharID, !corp, corp));
+            Assets.GetAssets(assets, accessParams, stationID, 0, itemID);
+            foreach (EMMADataSet.AssetsRow asset in assets)
             {
-                Transactions.GetAverageBuyPrice(financeAccessParams, itemIDs, stationIDs, new List<int>(), quantity,
-                    recentPurchasesToIgnore, ref retVal, ref blank1, true);
+                if (retVal == 0 ||
+                    asset.Status == (int)AssetStatus.States.Normal)
+                {
+                    retVal = asset.CostCalc ? 0 : asset.Cost;
+                }
             }
 
-            if (retVal == 0 || UserAccount.CurrentGroup.ItemValues.ForceDefaultBuyPriceGet(itemID))
+            if (retVal == 0)
             {
-                retVal = UserAccount.CurrentGroup.ItemValues.GetBuyPrice(itemID, 
-                    Stations.GetStation(stationID).regionID);
+                // If we can't find an asset stack then fall back to the old method of
+                // working out approximate cost from transactions.
+                List<FinanceAccessParams> financeAccessParams = new List<FinanceAccessParams>();
+                financeAccessParams.Add(new FinanceAccessParams(ownerID));
+                List<int> itemIDs = new List<int>();
+                itemIDs.Add(itemID);
+                List<int> stationIDs = new List<int>();
+                stationIDs.Add(stationID);
+
+                if (!UserAccount.CurrentGroup.ItemValues.UseReprocessValGet(itemID) &&
+                    !UserAccount.CurrentGroup.ItemValues.ForceDefaultBuyPriceGet(itemID))
+                {
+                    Transactions.GetAverageBuyPrice(financeAccessParams, itemIDs, stationIDs, new List<int>(), quantity,
+                        recentPurchasesToIgnore, ref retVal, ref blank1, true);
+                }
+
+                if (retVal == 0 || UserAccount.CurrentGroup.ItemValues.ForceDefaultBuyPriceGet(itemID))
+                {
+                    retVal = UserAccount.CurrentGroup.ItemValues.GetBuyPrice(itemID,
+                        Stations.GetStation(stationID).regionID);
+                }
             }
-            //if (retVal == 0)
-            //{
-            //    Transactions.GetAverageBuyPrice(financeAccessParams, itemIDs, new List<int>(), new List<int>(),
-            //        quantity, 0, ref retVal, ref blank1, true);
-            //}
+
             return retVal;
         }    
 

@@ -181,9 +181,10 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void btnRecommend_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(@"Ideally, this setting should be as low as possible (i.e. 1 would be the 'best' value).
-However, setting teh value so low may cause an asset update to never occur.
-The reason to set it as low as possible is that it will reduce conflicts between what assets EMMA believes you have and what assets you actually have. These conflicts are unavoidable but can be reduced by keeping the orders, transactions and assets updates close together." 
+            MessageBox.Show("I recommend leaving this at the default setting of 10 minutes. " +
+                "If, when updating assets, you get a lot of conflicts between what EMMA thinks you have " +
+                "and what you actually have  then try reducing it. If the asset update never actually " +
+                "occurs then increase this value.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
     }

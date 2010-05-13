@@ -235,6 +235,28 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
+        public static void AddTransByCalcProfitFromAssets(EMMADataSet.TransactionsDataTable trans,
+            List<FinanceAccessParams> accessParams, int itemID, bool calcProfitFromAssets)
+        {
+            lock(tableAdapter)
+            {
+                bool oldClearBeforeFill = tableAdapter.ClearBeforeFill;
+                tableAdapter.ClearBeforeFill = false;
+                EMMADataSet.TransactionsDataTable tmpTable = new EMMADataSet.TransactionsDataTable();
+                tableAdapter.FillByCalcProfitFromAssets(tmpTable, FinanceAccessParams.BuildAccessList(accessParams),
+                    itemID, calcProfitFromAssets);
+                foreach (EMMADataSet.TransactionsRow tmpTrans in tmpTable)
+                {
+                    EMMADataSet.TransactionsRow match = trans.FindByID(tmpTrans.ID);
+                    if (match == null)
+                    {
+                        trans.ImportRow(tmpTrans);
+                    }
+                }
+                tableAdapter.ClearBeforeFill = oldClearBeforeFill;
+            }
+        }
+
         /// <summary>
         /// Used for creating transactions that are not part of the data recieved from the API,
         /// e.g. transactions created from item exchange contracts.

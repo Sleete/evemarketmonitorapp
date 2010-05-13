@@ -80,6 +80,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 tableAdapter.SetProcessed(charID, forCorp, processed);
             }
         }
+        
+        public static void SetProcessedByID(int orderID, bool processed)
+        {
+            lock (tableAdapter)
+            {
+                tableAdapter.SetProcessedByID(orderID, processed);
+            }
+        }
 
         public static void FinishUnProcessed(int charID, bool forCorp)
         {

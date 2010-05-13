@@ -100,7 +100,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             EMMADataSet.ContractsDataTable contracts = new EMMADataSet.ContractsDataTable();
             contractsTableAdapter.FillByID(contracts, contract.ID);
 
-            MoveContractItems(contract, true);
+            MoveContractItems(contract, true, true);
 
             if (contracts.Count > 0)
             {
@@ -199,7 +199,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
         static public void Delete(Contract contract)
         {
-            MoveContractItems(contract, true);
+            MoveContractItems(contract, true, false);
             if (contract.Type == ContractType.ItemExchange)
             {
                 DeleteTransactions(contract);
@@ -218,24 +218,53 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <summary>
         /// Move the items in the specified contract from the pickup station to the destination station
         /// in the assets table.
+        /// For item exchange contract, remove items from 'forSaleViaContract' asset stack.
         /// </summary>
         /// <param name="contractID"></param>
-        static private void MoveContractItems(Contract contract, bool reverse)
+        static private void MoveContractItems(Contract contract, bool reverse, bool useItemsInMemory)
         {
             if (contract.Type == ContractType.Courier)
             {
                 // We use GetContractItems rather than the items collection on the contract object because
                 // we want the original items on the contract... not whatever is in memory right now.
-                ContractItemList items = GetContractItems(contract);
+                ContractItemList items;
+                if (useItemsInMemory) { items = contract.Items; }
+                else { items = GetContractItems(contract); }
                 bool corp = false;
                 UserAccount.CurrentGroup.GetCharacter(contract.OwnerID, ref corp);
 
                 foreach (ContractItem item in items)
                 {
                     Assets.ChangeAssets(contract.OwnerID, corp, contract.PickupStationID, item.ItemID,
-                        0, 1, false, (reverse ? 1 : -1) * item.Quantity, item.BuyPrice);
+                        0, (int)AssetStatus.States.Normal, false, (reverse ? 1 : -1) * item.Quantity, item.BuyPrice);
                     Assets.ChangeAssets(contract.OwnerID, corp, contract.DestinationStationID, item.ItemID,
-                        0, 2, false, (reverse ? -1 : 1) * item.Quantity, item.BuyPrice);
+                        0, (int)AssetStatus.States.InTransit, false, (reverse ? -1 : 1) * item.Quantity, item.BuyPrice);
+                }
+            }
+            else if (contract.Type == ContractType.ItemExchange)
+            {
+                ContractItemList items = GetContractItems(contract);
+                bool corp = false;
+                UserAccount.CurrentGroup.GetCharacter(contract.OwnerID, ref corp);
+
+                foreach (ContractItem item in items)
+                {
+                    // Only remove the item from the assets 'ForSaleViaContract' stack if there is actually 
+                    // an item there to remove.
+                    long assetID = 0;
+                    EMMADataSet.AssetsDataTable assets = new EMMADataSet.AssetsDataTable();
+                    if (Assets.AssetExists(assets, contract.OwnerID, corp,
+                        contract.PickupStationID, item.ItemID, (int)AssetStatus.States.ForSaleViaContract,
+                        false, 0, false, false, true, true, ref assetID))
+                    {
+                        EMMADataSet.AssetsRow asset = assets.FindByID(assetID);
+                        if (asset.Quantity > 0)
+                        {
+                            Assets.ChangeAssets(contract.OwnerID, corp, contract.PickupStationID, item.ItemID,
+                                0, (int)AssetStatus.States.Normal, false, (reverse ? 1 : -1) * item.Quantity, 
+                                item.BuyPrice);
+                        }
+                    }
                 }
             }
         }
@@ -272,7 +301,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 }
 
                 contractsTableAdapter.FillByID(contracts, ID);
-                MoveContractItems(new Contract(contracts[0]), false);
+                MoveContractItems(new Contract(contracts[0]), false, true);
             }
         }
 

@@ -19,6 +19,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private static EMMADataSetTableAdapters.IDTableTableAdapter IDTableAdapter =
             new EveMarketMonitorApp.DatabaseClasses.EMMADataSetTableAdapters.IDTableTableAdapter();
 
+
+
         /// <summary>
         /// This is called after an import of XML asset data but before the changes are commited
         /// to the database.
@@ -54,24 +56,25 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             foreach (EMMADataSet.AssetsRow unprocMatch in unprocMatches)
             {
-                int itemID = unprocMatch.ItemID;
-                int locationID = unprocMatch.LocationID;
-                Asset change = null;
-                changes.ItemFilter = "ItemID = " + itemID + " AND LocationID = " + locationID;
-                if (changes.FiltredItems.Count > 0)
-                {
-                    change = (Asset)changes.FiltredItems[0];
-                    change.Quantity = -1 * unprocMatch.Quantity;
-                }
-                else
-                {
-                    change = new Asset();
-                    change.ItemID = itemID;
-                    change.LocationID = locationID;
-                    change.Quantity = -1 * unprocMatch.Quantity;
+                //int itemID = unprocMatch.ItemID;
+                //int locationID = unprocMatch.LocationID;
+                //Asset change = null;
+                //changes.ItemFilter = "ItemID = " + itemID + " AND LocationID = " + locationID;
+                //if (changes.FiltredItems.Count > 0)
+                //{
+                //    change = (Asset)changes.FiltredItems[0];
+                //    change.Quantity = -1 * unprocMatch.Quantity;
+                //}
+                //else
+                //{
+                Asset change = new Asset(unprocMatch, unprocMatch.ContainerID != 0 ? new Asset() : null);
+                    if (unprocMatch.ContainerID != 0)
+                    {
+                        change.Container.ID = unprocMatch.ContainerID;
+                    }
                     change.Processed = false;
                     changes.Add(change);
-                }
+                //}
             }
 
             // Work through the list of changes.
@@ -107,15 +110,17 @@ namespace EveMarketMonitorApp.DatabaseClasses
                             long assetID1 = 0, assetID2 = 0;
                             // Get the asset data lines associated with the two changes in asset quantities 
                             // that we have found.
-                            bool got1 = Assets.AssetExists(assetData, charID, corp, locationID, itemID,
-                                change.StatusID, change.ContainerID != 0, change.ContainerID, change.IsContainer,
-                                true, true, change.AutoConExclude, ref assetID1);
-                            bool got2 = Assets.AssetExists(assetData, charID, corp, change2.LocationID, itemID,
-                                change2.StatusID, change2.ContainerID != 0, change2.ContainerID, change2.IsContainer,
-                                true, true, change2.AutoConExclude, ref assetID2);
+                            //bool got1 = Assets.AssetExists(assetData, charID, corp, locationID, itemID,
+                            //    change.StatusID, change.ContainerID != 0, change.ContainerID, change.IsContainer,
+                            //    true, true, change.AutoConExclude, ref assetID1);
+                            //bool got2 = Assets.AssetExists(assetData, charID, corp, change2.LocationID, itemID,
+                            //    change2.StatusID, change2.ContainerID != 0, change2.ContainerID, change2.IsContainer,
+                            //    true, true, change2.AutoConExclude, ref assetID2);
+                            Assets.AddAssetToTable(assetData, change.ID);
+                            Assets.AddAssetToTable(assetData, change2.ID);
 
-                            if (got1 && got2)
-                            {
+                            //if (got1 && got2)
+                            //{
                                 EMMADataSet.AssetsRow row1 = assetData.FindByID(assetID1);
                                 EMMADataSet.AssetsRow row2 = assetData.FindByID(assetID2);
                                 Asset a1 = new Asset(row1, null);
@@ -133,7 +138,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                 row1.CostCalc = true;
                                 change.Quantity -= thisAbsDeltaQ;
                                 change2.Quantity += thisAbsDeltaQ;
-                            }
+                            //}
                         }
                     }
 
@@ -142,15 +147,20 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             // We have some items left over that could not be accounted for from losses/gains
             // elsewhere. Add these to the appropriate 'lost' or 'gained' list.
+
+            // We may be updating some transactions (those marked with the CalcProfitFromAssets flag)
+            // so need to create a table to hold the changes.
+            EMMADataSet.TransactionsDataTable transData = new EMMADataSet.TransactionsDataTable();
+            Dictionary<long, TransProcessData> processData = new Dictionary<long, TransProcessData>();
+            List<long> completedTrans = new List<long>();
+            List<long> uncompletedTrans = new List<long>();
+
             foreach (Asset change in changes)
             {
-                // If the unexplained assets are for sale via contract or in transit then we
-                // would expect them not to show up if they are in the same state as before.
-                // This being the case, we do not need to add them to the list of unexplained items.
-                if (change.Quantity != 0 && change.StatusID != (int)AssetStatus.States.ForSaleViaContract &&
-                    change.StatusID != (int)AssetStatus.States.InTransit)
+                if (change.Quantity != 0)
                 {
                     Asset unexplained = new Asset();
+                    unexplained.ID = change.ID;
                     unexplained.ItemID = change.ItemID;
                     unexplained.LocationID = change.LocationID;
                     unexplained.Quantity = change.Quantity;
@@ -158,20 +168,111 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     unexplained.IsContainer = change.IsContainer;
                     unexplained.Container = change.Container;
                     unexplained.AutoConExclude = change.AutoConExclude;
-                    if (change.Quantity > 0) { gained.Add(unexplained); }
-                    else { lost.Add(unexplained); }
+                    if (change.Quantity > 0)
+                    {
+                        // If the unexplained assets are for sale via contract or in transit then we
+                        // would expect them not to show up if they are in the same state as before.
+                        // This being the case, we do not need to add them to the list of unexplained items.
+                        if (change.StatusID != (int)AssetStatus.States.ForSaleViaContract &&
+                            change.StatusID != (int)AssetStatus.States.InTransit) { gained.Add(unexplained); }
+                    }
+                    else
+                    {
+                        // If the item has gone missing then check the transactions that are flagged 
+                        // with 'CalcProfitFromAssets'.
+                        // If we get a match then use the missing items's cost to calculate the 
+                        // transaction's profit.
+                        // Note that we don't need to adjust any item quantities since either the
+                        // changes have already been made or the item stack is 'unprocessed' and will
+                        // be cleared out anyway.
+                        Transactions.AddTransByCalcProfitFromAssets(transData,
+                            UserAccount.CurrentGroup.GetFinanceAccessParams(APIDataType.Transactions),
+                            change.ItemID, true);
+                        foreach (EMMADataSet.TransactionsRow trans in transData)
+                        {
+                            if (trans.ItemID == change.ItemID && !completedTrans.Contains(trans.ID))
+                            {
+                                long quantityRemaining = trans.Quantity;
+                                TransProcessData data = new TransProcessData();
+                                if (processData.ContainsKey(trans.ID))
+                                {
+                                    data = processData[trans.ID];
+                                    quantityRemaining = data.QuantityRemaining;
+                                }
+                                else { processData.Add(trans.ID, data); }
+
+                                long deltaQ = Math.Min(Math.Abs(change.Quantity), quantityRemaining);
+                                // Adjust the quantity of the 'missing' items.
+                                change.Quantity += deltaQ;
+
+                                data.QuantityRemaining = data.QuantityRemaining - deltaQ;
+                                data.QuantityMatched = data.QuantityMatched + deltaQ;
+                                data.TotalBuyPrice = data.TotalBuyPrice + (change.UnitBuyPrice * deltaQ);
+
+                                if (data.QuantityRemaining == 0)
+                                {
+                                    // We've found enough missing items to match this transaction completely
+                                    // so calculate it's profit and set it as completed.
+                                    trans.CalcProfitFromAssets = false;
+                                    trans.SellerUnitProfit = trans.Price - (data.TotalBuyPrice / data.QuantityMatched);
+                                    completedTrans.Add(trans.ID);
+                                    if(uncompletedTrans.Contains(trans.ID)) { uncompletedTrans.Remove(trans.ID);}
+                                }
+                                else
+                                {
+                                    // We havn't found enough missing items to completely match this transaction
+                                    // yet so add to to the list of uncompleted transactions.
+                                    uncompletedTrans.Add(trans.ID);
+                                }
+                            }
+                        }
+
+                        if (change.Quantity < 0)
+                        {
+                            // We couldn't find enough transactions with uncalculated profit to account for the
+                            // missing items so add what remains to the list of lost assets.
+
+                            // If the unexplained assets are for sale via contract or in transit then we
+                            // would expect them not to show up if they are in the same state as before.
+                            // This being the case, we do not need to add them to the list of unexplained items.
+                            if (change.StatusID != (int)AssetStatus.States.ForSaleViaContract &&
+                                change.StatusID != (int)AssetStatus.States.InTransit) { lost.Add(unexplained); }
+                        }
+
+                    }
                 }
             }
 
+            // Calculate profits as best we can for any 'uncompleted' transactions.
+            // i.e. those that we did not have enough missing items to match completely.
+            foreach (long transID in uncompletedTrans)
+            {
+                EMMADataSet.TransactionsRow trans = transData.FindByID(transID);
+                if (trans != null && processData.ContainsKey(transID))
+                {
+                    TransProcessData data = processData[transID];
+                    trans.CalcProfitFromAssets = false;
+                    trans.SellerUnitProfit = trans.Price - (data.TotalBuyPrice / data.QuantityMatched);
+                }
+            }
+            // Update transactions database
+            Transactions.Store(transData);
         }
 
+        private class TransProcessData
+        {
+            public long QuantityRemaining { get; set; }
+            public long QuantityMatched { get; set; }
+            public decimal TotalBuyPrice { get; set; }
+        }
 
         /// <summary>
         /// This ensures that items in sell orders appear in the list of the player's assets.
         /// It is called just after new asset XML from the API has been processed but before
         /// the update is applied to the database.
         /// </summary>
-        public static void ProcessSellOrders(EMMADataSet.AssetsDataTable assetData, int charID, bool corp)
+        public static void ProcessSellOrders(EMMADataSet.AssetsDataTable assetData, AssetList changes,
+            int charID, bool corp)
         {
             List<int> itemIDs = new List<int>();
             itemIDs.Add(0);
@@ -265,35 +366,67 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 // the database.
                 // As such, we need to work out where the items in the sell order have come from in
                 // order to calculate the correct 'cost' value.
-                if(!orderDone)
+                if (!orderDone)
                 {
-                    // Find any unprocessed asset stacks of the same item as the sell order
                     decimal assetCost = 0;
                     long qToFind = sellOrder.RemainingVol;
-                    // Although the main data changes have not yet been supplied to the database,
-                    // the processed flags have been set for the relevant asset rows.
-                    // This means that we can get the list of unprocessed assets direct from
-                    // the database.
-                    EMMADataSet.AssetsDataTable unprocMatches = new EMMADataSet.AssetsDataTable();
-                    Assets.GetAssets(unprocMatches, accessParams, 0, 0, sellOrder.ItemID, 0, false);
-
-                    // Work through the unprocessed stacks until we've found enough items 
-                    // to match the sell order.
-                    foreach (EMMADataSet.AssetsRow unprocMatch in unprocMatches)
+                    // Check the asset update changes for any reductions in quantity of the same item 
+                    // as the sell order.
+                    // E.g. The database has 20 of an item at a location but the XML update only had
+                    // 10 there. This would be a change of -10 at that location. 
+                    // If there are any reductions in quantity of the item we're looking for then use 
+                    // those to calculate the cost of the items in the sell order.
+                    if (qToFind > 0)
                     {
-                        if(qToFind > 0)
+                        changes.ItemFilter = "ItemID = " + sellOrder.ItemID;
+                        foreach (Asset change in changes.FiltredItems)
                         {
-                            long q = Math.Min(qToFind, unprocMatch.Quantity);
-                            qToFind -= q;
-                            Asset unproc = new Asset(unprocMatch, null);
-                            assetCost += q * unproc.UnitBuyPrice;
+                            if (qToFind > 0 && change.Quantity < 0)
+                            {
+                                long q = Math.Min(qToFind, Math.Abs(change.Quantity));
+                                qToFind -= q;
+                                assetCost += q * change.UnitBuyPrice;
 
-                            // Remove the matching unprocessed items from the database.
-                            // By definition, unprocessed items will not be in the database update
-                            // represented by the 'assets' table so we don't have to worry about
-                            // conflicts.
-                            Assets.ChangeAssets(charID, corp, unprocMatch.LocationID, unprocMatch.ItemID,
-                                unprocMatch.ContainerID, unprocMatch.Status, unprocMatch.AutoConExclude, -1 * q, 0);
+                                // We are accounting for the changes that have been made so need 
+                                // to adjust the object from the 'changes' collection.
+                                // 'changes' will be used later so it must always reflect any 
+                                // unexplained changes.
+                                change.Quantity += q;
+                            }
+                        }
+                    }
+
+                    // If we still have more items to account for then check for any unprocessed 
+                    // asset stacks of the same item as the sell order.
+                    // I.e. items that are in the database but did not appear in the assets XML
+                    // update file.
+                    if (qToFind > 0)
+                    {
+                        // Although the main data changes have not yet been supplied to the database,
+                        // the processed flags have been set for the relevant asset rows.
+                        // This means that we can get the list of unprocessed assets direct from
+                        // the database.
+                        EMMADataSet.AssetsDataTable unprocMatches = new EMMADataSet.AssetsDataTable();
+                        Assets.GetAssets(unprocMatches, accessParams, 0, 0, sellOrder.ItemID, 0, false);
+
+                        // Work through the unprocessed stacks until we've found enough items 
+                        // to match the sell order.
+                        foreach (EMMADataSet.AssetsRow unprocMatch in unprocMatches)
+                        {
+                            if (qToFind > 0 && unprocMatch.Quantity > 0)
+                            {
+                                long q = Math.Min(qToFind, unprocMatch.Quantity);
+                                qToFind -= q;
+                                Asset unproc = new Asset(unprocMatch, null);
+                                assetCost += q * unproc.UnitBuyPrice;
+
+                                // Remove the matching unprocessed items from the database.
+                                // By definition, unprocessed items will not be in the database update
+                                // represented by the 'assets' table so we don't have to worry about
+                                // conflicts.
+                                Assets.ChangeAssets(charID, corp, unprocMatch.LocationID, unprocMatch.ItemID,
+                                    unprocMatch.ContainerID, unprocMatch.Status, unprocMatch.AutoConExclude, -1 * q, 0);
+                            }
                         }
                     }
 
@@ -302,8 +435,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     changedAsset.AutoConExclude = true;
                     changedAsset.ContainerID = 0;
                     changedAsset.CorpAsset = corp;
-                    changedAsset.Cost = assetCost / (sellOrder.TotalVol - qToFind);
-                    changedAsset.CostCalc = true;
+                    changedAsset.Cost = qToFind < sellOrder.RemainingValue ?
+                        assetCost / (sellOrder.RemainingValue - qToFind) : 0;
+                    changedAsset.CostCalc = qToFind < sellOrder.TotalVol;
                     changedAsset.IsContainer = false;
                     changedAsset.ItemID = sellOrder.ItemID;
                     changedAsset.LocationID = sellOrder.StationID;
@@ -316,8 +450,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     changedAsset.Status = (int)AssetStatus.States.ForSaleViaMarket;
 
                     assets.AddAssetsRow(changedAsset);
-
-                }                
+                }              
             }
         }
 
@@ -436,9 +569,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 {
                     int deltaQuantity = trans.Quantity;
                     if (trans.SellerID == ownerID) { deltaQuantity *= -1; }
-                    // We just adjust the 'normal' assets pile even though the change (particularaly
-                    // where items are being removed) is likely to affect a different pile 
-                    // (e.g. 'ForSaleViaMarket')
+
                     ChangeAssets(charID, useCorp, trans.StationID, trans.ItemID, 0, (int)AssetStatus.States.Normal, 
                         false, deltaQuantity, trans.Price);
                     if (trans.ID > maxID) { maxID = trans.ID; }
@@ -447,7 +578,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             return maxID;
         }
-        
+
+
+        // Note we only need to update assets from expired or completed orders.
+        // anything else will be handled by the other parts of the system.
+        public static void UpdateFromOrders(EMMADataSet.OrdersDataTable orderData)
+        {
+        }
+
+
 
         /// <summary>
         /// Get a list of changes that would be made to assets by the transactions meeting the 
@@ -1147,6 +1286,31 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return retVal;
         }
 
+        /// <summary>
+        /// Add the specified asset row to the specified data table
+        /// </summary>
+        /// <param name="assets"></param>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        static public void AddAssetToTable(EMMADataSet.AssetsDataTable assets, long ID)
+        {
+            // Check if the row is already in the table
+            EMMADataSet.AssetsRow row = assets.FindByID(ID);
+            if (row != null)
+            {
+                lock (assetsTableAdapter)
+                {
+                    // If not then retrieve it from the database and place into the table.
+                    bool previousClearBeforeFill = assetsTableAdapter.ClearBeforeFill;
+
+                    assetsTableAdapter.ClearBeforeFill = false;
+                    assetsTableAdapter.FillByID(assets, ID);
+
+                    assetsTableAdapter.ClearBeforeFill = previousClearBeforeFill;
+                }
+
+            }
+        }
 
     }
 

@@ -545,11 +545,13 @@ namespace EveMarketMonitorApp.AbstractionClasses
         {
             CharOrCorp corc = (CharOrCorp)param;
 
-            // Only allow the assets update to run if there has been an update to transactions and 
-            // orders within the last x minutes, the number of minutes is specified by the user.
             bool updateAllowed = false;
+            DateTime startTryUpdate = DateTime.Now;
+            bool askUser = false;
             while (!updateAllowed)
             {
+                // Only allow the assets update to run if there has been an update to transactions and 
+                // orders within the last x minutes, the number of minutes is specified by the user.
                 TimeSpan timeSinceTransUpdate = DateTime.Now.Subtract(
                     GetLastAPIUpdateTime(corc, APIDataType.Transactions));
                 TimeSpan timeSinceOrdersUpdate = DateTime.Now.Subtract(
@@ -565,13 +567,19 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     lock (_syncLock)
                     {
                         SetLastAPIUpdateError(corc, APIDataType.Assets, "UPDATING");
-
                         RetrieveAssets(corc, null);
                     }
                 }
-
-                // Wait for half a second before checking order/transaction update times again.
-                Thread.Sleep(500);
+                else
+                {
+                    // Wait for five seconds before checking order/transaction update times again.
+                    Thread.Sleep(5000);
+                    if (!askUser && startTryUpdate.AddMinutes(2).CompareTo(DateTime.Now) < 0)
+                    {
+                        SetLastAPIUpdateError(corc, APIDataType.Assets, "BLOCKED");                       
+                        askUser = true;
+                    }
+                }
             }
 
             try
@@ -736,7 +744,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     AssetList changes = new AssetList();
 
                     UpdateAssets(assetData, assetList, 0, corc, 0, changes);
-                    Assets.ProcessSellOrders(assetData, _charID, corc == CharOrCorp.Corp);
+                    Assets.ProcessSellOrders(assetData, changes, _charID, corc == CharOrCorp.Corp);
                     AssetList gained = new AssetList();
                     AssetList lost = new AssetList();
                     Assets.AnalyseChanges(assetData, _charID, corc == CharOrCorp.Corp, changes, out gained, out lost);
@@ -899,8 +907,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         // This means that once the update processing is complete, we
                         // can try and work out where these items came from.
                         #region Store changes
-                        changes.ItemFilter = "ItemID = " + itemID + " AND LocationID = " + locationID +
-                            " AND ContainerID = " + containerID;
+                        changes.ItemFilter = "ID = " + assetRow.ID;
                         if (changes.FiltredItems.Count > 0)
                         {
                             change = (Asset)changes.FiltredItems[0];
@@ -909,17 +916,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         else
                         {
                             // This should never happen but cater for it just in case...
-                            change = new Asset();
-                            change.ItemID = itemID;
-                            change.LocationID = locationID;
+                            change = new Asset(assetRow, containerID != 0 ? new Asset() : null);
                             change.Quantity = quantity;
                             change.Processed = false;
-                            change.IsContainer = isContainer;
-                            change.StatusID = assetRow.Status;
-                            change.AutoConExclude = assetRow.AutoConExclude;
                             if (containerID != 0)
                             {
-                                change.Container = new Asset();
                                 change.Container.ID = containerID;
                             }
                             changes.Add(change);
@@ -949,30 +950,24 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             // This means that once the update processing is complete, we
                             // can try and work out where these items came from.
                             #region Store changes
-                            changes.ItemFilter = "ItemID = " + itemID + " AND LocationID = " + locationID +
-                                " AND ContainerID = " + containerID;
-                            if (changes.FiltredItems.Count > 0)
-                            {
-                                change = (Asset)changes.FiltredItems[0];
-                                change.Quantity = quantity - assetRow.Quantity;
-                            }
-                            else
-                            {
-                                change = new Asset();
-                                change.ItemID = itemID;
-                                change.LocationID = locationID;
+                            //changes.ItemFilter = "ItemID = " + itemID + " AND LocationID = " + locationID +
+                            //    " AND ContainerID = " + containerID;
+                            //if (changes.FiltredItems.Count > 0)
+                            //{
+                            //    change = (Asset)changes.FiltredItems[0];
+                            //    change.Quantity = quantity - assetRow.Quantity;
+                            //}
+                            //else
+                            //{
+                                change = new Asset(assetRow, containerID != 0 ? new Asset() : null);
                                 change.Quantity = quantity - assetRow.Quantity;
                                 change.Processed = false;
-                                change.IsContainer = isContainer;
-                                change.StatusID = assetRow.Status;
-                                change.AutoConExclude = assetRow.AutoConExclude;
                                 if (containerID != 0)
                                 {
-                                    change.Container = new Asset();
                                     change.Container.ID = containerID;
                                 }
                                 changes.Add(change);
-                            }
+                            //}
                             #endregion
 
                             // All we need to do is update the quantity and set the processed flag.
@@ -1058,30 +1053,25 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     // This means that once the update processing is complete, we
                     // can try and work out where these items came from.
                     #region Store changes
-                    changes.ItemFilter = "ItemID = " + itemID + " AND LocationID = " + locationID +
-                        " AND ContainerID = " + containerID;
-                    if (changes.FiltredItems.Count > 0)
-                    {
-                        change = (Asset)changes.FiltredItems[0];
-                        change.Quantity = quantity;
-                    }
-                    else
-                    {
-                        change = new Asset();
-                        change.ItemID = itemID;
-                        change.LocationID = locationID;
+                    //changes.ItemFilter = "ItemID = " + itemID + " AND LocationID = " + locationID +
+                    //    " AND ContainerID = " + containerID;
+                    //if (changes.FiltredItems.Count > 0)
+                    //{
+                    //    change = (Asset)changes.FiltredItems[0];
+                    //    change.Quantity = quantity;
+                    //}
+                    //else
+                    //{
+                        change = new Asset(assetRow, containerID != 0 ? new Asset() : null);
                         change.Quantity = quantity;
                         change.Processed = false;
-                        change.IsContainer = isContainer;
-                        change.StatusID = assetRow.Status;
-                        change.AutoConExclude = assetRow.AutoConExclude;
                         if (containerID != 0)
                         {
-                            change.Container = new Asset();
                             change.Container.ID = containerID;
                         }
                         changes.Add(change);
-                    }
+
+                    //}
                     #endregion
                 }
 
@@ -2491,57 +2481,83 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             {
                                 EMMADataSet.OrdersRow oldRow = orderData.FindByID(id);
 
-                                // If the order was active and is now completed/expired then flag it for
-                                // the unacknowledged orders viewer to display.
-                                bool notify = false;
-                                notify = UserAccount.CurrentGroup.Settings.OrdersNotifyEnabled &&
-                                    ((UserAccount.CurrentGroup.Settings.OrdersNotifyBuy && orderRow.BuyOrder) ||
-                                    (UserAccount.CurrentGroup.Settings.OrdersNotifySell && !orderRow.BuyOrder));
+                                if (oldRow.TotalVol == orderRow.TotalVol &&
+                                    oldRow.RemainingVol == orderRow.RemainingVol &&
+                                    oldRow.MinVolume == orderRow.MinVolume && oldRow.Range == orderRow.Range &&
+                                    oldRow.Duration == orderRow.Duration && oldRow.Escrow == orderRow.Escrow &&
+                                    oldRow.Price == orderRow.Price && oldRow.OrderState == orderRow.OrderState)
+                                {
+                                    // If the order from the XML exactly matches what we have in the database
+                                    // then just set the processed flag and remove it from the orderData table
+                                    // without setting it to be removed from the database.
+                                    Orders.SetProcessedByID(oldRow.ID, true);
+                                    orderData.RemoveOrdersRow(oldRow);
+                                }
+                                else
+                                {
+                                    // Set the row to processed right now.
+                                    oldRow.Processed = true;
+                                    // Accept the changes to the row (will only be the processed flag at 
+                                    // this point) and set the processed flag on the database.
+                                    // This will prevent the row from being double matched with another
+                                    // order later.
+                                    // The 'accept changes' will prevent the concurency error that we 
+                                    // would get if we only updated the processed flag on the database
+                                    // side.
+                                    oldRow.AcceptChanges();
+                                    Orders.SetProcessedByID(oldRow.ID, true);
+                                    
+                                    // If the order was active and is now completed/expired then flag it for
+                                    // the unacknowledged orders viewer to display.
+                                    bool notify = false;
+                                    notify = UserAccount.CurrentGroup.Settings.OrdersNotifyEnabled &&
+                                        ((UserAccount.CurrentGroup.Settings.OrdersNotifyBuy && orderRow.BuyOrder) ||
+                                        (UserAccount.CurrentGroup.Settings.OrdersNotifySell && !orderRow.BuyOrder));
 
-                                if (/*orderRow.RemainingVol == 0 &&*/
-                                    orderRow.OrderState == (short)OrderState.ExpiredOrFilled &&
-                                    (oldRow.OrderState == (short)OrderState.Active ||
-                                    oldRow.OrderState == (short)OrderState.ExpiredOrFilled))
-                                {
-                                    if (notify)
+                                    if (/*orderRow.RemainingVol == 0 &&*/
+                                        orderRow.OrderState == (short)OrderState.ExpiredOrFilled &&
+                                        (oldRow.OrderState == (short)OrderState.Active ||
+                                        oldRow.OrderState == (short)OrderState.ExpiredOrFilled))
                                     {
-                                        oldRow.OrderState = (short)OrderState.ExpiredOrFilledAndUnacknowledged;
-                                        // No longer needed as the unacknowledged orders form is displayed/refreshed
-                                        // as needed when refreshing the main form after an update is complete.
-                                        //if (UpdateEvent != null)
-                                        //{
-                                        //    UpdateEvent(this, new APIUpdateEventArgs(APIDataType.Orders,
-                                        //        corc == CharOrCorp.Corp ? _corpID : _charID,
-                                        //        APIUpdateEventType.OrderHasExpiredOrCompleted));
-                                        //}
+                                        if (notify)
+                                        {
+                                            oldRow.OrderState = (short)OrderState.ExpiredOrFilledAndUnacknowledged;
+                                            // No longer needed as the unacknowledged orders form is displayed/refreshed
+                                            // as needed when refreshing the main form after an update is complete.
+                                            //if (UpdateEvent != null)
+                                            //{
+                                            //    UpdateEvent(this, new APIUpdateEventArgs(APIDataType.Orders,
+                                            //        corc == CharOrCorp.Corp ? _corpID : _charID,
+                                            //        APIUpdateEventType.OrderHasExpiredOrCompleted));
+                                            //}
+                                        }
+                                        else
+                                        {
+                                            oldRow.OrderState = (short)OrderState.ExpiredOrFilledAndAcknowledged;
+                                        }
                                     }
-                                    else
+                                    else if (orderRow.OrderState != (short)OrderState.ExpiredOrFilled)
                                     {
-                                        oldRow.OrderState = (short)OrderState.ExpiredOrFilledAndAcknowledged;
+                                        oldRow.OrderState = orderRow.OrderState;
                                     }
-                                }
-                                else if (orderRow.OrderState != (short)OrderState.ExpiredOrFilled)
-                                {
-                                    oldRow.OrderState = orderRow.OrderState;
-                                }
 
-                                if (oldRow.TotalVol != orderRow.TotalVol ||
-                                    oldRow.RemainingVol != orderRow.RemainingVol ||
-                                    oldRow.MinVolume != orderRow.MinVolume || oldRow.Range != orderRow.Range ||
-                                    oldRow.Duration != orderRow.Duration || oldRow.Escrow != orderRow.Escrow ||
-                                    oldRow.Price != orderRow.Price)
-                                {
-                                    oldRow.TotalVol = orderRow.TotalVol;
-                                    oldRow.RemainingVol = orderRow.RemainingVol;
-                                    oldRow.MinVolume = orderRow.MinVolume;
-                                    oldRow.Range = orderRow.Range;
-                                    oldRow.Duration = orderRow.Duration;
-                                    oldRow.Escrow = orderRow.Escrow;
-                                    oldRow.Price = orderRow.Price;
-                                    // Note, only other fields are 'buyOrder' and 'issued'. Neither of which we want to change.
-                                    updated++;
+                                    if (oldRow.TotalVol != orderRow.TotalVol ||
+                                        oldRow.RemainingVol != orderRow.RemainingVol ||
+                                        oldRow.MinVolume != orderRow.MinVolume || oldRow.Range != orderRow.Range ||
+                                        oldRow.Duration != orderRow.Duration || oldRow.Escrow != orderRow.Escrow ||
+                                        oldRow.Price != orderRow.Price)
+                                    {
+                                        oldRow.TotalVol = orderRow.TotalVol;
+                                        oldRow.RemainingVol = orderRow.RemainingVol;
+                                        oldRow.MinVolume = orderRow.MinVolume;
+                                        oldRow.Range = orderRow.Range;
+                                        oldRow.Duration = orderRow.Duration;
+                                        oldRow.Escrow = orderRow.Escrow;
+                                        oldRow.Price = orderRow.Price;
+                                        // Note, only other fields are 'buyOrder' and 'issued'. Neither of which we want to change.
+                                        updated++;
+                                    }
                                 }
-                                oldRow.Processed = true;
                             }
 
                             if (fromFile)
@@ -2560,10 +2576,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                     if (orderData.Count > 0)
                     {
-                        // Update assets based on changes to orders.
-                        // Note that sold assets will be updated by the transactions API update
-                        // so this only needs to update assets based on cancelled/expired orders.
-                        Assets.UpdateFromOrders();
+                        Assets.UpdateFromOrders(orderData);
                         Orders.Store(orderData);
                     }
 

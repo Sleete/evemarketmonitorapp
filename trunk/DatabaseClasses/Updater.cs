@@ -5133,6 +5133,72 @@ AS
                     #endregion
                 }
 
+                if (dbVersion.CompareTo(new Version("1.4.2.7")) < 0)
+                {
+                    #region Create 'OrdersSetProcessedByID' stored procedure
+                    commandText =
+                            @"CREATE PROCEDURE dbo.OrdersSetProcessedByID
+	@orderID	int,
+	@processed	bit
+AS
+	UPDATE Orders
+	SET Processed = @processed
+	WHERE (ID = @orderID)
+ 
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.2.7"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem creating 'OrdersSetProcessedByID' stored procedure", ex);
+                    }
+                    #endregion
+                }
+
+                if (dbVersion.CompareTo(new Version("1.4.2.8")) < 0)
+                {
+                    #region Create 'TransGetByCalcProfitFromAssets' stored procedure
+                    commandText =
+                            @"CREATE PROCEDURE dbo.TransGetByCalcProfitFromAssets
+	@accessParams			varchar(max),
+	@itemID					int,
+	@calcProfitFromAssets	bit
+AS
+	
+	SELECT DISTINCT Transactions.*
+	FROM Transactions
+	JOIN CLR_financelist_split(@accessParams) a ON(
+		(Transactions.BuyerID = a.ownerID OR Transactions.BuyerCharacterID = a.ownerID) AND (a.walletID1 = 0 OR (Transactions.BuyerWalletID = a.walletID1 OR Transactions.BuyerWalletID = a.walletID2 OR Transactions.BuyerWalletID = a.walletID3 OR Transactions.BuyerWalletID = a.walletID4 OR Transactions.BuyerWalletID = a.walletID5 OR Transactions.BuyerWalletID = a.walletID6)) OR 
+		(Transactions.SellerID = a.ownerID OR Transactions.SellerCharacterID = a.ownerID) AND (a.walletID1 = 0 OR (Transactions.SellerWalletID = a.walletID1 OR Transactions.SellerWalletID = a.walletID2 OR Transactions.SellerWalletID = a.walletID3 OR Transactions.SellerWalletID = a.walletID4 OR Transactions.SellerWalletID = a.walletID5 OR Transactions.SellerWalletID = a.walletID6)) OR a.ownerID = 0)
+	WHERE (Transactions.ItemID = @itemID OR @itemID = 0) AND (Transactions.CalcProfitFromAssets = @calcProfitFromAssets)
+	ORDER BY DateTime DESC
+	
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.2.8"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem creating 'TransGetByCalcProfitFromAssets' stored procedure", ex);
+                    }
+                    #endregion
+                }
+
 
                 
             }
