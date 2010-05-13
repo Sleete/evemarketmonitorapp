@@ -580,12 +580,6 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        // Note we only need to update assets from expired or completed orders.
-        // anything else will be handled by the other parts of the system.
-        public static void UpdateFromOrders(EMMADataSet.OrdersDataTable orderData)
-        {
-        }
-
 
 
         /// <summary>

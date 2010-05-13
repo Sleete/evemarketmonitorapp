@@ -2576,7 +2576,6 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                     if (orderData.Count > 0)
                     {
-                        Assets.UpdateFromOrders(orderData);
                         Orders.Store(orderData);
                     }
 

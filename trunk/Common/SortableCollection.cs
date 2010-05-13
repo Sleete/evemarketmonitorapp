@@ -958,6 +958,40 @@ namespace EveMarketMonitorApp.Common
             catch (System.Exception ex)
             { throw ex; }
         }
+        private bool IsOk(long ObjectPropertyValue, string Operator, long UserValue)
+        {
+            bool Rt = false;
+            try
+            {
+                if (Operator == "=")
+                {
+                    if (ObjectPropertyValue == UserValue) { Rt = true; }
+                }
+                else if (Operator == ">")
+                {
+                    if (ObjectPropertyValue > UserValue) { Rt = true; }
+                }
+                else if (Operator == ">=")
+                {
+                    if (ObjectPropertyValue >= UserValue) { Rt = true; }
+                }
+                else if (Operator == "<")
+                {
+                    if (ObjectPropertyValue < UserValue) { Rt = true; }
+                }
+                else if (Operator == "<=")
+                {
+                    if (ObjectPropertyValue <= UserValue) { Rt = true; }
+                }
+                else
+                {
+                    throw new Exception("L'opérateur '" + Operator + "' n'est pas géré pour le type long !");
+                }
+                return Rt;
+            }
+            catch (System.Exception ex)
+            { throw ex; }
+        }
         private bool IsOk(decimal ObjectPropertyValue, string Operator, decimal UserValue)
         {
             bool Rt = false;
@@ -1118,6 +1152,10 @@ namespace EveMarketMonitorApp.Common
                 else if (TypeOfValue == typeof(decimal))
                 {
                     { Rt = IsOk((decimal)ObjectPropertyValue, Operator, (decimal)Convert.ToDecimal(FilterValue)); }
+                }
+                else if (TypeOfValue == typeof(long))
+                {
+                    { Rt = IsOk((long)ObjectPropertyValue, Operator, (long)Convert.ToInt64(FilterValue)); }
                 }
                 else
                 { throw new Exception("Filtrage impossible sur le Type " + TypeOfValue.ToString()); }

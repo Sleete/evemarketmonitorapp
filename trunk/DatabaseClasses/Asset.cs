@@ -601,7 +601,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             str.Append(_itemID);
             str.Append(_statusID);
             if (includeQuantity) { str.Append(_quantity); }
-            str.Append(Contents.GetHashCode());
+            if (Contents != null) { str.Append(Contents.GetHashCode()); }
             return str.ToString();
         }
         #endregion
