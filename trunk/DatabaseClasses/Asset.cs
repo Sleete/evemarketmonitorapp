@@ -36,6 +36,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private string _status;
         private bool _isContainer;
         private Asset _container;
+        private long _containerID;
         private AssetList _contents;
 
         private decimal _unitValue;
@@ -69,6 +70,34 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 _statusID = dataRow.Status;
                 _isContainer = dataRow.IsContainer;
                 _container = container;
+                _containerID = dataRow.ContainerID;
+                _regionID = dataRow.RegionID;
+                _systemID = dataRow.SystemID;
+                _contents = new AssetList();
+                _unitBuyPrice = dataRow.Cost;
+                _gotUnitBuyPrice = dataRow.CostCalc;
+            }
+        }
+        public Asset(EMMADataSet.AssetsRow dataRow)
+        {
+            if (dataRow != null)
+            {
+                _id = dataRow.ID;
+                _ownerID = dataRow.OwnerID;
+                if (dataRow.CorpAsset)
+                {
+                    _ownerID = UserAccount.CurrentGroup.GetCharacter(_ownerID).CorpID;
+                }
+                _locationID = dataRow.LocationID;
+                _itemID = dataRow.ItemID;
+                _quantity = dataRow.Quantity;
+                _autoConExclude = dataRow.AutoConExclude;
+                _reprocExclude = dataRow.ReprocExclude;
+                _processed = dataRow.Processed;
+                _statusID = dataRow.Status;
+                _isContainer = dataRow.IsContainer;
+                _container = null;
+                _containerID = dataRow.ContainerID;
                 _regionID = dataRow.RegionID;
                 _systemID = dataRow.SystemID;
                 _contents = new AssetList();
@@ -110,6 +139,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             _statusID = 1;
             _contents = new AssetList();
             _container = container;
+            _containerID = container.ID;
             _contents = new AssetList();
             _unitBuyPrice = 0;
             _gotUnitBuyPrice = false;
@@ -135,11 +165,18 @@ namespace EveMarketMonitorApp.DatabaseClasses
         #region Property accessors
         public long ContainerID
         {
-            get { return _container.ID; }
+            get { return _containerID; }
         }
         public Asset Container
         {
-            get { return _container; }
+            get
+            {
+                if (_container == null && _containerID != 0)
+                {
+                    _container = new Asset(Assets.GetAssetDetail(_containerID));
+                }
+                return _container;
+            }
             set { _container = value; }
         }
 
@@ -149,7 +186,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 if (_isContainer)
                 {
-                    if (_contents.Count == 0)
+                    if (_contents == null || _contents.Count == 0)
                     {
                         _contents = Assets.LoadAssets(this);
                     }
@@ -482,7 +519,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         // at the asset's location.
                         Transactions.GetAverageBuyPrice(UserAccount.CurrentGroup.GetFinanceAccessParams(
                             APIDataType.Transactions), itemIDs, stationIDs, new List<int>(),
-                            _quantity, 0, ref _unitBuyPrice, ref blank1, false);
+                            Math.Abs(_quantity), 0, ref _unitBuyPrice, ref blank1, false);
 
                         // If we don't find anything then just use the most recent buy transaction 
                         // at any location.
@@ -490,7 +527,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         {
                             Transactions.GetAverageBuyPrice(UserAccount.CurrentGroup.GetFinanceAccessParams(
                                 APIDataType.Transactions), itemIDs, new List<int>(), new List<int>(),
-                                _quantity, 0, ref _unitBuyPrice, ref blank1, false);
+                                Math.Abs(_quantity), 0, ref _unitBuyPrice, ref blank1, false);
                         }
 
                         // If we still don't have anything then use the ItemValues object
@@ -540,7 +577,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 if (!_gotReprocessValue && _reprocessPrices != null)
                 {
                     ReprocessJob job = new ReprocessJob(0, 0, 0);
-                    job.AddItem(_itemID, _quantity, TotalBuyPrice);
+                    job.AddItem(_itemID, Math.Abs(_quantity), TotalBuyPrice);
                     job.SetDefaultResultPrices(_reprocessPrices);
                     job.UpdateResults();
                     _reprocessValue = job.TotalResultsValue;

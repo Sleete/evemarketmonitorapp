@@ -60,9 +60,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
                             // Adjust assets data in accordance with items that were sold.
                             long deltaQuantity = -1 * q;
+                            // Note, since we're removing assets, the cost and costcalc parameters
+                            // will be ignored.
                             Assets.ChangeAssets(charID, corp, newRow.StationID, newRow.ItemID, 
                                 existingAsset.ContainerID, existingAsset.Status, existingAsset.AutoConExclude,
-                                deltaQuantity, 0);
+                                deltaQuantity, 0, false);
                         }
                     }
                     // If we could not find enough assets 'ForSaleViaMarket' to match the 
@@ -83,9 +85,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
                                 // Adjust assets data in accordance with items that were sold.
                                 long deltaQuantity = -1 * q;
+                                // Note, since we're removing assets, the cost and costcalc parameters
+                                // will be ignored.
                                 Assets.ChangeAssets(charID, corp, newRow.StationID, newRow.ItemID, 
                                     existingAsset.ContainerID, existingAsset.Status, existingAsset.AutoConExclude, 
-                                    deltaQuantity, 0);
+                                    deltaQuantity, 0, false);
                             }
                         }
                     }

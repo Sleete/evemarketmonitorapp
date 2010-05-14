@@ -67,11 +67,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 //}
                 //else
                 //{
-                Asset change = new Asset(unprocMatch, unprocMatch.ContainerID != 0 ? new Asset() : null);
-                    if (unprocMatch.ContainerID != 0)
-                    {
-                        change.Container.ID = unprocMatch.ContainerID;
-                    }
+                    Asset change = new Asset(unprocMatch);
                     change.Processed = false;
                     changes.Add(change);
                 //}
@@ -107,7 +103,6 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     {
                         if (change.Quantity > 0 && change2.Quantity < 0)
                         {
-                            long assetID1 = 0, assetID2 = 0;
                             // Get the asset data lines associated with the two changes in asset quantities 
                             // that we have found.
                             //bool got1 = Assets.AssetExists(assetData, charID, corp, locationID, itemID,
@@ -121,8 +116,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
                             //if (got1 && got2)
                             //{
-                                EMMADataSet.AssetsRow row1 = assetData.FindByID(assetID1);
-                                EMMADataSet.AssetsRow row2 = assetData.FindByID(assetID2);
+                                EMMADataSet.AssetsRow row1 = assetData.FindByID(change.ID);
+                                EMMADataSet.AssetsRow row2 = assetData.FindByID(change2.ID);
                                 Asset a1 = new Asset(row1, null);
                                 Asset a2 = new Asset(row2, null);
                                 long thisAbsDeltaQ = Math.Min(Math.Abs(change.Quantity), Math.Abs(change2.Quantity));
@@ -425,7 +420,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                 // represented by the 'assets' table so we don't have to worry about
                                 // conflicts.
                                 Assets.ChangeAssets(charID, corp, unprocMatch.LocationID, unprocMatch.ItemID,
-                                    unprocMatch.ContainerID, unprocMatch.Status, unprocMatch.AutoConExclude, -1 * q, 0);
+                                    unprocMatch.ContainerID, unprocMatch.Status, unprocMatch.AutoConExclude, 
+                                    -1 * q, 0, false);
                             }
                         }
                     }
@@ -435,9 +431,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     changedAsset.AutoConExclude = true;
                     changedAsset.ContainerID = 0;
                     changedAsset.CorpAsset = corp;
-                    changedAsset.Cost = qToFind < sellOrder.RemainingValue ?
-                        assetCost / (sellOrder.RemainingValue - qToFind) : 0;
-                    changedAsset.CostCalc = qToFind < sellOrder.TotalVol;
+                    changedAsset.Cost = qToFind < sellOrder.RemainingVol ?
+                        assetCost / (sellOrder.RemainingVol - qToFind) : 0;
+                    changedAsset.CostCalc = qToFind < sellOrder.RemainingVol;
                     changedAsset.IsContainer = false;
                     changedAsset.ItemID = sellOrder.ItemID;
                     changedAsset.LocationID = sellOrder.StationID;
@@ -571,7 +567,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     if (trans.SellerID == ownerID) { deltaQuantity *= -1; }
 
                     ChangeAssets(charID, useCorp, trans.StationID, trans.ItemID, 0, (int)AssetStatus.States.Normal, 
-                        false, deltaQuantity, trans.Price);
+                        false, deltaQuantity, (deltaQuantity > 0 ? trans.Price : 0), deltaQuantity > 0);
                     if (trans.ID > maxID) { maxID = trans.ID; }
                 }
             }
@@ -1095,7 +1091,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="autoConExclude"></param>
         /// <param name="deltaQuatnity"></param>
         static public void ChangeAssets(int ownerID, bool corpAsset, int locationID, int itemID,
-            long containerID, int status, bool autoConExclude, long deltaQuantity, decimal addedItemsCost)
+            long containerID, int status, bool autoConExclude, long deltaQuantity, decimal addedItemsCost,
+            bool costCalculated)
         {
             int systemID = 0, regionID = 0;
             EveDataSet.staStationsRow station = Stations.GetStation(locationID);
@@ -1114,7 +1111,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             lock (assetsTableAdapter)
             {
                 assetsTableAdapter.AddQuantity(ownerID, corpAsset, itemID, locationID, systemID,
-                    regionID, status, 0, autoConExclude, deltaQuantity, addedItemsCost, true);
+                    regionID, status, 0, autoConExclude, deltaQuantity, addedItemsCost, costCalculated);
             }
         }
         
@@ -1290,7 +1287,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             // Check if the row is already in the table
             EMMADataSet.AssetsRow row = assets.FindByID(ID);
-            if (row != null)
+            if (row == null)
             {
                 lock (assetsTableAdapter)
                 {

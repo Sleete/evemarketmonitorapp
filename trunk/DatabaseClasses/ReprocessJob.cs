@@ -69,12 +69,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 // Note 'addedItemsCost' parameter is ignored because we're removing assets
                 // rather than adding them.
                 Assets.ChangeAssets(charData.CharID, corp, _stationID, item.ItemID,
-                    0, 1, false, -1 * item.Quantity, 0);
+                    0, 1, false, -1 * item.Quantity, 0, false);
             }
             foreach (ReprocessResult result in _results)
             {
                 Assets.ChangeAssets(charData.CharID, corp, _stationID, result.ItemID,
-                    0, 1, false, result.Quantity, result.EffectiveBuyPrice);
+                    0, 1, false, result.Quantity, result.EffectiveBuyPrice, true);
             }
         }
 
@@ -86,14 +86,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
             foreach (ReprocessItem item in SourceItems)
             {
                 Assets.ChangeAssets(charData.CharID, corp, _stationID, item.ItemID,
-                    0, 1, false, item.Quantity, item.BuyPrice);
+                    0, 1, false, item.Quantity, item.BuyPrice, true);
             }
             foreach (ReprocessResult result in Results)
             {
                 // Note 'addedItemsCost' parameter is ignored because we're removing assets
                 // rather than adding them.
                 Assets.ChangeAssets(charData.CharID, corp, _stationID, result.ItemID,
-                    0, 1, false, -1 * result.Quantity, 0);
+                    0, 1, false, -1 * result.Quantity, 0, false);
             }
         }
 

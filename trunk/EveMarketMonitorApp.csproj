@@ -96,12 +96,19 @@
     <Compile Include="Common\Cache.cs" />
     <Compile Include="AbstractionClasses\EVEAccount.cs" />
     <Compile Include="Common\Compression.cs" />
+    <Compile Include="Common\DetailProgressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\DetailProgressDialog.designer.cs">
+      <DependentUpon>DetailProgressDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Common\CSVExport.cs" />
     <Compile Include="Common\Diagnostics.cs" />
     <Compile Include="Common\DynamicMethodCompiler.cs" />
     <Compile Include="Common\FrequencyTable.cs" />
     <Compile Include="Common\Globals.cs" />
     <Compile Include="Common\HList.cs" />
+    <Compile Include="Common\IProgressDialog.cs" />
     <Compile Include="Common\IProvideStatus.cs" />
     <Compile Include="Common\MultisortDataGridView.cs">
       <SubType>Component</SubType>
@@ -611,6 +618,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Common\DetailProgressDialog.resx">
+      <DependentUpon>DetailProgressDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Common\ProgressDialog.resx">
       <DependentUpon>ProgressDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
