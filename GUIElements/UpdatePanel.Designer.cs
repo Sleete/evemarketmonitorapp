@@ -62,7 +62,9 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // lblTransactions
             // 
-            this.lblTransactions.BackColor = System.Drawing.SystemColors.Control;
+            this.lblTransactions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTransactions.BackColor = System.Drawing.Color.LightSteelBlue;
             this.lblTransactions.Location = new System.Drawing.Point(85, 3);
             this.lblTransactions.Name = "lblTransactions";
             this.lblTransactions.Size = new System.Drawing.Size(165, 14);
@@ -72,7 +74,9 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // lblJournal
             // 
-            this.lblJournal.BackColor = System.Drawing.SystemColors.Control;
+            this.lblJournal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblJournal.BackColor = System.Drawing.Color.LightSteelBlue;
             this.lblJournal.Location = new System.Drawing.Point(85, 23);
             this.lblJournal.Name = "lblJournal";
             this.lblJournal.Size = new System.Drawing.Size(165, 14);
@@ -82,7 +86,9 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // lblOrders
             // 
-            this.lblOrders.BackColor = System.Drawing.SystemColors.Control;
+            this.lblOrders.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblOrders.BackColor = System.Drawing.Color.LightSteelBlue;
             this.lblOrders.Location = new System.Drawing.Point(85, 43);
             this.lblOrders.Name = "lblOrders";
             this.lblOrders.Size = new System.Drawing.Size(165, 14);
@@ -92,7 +98,9 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // lblAssets
             // 
-            this.lblAssets.BackColor = System.Drawing.SystemColors.Control;
+            this.lblAssets.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblAssets.BackColor = System.Drawing.Color.LightSteelBlue;
             this.lblAssets.Location = new System.Drawing.Point(85, 63);
             this.lblAssets.Name = "lblAssets";
             this.lblAssets.Size = new System.Drawing.Size(165, 14);
@@ -144,10 +152,11 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.lblTransStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTransStatus.BackColor = System.Drawing.SystemColors.Control;
-            this.lblTransStatus.Location = new System.Drawing.Point(157, 3);
+            this.lblTransStatus.AutoEllipsis = true;
+            this.lblTransStatus.BackColor = System.Drawing.Color.Lavender;
+            this.lblTransStatus.Location = new System.Drawing.Point(155, 3);
             this.lblTransStatus.Name = "lblTransStatus";
-            this.lblTransStatus.Size = new System.Drawing.Size(93, 14);
+            this.lblTransStatus.Size = new System.Drawing.Size(95, 14);
             this.lblTransStatus.TabIndex = 9;
             this.lblTransStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -155,10 +164,12 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.lblJournalStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblJournalStatus.BackColor = System.Drawing.SystemColors.Control;
-            this.lblJournalStatus.Location = new System.Drawing.Point(157, 23);
+            this.lblJournalStatus.AutoEllipsis = true;
+            this.lblJournalStatus.BackColor = System.Drawing.Color.Lavender;
+            this.lblJournalStatus.Location = new System.Drawing.Point(155, 23);
             this.lblJournalStatus.Name = "lblJournalStatus";
-            this.lblJournalStatus.Size = new System.Drawing.Size(93, 14);
+            this.lblJournalStatus.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.lblJournalStatus.Size = new System.Drawing.Size(95, 14);
             this.lblJournalStatus.TabIndex = 10;
             this.lblJournalStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -166,10 +177,11 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.lblOrdersStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblOrdersStatus.BackColor = System.Drawing.SystemColors.Control;
-            this.lblOrdersStatus.Location = new System.Drawing.Point(157, 43);
+            this.lblOrdersStatus.AutoEllipsis = true;
+            this.lblOrdersStatus.BackColor = System.Drawing.Color.Lavender;
+            this.lblOrdersStatus.Location = new System.Drawing.Point(155, 43);
             this.lblOrdersStatus.Name = "lblOrdersStatus";
-            this.lblOrdersStatus.Size = new System.Drawing.Size(93, 14);
+            this.lblOrdersStatus.Size = new System.Drawing.Size(95, 14);
             this.lblOrdersStatus.TabIndex = 11;
             this.lblOrdersStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -177,10 +189,11 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.lblAssetsStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblAssetsStatus.BackColor = System.Drawing.SystemColors.Control;
-            this.lblAssetsStatus.Location = new System.Drawing.Point(157, 63);
+            this.lblAssetsStatus.AutoEllipsis = true;
+            this.lblAssetsStatus.BackColor = System.Drawing.Color.Lavender;
+            this.lblAssetsStatus.Location = new System.Drawing.Point(155, 63);
             this.lblAssetsStatus.Name = "lblAssetsStatus";
-            this.lblAssetsStatus.Size = new System.Drawing.Size(93, 14);
+            this.lblAssetsStatus.Size = new System.Drawing.Size(95, 14);
             this.lblAssetsStatus.TabIndex = 12;
             this.lblAssetsStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 

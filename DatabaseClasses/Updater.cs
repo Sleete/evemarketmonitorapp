@@ -5199,6 +5199,125 @@ AS
                     #endregion
                 }
 
+                if (dbVersion.CompareTo(new Version("1.4.2.9")) < 0)
+                {
+                    #region Create 'AssetsAddQuantity' stored procedure
+                    commandText =
+                            @"ALTER PROCEDURE dbo.AssetsAddQuantity 
+	@ownerID		int,
+	@corpAsset		bit,
+	@itemID			int,
+	@stationID		int,
+	@systemID		int,
+	@regionID		int,
+	@status			int,
+	@containerID	int,
+	@autoConExclude	bit,
+	@deltaQuantity	bigint,
+	@addedItemsCost	decimal(18,2),
+    @costCalc       bit
+AS
+	DECLARE @oldQuantity bigint, @newQuantity bigint
+	DECLARE	@assetID bigint
+	DECLARE @oldCost decimal(18, 2), @newCost decimal(18, 2)
+    DECLARE @oldCostCalc bit, @newCostCalc bit
+		
+	SET @assetID = 0
+	SELECT @oldQuantity = Quantity, @assetID = ID, @oldCost = Cost, @oldCostCalc = CostCalc
+	FROM Assets
+	WHERE OwnerID = @ownerID AND CorpAsset = @corpAsset AND LocationID = @stationID AND ItemID = @itemID AND Status = @status AND ContainerID = @containerID AND AutoConExclude = @autoConExclude
+	
+	IF(@assetID = 0)
+	BEGIN
+		INSERT INTO [Assets] ([OwnerID], [CorpAsset], [LocationID], [ItemID], [SystemID], [RegionID], [ContainerID], [Quantity], [Status], [AutoConExclude], [Processed], [IsContainer], [Cost], [CostCalc]) 
+		VALUES (@ownerID, @corpAsset, @stationID, @itemID, @systemID, @regionID, 0, @deltaQuantity, @status, @autoConExclude, 0, 0, @addedItemsCost, @costCalc);
+	END 
+	ELSE
+	BEGIN
+		SET @newQuantity = @oldQuantity + @deltaQuantity
+		-- If old quantity is less than zero then just use the old cost
+		IF(@deltaQuantity > 0 AND @oldQuantity > 0)
+		BEGIN
+            -- If new items are being added to the stack then calculate the average cost from the 
+            -- old and new values.
+            -- If the old cost had not been calculated then just use the new cost
+            SET @newCostCalc = 1
+            IF(@oldCostCalc = 0 AND @costCalc = 0)
+            BEGIN
+                SET @newCost = 0
+                SET @newCostCalc = 0
+            END
+            ELSE IF(@oldCostCalc = 1 AND @costCalc = 0)
+            BEGIN
+                SET @newCost = @oldCost
+            END
+            ELSE IF(@oldCostCalc = 0 AND @costCalc = 1)
+            BEGIN
+                SET @newCost = @addedItemsCost
+            END
+            ELSE IF(@oldCostCalc = 1 AND @costCalc = 1)
+            BEGIN
+			    SET @newCost = (@oldCost * @oldQuantity + @addedItemsCost * @deltaQuantity) / (@oldQuantity + @deltaQuantity)
+		    END
+        END
+		ELSE
+		BEGIN
+            -- If items are being removed from the stack then just use the old cost value
+			SET @newCost = @oldCost
+            SET @newCostCalc = @oldCostCalc
+		END		
+		
+		UPDATE [Assets] SET [Quantity] = @newQuantity, [Cost] = @newCost, [CostCalc] = @newCostCalc
+		WHERE [OwnerID] = @ownerID AND [CorpAsset] = @corpAsset AND [LocationID] = @stationID AND [ItemID] = @itemID AND [Status] = @status AND [ContainerID] = @containerID AND [AutoConExclude] = @autoConExclude
+	END
+	
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.2.9"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem creating 'AssetsAddQuantity' stored procedure", ex);
+                    }
+                    #endregion
+                }
+
+                if (dbVersion.CompareTo(new Version("1.4.2.10")) < 0)
+                {
+                    #region Set 'CostCalc' flag to false for any assets with a cost of 0
+                    // This was done because some previous database changes went live with a bug 
+                    // that caused the costcalc flag to be set to true when it should be false.
+                    // This was caught before the main release and at the time, there was no 
+                    // legitimate way for the costcalc flag to get set to true with out a value 
+                    // being calculated.
+                    // Thanks to this bit of luck, we can just reset the flag for any assets with
+                    // no cost set.
+                    commandText =
+                            @"UPDATE [Assets] SET [CostCalc] = 0
+                        WHERE [Cost] = 0";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.2.10"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem setting 'CostCalc' flag to false for any assets with a cost of 0", ex);
+                    }
+                    #endregion
+                }
 
                 
             }

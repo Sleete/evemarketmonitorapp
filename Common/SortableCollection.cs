@@ -1221,7 +1221,7 @@ namespace EveMarketMonitorApp.Common
                         //cicle++;
                     }
 
-                    if (AllIsOK == false)
+                    if (AllIsOK == true)
                     {
                         ObjectToFilter.Remove(CollectionItem);
                         ObjectToFilter.filtreditems.Add(CollectionItem);

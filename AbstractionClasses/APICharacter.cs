@@ -339,11 +339,20 @@ namespace EveMarketMonitorApp.AbstractionClasses
             return GetWalletBalance(corp, ids);
         }
 
-        private void UpdateStatus(int progress, int maxprogress, string sectionName, string status, bool complete) 
+        private void UpdateStatus(int progress, int maxprogress, string sectionName, string status, bool complete)
         {
             if (StatusChange != null)
             {
-                StatusChange(this, new StatusChangeArgs(progress, maxprogress,sectionName, status, complete)); 
+                StatusChange(this, new StatusChangeArgs(progress, maxprogress, sectionName, status, complete));
+            }
+        }
+        private void UpdateStatus(int progress, int maxprogress, string sectionName, string status, bool complete,
+            int currentSubProgress, int currentSubMax, string subDesc)
+        {
+            if (StatusChange != null)
+            {
+                StatusChange(this, new StatusChangeArgs(progress, maxprogress, sectionName, status, complete,
+                    currentSubProgress, currentSubMax, subDesc));
             }
         }
 
@@ -836,6 +845,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
             {
                 UpdateStatus(counter, assetList.Count, "Getting asset data from file", "", false);
             }
+            else
+            {
+                UpdateStatus(-1, -1, "Getting asset data from file", "", false, 
+                    counter, assetList.Count, "Container progress");
+            }
 
             foreach (XmlNode asset in assetList)
             {
@@ -906,7 +920,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         // items here. 
                         // This means that once the update processing is complete, we
                         // can try and work out where these items came from.
-                        #region Store changes
+                        #region Remember changes to item quantities
                         changes.ItemFilter = "ID = " + assetRow.ID;
                         if (changes.FiltredItems.Count > 0)
                         {
@@ -915,14 +929,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         }
                         else
                         {
-                            // This should never happen but cater for it just in case...
-                            change = new Asset(assetRow, containerID != 0 ? new Asset() : null);
+                            change = new Asset(assetRow);
                             change.Quantity = quantity;
                             change.Processed = false;
-                            if (containerID != 0)
-                            {
-                                change.Container.ID = containerID;
-                            }
                             changes.Add(change);
                         }
                         #endregion
@@ -949,7 +958,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             // items here. 
                             // This means that once the update processing is complete, we
                             // can try and work out where these items came from.
-                            #region Store changes
+                            #region Remember changes to item quantities
                             //changes.ItemFilter = "ItemID = " + itemID + " AND LocationID = " + locationID +
                             //    " AND ContainerID = " + containerID;
                             //if (changes.FiltredItems.Count > 0)
@@ -959,13 +968,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             //}
                             //else
                             //{
-                                change = new Asset(assetRow, containerID != 0 ? new Asset() : null);
+                                change = new Asset(assetRow);
                                 change.Quantity = quantity - assetRow.Quantity;
                                 change.Processed = false;
-                                if (containerID != 0)
-                                {
-                                    change.Container.ID = containerID;
-                                }
                                 changes.Add(change);
                             //}
                             #endregion
@@ -1052,7 +1057,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     // items here. 
                     // This means that once the update processing is complete, we
                     // can try and work out where these items came from.
-                    #region Store changes
+                    #region Remember changes to item quantities
                     //changes.ItemFilter = "ItemID = " + itemID + " AND LocationID = " + locationID +
                     //    " AND ContainerID = " + containerID;
                     //if (changes.FiltredItems.Count > 0)
@@ -1062,13 +1067,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     //}
                     //else
                     //{
-                        change = new Asset(assetRow, containerID != 0 ? new Asset() : null);
+                        change = new Asset(assetRow);
                         change.Quantity = quantity;
                         change.Processed = false;
-                        if (containerID != 0)
-                        {
-                            change.Container.ID = containerID;
-                        }
                         changes.Add(change);
 
                     //}
@@ -1080,10 +1081,16 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     XmlNodeList contained = asset.SelectNodes("rowset/row");
                     UpdateAssets(assetData, contained, locationID, corc, assetID, changes);
                 }
+
+                counter++;
+                if (containerID == 0)
+                {
+                    UpdateStatus(counter, assetList.Count, "Getting asset data from file", "", false);
+                }
                 else
                 {
-                    counter++;
-                    UpdateStatus(counter, assetList.Count, "Getting asset data from file", "", false);
+                    UpdateStatus(-1, -1, "Getting asset data from file", "", false,
+                        counter, assetList.Count, "Container progress");
                 }
             }
 

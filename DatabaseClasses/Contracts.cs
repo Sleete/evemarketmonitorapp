@@ -83,9 +83,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 // When removing assets from a stack, cost is not affected so just use zero..
                 Assets.ChangeAssets(contract.OwnerID, corp, contract.DestinationStationID, item.ItemID, 
-                    0, 2, false, -1 * item.Quantity, 0);
+                    0, 2, false, -1 * item.Quantity, 0, false);
                 Assets.ChangeAssets(contract.OwnerID, corp, contract.DestinationStationID, item.ItemID,
-                    0, 1, false, item.Quantity, item.BuyPrice);
+                    0, 1, false, item.Quantity, item.BuyPrice, true);
             }
 
             if (contracts.Count > 0)
@@ -120,7 +120,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             foreach (ContractItem item in items)
             {
                 Assets.ChangeAssets(contract.OwnerID, corp, contract.DestinationStationID, item.ItemID,
-                    0, 2, false, -1 * item.Quantity, 0);
+                    0, 2, false, -1 * item.Quantity, 0, false);
             }
 
             if (contracts.Count > 0)
@@ -236,9 +236,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 foreach (ContractItem item in items)
                 {
                     Assets.ChangeAssets(contract.OwnerID, corp, contract.PickupStationID, item.ItemID,
-                        0, (int)AssetStatus.States.Normal, false, (reverse ? 1 : -1) * item.Quantity, item.BuyPrice);
+                        0, (int)AssetStatus.States.Normal, false, (reverse ? 1 : -1) * item.Quantity, 
+                        0, false);
                     Assets.ChangeAssets(contract.OwnerID, corp, contract.DestinationStationID, item.ItemID,
-                        0, (int)AssetStatus.States.InTransit, false, (reverse ? -1 : 1) * item.Quantity, item.BuyPrice);
+                        0, (int)AssetStatus.States.InTransit, false, (reverse ? -1 : 1) * item.Quantity, 
+                        item.BuyPrice, !reverse);
                 }
             }
             else if (contract.Type == ContractType.ItemExchange)
@@ -261,8 +263,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         if (asset.Quantity > 0)
                         {
                             Assets.ChangeAssets(contract.OwnerID, corp, contract.PickupStationID, item.ItemID,
-                                0, (int)AssetStatus.States.Normal, false, (reverse ? 1 : -1) * item.Quantity, 
-                                item.BuyPrice);
+                                0, (int)AssetStatus.States.ForSaleViaContract, false, 
+                                (reverse ? 1 : -1) * item.Quantity, item.BuyPrice, !reverse);
                         }
                     }
                 }

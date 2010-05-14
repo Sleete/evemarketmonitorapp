@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace EveMarketMonitorApp.Common
 {
-    public partial class ProgressDialog : Form
+    public partial class ProgressDialog : Form, IProgressDialog
     {
         static StatusChangeArgs status;
         List<string> sections;

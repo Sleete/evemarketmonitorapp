@@ -34,6 +34,8 @@ namespace EveMarketMonitorApp.GUIElements
 
         public bool _toggleAll = false;
 
+        private static string BLOCKEDTEXT = "Blocked, Retrying..";
+
         public UpdatePanel()
         {
             InitializeComponent();
@@ -247,6 +249,17 @@ namespace EveMarketMonitorApp.GUIElements
             }
             else if (errorText.ToUpper().Equals("UPDATING"))
             {
+                if (label.Text.Equals(BLOCKEDTEXT))
+                {
+                    // If the update was previously blocked then need to let the rest of EMMA 
+                    // know that the update is now restarted.
+                    if (UpdateEvent != null)
+                    {
+                        UpdateEvent(this, new APIUpdateEventArgs(dataType, corc ==
+                            CharOrCorp.Char ? _character.CharID : _character.CorpID,
+                            APIUpdateEventType.UpdateStarted));
+                    }
+                }
                 // The update is in progress.
                 label.Text = "Updating";
                 label.BackColor = _updatingColour;
@@ -267,12 +280,21 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 // An assets update has been blocked because the most recent transaction and orders 
                 // updates are not within the timeframe specified.
-                // Ask the user if they want to reconifugre this to always allow asset updates. 
-                if (!label.Text.Equals("Blocked, Retrying.."))
+                // Ask the user if they want to reconfigure this to always allow asset updates. 
+                if (!label.Text.Equals(BLOCKEDTEXT))
                 {
-                    label.Text = "Blocked, Retrying..";
+                    label.Text = BLOCKEDTEXT;
                     label.BackColor = _updatingColour;
                     otherLabel.BackColor = _updatingColour;
+                    // Make sure we let the rest of EMMA know that the update has stoped.
+                    // Otherwise, the user will be unable to use reports, exit, etc while
+                    // waiting for it to unblock.
+                    if (UpdateEvent != null)
+                    {
+                        UpdateEvent(this, new APIUpdateEventArgs(dataType, corc ==
+                            CharOrCorp.Char ? _character.CharID : _character.CorpID,
+                            APIUpdateEventType.UpdateCompleted));
+                    }
                     DialogResult result = MessageBox.Show("An assets update for " + (corc == CharOrCorp.Char ?
                         _character.CharName : _character.CorpName) + " has been blocked because transaction " +
                         " & orders updates have not occured within the last " +

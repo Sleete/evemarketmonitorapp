@@ -19,8 +19,11 @@ namespace EveMarketMonitorApp.Common
     {
         private int maxProgress;
         private int currentProgress;
+        private int maxSubProgress;
+        private int currentSubProgress;
         private string section;
         private string sectionStatus;
+        private string subProgressDescription;
         private bool done;
 
         public StatusChangeArgs(int currentProgress, int maxProgress, string section, string sectionStatus, bool done)
@@ -29,6 +32,21 @@ namespace EveMarketMonitorApp.Common
             this.sectionStatus = sectionStatus;
             this.maxProgress = maxProgress;
             this.currentProgress = currentProgress;
+            this.done = done;
+            this.currentSubProgress = 0;
+            this.maxSubProgress = 0;
+            this.subProgressDescription = "";
+        }
+        public StatusChangeArgs(int currentProgress, int maxProgress, string section, string sectionStatus, bool done,
+            int currentSubProgress, int maxSubProgress, string subProgDesc)
+        {
+            this.section = section;
+            this.sectionStatus = sectionStatus;
+            this.maxProgress = maxProgress;
+            this.currentProgress = currentProgress;
+            this.currentSubProgress = currentSubProgress;
+            this.maxSubProgress = maxSubProgress;
+            this.subProgressDescription = subProgDesc;
             this.done = done;
         }
 
@@ -61,6 +79,24 @@ namespace EveMarketMonitorApp.Common
         {
             get { return done; }
             set { done = value; }
+        }
+
+        public int MaxSubProgress
+        {
+            get { return maxSubProgress; }
+            set { maxSubProgress = value; }
+        }
+
+        public int CurrentSubProgress
+        {
+            get { return currentSubProgress; }
+            set { currentSubProgress = value; }
+        }
+
+        public string SubProgressDescription
+        {
+            get { return subProgressDescription; }
+            set { subProgressDescription = value; }
         }
 
     }

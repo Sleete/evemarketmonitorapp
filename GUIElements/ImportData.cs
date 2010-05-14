@@ -87,7 +87,7 @@ namespace EveMarketMonitorApp.GUIElements
 
                         if (!Cancel)
                         {
-                            ProgressDialog prgDialog = null;
+                            IProgressDialog prgDialog = null;
                                 
                             switch (type)
                             {
@@ -102,7 +102,7 @@ namespace EveMarketMonitorApp.GUIElements
                                     prgDialog.ShowDialog();
                                     break;
                                 case APIDataType.Assets:
-                                    prgDialog = new ProgressDialog("Loading Assets", character);
+                                    prgDialog = new DetailProgressDialog("Loading Assets", character);
                                     character.RetrieveAssets(xml, corc);
                                     prgDialog.ShowDialog();
                                     break;
