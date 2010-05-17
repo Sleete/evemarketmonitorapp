@@ -126,6 +126,7 @@
     <Compile Include="DatabaseClasses\APICharacters.cs" />
     <Compile Include="DatabaseClasses\APICharSettings.cs" />
     <Compile Include="DatabaseClasses\Asset.cs" />
+    <Compile Include="DatabaseClasses\AssetChangeTypes.cs" />
     <Compile Include="DatabaseClasses\AssetList.cs" />
     <Compile Include="DatabaseClasses\AssetProduced.cs" />
     <Compile Include="DatabaseClasses\Assets.cs" />
@@ -358,6 +359,12 @@
     </Compile>
     <Compile Include="GUIElements\ViewItemDetail.Designer.cs">
       <DependentUpon>ViewItemDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUIElements\ViewUnacknowledgedAssets.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUIElements\ViewUnacknowledgedAssets.Designer.cs">
+      <DependentUpon>ViewUnacknowledgedAssets.cs</DependentUpon>
     </Compile>
     <Compile Include="GUIElements\ViewUnacknowledgedOrders.cs">
       <SubType>Form</SubType>
@@ -719,6 +726,9 @@
     <EmbeddedResource Include="GUIElements\ViewItemDetail.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ViewItemDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUIElements\ViewUnacknowledgedAssets.resx">
+      <DependentUpon>ViewUnacknowledgedAssets.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUIElements\ViewUnacknowledgedOrders.resx">
       <DependentUpon>ViewUnacknowledgedOrders.cs</DependentUpon>

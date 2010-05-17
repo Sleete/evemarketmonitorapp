@@ -29,5 +29,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
 		{
             return (AssetList)base.GetChanges();
 		}
+
+        public void Add(AssetList list)
+        {
+            foreach(Asset asset in list) 
+            {
+                this.Add(asset);
+            }
+        }
     }
 }

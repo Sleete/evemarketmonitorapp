@@ -15,6 +15,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private int _ownerID;
         private bool _gotOwner = false;
         private string _owner;
+        private bool _corpAsset = false;
         private int _locationID;
         private bool _gotLocation = false;
         private string _location;
@@ -48,6 +49,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private bool _gotReprocessValue = false;
         private Dictionary<int, decimal> _reprocessPrices = new Dictionary<int, decimal>();
         private bool _forceNoReproValAsUnitVal;
+
+        private AssetChangeTypes.ChangeType _changeTypeID;
+        private bool _gotChangeType = false;
+        private string _changeType = "";
         #endregion
 
         #region Constructors
@@ -59,6 +64,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 _ownerID = dataRow.OwnerID;
                 if (dataRow.CorpAsset)
                 {
+                    _corpAsset = true;
                     _ownerID = UserAccount.CurrentGroup.GetCharacter(_ownerID).CorpID;
                 }
                 _locationID = dataRow.LocationID;
@@ -86,6 +92,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 _ownerID = dataRow.OwnerID;
                 if (dataRow.CorpAsset)
                 {
+                    _corpAsset = true;
                     _ownerID = UserAccount.CurrentGroup.GetCharacter(_ownerID).CorpID;
                 }
                 _locationID = dataRow.LocationID;
@@ -106,10 +113,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        public Asset(XmlNode apiAssetData, int ownerID, Asset container)
+        public Asset(XmlNode apiAssetData, int ownerID, bool corpAsset, Asset container)
         {
             _id = 0;
             _ownerID = ownerID;
+            _corpAsset = corpAsset;
             XmlNode locationNode = apiAssetData.SelectSingleNode("@locationID");
             if (locationNode != null)
             {
@@ -149,7 +157,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 XmlNodeList contents = apiAssetData.SelectNodes("rowset/row");
                 foreach (XmlNode asset in contents)
                 {
-                    _contents.Add(new Asset(asset, ownerID, this));
+                    _contents.Add(new Asset(asset, ownerID, corpAsset, this));
                 }
             }
         }
@@ -214,6 +222,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 return _owner;
             }
             set { _owner = value; }
+        }
+        public int OwnerID
+        {
+            get { return _ownerID; }
+        }
+
+        public bool CorpAsset
+        {
+            get { return _corpAsset; }
         }
 
         public int LocationID
@@ -597,6 +614,24 @@ namespace EveMarketMonitorApp.DatabaseClasses
             _reprocessPrices = prices;
         }
 
+
+        public AssetChangeTypes.ChangeType ChangeTypeID
+        {
+            get { return _changeTypeID; }
+            set { _changeTypeID = value; }
+        }
+
+        public string ChangeType
+        {
+            get
+            {
+                if (!_gotChangeType)
+                {
+                    _changeType = AssetChangeTypes.GetChangeTypeDesc(_changeTypeID);
+                }
+                return _changeType;
+            }
+        }
         #endregion
 
         #region Overriden object methods
