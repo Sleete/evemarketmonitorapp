@@ -53,6 +53,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private AssetChangeTypes.ChangeType _changeTypeID;
         private bool _gotChangeType = false;
         private string _changeType = "";
+        private bool _changeTypeLocked = false;
         #endregion
 
         #region Constructors
@@ -631,6 +632,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 }
                 return _changeType;
             }
+        }
+        public bool ChangeTypeLocked
+        {
+            get { return _changeTypeLocked; }
+            set { _changeTypeLocked = value; }
         }
         #endregion
 

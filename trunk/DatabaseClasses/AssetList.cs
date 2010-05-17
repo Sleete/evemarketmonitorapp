@@ -6,7 +6,7 @@ using EveMarketMonitorApp.Common;
 
 namespace EveMarketMonitorApp.DatabaseClasses
 {
-    class AssetList : SortableCollection
+    public class AssetList : SortableCollection
     {
         public AssetList()
 		{
