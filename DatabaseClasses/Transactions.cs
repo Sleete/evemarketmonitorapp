@@ -958,7 +958,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 long qSell = 0;
                 if (qTotalBuy.ContainsKey(itemID)) { qBuy = qTotalBuy[itemID]; }
                 if (qTotalSell.ContainsKey(itemID)) { qSell = qTotalSell[itemID]; }
-                if (qBuy + qSell > minVolume && qBuy > minBuy && qSell > minSell)
+                if (qBuy + qSell >= minVolume && qBuy >= minBuy && qSell >= minSell)
                 {
                     EMMADataSet.IDTableRow newID = retVal.NewIDTableRow();
                     newID.ID = itemID;
