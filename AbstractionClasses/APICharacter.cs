@@ -59,6 +59,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
         public event APIUpdateEvent UpdateEvent;
 
+        private AssetList _unacknowledgedGains;
+        private AssetList _unacknowledgedLosses;
+        private AssetList _corpUnacknowledgedGains;
+        private AssetList _corpUnacknowledgedLosses;
+
         #region Public properties
         public int CharID
         {
@@ -186,6 +191,27 @@ namespace EveMarketMonitorApp.AbstractionClasses
         {
             get { return _otherCorpChars; }
             set { _otherCorpChars = value; }
+        }
+
+        public AssetList UnacknowledgedGains
+        {
+            get { return _unacknowledgedGains; }
+            set { _unacknowledgedGains = value; }
+        }
+        public AssetList CorpUnacknowledgedGains
+        {
+            get { return _corpUnacknowledgedGains; }
+            set { _corpUnacknowledgedGains = value; }
+        }
+        public AssetList UnacknowledgedLosses
+        {
+            get { return _unacknowledgedLosses ; }
+            set { _unacknowledgedLosses = value; }
+        }
+        public AssetList CorpUnacknowledgedLosses
+        {
+            get { return _corpUnacknowledgedLosses; }
+            set { _corpUnacknowledgedLosses = value; }
         }
         #endregion
 
@@ -758,6 +784,17 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     AssetList lost = new AssetList();
                     Assets.AnalyseChanges(assetData, _charID, corc == CharOrCorp.Corp, changes, out gained, out lost);
 
+                    if (corc == CharOrCorp.Char)
+                    {
+                        _unacknowledgedGains = gained;
+                        _unacknowledgedLosses = lost;
+                    }
+                    else
+                    {
+                        _corpUnacknowledgedGains = gained;
+                        _corpUnacknowledgedLosses = lost;
+                    }
+
                     Assets.UpdateDatabase(assetData);
                     // Set all 'for sale via contract' and 'in transit' assets in the database to processed.
                     // These types of assets would not be expected to show up in either the XML from the
@@ -822,9 +859,19 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
             if (UpdateEvent != null)
             {
-                UpdateEvent(this, new APIUpdateEventArgs(APIDataType.Assets, 
-                    corc == CharOrCorp.Char ? _charID : _corpID,
-                    APIUpdateEventType.UpdateCompleted));
+                if (_unacknowledgedLosses.Count + _unacknowledgedGains.Count == 0)
+                {
+                    UpdateEvent(this, new APIUpdateEventArgs(APIDataType.Assets,
+                        corc == CharOrCorp.Char ? _charID : _corpID,
+                        APIUpdateEventType.UpdateCompleted));
+                }
+                else
+                {
+                    SetLastAPIUpdateError(corc, APIDataType.Assets, "AWAITING ACKNOWLEDGEMENT");
+                    UpdateEvent(this, new APIUpdateEventArgs(APIDataType.Assets,
+                        corc == CharOrCorp.Char ? _charID : _corpID,
+                        APIUpdateEventType.AssetsAwaitingAcknowledgement));
+                }
             }
         }
 

@@ -35,6 +35,7 @@ namespace EveMarketMonitorApp.GUIElements
         public bool _toggleAll = false;
 
         private static string BLOCKEDTEXT = "Blocked, Retrying..";
+        private static string WAITINGTEXT = "Waiting..";
 
         public UpdatePanel()
         {
@@ -152,7 +153,20 @@ namespace EveMarketMonitorApp.GUIElements
 
             if (!_showingTT[type])
             {
-                errorToolTip.Show(_character.GetLastAPIUpdateError(_type, type), this.Parent,
+                string tipText = _character.GetLastAPIUpdateError(_type, type);
+                if(tipText.Equals("BLOCKED")) 
+                {
+                    int minutes = UserAccount.Settings.AssetsUpdateMaxMinutes ;
+                    tipText = "This update is currently blocked because transaction and order updates " +
+                        "have not occured within the last " + minutes + " minutes.\r\n" +
+                        "To adjust this setting, goto Settings -> API Update Settings.";
+                }
+                else if(tipText.Equals("AWAITING ACKNOWLEDGEMENT")) 
+                {
+                    tipText = "This update has completed but is currently waiting for other asset " +
+                        "updates to complete in order to compare lost/gained items.";
+                }
+                errorToolTip.Show(tipText, this.Parent,
                     new Point(MousePosition.X - Parent.PointToScreen(Parent.Location).X + 10, 
                     MousePosition.Y - Parent.PointToScreen(Parent.Location).Y), 3000);
                 _showingTT[type] = true;
@@ -190,18 +204,21 @@ namespace EveMarketMonitorApp.GUIElements
             bool doUpdate = false;
             bool checkForAccess = false;
 
-            if (label.Text.ToUpper().Equals("UPDATING") && !errorText.ToUpper().Equals("UPDATING")
-                && !errorText.ToUpper().Equals("BLOCKED"))
-            {
-                // If the label currently says 'updating' but the error text no longer says 'updating' (or blocked)
-                // then fire the update completed event.
-                if (UpdateEvent != null)
-                {
-                    UpdateEvent(this, new APIUpdateEventArgs(dataType, corc ==
-                        CharOrCorp.Char ? _character.CharID : _character.CorpID,
-                        APIUpdateEventType.UpdateCompleted));
-                }
-            }
+            // No need for this.
+            // The 'update completed' event is fired by the APICharacter object and handled by the
+            // UpdateStatus window anyway.
+            //if (label.Text.ToUpper().Equals("UPDATING") && !errorText.ToUpper().Equals("UPDATING")
+            //    && !errorText.ToUpper().Equals("BLOCKED") && !errorText.ToUpper().Equals("AWAITING ACKNOWLEDGEMENT"))
+            //{
+            //    // If the label currently says 'updating' but the error text no longer says 'updating' (or blocked)
+            //    // then fire the update completed event.
+            //    if (UpdateEvent != null)
+            //    {
+            //        UpdateEvent(this, new APIUpdateEventArgs(dataType, corc ==
+            //            CharOrCorp.Char ? _character.CharID : _character.CorpID,
+            //            APIUpdateEventType.UpdateCompleted));
+            //    }
+            //}
 
             if (errorText.Equals(""))
             {
@@ -285,8 +302,9 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     label.Text = BLOCKEDTEXT;
                     label.BackColor = _updatingColour;
+                    
                     otherLabel.BackColor = _updatingColour;
-                    // Make sure we let the rest of EMMA know that the update has stoped.
+                    // Make sure we let the rest of EMMA know that the update has stopped.
                     // Otherwise, the user will be unable to use reports, exit, etc while
                     // waiting for it to unblock.
                     if (UpdateEvent != null)
@@ -309,6 +327,15 @@ namespace EveMarketMonitorApp.GUIElements
                     {
                         UserAccount.Settings.AssetsUpdateMaxMinutes = 0;
                     }
+                }
+            }
+            else if (errorText.ToUpper().Equals("AWAITING ACKNOWLEDGEMENT"))
+            {
+                if (!label.Text.Equals(WAITINGTEXT))
+                {
+                    label.Text = WAITINGTEXT;
+                    label.BackColor = _updatingColour;
+                    otherLabel.BackColor = _updatingColour;
                 }
             }
             else
@@ -537,7 +564,8 @@ namespace EveMarketMonitorApp.GUIElements
     {
         UpdateStarted,
         UpdateCompleted,
-        OrderHasExpiredOrCompleted
+        OrderHasExpiredOrCompleted,
+        AssetsAwaitingAcknowledgement
     }
 
     public enum APIUpdateTimerType

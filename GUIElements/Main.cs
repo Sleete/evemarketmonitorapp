@@ -28,9 +28,12 @@ namespace EveMarketMonitorApp.GUIElements
         private static UpdateStatus _updateStatus;
         private static SystemStatus _status;
         private static Dictionary<APIDataType, List<int>> _updatesRunning;
-        private static Dictionary<int, short> _corpOrderUpdates = new Dictionary<int,short>();
+        private static List<int> _assetUpdatesAwaitingAcknowledgement;
+        private static Dictionary<int, short> _corpOrderUpdates = new Dictionary<int, short>();
+        private static bool _unackAssetsWaiting = false;
         private static SplashScreen splash;
         private static ViewUnacknowledgedOrders _unackOrders = null;
+        private static ViewUnacknowledgedAssets _unackAssets = null;
         private static bool _tutorialActive = false;
         private static bool _forceClose = false;
         private static Thread _tutorialThread;
@@ -40,6 +43,7 @@ namespace EveMarketMonitorApp.GUIElements
 
         delegate void UpdateViewCallback();
         delegate void RefreshUnackOrdersCallback(bool forceDisplay);
+        delegate void AcknowledgeAssetChangesCallback();
 
         public event StatusChangeHandler StatusChange;
 
@@ -783,6 +787,49 @@ namespace EveMarketMonitorApp.GUIElements
             }
         }
 
+
+        private void AcknowledgeAssetChanges()
+        {
+            if (this.InvokeRequired)
+            {
+                AcknowledgeAssetChangesCallback callback = new 
+                    AcknowledgeAssetChangesCallback(AcknowledgeAssetChanges);
+                this.Invoke(callback);
+            }
+            else
+            {
+                if (_unackAssets.Visible)
+                {
+                    _unackAssets.CrossCheckAssetChanges();
+                }
+                else
+                {
+                    _unackAssets = new ViewUnacknowledgedAssets();
+                    _unackAssets.AssetChangesAcknowledged +=
+                        new AssetChangesAcknowledgedHandler(unack_AssetChangesAcknowledged);
+                    _unackAssets.Show();
+                }
+            }
+        }
+
+        void unack_AssetChangesAcknowledged(object myObject, EventArgs args)
+        {
+            foreach (int id in _assetUpdatesAwaitingAcknowledgement)
+            {
+                bool isCorp = false;
+                APICharacter character = UserAccount.CurrentGroup.GetCharacter(id, ref isCorp);
+                List<int> idsUpdating = _updatesRunning[APIDataType.Assets];
+                if (idsUpdating.Contains(id))
+                {
+                    idsUpdating.Remove(id);
+                }
+                character.SetLastAPIUpdateError(isCorp ? CharOrCorp.Corp : CharOrCorp.Char, APIDataType.Assets, ""); 
+            }
+            _assetUpdatesAwaitingAcknowledgement.Clear();
+            RefreshDisplay();
+        }
+
+
         void UpdateStatus_UpdateEvent(object myObject, APIUpdateEventArgs args)
         {
             List<int> idsUpdating;
@@ -846,6 +893,27 @@ namespace EveMarketMonitorApp.GUIElements
                     // in the RefreshDisplay method instead... 
                     RefreshUnackOrders(false);
                     break;
+                case APIUpdateEventType.AssetsAwaitingAcknowledgement:
+                    // Check if there are any other assets updates either in progress or pending
+                    // If there are none then show the 'AcknowledgeAssetChanges' screen
+                    if (!_assetUpdatesAwaitingAcknowledgement.Contains(args.OwnerID))
+                    {
+                        _assetUpdatesAwaitingAcknowledgement.Add(args.OwnerID);
+                    }
+                    idsUpdating = _updatesRunning[args.UpdateType];
+                    bool updatesStillRunning = false;
+                    foreach (int id in idsUpdating)
+                    {
+                        if (!_assetUpdatesAwaitingAcknowledgement.Contains(id))
+                        {
+                            updatesStillRunning = true;
+                        }
+                    }
+
+                    if (!updatesStillRunning)
+                    {
+                        AcknowledgeAssetChanges();
+                    }
                 default:
                     break;
             }
