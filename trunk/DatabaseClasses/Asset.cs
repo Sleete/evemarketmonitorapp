@@ -8,7 +8,7 @@ using EveMarketMonitorApp.AbstractionClasses;
 
 namespace EveMarketMonitorApp.DatabaseClasses
 {
-    class Asset : SortableObject
+    public class Asset : SortableObject
     {
         #region Class variables
         private long _id;
@@ -51,6 +51,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private bool _forceNoReproValAsUnitVal;
 
         private AssetChangeTypes.ChangeType _changeTypeID;
+        private bool _changeTypeSet = false;
         private bool _gotChangeType = false;
         private string _changeType = "";
         private bool _changeTypeLocked = false;
@@ -618,7 +619,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
         public AssetChangeTypes.ChangeType ChangeTypeID
         {
-            get { return _changeTypeID; }
+            get 
+            {
+                if (!_changeTypeSet)
+                {
+                    if (Quantity > 0) { _changeTypeID = AssetChangeTypes.ChangeType.Found; }
+                    else { _changeTypeID = AssetChangeTypes.ChangeType.DestroyedOrUsed; }
+                }
+                return _changeTypeID; 
+            }
             set { _changeTypeID = value; }
         }
 
@@ -628,7 +637,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 if (!_gotChangeType)
                 {
-                    _changeType = AssetChangeTypes.GetChangeTypeDesc(_changeTypeID);
+                    _changeType = AssetChangeTypes.GetChangeTypeDesc(ChangeTypeID);
                 }
                 return _changeType;
             }

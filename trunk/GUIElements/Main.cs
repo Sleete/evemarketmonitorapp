@@ -28,7 +28,7 @@ namespace EveMarketMonitorApp.GUIElements
         private static UpdateStatus _updateStatus;
         private static SystemStatus _status;
         private static Dictionary<APIDataType, List<int>> _updatesRunning;
-        private static List<int> _assetUpdatesAwaitingAcknowledgement;
+        private static List<int> _assetUpdatesAwaitingAcknowledgement = new List<int>();
         private static Dictionary<int, short> _corpOrderUpdates = new Dictionary<int, short>();
         private static bool _unackAssetsWaiting = false;
         private static SplashScreen splash;
@@ -914,6 +914,7 @@ namespace EveMarketMonitorApp.GUIElements
                     {
                         AcknowledgeAssetChanges();
                     }
+                    break;
                 default:
                     break;
             }
