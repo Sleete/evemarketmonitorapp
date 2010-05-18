@@ -29,11 +29,24 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     retVal = "Unknown";
                     break;
                 default:
+                    retVal = "-Undefined-";
                     break;
             }
 
             return retVal;
         }
+
+        public static List<AssetChangeType> GetAllChangeTypes()
+        {
+            List<AssetChangeType> retVal = new List<AssetChangeType>();
+            Array values = Enum.GetValues(typeof(ChangeType));
+            for (int i = 0; i < values.Length; i++)
+            {
+                retVal.Add(new AssetChangeType(i, GetChangeTypeDesc((ChangeType)i)));
+            }
+            return retVal;
+        }
+
 
         public enum ChangeType
         {
@@ -43,5 +56,29 @@ namespace EveMarketMonitorApp.DatabaseClasses
             ForSaleViaContract,
             Unknown
         }
+    }
+
+    public class AssetChangeType
+    {
+        private int _id;
+        private string _desc;
+
+        public AssetChangeType(int id, string desc)
+        {
+            _id = id;
+            _desc = desc;
+        }
+
+        public int ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        public string Description
+        {
+            get { return _desc; }
+            set { _desc = value; }
+        }
+
     }
 }

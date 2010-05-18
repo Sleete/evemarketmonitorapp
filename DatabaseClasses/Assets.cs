@@ -91,14 +91,20 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 changes2.Add(change);
             }
+            List<int> zeroLossItemIDs = new List<int>();
             foreach (Asset change in changes)
             {
-                if (change.Quantity > 0)
+                if (change.Quantity > 0 && !zeroLossItemIDs.Contains(change.ItemID))
                 {
                     int itemID = change.ItemID;
                     int locationID = change.LocationID;
 
                     changes2.ItemFilter = "ItemID = " + itemID + " AND Quantity < 0";
+                    if (changes2.FiltredItems.Count == 0)
+                    {
+                        if (!zeroLossItemIDs.Contains(change.ItemID)) { zeroLossItemIDs.Add(change.ItemID); }
+                    }
+
                     foreach (Asset change2 in changes2.FiltredItems)
                     {
                         if (change.Quantity > 0 && change2.Quantity < 0)
