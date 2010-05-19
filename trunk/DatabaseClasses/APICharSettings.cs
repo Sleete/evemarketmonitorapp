@@ -70,6 +70,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.corpTransactionsAPIAccess);
             GetValue(Setting.corpJournalAPIAccess);
             GetValue(Setting.corpAssetsAPIAccess);
+            GetValue(Setting.firstUpdateDoneAssetsChar);
+            GetValue(Setting.firstUpdateDoneAssetsCorp);
         }
 
         /// <summary>
@@ -194,6 +196,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 case Setting.corpAssetsAPIAccess:
                     retVal = bool.TrueString;
                     break;
+                case Setting.firstUpdateDoneAssetsChar:
+                    retVal = bool.FalseString;
+                    break;
+                case Setting.firstUpdateDoneAssetsCorp:
+                    retVal = bool.FalseString;
+                    break;
                 default:
                     break;
             }
@@ -254,6 +262,16 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set { SetValue(Setting.corpAssetsAPIAccess, value.ToString()); }
         }
 
+        public bool FirstUpdateDoneAssetsChar
+        {
+            get { return bool.Parse(GetValue(Setting.firstUpdateDoneAssetsChar)); }
+            set { SetValue(Setting.firstUpdateDoneAssetsChar, value.ToString()); }
+        }
+        public bool FirstUpdateDoneAssetsCorp
+        {
+            get { return bool.Parse(GetValue(Setting.firstUpdateDoneAssetsCorp)); }
+            set { SetValue(Setting.firstUpdateDoneAssetsCorp, value.ToString()); }
+        }
         #endregion
 
         private enum Setting
@@ -266,7 +284,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             corpOrdersAPIAccess,
             corpJournalAPIAccess,
             corpTransactionsAPIAccess,
-            corpAssetsAPIAccess
+            corpAssetsAPIAccess,
+            firstUpdateDoneAssetsChar,
+            firstUpdateDoneAssetsCorp
         }
 
     }

@@ -44,6 +44,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private bool _gotUnitValue = false;
         private decimal _unitBuyPrice;
         private bool _gotUnitBuyPrice = false;
+        private bool _unitBuyPricePrecalc = false;
         private bool _selected = false;
         private decimal _reprocessValue;
         private bool _gotReprocessValue = false;
@@ -84,6 +85,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 _contents = new AssetList();
                 _unitBuyPrice = dataRow.Cost;
                 _gotUnitBuyPrice = dataRow.CostCalc;
+                _unitBuyPricePrecalc = dataRow.CostCalc;
             }
         }
         public Asset(EMMADataSet.AssetsRow dataRow)
@@ -112,6 +114,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 _contents = new AssetList();
                 _unitBuyPrice = dataRow.Cost;
                 _gotUnitBuyPrice = dataRow.CostCalc;
+                _unitBuyPricePrecalc = dataRow.CostCalc;
             }
         }
 
@@ -153,6 +156,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             _contents = new AssetList();
             _unitBuyPrice = 0;
             _gotUnitBuyPrice = false;
+            _unitBuyPricePrecalc = false;
 
             if (_isContainer)
             {
@@ -578,6 +582,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
+        public bool UnitBuyPricePrecalculated
+        {
+            get { return _unitBuyPricePrecalc; }
+            set { _unitBuyPricePrecalc = value; }
+        }
+
         public decimal TotalBuyPrice
         {
             get { return UnitBuyPrice * _quantity; }
@@ -623,8 +633,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 if (!_changeTypeSet)
                 {
-                    if (Quantity > 0) { _changeTypeID = AssetChangeTypes.ChangeType.Found; }
-                    else { _changeTypeID = AssetChangeTypes.ChangeType.DestroyedOrUsed; }
+                    if (UserAccount.Settings.ManufacturingMode)
+                    {
+                        _changeTypeID = AssetChangeTypes.ChangeType.Unknown;
+                    }
+                    else
+                    {
+                        if (Quantity > 0) { _changeTypeID = AssetChangeTypes.ChangeType.Found; }
+                        else { _changeTypeID = AssetChangeTypes.ChangeType.DestroyedOrUsed; }
+                    }
                 }
                 return _changeTypeID; 
             }

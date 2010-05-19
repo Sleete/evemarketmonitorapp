@@ -83,45 +83,51 @@ namespace EveMarketMonitorApp.DatabaseClasses
             // be matched by the above process. Any removed items that are left over are added to the 
             // 'lost' list of assets.
             changes.ItemFilter = "";
-            // Note 'changes2' is a list of the same items as 'changes'.
-            // It is needed because the filter functionallity changes the list which we cannot 
-            // do within the main foreach loop.
-            AssetList changes2 = new AssetList();
-            foreach (Asset change in changes)
+
+            // If we're in manufacturing mode then we don't want to try and match 
+            // lost assets with gained assets until after the user has selected 
+            // what has been built, etc.
+            if (!UserAccount.Settings.ManufacturingMode)
             {
-                changes2.Add(change);
-            }
-            List<int> zeroLossItemIDs = new List<int>();
-            foreach (Asset change in changes)
-            {
-                if (change.Quantity > 0 && !zeroLossItemIDs.Contains(change.ItemID))
+                // Note 'changes2' is a list of the same items as 'changes'.
+                // It is needed because the filter functionallity changes the list which we cannot 
+                // do within the main foreach loop.
+                AssetList changes2 = new AssetList();
+                foreach (Asset change in changes)
                 {
-                    int itemID = change.ItemID;
-                    int locationID = change.LocationID;
-
-                    changes2.ItemFilter = "ItemID = " + itemID + " AND Quantity < 0";
-                    if (changes2.FiltredItems.Count == 0)
+                    changes2.Add(change);
+                }
+                List<int> zeroLossItemIDs = new List<int>();
+                foreach (Asset change in changes)
+                {
+                    if (change.Quantity > 0 && !zeroLossItemIDs.Contains(change.ItemID))
                     {
-                        if (!zeroLossItemIDs.Contains(change.ItemID)) { zeroLossItemIDs.Add(change.ItemID); }
-                    }
+                        int itemID = change.ItemID;
+                        int locationID = change.LocationID;
 
-                    foreach (Asset change2 in changes2.FiltredItems)
-                    {
-                        if (change.Quantity > 0 && change2.Quantity < 0)
+                        changes2.ItemFilter = "ItemID = " + itemID + " AND Quantity < 0";
+                        if (changes2.FiltredItems.Count == 0)
                         {
-                            // Get the asset data lines associated with the two changes in asset quantities 
-                            // that we have found.
-                            //bool got1 = Assets.AssetExists(assetData, charID, corp, locationID, itemID,
-                            //    change.StatusID, change.ContainerID != 0, change.ContainerID, change.IsContainer,
-                            //    true, true, change.AutoConExclude, ref assetID1);
-                            //bool got2 = Assets.AssetExists(assetData, charID, corp, change2.LocationID, itemID,
-                            //    change2.StatusID, change2.ContainerID != 0, change2.ContainerID, change2.IsContainer,
-                            //    true, true, change2.AutoConExclude, ref assetID2);
-                            Assets.AddAssetToTable(assetData, change.ID);
-                            Assets.AddAssetToTable(assetData, change2.ID);
+                            if (!zeroLossItemIDs.Contains(change.ItemID)) { zeroLossItemIDs.Add(change.ItemID); }
+                        }
 
-                            //if (got1 && got2)
-                            //{
+                        foreach (Asset change2 in changes2.FiltredItems)
+                        {
+                            if (change.Quantity > 0 && change2.Quantity < 0)
+                            {
+                                // Get the asset data lines associated with the two changes in asset quantities 
+                                // that we have found.
+                                //bool got1 = Assets.AssetExists(assetData, charID, corp, locationID, itemID,
+                                //    change.StatusID, change.ContainerID != 0, change.ContainerID, change.IsContainer,
+                                //    true, true, change.AutoConExclude, ref assetID1);
+                                //bool got2 = Assets.AssetExists(assetData, charID, corp, change2.LocationID, itemID,
+                                //    change2.StatusID, change2.ContainerID != 0, change2.ContainerID, change2.IsContainer,
+                                //    true, true, change2.AutoConExclude, ref assetID2);
+                                Assets.AddAssetToTable(assetData, change.ID);
+                                Assets.AddAssetToTable(assetData, change2.ID);
+
+                                //if (got1 && got2)
+                                //{
                                 EMMADataSet.AssetsRow row1 = assetData.FindByID(change.ID);
                                 EMMADataSet.AssetsRow row2 = assetData.FindByID(change2.ID);
                                 Asset a1 = new Asset(row1, null);
@@ -139,10 +145,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                 row1.CostCalc = true;
                                 change.Quantity -= thisAbsDeltaQ;
                                 change2.Quantity += thisAbsDeltaQ;
-                            //}
+                                //}
+                            }
                         }
-                    }
 
+                    }
                 }
             }
 
@@ -379,7 +386,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     // those to calculate the cost of the items in the sell order.
                     if (qToFind > 0)
                     {
-                        changes.ItemFilter = "ItemID = " + sellOrder.ItemID;
+                        changes.ItemFilter = "ItemID = " + sellOrder.ItemID + " Quantity < 0";
                         foreach (Asset change in changes.FiltredItems)
                         {
                             if (qToFind > 0 && change.Quantity < 0)

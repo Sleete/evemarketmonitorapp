@@ -36,12 +36,34 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return retVal;
         }
 
-        public static List<AssetChangeType> GetAllChangeTypes()
+        public static List<AssetChangeType> GetAllChangeTypes(ChangeMetaType metaType)
         {
             List<AssetChangeType> retVal = new List<AssetChangeType>();
             Array values = Enum.GetValues(typeof(ChangeType));
             for (int i = 0; i < values.Length; i++)
             {
+                bool addit = false;
+                switch (metaType)
+                {
+                    case ChangeMetaType.Any:
+                        addit = true;
+                        break;
+                    case ChangeMetaType.Loss:
+                        if (i == (int)ChangeType.DestroyedOrUsed || i == (int)ChangeType.ForSaleViaContract
+                            || i == (int)ChangeType.Unknown)
+                        {
+                            addit = true;
+                        }
+                        break;
+                    case ChangeMetaType.Gain:
+                        if (i == (int)ChangeType.Found || i == (int)ChangeType.Made || i == (int)ChangeType.Unknown)
+                        {
+                            addit = true;
+                        }
+                        break;
+                    default:
+                        break;
+                }
                 retVal.Add(new AssetChangeType(i, GetChangeTypeDesc((ChangeType)i)));
             }
             return retVal;
@@ -55,6 +77,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
             DestroyedOrUsed,
             ForSaleViaContract,
             Unknown
+        }
+
+        public enum ChangeMetaType
+        {
+            Any,
+            Loss,
+            Gain
         }
     }
 

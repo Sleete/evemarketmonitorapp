@@ -782,7 +782,12 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     Assets.ProcessSellOrders(assetData, changes, _charID, corc == CharOrCorp.Corp);
                     AssetList gained = new AssetList();
                     AssetList lost = new AssetList();
-                    Assets.AnalyseChanges(assetData, _charID, corc == CharOrCorp.Corp, changes, out gained, out lost);
+                    if ((corc == CharOrCorp.Char && Settings.FirstUpdateDoneAssetsChar) ||
+                        (corc == CharOrCorp.Corp && Settings.FirstUpdateDoneAssetsCorp))
+                    {
+                        Assets.AnalyseChanges(assetData, _charID, corc == CharOrCorp.Corp, changes, 
+                            out gained, out lost);
+                    }
 
                     if (corc == CharOrCorp.Char)
                     {
@@ -821,13 +826,35 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     }
 
                     // Update the assets effective date setting.
-                    if (corc == CharOrCorp.Char) { Settings.CharAssetsEffectiveDate = fileDate; }
-                    else { Settings.CorpAssetsEffectiveDate = fileDate; }
+                    // Also set the 'FirstUpdateDone' flag
+                    if (corc == CharOrCorp.Char)
+                    {
+                        Settings.CharAssetsEffectiveDate = fileDate;
+                        Settings.FirstUpdateDoneAssetsChar = true;
+                    }
+                    else
+                    {
+                        Settings.CorpAssetsEffectiveDate = fileDate;
+                        if (!Settings.FirstUpdateDoneAssetsCorp)
+                        {
+                            Settings.FirstUpdateDoneAssetsCorp = true;
+                            foreach (EVEAccount account in UserAccount.CurrentGroup.Accounts)
+                            {
+                                foreach (APICharacter character in account.Chars)
+                                {
+                                    if (character.CharID != _charID && character.CorpID == _corpID)
+                                    {
+                                        Settings.FirstUpdateDoneAssetsCorp = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     // Set maxID to the latest transaction ID used when updating the assets.
                     long maxID = Assets.UpdateFromTransactions(_charID, _corpID, corc == CharOrCorp.Corp, fileDate);
                     if (corc == CharOrCorp.Char) { Settings.CharAssetsTransUpdateID = maxID; }
-                    else { Settings.CorpAssetsTransUpdateID = maxID; }
+                    else { Settings.CorpAssetsTransUpdateID = maxID;}
 
                     if (fromFile)
                     {
@@ -2732,8 +2759,26 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 XmlNode corpIDNode = _charSheetXMLCache.SelectSingleNode("/eveapi/result/corporationID");
                 if (corpIDNode != null)
                 {
+                    int oldCorp = _corpID;
                     _corpID = int.Parse(corpIDNode.LastChild.Value,
                             System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                    if (_corpID != oldCorp)
+                    {
+                        Settings.FirstUpdateDoneAssetsCorp = false;
+                        foreach (EVEAccount account in UserAccount.CurrentGroup.Accounts)
+                        {
+                            foreach (APICharacter character in account.Chars)
+                            {
+                                if (character.CharID != _charID && character.CorpID == _corpID)
+                                {
+                                    if (character.Settings.FirstUpdateDoneAssetsCorp)
+                                    {
+                                        Settings.FirstUpdateDoneAssetsCorp = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 /*XmlNode accountingSkillNode = _charSheetXMLCache.SelectSingleNode(
                     "/eveapi/result/rowset[@name=\"skills\"]/row[@typeID=\"16622\"]");
