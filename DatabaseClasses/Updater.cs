@@ -5319,6 +5319,49 @@ AS
                     #endregion
                 }
 
+                if (dbVersion.CompareTo(new Version("1.4.2.11")) < 0)
+                {
+                    #region Update 'AssetsLostNew' stored procedure
+                    commandText =
+                            @"ALTER PROCEDURE dbo.AssetsLostNew
+	@OwnerID			int,
+	@CorpAsset			bit,
+	@ItemID				int,
+	@LossDateTime	    datetime,
+	@Quantity			bigint,
+	@newID				bigint		OUTPUT
+AS
+	SELECT @newID =
+	(SELECT MAX(ID) AS MaxID
+		FROM AssetsLost) + 1
+		
+	IF(@newID IS NULL)
+	BEGIN
+		SET @newID = 1
+	END
+	
+	INSERT INTO AssetsLost (ID, OwnerID, CorpAsset, ItemID, LossDateTime, Quantity)
+	VALUES (@newID, @OwnerID, @CorpAsset, @ItemID, @LossDateTime, @Quantity)
+
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.4.2.11"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'AssetsLostNew' stored procedure", ex);
+                    }
+                    #endregion
+                }
+
+                
                 
             }
             catch (Exception ex)

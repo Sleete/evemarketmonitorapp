@@ -39844,7 +39844,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity FROM AssetsLost WH
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LossDateTime", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Quantity", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Quantity", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@newID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.InputOutput, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
@@ -39988,7 +39988,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity FROM AssetsLost WH
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int New(global::System.Nullable<int> OwnerID, global::System.Nullable<bool> CorpAsset, global::System.Nullable<int> ItemID, global::System.Nullable<global::System.DateTime> LossDateTime, global::System.Nullable<int> Quantity, ref global::System.Nullable<long> newID) {
+        public virtual int New(global::System.Nullable<int> OwnerID, global::System.Nullable<bool> CorpAsset, global::System.Nullable<int> ItemID, global::System.Nullable<global::System.DateTime> LossDateTime, global::System.Nullable<long> Quantity, ref global::System.Nullable<long> newID) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[1];
             if ((OwnerID.HasValue == true)) {
                 command.Parameters[1].Value = ((int)(OwnerID.Value));
@@ -40015,7 +40015,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity FROM AssetsLost WH
                 command.Parameters[4].Value = global::System.DBNull.Value;
             }
             if ((Quantity.HasValue == true)) {
-                command.Parameters[5].Value = ((int)(Quantity.Value));
+                command.Parameters[5].Value = ((long)(Quantity.Value));
             }
             else {
                 command.Parameters[5].Value = global::System.DBNull.Value;

@@ -29,6 +29,7 @@ namespace EveMarketMonitorApp.GUIElements
             txtTransHours.Text = UserAccount.Settings.APITransUpdatePeriod.Hours.ToString();
             txtTransMins.Text = UserAccount.Settings.APITransUpdatePeriod.Minutes.ToString();
             txtAssetsUpdateMaxMinutes.Text = UserAccount.Settings.AssetsUpdateMaxMinutes.ToString();
+            chkManufacturing.Checked = UserAccount.Settings.ManufacturingMode;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -49,6 +50,7 @@ namespace EveMarketMonitorApp.GUIElements
                 UserAccount.Settings.APITransUpdatePeriod = new TimeSpan(int.Parse(txtTransHours.Text),
                     int.Parse(txtTransMins.Text), 0);
                 UserAccount.Settings.AssetsUpdateMaxMinutes = int.Parse(txtAssetsUpdateMaxMinutes.Text);
+                UserAccount.Settings.ManufacturingMode = chkManufacturing.Checked;
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -179,14 +181,6 @@ namespace EveMarketMonitorApp.GUIElements
             return retVal;
         }
 
-        private void btnRecommend_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("I recommend leaving this at the default setting of 10 minutes. " +
-                "If, when updating assets, you get a lot of conflicts between what EMMA thinks you have " +
-                "and what you actually have  then try reducing it. If the asset update just gets stuck " +
-                "on 'queued' then increase this value. (or set it to 0)", "Information", 
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
 
     }
 }

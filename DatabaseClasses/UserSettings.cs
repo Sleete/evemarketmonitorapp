@@ -73,6 +73,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.GridCalcEnabled);
             GetValue(Setting.CSVExportDir);
             GetValue(Setting.api_assetsUpdateMaxMinutes);
+            GetValue(Setting.ManufacturingMode);
         }
 
         /// <summary>
@@ -257,6 +258,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     break;
                 case Setting.api_assetsUpdateMaxMinutes:
                     retVal = "10";
+                    break;
+                case Setting.ManufacturingMode:
+                    retVal = bool.FalseString;
                     break;
                 default:
                     break;
@@ -456,6 +460,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
             get { return GetValue(Setting.CSVExportDir); }
             set { SetValue(Setting.CSVExportDir, value); }
         }
+
+        public bool ManufacturingMode
+        {
+            get { return bool.Parse(GetValue(Setting.ManufacturingMode)); }
+            set { SetValue(Setting.ManufacturingMode, value.ToString()); }
+        }
         #endregion
 
         #region Public methods
@@ -598,7 +608,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             UseLocalTimezone,
             GridCalcEnabled,
             CSVExportDir,
-            api_assetsUpdateMaxMinutes
+            api_assetsUpdateMaxMinutes,
+            ManufacturingMode
        }
 
     }

@@ -132,12 +132,14 @@
     <Compile Include="DatabaseClasses\Assets.cs" />
     <Compile Include="DatabaseClasses\AssetsLost.cs" />
     <Compile Include="DatabaseClasses\AssetsProduced.cs" />
-    <Compile Include="DatabaseClasses\AssetsProducedList.cs" />
+    <Compile Include="DatabaseClasses\AssetProducedList.cs" />
     <Compile Include="DatabaseClasses\AssetStatus.cs" />
     <Compile Include="DatabaseClasses\AutoContractor.cs" />
     <Compile Include="DatabaseClasses\BankAccounts.cs" />
     <Compile Include="DatabaseClasses\BankTransaction.cs" />
     <Compile Include="DatabaseClasses\BankTransactionsList.cs" />
+    <Compile Include="DatabaseClasses\AssetLost.cs" />
+    <Compile Include="DatabaseClasses\AssetLostList.cs" />
     <Compile Include="DatabaseClasses\EMMADataSet.cs">
       <DependentUpon>EMMADataSet.xsd</DependentUpon>
       <SubType>Component</SubType>

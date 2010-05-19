@@ -7,9 +7,9 @@ using EveMarketMonitorApp.Common;
 
 namespace EveMarketMonitorApp.DatabaseClasses
 {
-    public class AssetsProducedList : SortableCollection
+    public class AssetProducedList : SortableCollection
     {
-        public AssetsProducedList()
+        public AssetProducedList()
 		{
             this.ItemType = typeof(AssetProduced);
 		}
@@ -26,9 +26,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
 			}
 		}
 
-        public new AssetsProducedList GetChanges()
+        public new AssetProducedList GetChanges()
 		{
-            return (AssetsProducedList)base.GetChanges();
+            return (AssetProducedList)base.GetChanges();
 		}
     }
 }

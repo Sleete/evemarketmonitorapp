@@ -51,10 +51,12 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.chkManufacturing = new System.Windows.Forms.CheckBox();
             this.txtAssetsUpdateMaxMinutes = new System.Windows.Forms.TextBox();
-            this.btnRecommend = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -67,7 +69,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(276, 77);
+            this.groupBox1.Size = new System.Drawing.Size(498, 77);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Information";
@@ -77,7 +79,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Location = new System.Drawing.Point(3, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(270, 58);
+            this.label1.Size = new System.Drawing.Size(492, 58);
             this.label1.TabIndex = 0;
             this.label1.Text = "Configure how long you want between calls to the API to update your data. Minimum" +
                 " values are limited by the API itself.";
@@ -105,15 +107,16 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Location = new System.Drawing.Point(12, 95);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(276, 131);
+            this.groupBox2.Size = new System.Drawing.Size(498, 83);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Time between updates";
             // 
             // label9
             // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(156, 102);
+            this.label9.Location = new System.Drawing.Point(439, 50);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(10, 13);
             this.label9.TabIndex = 15;
@@ -121,22 +124,25 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // txtAssetsHours
             // 
-            this.txtAssetsHours.Location = new System.Drawing.Point(112, 99);
+            this.txtAssetsHours.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtAssetsHours.Location = new System.Drawing.Point(395, 47);
             this.txtAssetsHours.Name = "txtAssetsHours";
             this.txtAssetsHours.Size = new System.Drawing.Size(37, 20);
             this.txtAssetsHours.TabIndex = 14;
             // 
             // txtAssetsMins
             // 
-            this.txtAssetsMins.Location = new System.Drawing.Point(172, 98);
+            this.txtAssetsMins.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtAssetsMins.Location = new System.Drawing.Point(455, 46);
             this.txtAssetsMins.Name = "txtAssetsMins";
             this.txtAssetsMins.Size = new System.Drawing.Size(37, 20);
             this.txtAssetsMins.TabIndex = 13;
             // 
             // label8
             // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(156, 76);
+            this.label8.Location = new System.Drawing.Point(439, 24);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(10, 13);
             this.label8.TabIndex = 12;
@@ -144,14 +150,16 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // txtOrdersHours
             // 
-            this.txtOrdersHours.Location = new System.Drawing.Point(112, 73);
+            this.txtOrdersHours.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtOrdersHours.Location = new System.Drawing.Point(395, 21);
             this.txtOrdersHours.Name = "txtOrdersHours";
             this.txtOrdersHours.Size = new System.Drawing.Size(37, 20);
             this.txtOrdersHours.TabIndex = 11;
             // 
             // txtOrdersMins
             // 
-            this.txtOrdersMins.Location = new System.Drawing.Point(172, 72);
+            this.txtOrdersMins.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtOrdersMins.Location = new System.Drawing.Point(455, 20);
             this.txtOrdersMins.Name = "txtOrdersMins";
             this.txtOrdersMins.Size = new System.Drawing.Size(37, 20);
             this.txtOrdersMins.TabIndex = 10;
@@ -213,8 +221,9 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 101);
+            this.label4.Location = new System.Drawing.Point(289, 49);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(38, 13);
             this.label4.TabIndex = 2;
@@ -222,8 +231,9 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 75);
+            this.label3.Location = new System.Drawing.Point(289, 23);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(38, 13);
             this.label3.TabIndex = 1;
@@ -241,7 +251,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(209, 414);
+            this.btnCancel.Location = new System.Drawing.Point(431, 431);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(79, 30);
             this.btnCancel.TabIndex = 2;
@@ -252,7 +262,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(124, 414);
+            this.btnOk.Location = new System.Drawing.Point(346, 431);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(79, 30);
             this.btnOk.TabIndex = 3;
@@ -264,16 +274,64 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.btnRecommend);
+            this.groupBox3.Controls.Add(this.label13);
+            this.groupBox3.Controls.Add(this.label12);
+            this.groupBox3.Controls.Add(this.chkManufacturing);
             this.groupBox3.Controls.Add(this.txtAssetsUpdateMaxMinutes);
             this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Location = new System.Drawing.Point(12, 232);
+            this.groupBox3.Location = new System.Drawing.Point(12, 184);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(276, 161);
+            this.groupBox3.Size = new System.Drawing.Size(498, 241);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Assets Update Detail";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(371, 86);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(43, 13);
+            this.label13.TabIndex = 6;
+            this.label13.Text = "minutes";
+            // 
+            // label12
+            // 
+            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label12.Location = new System.Drawing.Point(6, 134);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(486, 79);
+            this.label12.TabIndex = 5;
+            this.label12.Text = resources.GetString("label12.Text");
+            this.label12.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // chkManufacturing
+            // 
+            this.chkManufacturing.AutoSize = true;
+            this.chkManufacturing.Location = new System.Drawing.Point(9, 216);
+            this.chkManufacturing.Name = "chkManufacturing";
+            this.chkManufacturing.Size = new System.Drawing.Size(123, 17);
+            this.chkManufacturing.TabIndex = 4;
+            this.chkManufacturing.Text = "Manufacturing mode";
+            this.chkManufacturing.UseVisualStyleBackColor = true;
+            // 
+            // txtAssetsUpdateMaxMinutes
+            // 
+            this.txtAssetsUpdateMaxMinutes.Location = new System.Drawing.Point(315, 83);
+            this.txtAssetsUpdateMaxMinutes.Name = "txtAssetsUpdateMaxMinutes";
+            this.txtAssetsUpdateMaxMinutes.Size = new System.Drawing.Size(50, 20);
+            this.txtAssetsUpdateMaxMinutes.TabIndex = 2;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 86);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(303, 13);
+            this.label11.TabIndex = 1;
+            this.label11.Text = "Window for assets update after transaction and orders updates";
             // 
             // label10
             // 
@@ -281,48 +339,23 @@ namespace EveMarketMonitorApp.GUIElements
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.label10.Location = new System.Drawing.Point(6, 16);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(264, 111);
+            this.label10.Size = new System.Drawing.Size(486, 70);
             this.label10.TabIndex = 0;
             this.label10.Text = resources.GetString("label10.Text");
             this.label10.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 133);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(44, 13);
-            this.label11.TabIndex = 1;
-            this.label11.Text = "Minutes";
-            // 
-            // txtAssetsUpdateMaxMinutes
-            // 
-            this.txtAssetsUpdateMaxMinutes.Location = new System.Drawing.Point(56, 130);
-            this.txtAssetsUpdateMaxMinutes.Name = "txtAssetsUpdateMaxMinutes";
-            this.txtAssetsUpdateMaxMinutes.Size = new System.Drawing.Size(50, 20);
-            this.txtAssetsUpdateMaxMinutes.TabIndex = 2;
-            // 
-            // btnRecommend
-            // 
-            this.btnRecommend.Location = new System.Drawing.Point(159, 132);
-            this.btnRecommend.Name = "btnRecommend";
-            this.btnRecommend.Size = new System.Drawing.Size(111, 23);
-            this.btnRecommend.TabIndex = 3;
-            this.btnRecommend.Text = "Recommendations";
-            this.btnRecommend.UseVisualStyleBackColor = true;
-            this.btnRecommend.Click += new System.EventHandler(this.btnRecommend_Click);
             // 
             // APIUpdateSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 456);
+            this.ClientSize = new System.Drawing.Size(522, 473);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(530, 507);
             this.Name = "APIUpdateSettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "API Update Settings";
@@ -363,6 +396,8 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtAssetsUpdateMaxMinutes;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Button btnRecommend;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.CheckBox chkManufacturing;
     }
 }

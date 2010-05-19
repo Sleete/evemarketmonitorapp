@@ -34,20 +34,21 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblBusy = new System.Windows.Forms.Label();
             this.gainedItemsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.lostItemsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
             this.GainedOwnerColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GainedItemColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GainedLocationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GainedQuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GainedReasonColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lostItemsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
             this.LostOwnerColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostItemColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostLocationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostQuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostReasonColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.lblBusy = new System.Windows.Forms.Label();
+            this.busyProgress = new System.Windows.Forms.ProgressBar();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -82,7 +83,7 @@
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(851, 541);
+            this.btnOk.Location = new System.Drawing.Point(851, 524);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(80, 29);
             this.btnOk.TabIndex = 1;
@@ -107,7 +108,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(934, 573);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(934, 556);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // groupBox2
@@ -118,10 +119,19 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(3, 103);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(928, 210);
+            this.groupBox2.Size = new System.Drawing.Size(928, 202);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Items Gained";
+            // 
+            // lblBusy
+            // 
+            this.lblBusy.AutoSize = true;
+            this.lblBusy.Location = new System.Drawing.Point(377, 86);
+            this.lblBusy.Name = "lblBusy";
+            this.lblBusy.Size = new System.Drawing.Size(35, 13);
+            this.lblBusy.TabIndex = 1;
+            this.lblBusy.Text = "label2";
             // 
             // gainedItemsGrid
             // 
@@ -141,41 +151,8 @@
             this.gainedItemsGrid.ReadOnly = true;
             this.gainedItemsGrid.RowHeadersVisible = false;
             this.gainedItemsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gainedItemsGrid.Size = new System.Drawing.Size(922, 191);
+            this.gainedItemsGrid.Size = new System.Drawing.Size(922, 183);
             this.gainedItemsGrid.TabIndex = 0;
-            // 
-            // groupBox3
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.groupBox3, 2);
-            this.groupBox3.Controls.Add(this.lostItemsGrid);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(3, 319);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(928, 210);
-            this.groupBox3.TabIndex = 3;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Items Missing";
-            // 
-            // lostItemsGrid
-            // 
-            this.lostItemsGrid.AllowUserToAddRows = false;
-            this.lostItemsGrid.AllowUserToDeleteRows = false;
-            this.lostItemsGrid.AllowUserToResizeRows = false;
-            this.lostItemsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.lostItemsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.LostOwnerColumn,
-            this.LostItemColumn,
-            this.LostLocationColumn,
-            this.LostQuantityColumn,
-            this.LostReasonColumn});
-            this.lostItemsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lostItemsGrid.Location = new System.Drawing.Point(3, 16);
-            this.lostItemsGrid.Name = "lostItemsGrid";
-            this.lostItemsGrid.ReadOnly = true;
-            this.lostItemsGrid.RowHeadersVisible = false;
-            this.lostItemsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.lostItemsGrid.Size = new System.Drawing.Size(922, 191);
-            this.lostItemsGrid.TabIndex = 0;
             // 
             // GainedOwnerColumn
             // 
@@ -215,6 +192,40 @@
             this.GainedReasonColumn.Name = "GainedReasonColumn";
             this.GainedReasonColumn.ReadOnly = true;
             this.GainedReasonColumn.Width = 160;
+            // 
+            // groupBox3
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.groupBox3, 2);
+            this.groupBox3.Controls.Add(this.busyProgress);
+            this.groupBox3.Controls.Add(this.lostItemsGrid);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Location = new System.Drawing.Point(3, 311);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(928, 202);
+            this.groupBox3.TabIndex = 3;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Items Missing";
+            // 
+            // lostItemsGrid
+            // 
+            this.lostItemsGrid.AllowUserToAddRows = false;
+            this.lostItemsGrid.AllowUserToDeleteRows = false;
+            this.lostItemsGrid.AllowUserToResizeRows = false;
+            this.lostItemsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.lostItemsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.LostOwnerColumn,
+            this.LostItemColumn,
+            this.LostLocationColumn,
+            this.LostQuantityColumn,
+            this.LostReasonColumn});
+            this.lostItemsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lostItemsGrid.Location = new System.Drawing.Point(3, 16);
+            this.lostItemsGrid.Name = "lostItemsGrid";
+            this.lostItemsGrid.ReadOnly = true;
+            this.lostItemsGrid.RowHeadersVisible = false;
+            this.lostItemsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.lostItemsGrid.Size = new System.Drawing.Size(922, 183);
+            this.lostItemsGrid.TabIndex = 0;
             // 
             // LostOwnerColumn
             // 
@@ -257,20 +268,19 @@
             this.LostReasonColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.LostReasonColumn.Width = 160;
             // 
-            // lblBusy
+            // busyProgress
             // 
-            this.lblBusy.AutoSize = true;
-            this.lblBusy.Location = new System.Drawing.Point(377, 86);
-            this.lblBusy.Name = "lblBusy";
-            this.lblBusy.Size = new System.Drawing.Size(35, 13);
-            this.lblBusy.TabIndex = 1;
-            this.lblBusy.Text = "label2";
+            this.busyProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.busyProgress.Location = new System.Drawing.Point(262, 82);
+            this.busyProgress.Name = "busyProgress";
+            this.busyProgress.Size = new System.Drawing.Size(404, 33);
+            this.busyProgress.TabIndex = 1;
             // 
             // ViewUnacknowledgedAssets
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(934, 573);
+            this.ClientSize = new System.Drawing.Size(934, 556);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ViewUnacknowledgedAssets";
@@ -308,5 +318,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn LostQuantityColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn LostReasonColumn;
         private System.Windows.Forms.Label lblBusy;
+        private System.Windows.Forms.ProgressBar busyProgress;
     }
 }
