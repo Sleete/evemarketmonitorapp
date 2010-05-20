@@ -42,30 +42,35 @@
             this.GainedQuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GainedReasonColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.busyProgress = new System.Windows.Forms.ProgressBar();
             this.lostItemsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
             this.LostOwnerColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostItemColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostLocationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostQuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostReasonColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.busyProgress = new System.Windows.Forms.ProgressBar();
+            this.grpMaterials = new System.Windows.Forms.GroupBox();
+            this.chkMaterialsOnly = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lstMaterials = new System.Windows.Forms.ListBox();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gainedItemsGrid)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lostItemsGrid)).BeginInit();
+            this.grpMaterials.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.SetColumnSpan(this.groupBox1, 2);
+            this.tableLayoutPanel1.SetColumnSpan(this.groupBox1, 3);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(928, 92);
+            this.groupBox1.Size = new System.Drawing.Size(1129, 92);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Information";
@@ -75,7 +80,7 @@
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Location = new System.Drawing.Point(3, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(922, 73);
+            this.label1.Size = new System.Drawing.Size(1123, 73);
             this.label1.TabIndex = 1;
             this.label1.Text = resources.GetString("label1.Text");
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -83,7 +88,7 @@
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(851, 524);
+            this.btnOk.Location = new System.Drawing.Point(1052, 524);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(80, 29);
             this.btnOk.TabIndex = 1;
@@ -93,13 +98,15 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnOk, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.groupBox2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.groupBox3, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.grpMaterials, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.btnOk, 2, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -108,7 +115,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(934, 556);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1135, 556);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // groupBox2
@@ -206,6 +213,14 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Items Missing";
             // 
+            // busyProgress
+            // 
+            this.busyProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.busyProgress.Location = new System.Drawing.Point(187, 82);
+            this.busyProgress.Name = "busyProgress";
+            this.busyProgress.Size = new System.Drawing.Size(555, 33);
+            this.busyProgress.TabIndex = 1;
+            // 
             // lostItemsGrid
             // 
             this.lostItemsGrid.AllowUserToAddRows = false;
@@ -268,19 +283,52 @@
             this.LostReasonColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.LostReasonColumn.Width = 160;
             // 
-            // busyProgress
+            // grpMaterials
             // 
-            this.busyProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.busyProgress.Location = new System.Drawing.Point(262, 82);
-            this.busyProgress.Name = "busyProgress";
-            this.busyProgress.Size = new System.Drawing.Size(404, 33);
-            this.busyProgress.TabIndex = 1;
+            this.grpMaterials.Controls.Add(this.lstMaterials);
+            this.grpMaterials.Controls.Add(this.label2);
+            this.grpMaterials.Controls.Add(this.chkMaterialsOnly);
+            this.grpMaterials.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpMaterials.Location = new System.Drawing.Point(937, 103);
+            this.grpMaterials.Name = "grpMaterials";
+            this.tableLayoutPanel1.SetRowSpan(this.grpMaterials, 2);
+            this.grpMaterials.Size = new System.Drawing.Size(195, 410);
+            this.grpMaterials.TabIndex = 4;
+            this.grpMaterials.TabStop = false;
+            this.grpMaterials.Text = "Bill of Materials";
+            // 
+            // chkMaterialsOnly
+            // 
+            this.chkMaterialsOnly.AutoSize = true;
+            this.chkMaterialsOnly.Location = new System.Drawing.Point(9, 387);
+            this.chkMaterialsOnly.Name = "chkMaterialsOnly";
+            this.chkMaterialsOnly.Size = new System.Drawing.Size(156, 17);
+            this.chkMaterialsOnly.TabIndex = 0;
+            this.chkMaterialsOnly.Text = "Show only missing materials";
+            this.chkMaterialsOnly.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(6, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(182, 128);
+            this.label2.TabIndex = 1;
+            this.label2.Text = resources.GetString("label2.Text");
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // lstMaterials
+            // 
+            this.lstMaterials.FormattingEnabled = true;
+            this.lstMaterials.Location = new System.Drawing.Point(6, 147);
+            this.lstMaterials.Name = "lstMaterials";
+            this.lstMaterials.Size = new System.Drawing.Size(182, 225);
+            this.lstMaterials.TabIndex = 2;
             // 
             // ViewUnacknowledgedAssets
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(934, 556);
+            this.ClientSize = new System.Drawing.Size(1135, 556);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ViewUnacknowledgedAssets";
@@ -293,6 +341,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.gainedItemsGrid)).EndInit();
             this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.lostItemsGrid)).EndInit();
+            this.grpMaterials.ResumeLayout(false);
+            this.grpMaterials.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -319,5 +369,9 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn LostReasonColumn;
         private System.Windows.Forms.Label lblBusy;
         private System.Windows.Forms.ProgressBar busyProgress;
+        private System.Windows.Forms.GroupBox grpMaterials;
+        private System.Windows.Forms.CheckBox chkMaterialsOnly;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ListBox lstMaterials;
     }
 }

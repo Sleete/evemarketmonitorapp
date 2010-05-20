@@ -20,6 +20,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
             new EveMarketMonitorApp.DatabaseClasses.EMMADataSetTableAdapters.IDTableTableAdapter();
 
 
+        public static AssetList GetBillOfMaterials(int itemID, long quantity)
+        {
+            AssetList retVal = new AssetList();
+
+            throw new NotImplementedException();
+
+            return retVal;
+        }
 
         /// <summary>
         /// This is called after an import of XML asset data but before the changes are commited
