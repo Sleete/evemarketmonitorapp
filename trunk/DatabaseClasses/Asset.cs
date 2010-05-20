@@ -664,6 +664,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
             get { return _changeTypeLocked; }
             set { _changeTypeLocked = value; }
         }
+
+        public AssetList GetBillOfMaterials()
+        {
+            return Assets.GetBillOfMaterials(this.ItemID, this.Quantity);
+        }
         #endregion
 
         #region Overriden object methods

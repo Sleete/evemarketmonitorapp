@@ -800,7 +800,7 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 if (_unackAssets.Visible)
                 {
-                    _unackAssets.CrossCheckAssetChanges();
+                    _unackAssets.PopulateLists();
                 }
                 else
                 {

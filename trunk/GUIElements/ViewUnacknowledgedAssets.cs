@@ -49,6 +49,25 @@ namespace EveMarketMonitorApp.GUIElements
             this.FormClosing += new FormClosingEventHandler(ViewUnacknowledgedAssets_FormClosing);
 
             lblBusy.Hide();
+
+            label1.Text = "This screen shows items that have been added or removed since the last asset " +
+                "API update. Usually, these will have been destroyed or used up in the case of lst items and " +
+                "found or built in the case of added items.\r\n";
+            if (UserAccount.Settings.ManufacturingMode)
+            {
+                label1.Text = label1.Text +
+                    "Select what has happened to each item and EMMA will be able to show you more accurate " +
+                    "reports in future. However, if you just wish to ignore this screen then you can click the " +
+                    "ok button right away. EMMA will try and match gained items against missing items elsewhere.";
+            }
+            else
+            {
+                label1.Text = label1.Text + 
+                    "Select what has happened to each item and EMMA will be able to show you more accurate " +
+                    "reports in future. However, if you just wish to ignore this screen then you can click the " +
+                    "ok button right away. By default, EMMA assumes that any added items have been found " +
+                    "(e.g. mission loot, mining, etc) and any lost items have been destroyed or used up.";
+            }
         }
 
         private void ViewUnacknowledgedAssets_Load(object sender, EventArgs e)
@@ -74,7 +93,8 @@ namespace EveMarketMonitorApp.GUIElements
                 GainedReasonColumn.ReadOnly = false;
                 gainedItemsGrid.CellEndEdit += new DataGridViewCellEventHandler(gainedItemsGrid_CellEndEdit);
                 gainedItemsGrid.CellBeginEdit += new DataGridViewCellCancelEventHandler(itemsGrid_CellBeginEdit);
-
+                gainedItemsGrid.RowEnter += new DataGridViewCellEventHandler(gainedItemsGrid_RowEnter);
+                gainedItemsGrid.RowLeave += new DataGridViewCellEventHandler(gainedItemsGrid_RowLeave);
 
                 lostItemsGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                 lostItemsGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
@@ -113,6 +133,35 @@ namespace EveMarketMonitorApp.GUIElements
             gainedItemsGrid.DataSource = _gainedAssets;
             lostItemsGrid.Enabled = true;
             gainedItemsGrid.Enabled = true;
+        }
+        private void FilterData()
+        {
+            if (grpMaterials.Enabled)
+            {
+                this.Cursor = Cursors.WaitCursor;
+                try
+                {
+                    AssetList tmpAssets = new AssetList();
+                    foreach (TempAssetKey material in lstMaterials.Items)
+                    {
+                        _lostAssets.ItemFilter = "ItemID = " + material.ItemID;
+                        foreach (Asset a in _lostAssets.FiltredItems)
+                        {
+                            tmpAssets.Add(a);
+                        }
+                    }
+                    lostItemsGrid.DataSource = tmpAssets;
+                    _lostAssets.ItemFilter = "";
+                }
+                finally
+                {
+                    this.Cursor = Cursors.Default;
+                }
+            }
+            else
+            {
+                lostItemsGrid.DataSource = _lostAssets;
+            }
         }
         private void HideData()
         {
@@ -153,29 +202,60 @@ namespace EveMarketMonitorApp.GUIElements
             }
         }
 
-
-        public void CrossCheckAssetChanges()
+        public void PopulateLists()
         {
             if (!this.InvokeRequired)
             {
-                // Only do this if we are not in manufacturing mode
+                this.StatusChange += new StatusChangeHandler(ViewUnacknowledgedAssets_StatusChange);
+
+                Thread t0 = new Thread(new ThreadStart(PopulateLists));
+                t0.Start();
+            }
+            else
+            {
+                if (_lostAssets == null) { _lostAssets = new AssetList(); }
+                if (_gainedAssets == null) { _gainedAssets = new AssetList(); }
+
+                // Build complete lists of unacknowledged gained/lost assets for all 
+                // characters and corps within the report group.
+                foreach (EVEAccount account in UserAccount.CurrentGroup.Accounts)
+                {
+                    foreach (APICharacter character in account.Chars)
+                    {
+                        if (character.UnacknowledgedGains != null && character.UnacknowledgedGains.Count > 0)
+                        {
+                            _gainedAssets.Add(character.UnacknowledgedGains);
+                            character.UnacknowledgedGains = null;
+                        }
+                        if (character.CorpUnacknowledgedGains != null && character.CorpUnacknowledgedGains.Count > 0)
+                        {
+                            _gainedAssets.Add(character.CorpUnacknowledgedGains);
+                            character.CorpUnacknowledgedGains = null;
+                        }
+                        if (character.UnacknowledgedLosses != null && character.UnacknowledgedLosses.Count > 0)
+                        {
+                            _lostAssets.Add(character.UnacknowledgedLosses);
+                            character.UnacknowledgedLosses = null;
+                        }
+                        if (character.CorpUnacknowledgedLosses != null && character.CorpUnacknowledgedLosses.Count > 0)
+                        {
+                            _lostAssets.Add(character.CorpUnacknowledgedLosses);
+                            character.CorpUnacknowledgedLosses = null;
+                        }
+                    }
+                }
+
+                // Only cross check if we are not in manufacturing mode
                 if (!UserAccount.Settings.ManufacturingMode)
                 {
-                    this.StatusChange += new StatusChangeHandler(ViewUnacknowledgedAssets_StatusChange);
-
-                    Thread t0 = new Thread(new ThreadStart(CrossCheckAssetChanges));
-                    t0.Start();
+                    CrossCheckAssetChanges();
                 }
-            }
-            else 
-            {
-                DoCrossCheck();
 
                 this.StatusChange -= new StatusChangeHandler(ViewUnacknowledgedAssets_StatusChange);
             }
         }
 
-        private void DoCrossCheck()
+        private void CrossCheckAssetChanges()
         {
             // Only allow one of these checks to be running at once. If a later check 
             // attempts to start then it must wait for the current one to finish and then run.
@@ -185,42 +265,10 @@ namespace EveMarketMonitorApp.GUIElements
 
                 try
                 {
-                    if (_lostAssets == null) { _lostAssets = new AssetList(); }
-                    if (_gainedAssets == null) { _gainedAssets = new AssetList(); }
-
-                    // Build complete lists of unacknowledged gained/lost assets for all 
-                    // characters and corps within the report group.
-                    foreach (EVEAccount account in UserAccount.CurrentGroup.Accounts)
-                    {
-                        foreach (APICharacter character in account.Chars)
-                        {
-                            if (character.UnacknowledgedGains != null && character.UnacknowledgedGains.Count > 0)
-                            {
-                                _gainedAssets.Add(character.UnacknowledgedGains);
-                                character.UnacknowledgedGains = null;
-                            }
-                            if (character.CorpUnacknowledgedGains != null && character.CorpUnacknowledgedGains.Count > 0)
-                            {
-                                _gainedAssets.Add(character.CorpUnacknowledgedGains);
-                                character.CorpUnacknowledgedGains = null;
-                            }
-                            if (character.UnacknowledgedLosses != null && character.UnacknowledgedLosses.Count > 0)
-                            {
-                                _lostAssets.Add(character.UnacknowledgedLosses);
-                                character.UnacknowledgedLosses = null;
-                            }
-                            if (character.CorpUnacknowledgedLosses != null && character.CorpUnacknowledgedLosses.Count > 0)
-                            {
-                                _lostAssets.Add(character.CorpUnacknowledgedLosses);
-                                character.CorpUnacknowledgedLosses = null;
-                            }
-                        }
-                    }
-
                     EMMADataSet.AssetsDataTable assetChanges = new EMMADataSet.AssetsDataTable();
 
                     // Try and match one character/corp gains to anothers losses.
-                    List<int> gIndiciesToRemove = new List<int>();
+                    List<Asset> gAssetsToRemove = new List<Asset>();
                     for (int i = 0; i < _gainedAssets.Count; i++)
                     {
                         UpdateStatus(i, _gainedAssets.Count, "", "", false);
@@ -229,7 +277,7 @@ namespace EveMarketMonitorApp.GUIElements
                         decimal totalCost = 0;
                         long qRemaining = gainedAsset.Quantity;
                         _lostAssets.ItemFilter = "ItemID = " + gainedAsset.ItemID;
-                        List<int> indiciesToRemove = new List<int>();
+                        List<Asset> assetsToRemove = new List<Asset>();
                         for (int j = 0; j < _lostAssets.FiltredItems.Count; j++)
                         {
                             Asset lostAsset = (Asset)_lostAssets.FiltredItems[j];
@@ -244,12 +292,12 @@ namespace EveMarketMonitorApp.GUIElements
 
                                 lostAsset.Quantity += deltaQ;
                             }
-                            if (lostAsset.Quantity == 0) { indiciesToRemove.Add(j); }
+                            if (lostAsset.Quantity == 0) { assetsToRemove.Add(lostAsset); }
                         }
                         // Remove any lost items that have been accounted for.
-                        foreach (int index in indiciesToRemove)
+                        foreach (Asset a in assetsToRemove)
                         {
-                            _lostAssets.FiltredItems.RemoveAt(index);
+                            _lostAssets.FiltredItems.Remove(a);
                         }
 
                         // If we found some lost items to match against this gained item then
@@ -280,14 +328,14 @@ namespace EveMarketMonitorApp.GUIElements
                         gainedAsset.Quantity = qRemaining;
                         if (gainedAsset.Quantity == 0)
                         {
-                            gIndiciesToRemove.Add(i);
+                            gAssetsToRemove.Add(gainedAsset);
                         }
                     }
 
                     // Remove any gained items that have been accounted for.
-                    foreach (int index in gIndiciesToRemove)
+                    foreach (Asset a in gAssetsToRemove)
                     {
-                        _gainedAssets.RemoveAt(index);
+                        _gainedAssets.Remove(a);
                     }
 
                     Assets.UpdateDatabase(assetChanges);
@@ -314,6 +362,7 @@ namespace EveMarketMonitorApp.GUIElements
         private void btnOk_Click(object sender, EventArgs e)
         {
             EMMADataSet.AssetsDataTable assetChanges = new EMMADataSet.AssetsDataTable();
+            List<Asset> assetsToRemove = new List<Asset>();
             foreach (Asset gainedAsset in _gainedAssets)
             {
                 long assetID = 0;
@@ -329,13 +378,17 @@ namespace EveMarketMonitorApp.GUIElements
                         assetRow.Cost = 0;
                         assetRow.CostCalc = true;
                         AssetsProduced.Add(gainedAsset);
+                        assetsToRemove.Add(gainedAsset);
                         break;
                     case AssetChangeTypes.ChangeType.Made:
                         assetRow.Cost = gainedAsset.UnitBuyPricePrecalculated ? gainedAsset.UnitBuyPrice : 0;
                         assetRow.CostCalc = gainedAsset.UnitBuyPricePrecalculated;
                         AssetsProduced.Add(gainedAsset);
+                        assetsToRemove.Add(gainedAsset);
                         break;
                     case AssetChangeTypes.ChangeType.Unknown:
+                        // Can only be 'unknown' if we're in manufacturing mode.
+                        // let the cross check sort it out...
                         break;
                     default:
                         throw new EMMAException(ExceptionSeverity.Error, "Unexpected gained asset change type: '" + 
@@ -343,6 +396,12 @@ namespace EveMarketMonitorApp.GUIElements
                         break;
                 }
             }
+            foreach (Asset a in assetsToRemove)
+            {
+                _gainedAssets.Remove(a);
+            }
+
+            assetsToRemove = new List<Asset>();
             foreach (Asset lostAsset in _lostAssets)
             {
                 switch (lostAsset.ChangeTypeID)
@@ -365,11 +424,15 @@ namespace EveMarketMonitorApp.GUIElements
                         assetRow.Status = (int)AssetStatus.States.ForSaleViaContract;
                         assetRow.SystemID = lostAsset.SystemID;
                         assetChanges.AddAssetsRow(assetRow);
+                        assetsToRemove.Add(lostAsset);
                         break;
                     case AssetChangeTypes.ChangeType.DestroyedOrUsed:
                         AssetsLost.Add(lostAsset);
+                        assetsToRemove.Add(lostAsset);
                         break;
                     case AssetChangeTypes.ChangeType.Unknown:
+                        // Can only be 'unknown' if we're in manufacturing mode.
+                        // let the cross check sort it out...
                         break;
                     default:
                         throw new EMMAException(ExceptionSeverity.Error, "Unexpected lost asset change type: '" + 
@@ -377,11 +440,14 @@ namespace EveMarketMonitorApp.GUIElements
                         break;
                 }
             }
+            foreach (Asset a in assetsToRemove)
+            {
+                _lostAssets.Remove(a);
+            }
 
             if (UserAccount.Settings.ManufacturingMode)
             {
-                //// Need to remove assets not set to 'Unknown' first.
-                DoCrossCheck();
+                CrossCheckAssetChanges();
             }
 
             if (AssetChangesAcknowledged != null)
@@ -423,16 +489,8 @@ namespace EveMarketMonitorApp.GUIElements
                             (int)AssetChangeTypes.ChangeType.Made)
                         {
                             //
-                            // Ideally what we want to do here is match manufactured items with
+                            // What we want to do here is match manufactured items with
                             // materials that have been used in thier construction.
-                            // However, this is made almost impossible by various factors
-                            // (gained/lost stacks being mixed together, invention jobs taking 
-                            // multiple runs, etc)
-                            // For now, just leave it.
-                            // In order to properly support manufacturers, add a manufacturing mode.
-                            // This would stop EMMA from balancing losses in one place with gains
-                            // elsewhere.
-                            // All gained/lost items would then appear in this screen.
                             //
 
                         }
@@ -466,6 +524,26 @@ namespace EveMarketMonitorApp.GUIElements
             }
         }
 
+        void gainedItemsGrid_RowLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            grpMaterials.Enabled = false;
+            lstMaterials.Items.Clear();
+            FilterData();
+        }
+
+        void gainedItemsGrid_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > 0)
+            {
+                Asset asset = (Asset)gainedItemsGrid.Rows[e.RowIndex].DataBoundItem;
+                if (asset.ChangeTypeID == AssetChangeTypes.ChangeType.Made)
+                {
+
+                    grpMaterials.Enabled = true;
+
+                }
+            }
+        }
 
 
         void ViewUnacknowledgedAssets_StatusChange(object myObject, StatusChangeArgs args)
@@ -502,6 +580,10 @@ namespace EveMarketMonitorApp.GUIElements
             private int _ownerID;
             private bool _forCorp;
 
+            private string _itemName;
+            private int _itemID;
+            private long _quantity;
+
             public TempAssetKey(long assetID, int ownerID, bool forCorp)
             {
                 _assetID = assetID;
@@ -525,6 +607,22 @@ namespace EveMarketMonitorApp.GUIElements
                 set { _forCorp = value; }
             }
 
+            public int ItemID
+            {
+                get { return _itemID; }
+                set { _itemID = value; }
+            }
+            public string ItemName
+            {
+                get { return _itemName; }
+                set { _itemName = value; }
+            }
+            public long Quantity
+            {
+                get { return _quantity; }
+                set { _quantity = value; }
+            }
+
             public override bool Equals(object obj)
             {
                 return this.GetHashCode() == obj.GetHashCode();
@@ -539,7 +637,16 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 return _assetID.ToString() + _ownerID.ToString() + _forCorp.ToString();
             }
+
+            public void Draw(Graphics g, Rectangle bounds, Font font)
+            {
+                string text = Quantity + "\t" + ItemName;
+                Color col = Color.Black;
+                g.DrawString(text, font, new SolidBrush(col), bounds);
+            }
         }
+
+
     }
 
 
