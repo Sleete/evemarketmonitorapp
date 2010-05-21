@@ -197,10 +197,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     retVal = bool.TrueString;
                     break;
                 case Setting.firstUpdateDoneAssetsChar:
-                    retVal = bool.FalseString;
+                    if (CharAssetsEffectiveDate.CompareTo(defaultDateTime) == 0) { retVal = bool.FalseString; }
+                    else { retVal = bool.TrueString; }
                     break;
                 case Setting.firstUpdateDoneAssetsCorp:
-                    retVal = bool.FalseString;
+                    if (CorpAssetsEffectiveDate.CompareTo(defaultDateTime) == 0) { retVal = bool.FalseString; }
+                    else { retVal = bool.TrueString; }
                     break;
                 default:
                     break;

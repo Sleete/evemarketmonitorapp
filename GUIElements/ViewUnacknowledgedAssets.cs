@@ -74,8 +74,6 @@ namespace EveMarketMonitorApp.GUIElements
         {
             try
             {
-                CrossCheckAssetChanges();
-
                 _assetGainChangeTypes = AssetChangeTypes.GetAllChangeTypes(AssetChangeTypes.ChangeMetaType.Gain);
                 _assetLossChangeTypes = AssetChangeTypes.GetAllChangeTypes(AssetChangeTypes.ChangeMetaType.Loss);
 
@@ -86,7 +84,7 @@ namespace EveMarketMonitorApp.GUIElements
                 GainedItemColumn.DataPropertyName = "Item";
                 GainedLocationColumn.DataPropertyName = "Location";
                 GainedQuantityColumn.DataPropertyName = "Quantity";
-                GainedReasonColumn.DataPropertyName = "ChangeTypeID";
+                GainedReasonColumn.DataPropertyName = "ChangeTypeIntID";
                 GainedReasonColumn.DataSource = _assetGainChangeTypes;
                 GainedReasonColumn.ValueMember = "ID";
                 GainedReasonColumn.DisplayMember = "Description";
@@ -103,12 +101,14 @@ namespace EveMarketMonitorApp.GUIElements
                 LostItemColumn.DataPropertyName = "Item";
                 LostLocationColumn.DataPropertyName = "Location";
                 LostQuantityColumn.DataPropertyName = "Quantity";
-                LostReasonColumn.DataPropertyName = "ChangeTypeID";
+                LostReasonColumn.DataPropertyName = "ChangeTypeIntID";
                 LostReasonColumn.DataSource = _assetLossChangeTypes;
                 LostReasonColumn.ValueMember = "ID";
                 LostReasonColumn.DisplayMember = "Description";
                 LostReasonColumn.ReadOnly = false;
                 lostItemsGrid.CellBeginEdit += new DataGridViewCellCancelEventHandler(itemsGrid_CellBeginEdit);
+
+                PopulateLists();
             }
             catch (Exception ex)
             {
@@ -124,65 +124,87 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void ShowData()
         {
-            btnOk.Enabled = true;
-
-            lblBusy.Hide();
-            busyProgress.Hide();
-
-            lostItemsGrid.DataSource = _lostAssets;
-            gainedItemsGrid.DataSource = _gainedAssets;
-            lostItemsGrid.Enabled = true;
-            gainedItemsGrid.Enabled = true;
-        }
-        private void FilterData()
-        {
-            if (grpMaterials.Enabled)
+            if (this.InvokeRequired)
             {
-                this.Cursor = Cursors.WaitCursor;
-                try
-                {
-                    AssetList tmpAssets = new AssetList();
-                    foreach (TempAssetKey material in lstMaterials.Items)
-                    {
-                        _lostAssets.ItemFilter = "ItemID = " + material.ItemID;
-                        foreach (Asset a in _lostAssets.FiltredItems)
-                        {
-                            tmpAssets.Add(a);
-                        }
-                    }
-                    lostItemsGrid.DataSource = tmpAssets;
-                    _lostAssets.ItemFilter = "";
-                }
-                finally
-                {
-                    this.Cursor = Cursors.Default;
-                }
+                this.Invoke(new Callback(ShowData));
             }
             else
             {
+                btnOk.Enabled = true;
+
+                lblBusy.Hide();
+                busyProgress.Hide();
+
                 lostItemsGrid.DataSource = _lostAssets;
+                gainedItemsGrid.DataSource = _gainedAssets;
+                lostItemsGrid.Visible = true;
+                gainedItemsGrid.Visible = true;
+            }
+        }
+        private void FilterData()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Callback(FilterData));
+            }
+            else
+            {
+                if (grpMaterials.Enabled)
+                {
+                    this.Cursor = Cursors.WaitCursor;
+                    try
+                    {
+                        AssetList tmpAssets = new AssetList();
+                        foreach (TempAssetKey material in lstMaterials.Items)
+                        {
+                            _lostAssets.ItemFilter = "ItemID = " + material.ItemID;
+                            foreach (Asset a in _lostAssets.FiltredItems)
+                            {
+                                tmpAssets.Add(a);
+                            }
+                        }
+                        lostItemsGrid.DataSource = tmpAssets;
+                        _lostAssets.ItemFilter = "";
+                    }
+                    finally
+                    {
+                        this.Cursor = Cursors.Default;
+                    }
+                }
+                else
+                {
+                    lostItemsGrid.DataSource = _lostAssets;
+                }
             }
         }
         private void HideData()
         {
-            btnOk.Enabled = false;
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Callback(HideData));
+            }
+            else
+            {
+                btnOk.Enabled = false;
 
-            lblBusy.BringToFront();
-            lblBusy.Font = new Font(lblBusy.Font.FontFamily, 20, FontStyle.Bold);
-            lblBusy.Dock = DockStyle.Fill;
-            lblBusy.BackColor = Color.Transparent;
-            lblBusy.Text = "Busy";
-            lblBusy.Show();
+                lblBusy.BringToFront();
+                lblBusy.Font = new Font(lblBusy.Font.FontFamily, 20, FontStyle.Bold);
+                lblBusy.AutoSize = false;
+                lblBusy.Dock = DockStyle.Fill;
+                lblBusy.BackColor = Color.Transparent;
+                lblBusy.Text = "Busy";
+                lblBusy.Show();
 
-            busyProgress.BringToFront();
-            busyProgress.Value = 0;
-            busyProgress.Maximum = 1;
-            busyProgress.Show();
+                busyProgress.BringToFront();
+                busyProgress.Value = 0;
+                busyProgress.Maximum = 1;
+                busyProgress.Show();
 
-            lostItemsGrid.Enabled = false;
-            gainedItemsGrid.Enabled = false;
-            lostItemsGrid.DataSource = null;
-            gainedItemsGrid.DataSource = null;
+                lostItemsGrid.Visible = false;
+                gainedItemsGrid.Visible = false;
+                lostItemsGrid.DataSource = null;
+                gainedItemsGrid.DataSource = null;
+            }
         }
 
         void ViewUnacknowledgedAssets_FormClosing(object sender, FormClosingEventArgs e)
@@ -213,6 +235,8 @@ namespace EveMarketMonitorApp.GUIElements
             }
             else
             {
+                HideData();
+
                 if (_lostAssets == null) { _lostAssets = new AssetList(); }
                 if (_gainedAssets == null) { _gainedAssets = new AssetList(); }
 
@@ -248,20 +272,26 @@ namespace EveMarketMonitorApp.GUIElements
                 // Only cross check if we are not in manufacturing mode
                 if (!UserAccount.Settings.ManufacturingMode)
                 {
-                    CrossCheckAssetChanges();
+                    CrossCheckAssetChanges(false);
                 }
 
-                this.StatusChange -= new StatusChangeHandler(ViewUnacknowledgedAssets_StatusChange);
+                ShowData();
+
+                this.StatusChange -= ViewUnacknowledgedAssets_StatusChange;
             }
         }
 
         private void CrossCheckAssetChanges()
         {
+            CrossCheckAssetChanges(true);
+        }
+        private void CrossCheckAssetChanges(bool showAndHideData)
+        {
             // Only allow one of these checks to be running at once. If a later check 
             // attempts to start then it must wait for the current one to finish and then run.
             lock (_lostAssets)
             {
-                this.Invoke(new Callback(HideData));
+                if (showAndHideData) { HideData(); }
 
                 try
                 {
@@ -355,11 +385,17 @@ namespace EveMarketMonitorApp.GUIElements
                         ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
-                this.Invoke(new Callback(ShowData));
+                if (showAndHideData) { ShowData(); }
             }
         }
 
         private void btnOk_Click(object sender, EventArgs e)
+        {
+            this.StatusChange += new StatusChangeHandler(ViewUnacknowledgedAssets_StatusChange);
+            Thread t0 = new Thread(new ThreadStart(ProcessAssetsAsMarked));
+        }
+
+        private void ProcessAssetsAsMarked()
         {
             EMMADataSet.AssetsDataTable assetChanges = new EMMADataSet.AssetsDataTable();
             List<Asset> assetsToRemove = new List<Asset>();
@@ -391,7 +427,7 @@ namespace EveMarketMonitorApp.GUIElements
                         // let the cross check sort it out...
                         break;
                     default:
-                        throw new EMMAException(ExceptionSeverity.Error, "Unexpected gained asset change type: '" + 
+                        throw new EMMAException(ExceptionSeverity.Error, "Unexpected gained asset change type: '" +
                             gainedAsset.ChangeType + "' ", true);
                         break;
                 }
@@ -435,7 +471,7 @@ namespace EveMarketMonitorApp.GUIElements
                         // let the cross check sort it out...
                         break;
                     default:
-                        throw new EMMAException(ExceptionSeverity.Error, "Unexpected lost asset change type: '" + 
+                        throw new EMMAException(ExceptionSeverity.Error, "Unexpected lost asset change type: '" +
                             lostAsset.ChangeType + "' ", true);
                         break;
                 }
@@ -450,10 +486,7 @@ namespace EveMarketMonitorApp.GUIElements
                 CrossCheckAssetChanges();
             }
 
-            if (AssetChangesAcknowledged != null)
-            {
-                AssetChangesAcknowledged(this, null);
-            }
+            UpdateStatus(0, 0, "FinalTasks", "", true);   
         }
 
         void itemsGrid_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
@@ -549,7 +582,22 @@ namespace EveMarketMonitorApp.GUIElements
         void ViewUnacknowledgedAssets_StatusChange(object myObject, StatusChangeArgs args)
         {
             _status = args;
-            UpdateProgress();
+
+            if (_status.Done && _status.Section.Equals("FinalTasks"))
+            {
+                // We've finished processing after the user clicked the ok button so let
+                // EMMA know that the user has ackowledged all outstanding assets and
+                // close the window.
+                if (AssetChangesAcknowledged != null)
+                {
+                    AssetChangesAcknowledged(this, null);
+                }
+                this.Close();
+            }
+            else
+            {
+                UpdateProgress();
+            }
         }
 
         private void UpdateProgress()

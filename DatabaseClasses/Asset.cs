@@ -533,24 +533,21 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 {
                     try
                     {
-                        List<int> itemIDs = new List<int>();
-                        itemIDs.Add(_itemID);
                         List<int> stationIDs = new List<int>();
                         stationIDs.Add(_locationID);
-                        decimal blank1 = 0;
                         // First try getting the price by looking at the most recent buy transactions
                         // at the asset's location.
                         Transactions.GetAverageBuyPrice(UserAccount.CurrentGroup.GetFinanceAccessParams(
-                            APIDataType.Transactions), itemIDs, stationIDs, new List<int>(),
-                            Math.Abs(_quantity), 0, ref _unitBuyPrice, ref blank1, false);
+                            APIDataType.Transactions), _itemID, stationIDs, new List<int>(),
+                            Math.Abs(_quantity), 0, ref _unitBuyPrice);
 
                         // If we don't find anything then just use the most recent buy transaction 
                         // at any location.
                         if (_unitBuyPrice == 0)
                         {
                             Transactions.GetAverageBuyPrice(UserAccount.CurrentGroup.GetFinanceAccessParams(
-                                APIDataType.Transactions), itemIDs, new List<int>(), new List<int>(),
-                                Math.Abs(_quantity), 0, ref _unitBuyPrice, ref blank1, false);
+                                APIDataType.Transactions), _itemID, new List<int>(), new List<int>(),
+                                Math.Abs(_quantity), 0, ref _unitBuyPrice);
                         }
 
                         // If we still don't have anything then use the ItemValues object
@@ -627,6 +624,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
+        public int ChangeTypeIntID
+        {
+            get { return (int)ChangeTypeID; }
+        }
         public AssetChangeTypes.ChangeType ChangeTypeID
         {
             get 

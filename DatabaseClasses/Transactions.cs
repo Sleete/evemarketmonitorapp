@@ -325,6 +325,23 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 true, false, true, false, false, false, useReprocessData);
         }
 
+        public static void GetAverageBuyPrice(List<FinanceAccessParams> accessParams, int itemID,
+            List<int> stationIDs, List<int> regionIDs, long quantity,
+            long recentBuyUnitsToIgnore, ref decimal avgBuyPrice)
+        {
+            List<int> itemIDs = new List<int>();
+            itemIDs.Add(itemID);
+            decimal blank1 = 0, blank5 = 0, blank6 = 0, blank7 = 0, blank8 = 0, blank9 = 0, blank10 = 0;
+            long blank3 = 0, blank4 = 0;
+            DateTime startDate = SqlDateTime.MinValue.Value;
+            DateTime endDate = SqlDateTime.MaxValue.Value;
+
+            GetItemTransData(accessParams, itemIDs, regionIDs, stationIDs, startDate, endDate,
+                quantity, recentBuyUnitsToIgnore, ref blank1, ref blank7, ref avgBuyPrice, ref blank8,
+                ref blank3, ref blank4, ref blank10, ref blank5, ref blank6, ref blank9,
+                false, false, true, false, false, false, false);
+        }
+
         public static void GetMedianSellPrice(List<FinanceAccessParams> accessParams, List<int> itemIDs,
             List<int> regionIDs, DateTime startDate, DateTime endDate, ref decimal medianSellPrice)
         {
