@@ -19,7 +19,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private static EMMADataSetTableAdapters.IDTableTableAdapter IDTableAdapter =
             new EveMarketMonitorApp.DatabaseClasses.EMMADataSetTableAdapters.IDTableTableAdapter();
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="itemID"></param>
+        /// <param name="quantity"></param>
+        /// <returns>Return the assets required to build the specified item. (Assuming perfect skills, 
+        /// efficiency, etc).</returns>
         public static AssetList GetBillOfMaterials(int itemID, long quantity)
         {
             AssetList retVal = new AssetList();
@@ -394,7 +400,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     // those to calculate the cost of the items in the sell order.
                     if (qToFind > 0)
                     {
-                        changes.ItemFilter = "ItemID = " + sellOrder.ItemID + " Quantity < 0";
+                        changes.ItemFilter = "ItemID = " + sellOrder.ItemID + " AND Quantity < 0";
                         foreach (Asset change in changes.FiltredItems)
                         {
                             if (qToFind > 0 && change.Quantity < 0)

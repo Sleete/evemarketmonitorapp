@@ -798,7 +798,7 @@ namespace EveMarketMonitorApp.GUIElements
             }
             else
             {
-                if (_unackAssets.Visible)
+                if (_unackAssets != null && _unackAssets.Visible)
                 {
                     _unackAssets.PopulateLists();
                 }

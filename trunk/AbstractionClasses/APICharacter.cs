@@ -59,10 +59,10 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
         public event APIUpdateEvent UpdateEvent;
 
-        private AssetList _unacknowledgedGains;
-        private AssetList _unacknowledgedLosses;
-        private AssetList _corpUnacknowledgedGains;
-        private AssetList _corpUnacknowledgedLosses;
+        private AssetList _unacknowledgedGains = new AssetList();
+        private AssetList _unacknowledgedLosses = new AssetList();
+        private AssetList _corpUnacknowledgedGains = new AssetList();
+        private AssetList _corpUnacknowledgedLosses = new AssetList();
 
         #region Public properties
         public int CharID
@@ -221,16 +221,19 @@ namespace EveMarketMonitorApp.AbstractionClasses
             _apiKey = apiKey;
             _charID = data.ID;
             _apiSettings = new APISettingsAndStatus(_charID);
-            if (!data.CharSheet.Equals(""))
+            if (data.CharSheet.Length > 0)
             {
                 _charSheetXMLCache.LoadXml(data.CharSheet);
                 _charSheetXMLLastUpdate = data.LastCharSheetUpdate;
+                GetDataFromCharXML();
             }
-            if (!data.CorpSheet.Equals(""))
+            if (data.CorpSheet.Length > 0)
             {
                 _corpSheetXMLCache.LoadXml(data.CorpSheet);
                 _corpSheetXMLLastUpdate = data.LastCorpSheetUpdate;
+                GetDataFromCorpXML();
             }
+
             _corpFinanceAccess = data.CorpFinanceAccess;
 
             try
@@ -779,14 +782,18 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     AssetList changes = new AssetList();
 
                     UpdateAssets(assetData, assetList, 0, corc, 0, changes);
+                    if (fromFile) { UpdateStatus(0, 0, "Processing active sell orders", "", false); }
                     Assets.ProcessSellOrders(assetData, changes, _charID, corc == CharOrCorp.Corp);
+                    if (fromFile) { UpdateStatus(0, 0, "", "Complete", false); }
                     AssetList gained = new AssetList();
                     AssetList lost = new AssetList();
                     if ((corc == CharOrCorp.Char && Settings.FirstUpdateDoneAssetsChar) ||
                         (corc == CharOrCorp.Corp && Settings.FirstUpdateDoneAssetsCorp))
                     {
+                        if (fromFile) { UpdateStatus(0, 0, "Analysing changes to assets", "", false);}
                         Assets.AnalyseChanges(assetData, _charID, corc == CharOrCorp.Corp, changes, 
                             out gained, out lost);
+                        if (fromFile) { UpdateStatus(0, 0, "", "Complete", false); }
                     }
 
                     if (corc == CharOrCorp.Char)
@@ -800,7 +807,10 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         _corpUnacknowledgedLosses = lost;
                     }
 
+                    if (fromFile) { UpdateStatus(0, 0, "Updating assets database", "", false); }
                     Assets.UpdateDatabase(assetData);
+                    if (fromFile) { UpdateStatus(0, 0, "", "Complete", false); }
+
                     // Set all 'for sale via contract' and 'in transit' assets in the database to processed.
                     // These types of assets would not be expected to show up in either the XML from the
                     // API or the list of current market orders.
@@ -886,7 +896,13 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
             if (UpdateEvent != null)
             {
-                if (_unacknowledgedLosses.Count + _unacknowledgedGains.Count == 0)
+                if (_unacknowledgedLosses == null) { _unacknowledgedLosses = new AssetList(); }
+                if (_unacknowledgedGains == null) { _unacknowledgedGains = new AssetList(); }
+                if (_corpUnacknowledgedLosses == null) { _corpUnacknowledgedLosses = new AssetList(); }
+                if (_corpUnacknowledgedGains == null) { _corpUnacknowledgedGains = new AssetList(); }
+
+                if ((corc == CharOrCorp.Char && _unacknowledgedLosses.Count + _unacknowledgedGains.Count == 0) ||
+                    (corc == CharOrCorp.Corp && _corpUnacknowledgedGains.Count + _corpUnacknowledgedLosses.Count == 0))
                 {
                     UpdateEvent(this, new APIUpdateEventArgs(APIDataType.Assets,
                         corc == CharOrCorp.Char ? _charID : _corpID,
@@ -1142,6 +1158,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     //else
                     //{
                         change = new Asset(assetRow);
+                        if (isContainer) { change.ID = assetID; }
                         change.Quantity = quantity;
                         change.Processed = false;
                         changes.Add(change);
@@ -2762,22 +2779,30 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     int oldCorp = _corpID;
                     _corpID = int.Parse(corpIDNode.LastChild.Value,
                             System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-                    if (_corpID != oldCorp)
+                    if (_corpID != oldCorp && oldCorp != 0)
                     {
                         Settings.FirstUpdateDoneAssetsCorp = false;
-                        foreach (EVEAccount account in UserAccount.CurrentGroup.Accounts)
-                        {
-                            foreach (APICharacter character in account.Chars)
-                            {
-                                if (character.CharID != _charID && character.CorpID == _corpID)
-                                {
-                                    if (character.Settings.FirstUpdateDoneAssetsCorp)
-                                    {
-                                        Settings.FirstUpdateDoneAssetsCorp = true;
-                                    }
-                                }
-                            }
-                        }
+                        // We cannot do this here since this code is usually called when setting up the
+                        // accounts within a group. I.e. the accounts collection is null.
+                        // The only potential issue that might arrise is if character A changes corp,
+                        // character B had already done assets updates for that corp and the
+                        // user changes to use chanracter A for asset updates instead. In this case,
+                        // EMMA would think it was updating for the first time and asset changes would
+                        // be ignored. After this first update it would be back to normal though..
+                        // Dosn't sound like a big deal really.
+                        //foreach (EVEAccount account in UserAccount.CurrentGroup.Accounts)
+                        //{
+                        //    foreach (APICharacter character in account.Chars)
+                        //    {
+                        //        if (character.CharID != _charID && character.CorpID == _corpID)
+                        //        {
+                        //            if (character.Settings.FirstUpdateDoneAssetsCorp)
+                        //            {
+                        //                Settings.FirstUpdateDoneAssetsCorp = true;
+                        //            }
+                        //        }
+                        //    }
+                        //}
                     }
                 }
                 /*XmlNode accountingSkillNode = _charSheetXMLCache.SelectSingleNode(
