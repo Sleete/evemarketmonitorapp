@@ -48,6 +48,15 @@ namespace EveMarketMonitorApp.GUIElements
             _type = type;
             _character = character;
 
+            lblJournal.BackColor = _upToDateColour;
+            lblJournalStatus.BackColor = _upToDateColour;
+            lblTransactions.BackColor = _upToDateColour;
+            lblTransStatus.BackColor = _upToDateColour;
+            lblOrders.BackColor = _upToDateColour;
+            lblOrdersStatus.BackColor = _upToDateColour;
+            lblAssets.BackColor = _upToDateColour;
+            lblAssetsStatus.BackColor = _upToDateColour;
+
             _showingTT.Add(APIDataType.Assets, false);
             _showingTT.Add(APIDataType.Journal, false);
             _showingTT.Add(APIDataType.Orders, false);
@@ -500,6 +509,7 @@ namespace EveMarketMonitorApp.GUIElements
             chkAutoTrans.Checked = _toggleAll;
             _toggleAll = !_toggleAll;
         }
+
 
     }
 

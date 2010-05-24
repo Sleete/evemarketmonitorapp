@@ -590,9 +590,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
             {
                 // Only allow the assets update to run if there has been an update to transactions and 
                 // orders within the last x minutes, the number of minutes is specified by the user.
-                TimeSpan timeSinceTransUpdate = DateTime.Now.Subtract(
+                TimeSpan timeSinceTransUpdate = DateTime.UtcNow.Subtract(
                     GetLastAPIUpdateTime(corc, APIDataType.Transactions));
-                TimeSpan timeSinceOrdersUpdate = DateTime.Now.Subtract(
+                TimeSpan timeSinceOrdersUpdate = DateTime.UtcNow.Subtract(
                     GetLastAPIUpdateTime(corc, APIDataType.Orders));
                 int minutes = UserAccount.Settings.AssetsUpdateMaxMinutes;
 
@@ -977,7 +977,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 needNewRow = true;
 
                 if (Assets.AssetExists(assetData, _charID, corc == CharOrCorp.Corp, locationID,
-                    itemID, (int)AssetStatus.States.Normal, containerID != 0, containerID, isContainer, 
+                    itemID, (int)AssetStatus.States.Normal, containerID != 0, containerID, isContainer,
                     false, !isContainer, false, ref assetID))
                 {
                     needNewRow = false;
