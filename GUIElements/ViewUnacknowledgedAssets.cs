@@ -192,6 +192,7 @@ namespace EveMarketMonitorApp.GUIElements
                 lblBusy.AutoSize = false;
                 lblBusy.Dock = DockStyle.Fill;
                 lblBusy.BackColor = Color.Transparent;
+                lblBusy.TextAlign = ContentAlignment.MiddleCenter;
                 lblBusy.Text = "Busy";
                 lblBusy.Show();
 
