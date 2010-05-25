@@ -80,10 +80,15 @@ namespace EveMarketMonitorApp.GUIElements
                 gainedItemsGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                 gainedItemsGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
                 gainedItemsGrid.AutoGenerateColumns = false;
+                gainedItemsGrid.ReadOnly = false;
                 GainedOwnerColumn.DataPropertyName = "Owner";
+                GainedOwnerColumn.ReadOnly = true;
                 GainedItemColumn.DataPropertyName = "Item";
+                GainedItemColumn.ReadOnly = true;
                 GainedLocationColumn.DataPropertyName = "Location";
+                GainedLocationColumn.ReadOnly = true;
                 GainedQuantityColumn.DataPropertyName = "Quantity";
+                GainedQuantityColumn.ReadOnly = true;
                 GainedReasonColumn.DataPropertyName = "ChangeTypeIntID";
                 GainedReasonColumn.DataSource = _assetGainChangeTypes;
                 GainedReasonColumn.ValueMember = "ID";
@@ -97,10 +102,15 @@ namespace EveMarketMonitorApp.GUIElements
                 lostItemsGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                 lostItemsGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
                 lostItemsGrid.AutoGenerateColumns = false;
+                lostItemsGrid.ReadOnly = false;
                 LostOwnerColumn.DataPropertyName = "Owner";
+                LostOwnerColumn.ReadOnly = true;
                 LostItemColumn.DataPropertyName = "Item";
+                LostItemColumn.ReadOnly = true;
                 LostLocationColumn.DataPropertyName = "Location";
+                LostLocationColumn.ReadOnly = true;
                 LostQuantityColumn.DataPropertyName = "Quantity";
+                LostQuantityColumn.ReadOnly = true;
                 LostReasonColumn.DataPropertyName = "ChangeTypeIntID";
                 LostReasonColumn.DataSource = _assetLossChangeTypes;
                 LostReasonColumn.ValueMember = "ID";
@@ -394,6 +404,7 @@ namespace EveMarketMonitorApp.GUIElements
         {
             this.StatusChange += new StatusChangeHandler(ViewUnacknowledgedAssets_StatusChange);
             Thread t0 = new Thread(new ThreadStart(ProcessAssetsAsMarked));
+            t0.Start();
         }
 
         private void ProcessAssetsAsMarked()
