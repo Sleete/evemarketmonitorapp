@@ -257,6 +257,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                             // If the unexplained assets are for sale via contract or in transit then we
                             // would expect them not to show up if they are in the same state as before.
                             // This being the case, we do not need to add them to the list of unexplained items.
+                            unexplained.Quantity = change.Quantity;
                             if (change.StatusID != (int)AssetStatus.States.ForSaleViaContract &&
                                 change.StatusID != (int)AssetStatus.States.InTransit) { lost.Add(unexplained); }
                         }
@@ -550,9 +551,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="useCorp"></param>
         /// <param name="minimumTransID"></param>
         /// <returns></returns>
-        public static long UpdateFromTransactions(int charID, int corpID, bool useCorp, long minimumTransID)
+        public static long UpdateFromTransactions(EMMADataSet.AssetsDataTable assetsData,
+            AssetList changes, int charID, int corpID, bool useCorp, long minimumTransID)
         {
-            return UpdateFromTransactions(charID, corpID, useCorp, minimumTransID, DateTime.MaxValue);
+            return UpdateFromTransactions(assetsData, changes, charID, corpID, useCorp, minimumTransID, DateTime.MaxValue);
         }
         /// <summary>
         /// Update the assets table based on the transactions meeting the specified criteria.
@@ -562,9 +564,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="useCorp"></param>
         /// <param name="includeTransAfter"></param>
         /// <returns></returns>
-        public static long UpdateFromTransactions(int charID, int corpID, bool useCorp, DateTime includeTransAfter)
+        public static long UpdateFromTransactions(EMMADataSet.AssetsDataTable assetsData,
+            AssetList changes, int charID, int corpID, bool useCorp, DateTime includeTransAfter)
         {
-            return UpdateFromTransactions(charID, corpID, useCorp, -1, includeTransAfter);
+            return UpdateFromTransactions(assetsData, changes, charID, corpID, useCorp, -1, includeTransAfter);
         }
         /// <summary>
         /// Update the assets table based on the transactions meeting the specified criteria.
@@ -575,7 +578,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="minimumTransID"></param>
         /// <param name="includeTransAfter"></param>
         /// <returns></returns>
-        private static long UpdateFromTransactions(int charID, int corpID, bool useCorp, long minimumTransID,
+        private static long UpdateFromTransactions(EMMADataSet.AssetsDataTable assetsData,
+            AssetList changes, int charID, int corpID, bool useCorp, long minimumTransID,
             DateTime includeTransAfter)
         {
             long maxID = 0;
@@ -593,8 +597,63 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     int deltaQuantity = trans.Quantity;
                     if (trans.SellerID == ownerID) { deltaQuantity *= -1; }
 
-                    ChangeAssets(charID, useCorp, trans.StationID, trans.ItemID, 0, (int)AssetStatus.States.Normal, 
-                        false, deltaQuantity, (deltaQuantity > 0 ? trans.Price : 0), deltaQuantity > 0);
+                    // Change this to not actually make the change in the database. Instead, use the 
+                    // asset data table passed in and record the changes made in the 'changes' list.
+
+                    /*ChangeAssets(charID, useCorp, trans.StationID, trans.ItemID, 0, (int)AssetStatus.States.Normal, 
+                        false, deltaQuantity, (deltaQuantity > 0 ? trans.Price : 0), deltaQuantity > 0);*/
+                    long assetID = 0;
+                    EMMADataSet.AssetsRow asset = null;
+
+                    if (!AssetExists(assetsData, ownerID, useCorp, trans.StationID, trans.ItemID,
+                        (int)AssetStatus.States.Normal, false, 0, false, false, true, false, ref assetID))
+                    {
+                        if (!AssetExists(assetsData, ownerID, useCorp, trans.StationID, trans.ItemID,
+                            (int)AssetStatus.States.Normal, false, 0, false, false, true, true, ref assetID))
+                        {
+                        }
+                    }
+
+                    if (assetID == 0)
+                    {
+                        // Asset stack already exists in database and/or datatable, modify it 
+                        // based upon the transaction data.
+                        asset = assetsData.FindByID(assetID);
+                        asset.Quantity += deltaQuantity;
+                        if (deltaQuantity > 0)
+                        {
+                            Asset logicalAsset = new Asset(asset);
+                            asset.CostCalc = true;
+                            asset.Cost = (logicalAsset.TotalBuyPrice + (trans.Price * trans.Quantity)) / 
+                                (logicalAsset.Quantity + trans.Quantity);
+                        }
+                        Asset chg = new Asset(asset);
+                        chg.Quantity = deltaQuantity;
+                        changes.Add(chg);
+                    }
+                    else
+                    {
+                        // Asset does not exist in database so add it to the datatable. 
+                        asset = assetsData.NewAssetsRow();
+                        asset.Quantity = deltaQuantity;
+                        asset.AutoConExclude = false;
+                        asset.ContainerID = 0;
+                        asset.CorpAsset = useCorp;
+                        asset.Cost = trans.Price;
+                        asset.CostCalc = true;
+                        asset.IsContainer = false;
+                        asset.ItemID = trans.ItemID;
+                        asset.LocationID = trans.StationID;
+                        asset.OwnerID = ownerID;
+                        asset.Processed = true;
+                        asset.RegionID = trans.RegionID;
+                        asset.ReprocExclude = false;
+                        asset.Status = (int)AssetStatus.States.Normal;
+                        asset.SystemID = Stations.GetStation(trans.StationID).solarSystemID;
+                        assetsData.AddAssetsRow(asset);
+                        changes.Add(new Asset(asset));
+                    }
+
                     if (trans.ID > maxID) { maxID = trans.ID; }
                 }
             }

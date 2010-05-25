@@ -781,10 +781,24 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 {
                     AssetList changes = new AssetList();
 
+                    // Create an in-memory datatable with all of the changes required to the assets 
+                    // database in order to reflect the data in the xml file.
                     UpdateAssets(assetData, assetList, 0, corc, 0, changes);
+                    // Use the currently active sell order to account for assets that appear to be
+                    // missing.
                     if (fromFile) { UpdateStatus(0, 0, "Processing active sell orders", "", false); }
                     Assets.ProcessSellOrders(assetData, changes, _charID, corc == CharOrCorp.Corp);
                     if (fromFile) { UpdateStatus(0, 0, "", "Complete", false); }
+                    // Use transactions that occured after the effective date of the asset data file
+                    // to ensure that the asset list is as up-to-date as possible.
+                    if (fromFile) { UpdateStatus(0, 0, "Updating assets from transactions that occur after " +
+                        "the asset file's effective date", "", false); }
+                    long maxID = Assets.UpdateFromTransactions(assetData, changes, _charID, _corpID, 
+                        corc == CharOrCorp.Corp, fileDate);
+                    if (corc == CharOrCorp.Char) { Settings.CharAssetsTransUpdateID = maxID; }
+                    else { Settings.CorpAssetsTransUpdateID = maxID; }
+                    if (fromFile) { UpdateStatus(0, 0, "", "Complete", false); }
+
                     AssetList gained = new AssetList();
                     AssetList lost = new AssetList();
                     if ((corc == CharOrCorp.Char && Settings.FirstUpdateDoneAssetsChar) ||
@@ -832,7 +846,6 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     if (fromFile)
                     {
                         UpdateStatus(0, 0, assetData.Count + " asset database entries modified.", "", false);
-                        UpdateStatus(0, 1, "Updaing assets table from existing transactions", "", false);
                     }
 
                     // Update the assets effective date setting.
@@ -861,10 +874,6 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         }
                     }
 
-                    // Set maxID to the latest transaction ID used when updating the assets.
-                    long maxID = Assets.UpdateFromTransactions(_charID, _corpID, corc == CharOrCorp.Corp, fileDate);
-                    if (corc == CharOrCorp.Char) { Settings.CharAssetsTransUpdateID = maxID; }
-                    else { Settings.CorpAssetsTransUpdateID = maxID;}
 
                     if (fromFile)
                     {

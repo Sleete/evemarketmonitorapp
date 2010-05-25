@@ -70,13 +70,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     // If we could not find enough assets 'ForSaleViaMarket' to match the 
                     // sell transaction then look at assets that are in transit or just sat 
                     // in the hanger.
+                    // (Don't use assets that are containers!)
                     if (qToFind > 0)
                     {
                         foreach (EMMADataSet.AssetsRow existingAsset in existingAssets)
                         {
                             if (existingAsset.Status != (int)AssetStatus.States.ForSaleViaMarket &&
                                 existingAsset.Status != (int)AssetStatus.States.ForSaleViaContract &&
-                                existingAsset.Quantity > 0)
+                                existingAsset.Quantity > 0 &&
+                                !existingAsset.IsContainer)
                             {
                                 Asset asset = new Asset(existingAsset, null);
                                 long q = Math.Min(qToFind, asset.Quantity);
