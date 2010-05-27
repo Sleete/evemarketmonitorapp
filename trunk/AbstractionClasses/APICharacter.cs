@@ -953,7 +953,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             foreach (XmlNode asset in assetList)
             {
                 int itemID, quantity;
-                long assetID = 0;
+                long assetID = 0, eveInstanceID;
                 bool isContainer = false, needNewRow = false;
 
                 XmlNode locationNode = asset.SelectSingleNode("@locationID");
@@ -975,6 +975,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 }
                 itemID = int.Parse(asset.SelectSingleNode("@typeID").Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                eveInstanceID = int.Parse(asset.SelectSingleNode("@itemID").Value,
+                    System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 quantity = int.Parse(asset.SelectSingleNode("@quantity").Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 if (asset.LastChild != null && asset.LastChild.Name.Equals("rowset"))
@@ -985,20 +987,13 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 EMMADataSet.AssetsRow assetRow;
                 needNewRow = true;
 
+                // Note that if a match is not found for teh specific eve instance ID we pass in then
+                // EMMA will automatically search for an asset matching all the other parameters.
                 if (Assets.AssetExists(assetData, _charID, corc == CharOrCorp.Corp, locationID,
                     itemID, (int)AssetStatus.States.Normal, containerID != 0, containerID, isContainer,
-                    false, !isContainer, false, ref assetID))
+                    false, !isContainer, false, true, eveInstanceID, ref assetID))
                 {
                     needNewRow = false;
-                }
-                else
-                {
-                    if (Assets.AssetExists(assetData, _charID, corc == CharOrCorp.Corp, locationID,
-                        itemID, (int)AssetStatus.States.Normal, containerID != 0, containerID, isContainer,
-                        false, !isContainer, true, ref assetID))
-                    {
-                        needNewRow = false;
-                    }
                 }
 
                 Asset change = null;
@@ -1090,6 +1085,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     assetRow.OwnerID = _charID;
                     assetRow.CorpAsset = corc == CharOrCorp.Corp;
                     assetRow.ItemID = itemID;
+                    assetRow.EveItemID = eveInstanceID;
                     assetRow.LocationID = locationID;
                     assetRow.Status = 1;
                     assetRow.Processed = true;
@@ -2259,8 +2255,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     //    UpdateStatus(0, 1, "Updating assets from new transactions", "", false);
                     //}
 
-                    // Don't use this anymore, instead, assets are updated in the Transactions.CalcProfit 
-                    // method called within 'BuildTransRow' below
+                    // Don't use this anymore, instead, assets are updated in the BuildTransRow method below
+                    // or the Transactions.CalcProfit method that is called from there.
 
                     //long minID = (corc == CharOrCorp.Char ? Settings.CharAssetsTransUpdateID : Settings.CorpAssetsTransUpdateID);
                     //minID += 1;
@@ -2375,6 +2371,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 newRow.SellerCharacterID = charID;
                 newRow.SellerWalletID = 0;
                 newRow.SellerUnitProfit = 0;
+                // Update asset quantities.
+                Assets.ChangeAssets(forCorp ? _corpID : _charID, forCorp, newRow.StationID, newRow.ItemID, 0,
+                    (int)AssetStatus.States.Normal, false, newRow.Quantity, newRow.Price, true);
             }
             else
             {
@@ -2386,6 +2385,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 newRow.SellerForCorp = forCorp;
                 newRow.SellerCharacterID = forCorp ? _charID : 0;
                 newRow.SellerWalletID = (walletID == 0 ? (short)1000 : walletID);
+                // Calculate transaction profit and update asset quantities.
                 newRow.SellerUnitProfit = Transactions.CalcProfit(_charID, forCorp, transData, newRow);
             }
 

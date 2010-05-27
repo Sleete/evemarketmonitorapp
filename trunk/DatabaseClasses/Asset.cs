@@ -35,6 +35,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private int _statusID;
         private bool _gotStatus = false;
         private string _status;
+        private long _eveItemInstanceID;
         private bool _isContainer;
         private Asset _container;
         private long _containerID;
@@ -86,6 +87,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 _unitBuyPrice = dataRow.Cost;
                 _gotUnitBuyPrice = dataRow.CostCalc;
                 _unitBuyPricePrecalc = dataRow.CostCalc;
+                _eveItemInstanceID = dataRow.EveItemID;
             }
         }
         public Asset(EMMADataSet.AssetsRow dataRow)
@@ -115,6 +117,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 _unitBuyPrice = dataRow.Cost;
                 _gotUnitBuyPrice = dataRow.CostCalc;
                 _unitBuyPricePrecalc = dataRow.CostCalc;
+                _eveItemInstanceID = dataRow.EveItemID;
             }
         }
 
@@ -141,6 +144,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 }
             }
             _itemID = int.Parse(apiAssetData.SelectSingleNode("@typeID").Value);
+            _eveItemInstanceID = long.Parse(apiAssetData.SelectSingleNode("@itemID").Value);
             _quantity = int.Parse(apiAssetData.SelectSingleNode("@quantity").Value);
             if (apiAssetData.LastChild != null && apiAssetData.LastChild.Name.Equals("rowset"))
             {
@@ -232,6 +236,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public int OwnerID
         {
             get { return _ownerID; }
+            set { _ownerID = value; _gotOwner = false; }
         }
 
         public bool CorpAsset
@@ -401,6 +406,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 _itemID = value;
                 _gotItem = false;
             }
+        }
+
+        public long EveItemInstanceID
+        {
+            get { return _eveItemInstanceID; }
+            set { _eveItemInstanceID = value; }
         }
 
         public int StatusID

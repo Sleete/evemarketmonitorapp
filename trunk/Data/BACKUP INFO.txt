@@ -7,3 +7,4 @@ C:\Documents and Settings\<username>\Application Data\EMMA\Data
 Vista & Windows 7:
 C:\users\<username>\appdata\roaming\EMMA\Data
 
+Note - you can always find this folder easiest by typing '%appdata%' into a windows explorer window.

@@ -70,22 +70,128 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             foreach (EMMADataSet.AssetsRow unprocMatch in unprocMatches)
             {
-                //int itemID = unprocMatch.ItemID;
-                //int locationID = unprocMatch.LocationID;
-                //Asset change = null;
-                //changes.ItemFilter = "ItemID = " + itemID + " AND LocationID = " + locationID;
-                //if (changes.FiltredItems.Count > 0)
-                //{
-                //    change = (Asset)changes.FiltredItems[0];
-                //    change.Quantity = -1 * unprocMatch.Quantity;
-                //}
-                //else
-                //{
-                    Asset change = new Asset(unprocMatch);
-                    change.Processed = false;
-                    changes.Add(change);
-                //}
+                Asset change = new Asset(unprocMatch);
+                change.Quantity *= -1; // These assets are effectively missing so invert the quantity.
+                changes.Add(change);
             }
+
+            // Note 'changes2' is a list of the same items as 'changes'.
+            // It is needed because the filter functionallity changes the list which we cannot 
+            // do within the main foreach loop.
+            AssetList changes2 = new AssetList();
+            foreach (Asset change in changes)
+            {
+                changes2.Add(change);
+            }
+
+            // See if any of our 'missing' assets match transactions that are marked to have thier profit
+            // calculated during an assets update.
+            #region Update transactions with CalcProfitFromAssets flag
+            EMMADataSet.TransactionsDataTable transData = new EMMADataSet.TransactionsDataTable();
+            Dictionary<long, TransProcessData> processData = new Dictionary<long, TransProcessData>();
+            List<long> completedTrans = new List<long>();
+            List<long> uncompletedTrans = new List<long>();
+
+            foreach (Asset change in changes)
+            {
+                // Note: because we are changing quantity within the foreach loop
+                // we don't use the filter on the AssetList.
+                // Instead, just use this if condition each time around.
+                if (change.Quantity < 0)
+                {
+                    // If we get a match then use the missing items's cost to calculate the 
+                    // transaction's profit.
+                    // Note that we don't need to adjust any item quantities since either the
+                    // changes have already been made or the item stack is 'unprocessed' and will
+                    // be cleared out anyway.
+                    Transactions.AddTransByCalcProfitFromAssets(transData,
+                        UserAccount.CurrentGroup.GetFinanceAccessParams(APIDataType.Transactions),
+                        change.ItemID, true);
+                    foreach (EMMADataSet.TransactionsRow trans in transData)
+                    {
+                        if (trans.ItemID == change.ItemID && !completedTrans.Contains(trans.ID))
+                        {
+                            long quantityRemaining = trans.Quantity;
+                            TransProcessData data = new TransProcessData();
+                            if (processData.ContainsKey(trans.ID))
+                            {
+                                data = processData[trans.ID];
+                                quantityRemaining = data.QuantityRemaining;
+                            }
+                            else
+                            {
+                                data.QuantityMatched = 0;
+                                data.QuantityRemaining = trans.Quantity;
+                                data.TotalBuyPrice = 0;
+                                processData.Add(trans.ID, data);
+                            }
+
+                            long deltaQ = Math.Min(Math.Abs(change.Quantity), quantityRemaining);
+                            // Adjust the quantity of the 'missing' items.
+                            change.Quantity += deltaQ;
+                            // Because this transaction's asset quantity change will have been made
+                            // back when the transaction was processed, we will have some unexpected
+                            // added items as well.
+                            // 
+                            // E.g. Consider station A and B. At A, there are 2 units of item X, at B 
+                            // there is nothing. 
+                            // At a later date, the player moves 2 of X from A to B and sells it.
+                            // When the sell transaction is processed, station B will be set to -2 
+                            // units of X and the transaction will be set as 'CalcProfitFromAssets'.
+                            // When the asset update occurs, it will show zero for both locations so 
+                            // they will be unprocessed.
+                            // This will result in 2 unexplained units gained at station B and 2 lost 
+                            // at station A. (We've gone from A=2,B=-2 to A=0 B=0)
+                            changes2.ItemFilter = "ItemID = " + trans.ItemID + " AND LocationID = " + trans.StationID;
+                            foreach (Asset change2 in changes2)
+                            {
+                                if (change2.Quantity > 0)
+                                {
+                                    // We've already accounted for the cost of items, etc so just reduce the 
+                                    // quantity.
+                                    change2.Quantity -= deltaQ;
+                                }
+                            }
+
+                            data.QuantityRemaining = data.QuantityRemaining - deltaQ;
+                            data.QuantityMatched = data.QuantityMatched + deltaQ;
+                            data.TotalBuyPrice = data.TotalBuyPrice + (change.UnitBuyPrice * deltaQ);
+
+                            if (data.QuantityRemaining == 0)
+                            {
+                                // We've found enough missing items to match this transaction completely
+                                // so calculate it's profit and set it as completed.
+                                trans.CalcProfitFromAssets = false;
+                                trans.SellerUnitProfit = trans.Price - (data.TotalBuyPrice / data.QuantityMatched);
+                                completedTrans.Add(trans.ID);
+                                if (uncompletedTrans.Contains(trans.ID)) { uncompletedTrans.Remove(trans.ID); }
+                            }
+                            else
+                            {
+                                // We havn't found enough missing items to completely match this transaction
+                                // yet so add to to the list of uncompleted transactions.
+                                uncompletedTrans.Add(trans.ID);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Calculate profits as best we can for any 'uncompleted' transactions.
+            // i.e. those that we did not have enough missing items to match completely.
+            foreach (long transID in uncompletedTrans)
+            {
+                EMMADataSet.TransactionsRow trans = transData.FindByID(transID);
+                if (trans != null && processData.ContainsKey(transID))
+                {
+                    TransProcessData data = processData[transID];
+                    trans.CalcProfitFromAssets = false;
+                    trans.SellerUnitProfit = trans.Price - (data.TotalBuyPrice / data.QuantityMatched);
+                }
+            }
+            // Update transactions database
+            Transactions.Store(transData);
+            #endregion
 
             // Work through the list of changes.
             // 
@@ -103,14 +209,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             // what has been built, etc.
             if (!UserAccount.Settings.ManufacturingMode)
             {
-                // Note 'changes2' is a list of the same items as 'changes'.
-                // It is needed because the filter functionallity changes the list which we cannot 
-                // do within the main foreach loop.
-                AssetList changes2 = new AssetList();
-                foreach (Asset change in changes)
-                {
-                    changes2.Add(change);
-                }
+                #region Try and match gains in one place against losses in another.
                 List<int> zeroLossItemIDs = new List<int>();
                 foreach (Asset change in changes)
                 {
@@ -148,35 +247,41 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                 Asset a2 = new Asset(row2, null);
                                 long thisAbsDeltaQ = Math.Min(Math.Abs(change.Quantity), Math.Abs(change2.Quantity));
 
-                                // Calculate the cost of items in the new stack based on the 
-                                // cost of items from the old stack.
-                                // Note that the actual movement of items has already happened
+                                // If the rows are processed then the actual movement of items has already happened
                                 // so we don't need to adjust quantities.
-                                decimal newCost = 0;
-                                newCost = ((a1.TotalBuyPrice) + (a2.UnitBuyPrice * thisAbsDeltaQ)) /
-                                    (a1.Quantity + thisAbsDeltaQ);
-                                row1.Cost = newCost;
-                                row1.CostCalc = true;
-                                change.Quantity -= thisAbsDeltaQ;
-                                change2.Quantity += thisAbsDeltaQ;
+                                // If they are not processed then we need to adjust the quantities now.
+                                if (!row1.Processed) { row1.Quantity += thisAbsDeltaQ; }
+                                if (!row2.Processed) { row2.Quantity -= thisAbsDeltaQ; }
+
+                                // If the stack we're adding to now has zero items in it then we can just 
+                                // remove it. Otherwise we need to work out the value of the new stack.
+                                if (row1.Quantity > 0)
+                                {
+                                    // Calculate the cost of items in the new stack based on the 
+                                    // cost of items from the old stack.
+                                    decimal newCost = 0;
+                                    newCost = ((a1.TotalBuyPrice) + (a2.UnitBuyPrice * thisAbsDeltaQ)) /
+                                        (a1.Quantity + thisAbsDeltaQ);
+                                    row1.Cost = newCost;
+                                    row1.CostCalc = true;
+                                    change.Quantity -= thisAbsDeltaQ;
+                                    change2.Quantity += thisAbsDeltaQ;
+                                }
+                                else if (row1.Quantity == 0) { row1.Delete(); }
+                                if (row2.Quantity == 0) { row2.Delete(); }
                                 //}
+
                             }
                         }
 
                     }
                 }
+                #endregion
             }
 
             // We have some items left over that could not be accounted for from losses/gains
             // elsewhere. Add these to the appropriate 'lost' or 'gained' list.
-
-            // We may be updating some transactions (those marked with the CalcProfitFromAssets flag)
-            // so need to create a table to hold the changes.
-            EMMADataSet.TransactionsDataTable transData = new EMMADataSet.TransactionsDataTable();
-            Dictionary<long, TransProcessData> processData = new Dictionary<long, TransProcessData>();
-            List<long> completedTrans = new List<long>();
-            List<long> uncompletedTrans = new List<long>();
-
+            #region Add remaining unexplained changes to the appropriate lost/gained list
             foreach (Asset change in changes)
             {
                 if (change.Quantity != 0)
@@ -190,6 +295,17 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     unexplained.IsContainer = change.IsContainer;
                     unexplained.Container = change.Container;
                     unexplained.AutoConExclude = change.AutoConExclude;
+                    unexplained.OwnerID = change.OwnerID;
+                    if (change.UnitBuyPricePrecalculated)
+                    {
+                        unexplained.UnitBuyPrice = change.UnitBuyPrice;
+                        unexplained.UnitBuyPricePrecalculated = true;
+                    }
+                    else
+                    {
+                        unexplained.UnitBuyPrice = 0;
+                        unexplained.UnitBuyPricePrecalculated = false;
+                    }
                     if (change.Quantity > 0)
                     {
                         // If the unexplained assets are for sale via contract or in transit then we
@@ -200,90 +316,20 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     }
                     else
                     {
-                        // If the item has gone missing then check the transactions that are flagged 
-                        // with 'CalcProfitFromAssets'.
-                        // If we get a match then use the missing items's cost to calculate the 
-                        // transaction's profit.
-                        // Note that we don't need to adjust any item quantities since either the
-                        // changes have already been made or the item stack is 'unprocessed' and will
-                        // be cleared out anyway.
-                        Transactions.AddTransByCalcProfitFromAssets(transData,
-                            UserAccount.CurrentGroup.GetFinanceAccessParams(APIDataType.Transactions),
-                            change.ItemID, true);
-                        foreach (EMMADataSet.TransactionsRow trans in transData)
-                        {
-                            if (trans.ItemID == change.ItemID && !completedTrans.Contains(trans.ID))
-                            {
-                                long quantityRemaining = trans.Quantity;
-                                TransProcessData data = new TransProcessData();
-                                if (processData.ContainsKey(trans.ID))
-                                {
-                                    data = processData[trans.ID];
-                                    quantityRemaining = data.QuantityRemaining;
-                                }
-                                else { processData.Add(trans.ID, data); }
-
-                                long deltaQ = Math.Min(Math.Abs(change.Quantity), quantityRemaining);
-                                // Adjust the quantity of the 'missing' items.
-                                change.Quantity += deltaQ;
-
-                                data.QuantityRemaining = data.QuantityRemaining - deltaQ;
-                                data.QuantityMatched = data.QuantityMatched + deltaQ;
-                                data.TotalBuyPrice = data.TotalBuyPrice + (change.UnitBuyPrice * deltaQ);
-
-                                if (data.QuantityRemaining == 0)
-                                {
-                                    // We've found enough missing items to match this transaction completely
-                                    // so calculate it's profit and set it as completed.
-                                    trans.CalcProfitFromAssets = false;
-                                    trans.SellerUnitProfit = trans.Price - (data.TotalBuyPrice / data.QuantityMatched);
-                                    completedTrans.Add(trans.ID);
-                                    if(uncompletedTrans.Contains(trans.ID)) { uncompletedTrans.Remove(trans.ID);}
-                                }
-                                else
-                                {
-                                    // We havn't found enough missing items to completely match this transaction
-                                    // yet so add to to the list of uncompleted transactions.
-                                    uncompletedTrans.Add(trans.ID);
-                                }
-                            }
-                        }
-
-                        if (change.Quantity < 0)
-                        {
-                            // We couldn't find enough transactions with uncalculated profit to account for the
-                            // missing items so add what remains to the list of lost assets.
-
-                            // If the unexplained assets are for sale via contract or in transit then we
-                            // would expect them not to show up if they are in the same state as before.
-                            // This being the case, we do not need to add them to the list of unexplained items.
-                            unexplained.Quantity = change.Quantity;
-                            if (change.StatusID != (int)AssetStatus.States.ForSaleViaContract &&
-                                change.StatusID != (int)AssetStatus.States.InTransit) { lost.Add(unexplained); }
-                        }
-
+                        // If the unexplained assets are for sale via contract or in transit then we
+                        // would expect them not to show up if they are in the same state as before.
+                        // This being the case, we do not need to add them to the list of unexplained items.
+                        if (change.StatusID != (int)AssetStatus.States.ForSaleViaContract &&
+                            change.StatusID != (int)AssetStatus.States.InTransit) { lost.Add(unexplained); }
                     }
                 }
             }
-
-            // Calculate profits as best we can for any 'uncompleted' transactions.
-            // i.e. those that we did not have enough missing items to match completely.
-            foreach (long transID in uncompletedTrans)
-            {
-                EMMADataSet.TransactionsRow trans = transData.FindByID(transID);
-                if (trans != null && processData.ContainsKey(transID))
-                {
-                    TransProcessData data = processData[transID];
-                    trans.CalcProfitFromAssets = false;
-                    trans.SellerUnitProfit = trans.Price - (data.TotalBuyPrice / data.QuantityMatched);
-                }
-            }
-            // Update transactions database
-            Transactions.Store(transData);
+            #endregion
         }
 
         private class TransProcessData
         {
+            // Used by AnalyseChanges method.
             public long QuantityRemaining { get; set; }
             public long QuantityMatched { get; set; }
             public decimal TotalBuyPrice { get; set; }
@@ -323,7 +369,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 // Above note is correct. However, if there are multiple sell orders in the same station for 
                 // the same item then the asset quantity will be the combined total volume of all the orders.
                 if (Assets.AssetExists(assets, charID, corp, sellOrder.StationID, sellOrder.ItemID,
-                    (int)AssetStatus.States.ForSaleViaMarket, false, 0, false, false, true, true, ref assetID))
+                    (int)AssetStatus.States.ForSaleViaMarket, false, 0, false, false, true, true, 
+                    true, 0, ref assetID))
                 {
                     changedAsset = assets.FindByID(assetID);
                     if (changedAsset.Quantity <= sellOrder.RemainingVol)
@@ -464,6 +511,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     changedAsset.CostCalc = qToFind < sellOrder.RemainingVol;
                     changedAsset.IsContainer = false;
                     changedAsset.ItemID = sellOrder.ItemID;
+                    changedAsset.EveItemID = 0;
                     changedAsset.LocationID = sellOrder.StationID;
                     changedAsset.OwnerID = sellOrder.OwnerID;
                     changedAsset.Processed = true;
@@ -605,14 +653,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     long assetID = 0;
                     EMMADataSet.AssetsRow asset = null;
 
-                    if (!AssetExists(assetsData, ownerID, useCorp, trans.StationID, trans.ItemID,
-                        (int)AssetStatus.States.Normal, false, 0, false, false, true, false, ref assetID))
-                    {
-                        if (!AssetExists(assetsData, ownerID, useCorp, trans.StationID, trans.ItemID,
-                            (int)AssetStatus.States.Normal, false, 0, false, false, true, true, ref assetID))
-                        {
-                        }
-                    }
+                    AssetExists(assetsData, ownerID, useCorp, trans.StationID, trans.ItemID,
+                        (int)AssetStatus.States.Normal, false, 0, false, false, true, false, true, 0, ref assetID);
 
                     if (assetID == 0)
                     {
@@ -643,6 +685,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         asset.CostCalc = true;
                         asset.IsContainer = false;
                         asset.ItemID = trans.ItemID;
+                        asset.EveItemID = 0;
                         asset.LocationID = trans.StationID;
                         asset.OwnerID = ownerID;
                         asset.Processed = true;
@@ -925,7 +968,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <returns></returns>
         public static bool AssetExists(EMMADataSet.AssetsDataTable table, int ownerID, bool corpAsset, 
             int locationID, int itemID, int status, bool isContained, long containerID, bool isContainer, 
-            bool processed, bool ignoreProcessed, bool autoConExclude, ref long assetID)
+            bool processed, bool ignoreProcessed, bool autoConExclude, bool ignoreAutoConEx, 
+            long eveItemInstanceID, ref long assetID)
         {
             bool? exists = false;
             long? assetRowID = 0;
@@ -936,7 +980,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 EMMADataSet.AssetsDataTable tmpTable = new EMMADataSet.AssetsDataTable();
                 assetsTableAdapter.FillAssetExists(tmpTable, ownerID, corpAsset, locationID, itemID, status,
                     isContained, containerID, isContainer, processed, ignoreProcessed, autoConExclude,
-                    ref exists, ref assetRowID);
+                    ignoreAutoConEx, eveItemInstanceID, ref exists, ref assetRowID);
                 long id = assetRowID.HasValue ? assetRowID.Value : 0;
                 EMMADataSet.AssetsRow row = table.FindByID(id);
                 if (row == null && id != 0)
@@ -997,7 +1041,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 assetsTableAdapter.Insert(row.OwnerID, row.CorpAsset, row.LocationID, row.ItemID, row.SystemID,
                     row.RegionID, row.ContainerID, row.Quantity, row.Status, row.Processed, row.AutoConExclude,
-                    row.IsContainer, row.ReprocExclude, row.Cost, row.CostCalc, out retVal);
+                    row.IsContainer, row.ReprocExclude, row.Cost, row.CostCalc, row.EveItemID, out retVal);
             }
             return retVal.HasValue ? retVal.Value : 0;
         }

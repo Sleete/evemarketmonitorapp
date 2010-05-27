@@ -257,7 +257,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     EMMADataSet.AssetsDataTable assets = new EMMADataSet.AssetsDataTable();
                     if (Assets.AssetExists(assets, contract.OwnerID, corp,
                         contract.PickupStationID, item.ItemID, (int)AssetStatus.States.ForSaleViaContract,
-                        false, 0, false, false, true, true, ref assetID))
+                        false, 0, false, false, true, true, true, 0, ref assetID))
                     {
                         EMMADataSet.AssetsRow asset = assets.FindByID(assetID);
                         if (asset.Quantity > 0)

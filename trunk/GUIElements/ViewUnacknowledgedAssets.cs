@@ -226,6 +226,13 @@ namespace EveMarketMonitorApp.GUIElements
             }
             else
             {
+                // We've finished processing so let EMMA know that the user has ackowledged 
+                // all outstanding assets.
+                if (AssetChangesAcknowledged != null)
+                {
+                    AssetChangesAcknowledged(this, null);
+                }
+
                 if (UserAccount.Settings != null)
                 {
                     UserAccount.Settings.StoreFormSizeLoc(this);
@@ -350,7 +357,8 @@ namespace EveMarketMonitorApp.GUIElements
                             Assets.AssetExists(assetChanges, gainedAsset.OwnerID, gainedAsset.CorpAsset,
                                 gainedAsset.LocationID, gainedAsset.ItemID, gainedAsset.StatusID,
                                 gainedAsset.ContainerID != 0, gainedAsset.ContainerID, gainedAsset.IsContainer,
-                                false, true, gainedAsset.AutoConExclude, ref assetID);
+                                false, true, gainedAsset.AutoConExclude, false, gainedAsset.EveItemInstanceID,
+                                ref assetID);
                             EMMADataSet.AssetsRow assetRow = assetChanges.FindByID(assetID);
 
                             long totalQ = gainedAsset.Quantity - qRemaining;
@@ -417,7 +425,7 @@ namespace EveMarketMonitorApp.GUIElements
                 Assets.AssetExists(assetChanges, gainedAsset.OwnerID, gainedAsset.CorpAsset,
                     gainedAsset.LocationID, gainedAsset.ItemID, gainedAsset.StatusID,
                     gainedAsset.ContainerID != 0, gainedAsset.ContainerID, gainedAsset.IsContainer,
-                    false, true, gainedAsset.AutoConExclude, ref assetID);
+                    false, true, gainedAsset.AutoConExclude, false, gainedAsset.EveItemInstanceID, ref assetID);
                 EMMADataSet.AssetsRow assetRow = assetChanges.FindByID(assetID);
 
                 switch (gainedAsset.ChangeTypeID)
@@ -463,6 +471,7 @@ namespace EveMarketMonitorApp.GUIElements
                         assetRow.CostCalc = lostAsset.UnitBuyPricePrecalculated;
                         assetRow.IsContainer = lostAsset.IsContainer;
                         assetRow.ItemID = lostAsset.ItemID;
+                        assetRow.EveItemID = 0;
                         assetRow.LocationID = lostAsset.LocationID;
                         assetRow.OwnerID = lostAsset.OwnerID;
                         assetRow.Processed = false;
@@ -597,13 +606,6 @@ namespace EveMarketMonitorApp.GUIElements
 
             if (_status.Done && _status.Section.Equals("FinalTasks"))
             {
-                // We've finished processing after the user clicked the ok button so let
-                // EMMA know that the user has ackowledged all outstanding assets and
-                // close the window.
-                if (AssetChangesAcknowledged != null)
-                {
-                    AssetChangesAcknowledged(this, null);
-                }
                 this.Close();
             }
             else
