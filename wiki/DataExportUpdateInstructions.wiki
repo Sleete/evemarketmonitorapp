@@ -13,11 +13,11 @@ How to update EMMA with new data export:
 
 5. Right click EVEDATA->Tasks->Restore->Database
 
-6. Select 'From a device' and browse to the datadump .bak file. Check the 'Restore' option, Click 'ok' and wait for it to finish.
+6. Select 'From a device' and browse to the datadump .bak file. Check the 'Restore' option. Go to the options page and check 'overwrite existing database' Change the 'restore as' filenames to match the existing files (e.g. C:\Temp\EveData.mdf and C:\Temp\EveData_log.ldf).  Click 'ok' and wait for it to finish.
 
 7. Open 'Tables' for both EVEDATA and OLDEVEDATA. Remove all tables from EVEDATA that are not in OLDEVEDATA.
 
-8. Select OLDEVEDATA->programmability->Stored Procedures. Select all except the system folder, then right click, Script->Create to->clipboard
+8. Select OLDEVEDATA->programmability->Stored Procedures. Select all except the system folder, then right click, Script->Create to->clipboard (Note MS seem to have removed the ability to do a 'select all' in SQL management studio 2008. Instead, you must go through the process for each procedure individually)
 
 9. Right click EVEDATA -> new query
 
