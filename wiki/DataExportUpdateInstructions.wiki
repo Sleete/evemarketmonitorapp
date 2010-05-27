@@ -1,5 +1,6 @@
 How to update EMMA with new data export:
 
+(Data updates will be released through EMMA's auto-update system. This procedure is for those who do not want to wait for the automatic update)
 
 
 1. Download and extract .bak file.
