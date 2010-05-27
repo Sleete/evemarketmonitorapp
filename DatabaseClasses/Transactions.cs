@@ -35,13 +35,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
             EMMADataSet.AssetsDataTable existingAssets = new EMMADataSet.AssetsDataTable();
             int stationID = newRow.StationID;
 
+            int ownerID = corp ? UserAccount.CurrentGroup.GetCharacter(charID).CorpID : charID;
+
             try
             {
                 // If there are matching assets for the specified character or corp at the 
                 // transaction location then use the cost of those assets to calculate profit. 
                 List<AssetAccessParams> assetAccessParams = new List<AssetAccessParams>();
                 assetAccessParams.Add(new AssetAccessParams(charID, !corp, corp));
-                Assets.GetAssets(existingAssets, assetAccessParams, stationID, 
+                Assets.GetAssets(existingAssets, assetAccessParams, stationID,
                     Stations.GetStation(stationID).solarSystemID, newRow.ItemID);
                 if (existingAssets != null)
                 {
@@ -50,7 +52,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     foreach (EMMADataSet.AssetsRow existingAsset in existingAssets)
                     {
                         // If possible, use data from assets that are currently for sale via the market.
-                        if (existingAsset.Status == (int)AssetStatus.States.ForSaleViaMarket && 
+                        if (existingAsset.Status == (int)AssetStatus.States.ForSaleViaMarket &&
                             existingAsset.Quantity > 0)
                         {
                             Asset asset = new Asset(existingAsset, null);
@@ -62,7 +64,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                             long deltaQuantity = -1 * q;
                             // Note, since we're removing assets, the cost and costcalc parameters
                             // will be ignored.
-                            Assets.ChangeAssets(charID, corp, newRow.StationID, newRow.ItemID, 
+                            Assets.ChangeAssets(ownerID, corp, newRow.StationID, newRow.ItemID,
                                 existingAsset.ContainerID, existingAsset.Status, existingAsset.AutoConExclude,
                                 deltaQuantity, 0, false);
                         }
@@ -89,8 +91,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                 long deltaQuantity = -1 * q;
                                 // Note, since we're removing assets, the cost and costcalc parameters
                                 // will be ignored.
-                                Assets.ChangeAssets(charID, corp, newRow.StationID, newRow.ItemID, 
-                                    existingAsset.ContainerID, existingAsset.Status, existingAsset.AutoConExclude, 
+                                Assets.ChangeAssets(ownerID, corp, newRow.StationID, newRow.ItemID,
+                                    existingAsset.ContainerID, existingAsset.Status, existingAsset.AutoConExclude,
                                     deltaQuantity, 0, false);
                             }
                         }
@@ -100,39 +102,29 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         decimal unitBuyPrice = totalBuyPrice / (newRow.Quantity - qToFind);
                         retVal = newRow.Price - unitBuyPrice;
                     }
+                    if (qToFind > 0)
+                    {
+                        // If any of the transaction quantity could not be accounted for then simply send
+                        // the 'normal' asset stack at this location to a negative quantity.
+                        Assets.ChangeAssets(ownerID, corp, newRow.StationID, newRow.ItemID,
+                             0, (int)AssetStatus.States.Normal, false, qToFind * -1, 0, false);
+                    }
                 }
                 else
                 {
-                    // If there are no assets that match what was sold then look at other
-                    // buy transactions that are in the process of being added to the database.
-                    DataRow[] purchases = transData.Select("ItemID = " + newRow.ItemID +
-                        " AND StationID = " + newRow.StationID);
-                    int buyQuantity = 0;
-                    decimal buyPrice = 0;
-                    if (purchases.Length > 0)
-                    {
-                        foreach (DataRow purchase in purchases)
-                        {
-                            EMMADataSet.TransactionsRow trans = purchase as EMMADataSet.TransactionsRow;
-                            buyQuantity += trans.Quantity;
-                            buyPrice += trans.Quantity * trans.Price;
-                        }
-                        buyPrice /= buyQuantity;
-                        retVal = newRow.Price - buyPrice;
-                    }
-                    else
-                    {
-                        // If there are no assets at the station where the sell took place and no 
-                        // buy transactions waiting to be added for that station either, then flag
-                        // the transaction to have it's profit calculated when the next assets 
-                        // update is performed.
-                        newRow.CalcProfitFromAssets = true;
-                    }
+                    // If there are no assets at the station where the sell took place then flag
+                    // the transaction to have it's profit calculated when the next assets 
+                    // update is performed.
+                    // Also, set the quantity of assets at this location negative.
+                    newRow.CalcProfitFromAssets = true;
+
+                    Assets.ChangeAssets(ownerID, corp, newRow.StationID, newRow.ItemID, 0,
+                        (int)AssetStatus.States.Normal, false, newRow.Quantity * -1, 0, false);
                 }
             }
             catch (Exception ex)
             {
-                new EMMADataException(ExceptionSeverity.Error, 
+                new EMMADataException(ExceptionSeverity.Error,
                     "Problem calculating profit for new sell transaction.", ex);
             }
 
