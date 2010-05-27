@@ -15,24 +15,20 @@ How to update EMMA with new data export:
 
 6. Select 'From a device' and browse to the datadump .bak file. Check the 'Restore' option. Go to the options page and check 'overwrite existing database' Change the 'restore as' filenames to match the existing files (e.g. C:\Temp\EveData.mdf and C:\Temp\EveData_log.ldf).  Click 'ok' and wait for it to finish.
 
-7. Open 'Tables' for both EVEDATA and OLDEVEDATA. Remove all tables from EVEDATA that are not in OLDEVEDATA.
+7. Right click EVEDATA -> Properties and go to the Files page. Change the logical names to 'EVEDATA' and 'EVEDATA_log' respectively.
 
-8. Select OLDEVEDATA->programmability->Stored Procedures. Select all except the system folder, then right click, Script->Create to->clipboard (Note MS seem to have removed the ability to do a 'select all' in SQL management studio 2008. Instead, you must go through the process for each procedure individually)
+8. Open 'Tables' for both EVEDATA and OLDEVEDATA. Remove all tables from EVEDATA that are not in OLDEVEDATA.
 
-9. Right click EVEDATA -> new query
+9. Right click OLDEVEDATA -> Tasks -> Generate Scripts. Make sure teh correct database is selected (OLDEVEDATA). Leave the defaults options. on the choose object types screen, select Assemblies, Stored Procedures and User Defined Functions. On each of the following screens click 'select all'. Finally, use the 'script to new query editor window' option.
 
-10. ctrl+p to paste
+10. scroll to the top and change 'USE [OLDEVEDATA]' to 'USE [EVEDATA]'
 
-11. scroll to the top and change 'using OLDEVEDATA' to 'using EVEDATA'
+11. Click execute.
 
-12. Click execute.
+12. Execute the stored procedure called 'INIT'. This sets up the jump distance tables based upon the new data and should take no more than a few seconds to complete.
 
-13. Do the same for 'assemblies' and 'functions->table valued functions'
+13. Right click EVEDATA->tasks->shrink->database, check 'reorganise files' and click ok.
 
-14. Execute the stored procedure called 'INIT'. This sets up the jump distance tables based upon the new data and should take no more than a few seconds to complete.
+14. Right click EVEDATA->tasks->detatch. check 'drop connection' and click ok.
 
-15. Right click EVEDATA->tasks->shrink->database, check 'reorganise files' and click ok.
-
-16. Right click EVEDATA->tasks->detatch. check 'drop connection' and click ok.
-
-17. Copy the EVEDATA mdf and log files back to the EMMA folder.
+15. Copy the EVEDATA mdf and log files back to the EMMA folder.
