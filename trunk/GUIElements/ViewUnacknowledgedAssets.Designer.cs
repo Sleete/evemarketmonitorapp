@@ -36,23 +36,23 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblBusy = new System.Windows.Forms.Label();
             this.gainedItemsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.busyProgress = new System.Windows.Forms.ProgressBar();
+            this.lostItemsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
+            this.grpMaterials = new System.Windows.Forms.GroupBox();
+            this.lstMaterials = new System.Windows.Forms.ListBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.chkMaterialsOnly = new System.Windows.Forms.CheckBox();
             this.GainedOwnerColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GainedItemColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GainedLocationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GainedQuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GainedReasonColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.busyProgress = new System.Windows.Forms.ProgressBar();
-            this.lostItemsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
             this.LostOwnerColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostItemColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostLocationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostQuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostReasonColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.grpMaterials = new System.Windows.Forms.GroupBox();
-            this.chkMaterialsOnly = new System.Windows.Forms.CheckBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.lstMaterials = new System.Windows.Forms.ListBox();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -155,50 +155,10 @@
             this.gainedItemsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gainedItemsGrid.Location = new System.Drawing.Point(3, 16);
             this.gainedItemsGrid.Name = "gainedItemsGrid";
-            this.gainedItemsGrid.ReadOnly = true;
             this.gainedItemsGrid.RowHeadersVisible = false;
             this.gainedItemsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gainedItemsGrid.Size = new System.Drawing.Size(922, 183);
             this.gainedItemsGrid.TabIndex = 0;
-            // 
-            // GainedOwnerColumn
-            // 
-            this.GainedOwnerColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.GainedOwnerColumn.HeaderText = "Owner";
-            this.GainedOwnerColumn.Name = "GainedOwnerColumn";
-            this.GainedOwnerColumn.ReadOnly = true;
-            this.GainedOwnerColumn.Width = 160;
-            // 
-            // GainedItemColumn
-            // 
-            this.GainedItemColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.GainedItemColumn.HeaderText = "Item";
-            this.GainedItemColumn.Name = "GainedItemColumn";
-            this.GainedItemColumn.ReadOnly = true;
-            this.GainedItemColumn.Width = 240;
-            // 
-            // GainedLocationColumn
-            // 
-            this.GainedLocationColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.GainedLocationColumn.HeaderText = "Location";
-            this.GainedLocationColumn.Name = "GainedLocationColumn";
-            this.GainedLocationColumn.ReadOnly = true;
-            this.GainedLocationColumn.Width = 240;
-            // 
-            // GainedQuantityColumn
-            // 
-            this.GainedQuantityColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.GainedQuantityColumn.HeaderText = "Quantity";
-            this.GainedQuantityColumn.Name = "GainedQuantityColumn";
-            this.GainedQuantityColumn.ReadOnly = true;
-            // 
-            // GainedReasonColumn
-            // 
-            this.GainedReasonColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.GainedReasonColumn.HeaderText = "Reason";
-            this.GainedReasonColumn.Name = "GainedReasonColumn";
-            this.GainedReasonColumn.ReadOnly = true;
-            this.GainedReasonColumn.Width = 160;
             // 
             // groupBox3
             // 
@@ -236,11 +196,89 @@
             this.lostItemsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lostItemsGrid.Location = new System.Drawing.Point(3, 16);
             this.lostItemsGrid.Name = "lostItemsGrid";
-            this.lostItemsGrid.ReadOnly = true;
             this.lostItemsGrid.RowHeadersVisible = false;
             this.lostItemsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.lostItemsGrid.Size = new System.Drawing.Size(922, 183);
             this.lostItemsGrid.TabIndex = 0;
+            // 
+            // grpMaterials
+            // 
+            this.grpMaterials.Controls.Add(this.lstMaterials);
+            this.grpMaterials.Controls.Add(this.label2);
+            this.grpMaterials.Controls.Add(this.chkMaterialsOnly);
+            this.grpMaterials.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpMaterials.Location = new System.Drawing.Point(937, 103);
+            this.grpMaterials.Name = "grpMaterials";
+            this.tableLayoutPanel1.SetRowSpan(this.grpMaterials, 2);
+            this.grpMaterials.Size = new System.Drawing.Size(195, 410);
+            this.grpMaterials.TabIndex = 4;
+            this.grpMaterials.TabStop = false;
+            this.grpMaterials.Text = "Bill of Materials";
+            // 
+            // lstMaterials
+            // 
+            this.lstMaterials.FormattingEnabled = true;
+            this.lstMaterials.Location = new System.Drawing.Point(6, 147);
+            this.lstMaterials.Name = "lstMaterials";
+            this.lstMaterials.Size = new System.Drawing.Size(182, 225);
+            this.lstMaterials.TabIndex = 2;
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(6, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(182, 128);
+            this.label2.TabIndex = 1;
+            this.label2.Text = resources.GetString("label2.Text");
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // chkMaterialsOnly
+            // 
+            this.chkMaterialsOnly.AutoSize = true;
+            this.chkMaterialsOnly.Location = new System.Drawing.Point(9, 387);
+            this.chkMaterialsOnly.Name = "chkMaterialsOnly";
+            this.chkMaterialsOnly.Size = new System.Drawing.Size(156, 17);
+            this.chkMaterialsOnly.TabIndex = 0;
+            this.chkMaterialsOnly.Text = "Show only missing materials";
+            this.chkMaterialsOnly.UseVisualStyleBackColor = true;
+            // 
+            // GainedOwnerColumn
+            // 
+            this.GainedOwnerColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.GainedOwnerColumn.HeaderText = "Owner";
+            this.GainedOwnerColumn.Name = "GainedOwnerColumn";
+            this.GainedOwnerColumn.ReadOnly = true;
+            this.GainedOwnerColumn.Width = 160;
+            // 
+            // GainedItemColumn
+            // 
+            this.GainedItemColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.GainedItemColumn.HeaderText = "Item";
+            this.GainedItemColumn.Name = "GainedItemColumn";
+            this.GainedItemColumn.ReadOnly = true;
+            this.GainedItemColumn.Width = 240;
+            // 
+            // GainedLocationColumn
+            // 
+            this.GainedLocationColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.GainedLocationColumn.HeaderText = "Location";
+            this.GainedLocationColumn.Name = "GainedLocationColumn";
+            this.GainedLocationColumn.ReadOnly = true;
+            this.GainedLocationColumn.Width = 240;
+            // 
+            // GainedQuantityColumn
+            // 
+            this.GainedQuantityColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.GainedQuantityColumn.HeaderText = "Quantity";
+            this.GainedQuantityColumn.Name = "GainedQuantityColumn";
+            this.GainedQuantityColumn.ReadOnly = true;
+            // 
+            // GainedReasonColumn
+            // 
+            this.GainedReasonColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.GainedReasonColumn.HeaderText = "Reason";
+            this.GainedReasonColumn.Name = "GainedReasonColumn";
+            this.GainedReasonColumn.Width = 160;
             // 
             // LostOwnerColumn
             // 
@@ -278,51 +316,9 @@
             this.LostReasonColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.LostReasonColumn.HeaderText = "Reason";
             this.LostReasonColumn.Name = "LostReasonColumn";
-            this.LostReasonColumn.ReadOnly = true;
             this.LostReasonColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.LostReasonColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.LostReasonColumn.Width = 160;
-            // 
-            // grpMaterials
-            // 
-            this.grpMaterials.Controls.Add(this.lstMaterials);
-            this.grpMaterials.Controls.Add(this.label2);
-            this.grpMaterials.Controls.Add(this.chkMaterialsOnly);
-            this.grpMaterials.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpMaterials.Location = new System.Drawing.Point(937, 103);
-            this.grpMaterials.Name = "grpMaterials";
-            this.tableLayoutPanel1.SetRowSpan(this.grpMaterials, 2);
-            this.grpMaterials.Size = new System.Drawing.Size(195, 410);
-            this.grpMaterials.TabIndex = 4;
-            this.grpMaterials.TabStop = false;
-            this.grpMaterials.Text = "Bill of Materials";
-            // 
-            // chkMaterialsOnly
-            // 
-            this.chkMaterialsOnly.AutoSize = true;
-            this.chkMaterialsOnly.Location = new System.Drawing.Point(9, 387);
-            this.chkMaterialsOnly.Name = "chkMaterialsOnly";
-            this.chkMaterialsOnly.Size = new System.Drawing.Size(156, 17);
-            this.chkMaterialsOnly.TabIndex = 0;
-            this.chkMaterialsOnly.Text = "Show only missing materials";
-            this.chkMaterialsOnly.UseVisualStyleBackColor = true;
-            // 
-            // label2
-            // 
-            this.label2.Location = new System.Drawing.Point(6, 16);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(182, 128);
-            this.label2.TabIndex = 1;
-            this.label2.Text = resources.GetString("label2.Text");
-            this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // lstMaterials
-            // 
-            this.lstMaterials.FormattingEnabled = true;
-            this.lstMaterials.Location = new System.Drawing.Point(6, 147);
-            this.lstMaterials.Name = "lstMaterials";
-            this.lstMaterials.Size = new System.Drawing.Size(182, 225);
-            this.lstMaterials.TabIndex = 2;
             // 
             // ViewUnacknowledgedAssets
             // 
@@ -357,6 +353,12 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private EveMarketMonitorApp.Common.MultisortDataGridView gainedItemsGrid;
         private EveMarketMonitorApp.Common.MultisortDataGridView lostItemsGrid;
+        private System.Windows.Forms.Label lblBusy;
+        private System.Windows.Forms.ProgressBar busyProgress;
+        private System.Windows.Forms.GroupBox grpMaterials;
+        private System.Windows.Forms.CheckBox chkMaterialsOnly;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ListBox lstMaterials;
         private System.Windows.Forms.DataGridViewTextBoxColumn GainedOwnerColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn GainedItemColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn GainedLocationColumn;
@@ -367,11 +369,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn LostLocationColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LostQuantityColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn LostReasonColumn;
-        private System.Windows.Forms.Label lblBusy;
-        private System.Windows.Forms.ProgressBar busyProgress;
-        private System.Windows.Forms.GroupBox grpMaterials;
-        private System.Windows.Forms.CheckBox chkMaterialsOnly;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ListBox lstMaterials;
     }
 }

@@ -34,6 +34,8 @@ namespace EveMarketMonitorApp.GUIElements
 
         private static StatusChangeArgs _status;
 
+        private static int _errorCount = 0;
+
         #region IProvideStatus Members
         public event StatusChangeHandler StatusChange;
         #endregion
@@ -80,20 +82,14 @@ namespace EveMarketMonitorApp.GUIElements
                 gainedItemsGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                 gainedItemsGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
                 gainedItemsGrid.AutoGenerateColumns = false;
-                gainedItemsGrid.ReadOnly = false;
                 GainedOwnerColumn.DataPropertyName = "Owner";
-                GainedOwnerColumn.ReadOnly = true;
                 GainedItemColumn.DataPropertyName = "Item";
-                GainedItemColumn.ReadOnly = true;
                 GainedLocationColumn.DataPropertyName = "Location";
-                GainedLocationColumn.ReadOnly = true;
                 GainedQuantityColumn.DataPropertyName = "Quantity";
-                GainedQuantityColumn.ReadOnly = true;
                 GainedReasonColumn.DataPropertyName = "ChangeTypeIntID";
                 GainedReasonColumn.DataSource = _assetGainChangeTypes;
                 GainedReasonColumn.ValueMember = "ID";
                 GainedReasonColumn.DisplayMember = "Description";
-                GainedReasonColumn.ReadOnly = false;
                 gainedItemsGrid.CellEndEdit += new DataGridViewCellEventHandler(gainedItemsGrid_CellEndEdit);
                 gainedItemsGrid.CellBeginEdit += new DataGridViewCellCancelEventHandler(itemsGrid_CellBeginEdit);
                 gainedItemsGrid.RowEnter += new DataGridViewCellEventHandler(gainedItemsGrid_RowEnter);
@@ -102,20 +98,14 @@ namespace EveMarketMonitorApp.GUIElements
                 lostItemsGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                 lostItemsGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
                 lostItemsGrid.AutoGenerateColumns = false;
-                lostItemsGrid.ReadOnly = false;
                 LostOwnerColumn.DataPropertyName = "Owner";
-                LostOwnerColumn.ReadOnly = true;
                 LostItemColumn.DataPropertyName = "Item";
-                LostItemColumn.ReadOnly = true;
                 LostLocationColumn.DataPropertyName = "Location";
-                LostLocationColumn.ReadOnly = true;
                 LostQuantityColumn.DataPropertyName = "Quantity";
-                LostQuantityColumn.ReadOnly = true;
                 LostReasonColumn.DataPropertyName = "ChangeTypeIntID";
                 LostReasonColumn.DataSource = _assetLossChangeTypes;
                 LostReasonColumn.ValueMember = "ID";
                 LostReasonColumn.DisplayMember = "Description";
-                LostReasonColumn.ReadOnly = false;
                 lostItemsGrid.CellBeginEdit += new DataGridViewCellCancelEventHandler(itemsGrid_CellBeginEdit);
 
                 PopulateLists();
@@ -361,17 +351,27 @@ namespace EveMarketMonitorApp.GUIElements
                                 ref assetID);
                             EMMADataSet.AssetsRow assetRow = assetChanges.FindByID(assetID);
 
-                            long totalQ = gainedAsset.Quantity - qRemaining;
-                            if (assetRow.Quantity > gainedAsset.Quantity && assetRow.CostCalc)
+                            // Note if the asset row is null then it is not in the database.
+                            // i.e. we previously had a negative quantity of items here.
+                            // In this case, we can try and match the assets with a transaction 
+                            // market with the 'calcProfitFromAssets' flag.
+                            if (assetRow != null)
                             {
-                                // If the asset stack contains more items than our 'gained' record
-                                // and it alreay has a calculated cost then take the stack's current
-                                // cost into account as well.
-                                totalCost += assetRow.Cost * (assetRow.Quantity - gainedAsset.Quantity);
-                                totalQ += assetRow.Quantity - gainedAsset.Quantity;
+                                long totalQ = gainedAsset.Quantity - qRemaining;
+                                if (assetRow.Quantity > gainedAsset.Quantity && assetRow.CostCalc)
+                                {
+                                    // If the asset stack contains more items than our 'gained' record
+                                    // and it alreay has a calculated cost then take the stack's current
+                                    // cost into account as well.
+                                    totalCost += assetRow.Cost * (assetRow.Quantity - gainedAsset.Quantity);
+                                    totalQ += assetRow.Quantity - gainedAsset.Quantity;
+                                }
+                                assetRow.Cost = totalCost / totalQ;
+                                assetRow.CostCalc = true;
                             }
-                            assetRow.Cost = totalCost / totalQ;
-                            assetRow.CostCalc = true;
+                            else
+                            {
+                            }
                         }
 
                         gainedAsset.Quantity = qRemaining;
@@ -411,100 +411,140 @@ namespace EveMarketMonitorApp.GUIElements
         private void btnOk_Click(object sender, EventArgs e)
         {
             this.StatusChange += new StatusChangeHandler(ViewUnacknowledgedAssets_StatusChange);
+
+            // Clear the data grids.
+            // If we don't do this then trying to modify the gained/lost assets collections
+            // will cause errors (because the changes are being made on a different thread) 
+            gainedItemsGrid.DataSource = new AssetList();
+            lostItemsGrid.DataSource = new AssetList();
+
+            this.Cursor = Cursors.WaitCursor;
+
             Thread t0 = new Thread(new ThreadStart(ProcessAssetsAsMarked));
             t0.Start();
         }
 
         private void ProcessAssetsAsMarked()
         {
-            EMMADataSet.AssetsDataTable assetChanges = new EMMADataSet.AssetsDataTable();
-            List<Asset> assetsToRemove = new List<Asset>();
-            foreach (Asset gainedAsset in _gainedAssets)
+            try
             {
-                long assetID = 0;
-                Assets.AssetExists(assetChanges, gainedAsset.OwnerID, gainedAsset.CorpAsset,
-                    gainedAsset.LocationID, gainedAsset.ItemID, gainedAsset.StatusID,
-                    gainedAsset.ContainerID != 0, gainedAsset.ContainerID, gainedAsset.IsContainer,
-                    false, true, gainedAsset.AutoConExclude, false, gainedAsset.EveItemInstanceID, ref assetID);
-                EMMADataSet.AssetsRow assetRow = assetChanges.FindByID(assetID);
+                _errorCount = 0;
 
-                switch (gainedAsset.ChangeTypeID)
+                EMMADataSet.AssetsDataTable assetChanges = new EMMADataSet.AssetsDataTable();
+                List<Asset> assetsToRemove = new List<Asset>();
+                foreach (Asset gainedAsset in _gainedAssets)
                 {
-                    case AssetChangeTypes.ChangeType.Found:
-                        assetRow.Cost = 0;
-                        assetRow.CostCalc = true;
-                        AssetsProduced.Add(gainedAsset);
-                        assetsToRemove.Add(gainedAsset);
-                        break;
-                    case AssetChangeTypes.ChangeType.Made:
-                        assetRow.Cost = gainedAsset.UnitBuyPricePrecalculated ? gainedAsset.UnitBuyPrice : 0;
-                        assetRow.CostCalc = gainedAsset.UnitBuyPricePrecalculated;
-                        AssetsProduced.Add(gainedAsset);
-                        assetsToRemove.Add(gainedAsset);
-                        break;
-                    case AssetChangeTypes.ChangeType.Unknown:
-                        // Can only be 'unknown' if we're in manufacturing mode.
-                        // let the cross check sort it out...
-                        break;
-                    default:
-                        throw new EMMAException(ExceptionSeverity.Error, "Unexpected gained asset change type: '" +
-                            gainedAsset.ChangeType + "' ", true);
-                        break;
+                    long assetID = 0;
+                    Assets.AssetExists(assetChanges, gainedAsset.OwnerID, gainedAsset.CorpAsset,
+                        gainedAsset.LocationID, gainedAsset.ItemID, gainedAsset.StatusID,
+                        gainedAsset.ContainerID != 0, gainedAsset.ContainerID, gainedAsset.IsContainer,
+                        false, true, gainedAsset.AutoConExclude, false, gainedAsset.EveItemInstanceID, ref assetID);
+                    EMMADataSet.AssetsRow assetRow = assetChanges.FindByID(assetID);
+
+                    if (assetRow != null)
+                    {
+                        switch (gainedAsset.ChangeTypeID)
+                        {
+                            case AssetChangeTypes.ChangeType.Found:
+                                assetRow.Cost = 0;
+                                assetRow.CostCalc = true;
+                                AssetsProduced.Add(gainedAsset);
+                                assetsToRemove.Add(gainedAsset);
+                                break;
+                            case AssetChangeTypes.ChangeType.Made:
+                                assetRow.Cost = gainedAsset.UnitBuyPricePrecalculated ? gainedAsset.UnitBuyPrice : 0;
+                                assetRow.CostCalc = gainedAsset.UnitBuyPricePrecalculated;
+                                AssetsProduced.Add(gainedAsset);
+                                assetsToRemove.Add(gainedAsset);
+                                break;
+                            case AssetChangeTypes.ChangeType.Unknown:
+                                // Can only be 'unknown' if we're in manufacturing mode.
+                                // let the cross check sort it out...
+                                break;
+                            default:
+                                throw new EMMAException(ExceptionSeverity.Error, "Unexpected gained asset change type: '" +
+                                    gainedAsset.ChangeType + "' ", true);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        new EMMAException(ExceptionSeverity.Warning, "Could not find gained asset to update\r\n" +
+                            "\tOwner: " + gainedAsset.OwnerID + "\r\n\tCorpAsset: " + gainedAsset.CorpAsset +
+                            "\r\n\tLocation: " + gainedAsset.LocationID + "\r\n\tItem : " + gainedAsset.ItemID +
+                            "\r\n\tStatus: " + gainedAsset.StatusID + "\r\n\tContainerID: " +
+                            gainedAsset.ContainerID + "\r\n\tIsContainer: " + gainedAsset.IsContainer.ToString() +
+                            "\r\n\tAutoConExclude: " + gainedAsset.AutoConExclude.ToString() +
+                            "\r\n\tEveItemInstanceID: " + gainedAsset.EveItemInstanceID, true);
+                        _errorCount++;
+                    }
+                }
+                foreach (Asset a in assetsToRemove)
+                {
+                    _gainedAssets.Remove(a);
+                }
+
+                assetsToRemove = new List<Asset>();
+                foreach (Asset lostAsset in _lostAssets)
+                {
+                    switch (lostAsset.ChangeTypeID)
+                    {
+                        case AssetChangeTypes.ChangeType.ForSaleViaContract:
+                            EMMADataSet.AssetsRow assetRow = assetChanges.NewAssetsRow();
+                            assetRow.AutoConExclude = true;
+                            assetRow.ContainerID = lostAsset.ContainerID;
+                            assetRow.CorpAsset = lostAsset.CorpAsset;
+                            assetRow.Cost = lostAsset.UnitBuyPricePrecalculated ? lostAsset.UnitBuyPrice : 0;
+                            assetRow.CostCalc = lostAsset.UnitBuyPricePrecalculated;
+                            assetRow.IsContainer = lostAsset.IsContainer;
+                            assetRow.ItemID = lostAsset.ItemID;
+                            assetRow.EveItemID = 0;
+                            assetRow.LocationID = lostAsset.LocationID;
+                            assetRow.OwnerID = lostAsset.OwnerID;
+                            assetRow.Processed = false;
+                            assetRow.Quantity = lostAsset.Quantity * -1;
+                            assetRow.RegionID = lostAsset.RegionID;
+                            assetRow.ReprocExclude = true;
+                            assetRow.Status = (int)AssetStatus.States.ForSaleViaContract;
+                            assetRow.SystemID = lostAsset.SystemID;
+                            assetChanges.AddAssetsRow(assetRow);
+                            assetsToRemove.Add(lostAsset);
+                            break;
+                        case AssetChangeTypes.ChangeType.DestroyedOrUsed:
+                            AssetsLost.Add(lostAsset);
+                            assetsToRemove.Add(lostAsset);
+                            break;
+                        case AssetChangeTypes.ChangeType.Unknown:
+                            // Can only be 'unknown' if we're in manufacturing mode.
+                            // let the cross check sort it out...
+                            break;
+                        default:
+                            throw new EMMAException(ExceptionSeverity.Error, "Unexpected lost asset change type: '" +
+                                lostAsset.ChangeType + "' ", true);
+                            break;
+                    }
+                }
+
+                foreach (Asset a in assetsToRemove)
+                {
+                    _lostAssets.Remove(a);
+                }
+
+                if (UserAccount.Settings.ManufacturingMode)
+                {
+                    CrossCheckAssetChanges();
                 }
             }
-            foreach (Asset a in assetsToRemove)
+            catch (Exception ex)
             {
-                _gainedAssets.Remove(a);
-            }
-
-            assetsToRemove = new List<Asset>();
-            foreach (Asset lostAsset in _lostAssets)
-            {
-                switch (lostAsset.ChangeTypeID)
+                EMMAException emmaEx = ex as EMMAException;
+                if (emmaEx == null)
                 {
-                    case AssetChangeTypes.ChangeType.ForSaleViaContract:
-                        EMMADataSet.AssetsRow assetRow = assetChanges.NewAssetsRow();
-                        assetRow.AutoConExclude = true;
-                        assetRow.ContainerID = lostAsset.ContainerID;
-                        assetRow.CorpAsset = lostAsset.CorpAsset;
-                        assetRow.Cost = lostAsset.UnitBuyPricePrecalculated ? lostAsset.UnitBuyPrice : 0;
-                        assetRow.CostCalc = lostAsset.UnitBuyPricePrecalculated;
-                        assetRow.IsContainer = lostAsset.IsContainer;
-                        assetRow.ItemID = lostAsset.ItemID;
-                        assetRow.EveItemID = 0;
-                        assetRow.LocationID = lostAsset.LocationID;
-                        assetRow.OwnerID = lostAsset.OwnerID;
-                        assetRow.Processed = false;
-                        assetRow.Quantity = lostAsset.Quantity * -1;
-                        assetRow.RegionID = lostAsset.RegionID;
-                        assetRow.ReprocExclude = true;
-                        assetRow.Status = (int)AssetStatus.States.ForSaleViaContract;
-                        assetRow.SystemID = lostAsset.SystemID;
-                        assetChanges.AddAssetsRow(assetRow);
-                        assetsToRemove.Add(lostAsset);
-                        break;
-                    case AssetChangeTypes.ChangeType.DestroyedOrUsed:
-                        AssetsLost.Add(lostAsset);
-                        assetsToRemove.Add(lostAsset);
-                        break;
-                    case AssetChangeTypes.ChangeType.Unknown:
-                        // Can only be 'unknown' if we're in manufacturing mode.
-                        // let the cross check sort it out...
-                        break;
-                    default:
-                        throw new EMMAException(ExceptionSeverity.Error, "Unexpected lost asset change type: '" +
-                            lostAsset.ChangeType + "' ", true);
-                        break;
+                    new EMMAException(ExceptionSeverity.Error, "Problem processing asset changes " +
+                        "unacknowledged assets view", ex);
                 }
-            }
-            foreach (Asset a in assetsToRemove)
-            {
-                _lostAssets.Remove(a);
-            }
-
-            if (UserAccount.Settings.ManufacturingMode)
-            {
-                CrossCheckAssetChanges();
+                MessageBox.Show("Problem processing asset changes in unacknowledged assets view:\r\n" +
+                    ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             UpdateStatus(0, 0, "FinalTasks", "", true);   
@@ -606,11 +646,29 @@ namespace EveMarketMonitorApp.GUIElements
 
             if (_status.Done && _status.Section.Equals("FinalTasks"))
             {
-                this.Close();
+                Finish();
             }
             else
             {
                 UpdateProgress();
+            }
+        }
+
+        private void Finish()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Callback(Finish));
+            }
+            else
+            {
+                if (_errorCount != 0)
+                {
+                    MessageBox.Show(_errorCount + " errors occured during processing please see " + 
+                        EMMAException.logFile + " for details.", "Warning", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                this.Close();
             }
         }
 

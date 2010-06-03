@@ -91,13 +91,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
             Dictionary<long, TransProcessData> processData = new Dictionary<long, TransProcessData>();
             List<long> completedTrans = new List<long>();
             List<long> uncompletedTrans = new List<long>();
+            List<int> noTransItemIDs = new List<int>();
 
             foreach (Asset change in changes)
             {
                 // Note: because we are changing quantity within the foreach loop
                 // we don't use the filter on the AssetList.
                 // Instead, just use this if condition each time around.
-                if (change.Quantity < 0)
+                if (change.Quantity < 0 && !noTransItemIDs.Contains(change.ItemID))
                 {
                     // If we get a match then use the missing items's cost to calculate the 
                     // transaction's profit.
@@ -107,6 +108,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     Transactions.AddTransByCalcProfitFromAssets(transData,
                         UserAccount.CurrentGroup.GetFinanceAccessParams(APIDataType.Transactions),
                         change.ItemID, true);
+                    if (transData.Count == 0) { noTransItemIDs.Add(change.ItemID); }
                     foreach (EMMADataSet.TransactionsRow trans in transData)
                     {
                         if (trans.ItemID == change.ItemID && !completedTrans.Contains(trans.ID))
@@ -239,8 +241,6 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                 Assets.AddAssetToTable(assetData, change.ID);
                                 Assets.AddAssetToTable(assetData, change2.ID);
 
-                                //if (got1 && got2)
-                                //{
                                 EMMADataSet.AssetsRow row1 = assetData.FindByID(change.ID);
                                 EMMADataSet.AssetsRow row2 = assetData.FindByID(change2.ID);
                                 Asset a1 = new Asset(row1, null);
@@ -264,13 +264,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                         (a1.Quantity + thisAbsDeltaQ);
                                     row1.Cost = newCost;
                                     row1.CostCalc = true;
-                                    change.Quantity -= thisAbsDeltaQ;
-                                    change2.Quantity += thisAbsDeltaQ;
                                 }
                                 else if (row1.Quantity == 0) { row1.Delete(); }
                                 if (row2.Quantity == 0) { row2.Delete(); }
-                                //}
 
+                                change.Quantity -= thisAbsDeltaQ;
+                                change2.Quantity += thisAbsDeltaQ;
                             }
                         }
 
@@ -494,6 +493,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                 // By definition, unprocessed items will not be in the database update
                                 // represented by the 'assets' table so we don't have to worry about
                                 // conflicts.
+                                // (Note we could just leave it and it would get removed when all 
+                                // unprocessed assets are removed but we want to make sure it is not
+                                // picked up by another market order or later in the assets change
+                                // resolution process)
                                 Assets.ChangeAssets(charID, corp, unprocMatch.LocationID, unprocMatch.ItemID,
                                     unprocMatch.ContainerID, unprocMatch.Status, unprocMatch.AutoConExclude, 
                                     -1 * q, 0, false);
@@ -1225,19 +1228,26 @@ namespace EveMarketMonitorApp.DatabaseClasses
             bool costCalculated)
         {
             int systemID = 0, regionID = 0;
-            EveDataSet.staStationsRow station = Stations.GetStation(locationID);
-            if (station != null)
+            try
             {
-                systemID = station.solarSystemID;
-                regionID = station.regionID;
+                EveDataSet.staStationsRow station = Stations.GetStation(locationID);
+                if (station != null)
+                {
+                    systemID = station.solarSystemID;
+                    regionID = station.regionID;
+                }
             }
-            else
+            catch (EMMADataMissingException)
             {
-                throw new EMMADataMissingException(ExceptionSeverity.Critical, "A station is missing from the " +
-                    "database. This is likley due to new systems being " +
-                    "added to the game that are not in EMMA's database. A data update is required.",
-                    "staStations", locationID.ToString());
+                EveDataSet.mapSolarSystemsRow system = SolarSystems.GetSystem(locationID);
+                if (system != null)
+                {
+                    systemID = system.solarSystemID;
+                    regionID = system.regionID;
+                }
             }
+
+
             lock (assetsTableAdapter)
             {
                 assetsTableAdapter.AddQuantity(ownerID, corpAsset, itemID, locationID, systemID,
