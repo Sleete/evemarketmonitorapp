@@ -48,6 +48,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             {
                 if (_chars == null || _chars.Count == 0)
                 {
+                    UpdateCharList(false);
                     PopulateChars();
                 }
                 return _chars; 
@@ -120,6 +121,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         XmlNodeList results = EveAPI.GetResults(xml);
 
                         _charList = xml;
+                        // Clear the current collection of character objects
+                        _chars = null;
                     }
                     catch(Exception ex)
                     {

@@ -13,7 +13,7 @@ namespace EveMarketMonitorApp.Common
     public class EMMAException : ApplicationException
     {
         private ExceptionSeverity severity;
-        static string logFile = string.Format("{0}Logging{1}ExceptionLog.txt",
+        public static string logFile = string.Format("{0}Logging{1}ExceptionLog.txt",
             Globals.AppDataDir, Path.DirectorySeparatorChar);
 
         public ExceptionSeverity Severity 

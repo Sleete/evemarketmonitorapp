@@ -195,7 +195,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 }
                 return _container;
             }
-            set { _container = value; }
+            set { _container = value; if (_container != null) { _containerID = _container.ID; } }
         }
 
         public AssetList Contents

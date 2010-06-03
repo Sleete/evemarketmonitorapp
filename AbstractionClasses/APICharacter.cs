@@ -1053,20 +1053,10 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             // This means that once the update processing is complete, we
                             // can try and work out where these items came from.
                             #region Remember changes to item quantities
-                            //changes.ItemFilter = "ItemID = " + itemID + " AND LocationID = " + locationID +
-                            //    " AND ContainerID = " + containerID;
-                            //if (changes.FiltredItems.Count > 0)
-                            //{
-                            //    change = (Asset)changes.FiltredItems[0];
-                            //    change.Quantity = quantity - assetRow.Quantity;
-                            //}
-                            //else
-                            //{
-                                change = new Asset(assetRow);
-                                change.Quantity = quantity - assetRow.Quantity;
-                                change.Processed = false;
-                                changes.Add(change);
-                            //}
+                            change = new Asset(assetRow);
+                            change.Quantity = quantity - assetRow.Quantity;
+                            change.Processed = false;
+                            changes.Add(change);
                             #endregion
 
                             // All we need to do is update the quantity and set the processed flag.
@@ -1112,11 +1102,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     else
                     {
                         EveDataSet.staStationsRow station = null;
-                        //try
-                        //{
+                        try
+                        {
                             station = Stations.GetStation(locationID);
-                        //}
-                        //catch (EMMADataMissingException) { }
+                        }
+                        catch (EMMADataMissingException) { }
 
                         if (station != null)
                         {
@@ -1153,22 +1143,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     // This means that once the update processing is complete, we
                     // can try and work out where these items came from.
                     #region Remember changes to item quantities
-                    //changes.ItemFilter = "ItemID = " + itemID + " AND LocationID = " + locationID +
-                    //    " AND ContainerID = " + containerID;
-                    //if (changes.FiltredItems.Count > 0)
-                    //{
-                    //    change = (Asset)changes.FiltredItems[0];
-                    //    change.Quantity = quantity;
-                    //}
-                    //else
-                    //{
-                        change = new Asset(assetRow);
-                        if (isContainer) { change.ID = assetID; }
-                        change.Quantity = quantity;
-                        change.Processed = false;
-                        changes.Add(change);
-
-                    //}
+                    change = new Asset(assetRow);
+                    if (isContainer) { change.ID = assetID; }
+                    change.Quantity = quantity;
+                    change.Processed = false;
+                    changes.Add(change);
                     #endregion
                 }
 
