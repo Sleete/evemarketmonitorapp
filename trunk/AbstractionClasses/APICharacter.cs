@@ -2571,7 +2571,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                     oldRow.RemainingVol == orderRow.RemainingVol &&
                                     oldRow.MinVolume == orderRow.MinVolume && oldRow.Range == orderRow.Range &&
                                     oldRow.Duration == orderRow.Duration && oldRow.Escrow == orderRow.Escrow &&
-                                    oldRow.Price == orderRow.Price && oldRow.OrderState == orderRow.OrderState)
+                                    oldRow.Price == orderRow.Price && oldRow.OrderState == orderRow.OrderState &&
+                                    oldRow.EveOrderID == orderRow.EveOrderID)
                                 {
                                     // If the order from the XML exactly matches what we have in the database
                                     // then just set the processed flag and remove it from the orderData table
@@ -2631,7 +2632,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                         oldRow.RemainingVol != orderRow.RemainingVol ||
                                         oldRow.MinVolume != orderRow.MinVolume || oldRow.Range != orderRow.Range ||
                                         oldRow.Duration != orderRow.Duration || oldRow.Escrow != orderRow.Escrow ||
-                                        oldRow.Price != orderRow.Price)
+                                        oldRow.Price != orderRow.Price || oldRow.EveOrderID != orderRow.EveOrderID)
                                     {
                                         oldRow.TotalVol = orderRow.TotalVol;
                                         oldRow.RemainingVol = orderRow.RemainingVol;
@@ -2640,6 +2641,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                         oldRow.Duration = orderRow.Duration;
                                         oldRow.Escrow = orderRow.Escrow;
                                         oldRow.Price = orderRow.Price;
+                                        oldRow.EveOrderID = orderRow.EveOrderID;
                                         // Note, only other fields are 'buyOrder' and 'issued'. Neither of which we want to change.
                                         updated++;
                                     }
@@ -2708,6 +2710,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
         {
             EMMADataSet.OrdersRow newRow = orderData.NewOrdersRow();
 
+            newRow.EveOrderID = int.Parse(orderEntry.SelectSingleNode("@orderID").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             newRow.OwnerID = int.Parse(orderEntry.SelectSingleNode("@charID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             newRow.ForCorp = corc == CharOrCorp.Corp;

@@ -220,7 +220,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 tableAdapter.FillOrderExists(ordersTable, orderRow.OwnerID, orderRow.ForCorp, orderRow.WalletID,
                     orderRow.StationID, orderRow.ItemID, orderRow.TotalVol, orderRow.RemainingVol, 
-                    orderRow.Range, orderRow.OrderState, orderRow.BuyOrder, orderRow.Price, ref exists, ref orderID);
+                    orderRow.Range, orderRow.OrderState, orderRow.BuyOrder, orderRow.Price, orderRow.EveOrderID,
+                    ref exists, ref orderID);
             }
 
             ID = orderID.HasValue ? orderID.Value : 0;

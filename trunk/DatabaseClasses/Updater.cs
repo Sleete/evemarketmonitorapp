@@ -5732,9 +5732,9 @@ AS
                     }
                     #endregion
                 }       
-                 if (dbVersion.CompareTo(new Version("1.5.0.6")) < 0)
-                 {
-                     #region Update 'AssetExists' stored procedure
+                if (dbVersion.CompareTo(new Version("1.5.0.6")) < 0)
+                {
+                    #region Update 'AssetExists' stored procedure
                      commandText =
                             @"ALTER PROCEDURE dbo.AssetExists 
 	@ownerID			int,
@@ -5792,8 +5792,231 @@ AS
                             "Problem updating 'AssetExists' stored procedure", ex);
                     }
                     #endregion
-                }       
-               
+                }
+
+                if (dbVersion.CompareTo(new Version("1.5.0.7")) < 0)
+                {
+                    #region Add 'EveOrderID' column to Orders table
+                    commandText =
+                            @"ALTER TABLE dbo.Orders
+ADD EveOrderID bigint NOT NULL DEFAULT 0";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.5.0.7"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem adding 'EveOrderID' column to Orders table", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.5.0.8")) < 0)
+                {
+                    #region Update 'OrderExists' stored procedure
+                    commandText =
+                           @"ALTER PROCEDURE dbo.OrderExists
+	@ownerID		int,
+	@forCorp		bit,
+	@walletID		smallint,
+	@stationID		int,
+	@itemID			int,
+	@totalVol		int,
+	@remainingVol	int,
+	@range			smallint,
+	@orderState		smallint,
+	@buyOrder		bit,
+	@price			decimal(18,2),
+	@eveOrderID		bigint,
+	@exists			bit		OUT,
+	@orderID		int		OUT
+AS
+	SET @exists = 0
+	SET	@orderID = 0
+
+	SELECT @orderID = ID
+	FROM Orders
+	WHERE (OwnerID = @ownerID) AND (ForCorp = @forCorp) AND (WalletID = @walletID) AND 
+		(StationID = @stationID) AND (ItemID = @itemID) AND (Range = @range) AND (BuyOrder = @buyOrder) AND
+		(TotalVol = @totalVol) AND (RemainingVol >= @remainingVol) AND ((OrderState = @orderState) OR 
+		(@orderState = 2 AND (OrderState = 2 OR OrderState = 1000 OR OrderState = 2000))) AND
+		(Processed = 0) AND (Price = @price) AND (EveOrderID = @eveOrderID)
+	IF(@orderID = 0 AND @orderState = 2) 
+	BEGIN
+		-- If we are trying to find a filled/expired order but failed first time around then try
+		-- looking for an active order (i.e. one that was active and is now competed/expired)
+		SELECT @orderID = ID
+		FROM Orders
+		WHERE (OwnerID = @ownerID) AND (ForCorp = @forCorp) AND (WalletID = @walletID) AND 
+			(StationID = @stationID) AND (ItemID = @itemID) AND (Range = @range) AND (BuyOrder = @buyOrder) AND
+			(TotalVol = @totalVol) AND (RemainingVol >= @remainingVol) AND (Processed = 0) AND
+			(OrderState = 0 OR OrderState = 999) AND (Price = @price) AND (EveOrderID = @eveOrderID)
+	END
+	IF(@orderID = 0) 
+	BEGIN
+		-- Try matching to an order in the database that matches all other parameters but has a blank eve ID.
+		-- This can happen if the user has recently installed the update that adds EveOrderID to the Orders table.
+		SELECT @orderID = ID
+		FROM Orders
+		WHERE (OwnerID = @ownerID) AND (ForCorp = @forCorp) AND (WalletID = @walletID) AND 
+			(StationID = @stationID) AND (ItemID = @itemID) AND (Range = @range) AND (BuyOrder = @buyOrder) AND
+			(TotalVol = @totalVol) AND (RemainingVol >= @remainingVol) AND ((OrderState = @orderState) OR 
+			(@orderState = 2 AND (OrderState = 2 OR OrderState = 1000 OR OrderState = 2000))) AND
+			(Processed = 0) AND (Price = @price) AND (EveOrderID = 0)
+	    IF(@orderID = 0) 
+	    BEGIN
+		    -- Still couldn't match an order so try finding one that matches all parameters except price and 
+		    -- eve order id (changing the price changes the ID).
+		    SELECT @orderID = ID
+		    FROM Orders
+		    WHERE (OwnerID = @ownerID) AND (ForCorp = @forCorp) AND (WalletID = @walletID) AND 
+			    (StationID = @stationID) AND (ItemID = @itemID) AND (Range = @range) AND (BuyOrder = @buyOrder) AND
+			    (TotalVol = @totalVol) AND (RemainingVol >= @remainingVol) AND (Processed = 0) AND 
+			    ((OrderState = @orderState) OR (@orderState = 2 AND 
+			    (OrderState = 2 OR OrderState = 1000 OR OrderState = 2000)))
+	        IF(@orderID = 0) 
+	        BEGIN
+		        -- Still couldn't match an order so try finding one that matches all parameters except state and price.
+		        SELECT @orderID = ID
+		        FROM Orders
+		        WHERE (OwnerID = @ownerID) AND (ForCorp = @forCorp) AND (WalletID = @walletID) AND 
+			        (StationID = @stationID) AND (ItemID = @itemID) AND (Range = @range) AND (BuyOrder = @buyOrder) AND
+			        (TotalVol = @totalVol) AND (RemainingVol >= @remainingVol) AND (Processed = 0)
+	        END
+	    END
+	END
+	
+	UPDATE Orders
+	SET Processed = 1
+	WHERE (ID = @orderID)
+		
+	SELECT Orders.*
+	FROM Orders
+	WHERE (ID = @orderID)
+
+	IF(@@ROWCOUNT = 1)
+	BEGIN
+		SET @exists = 1
+	END
+
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.5.0.8"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'OrderExists' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.5.0.9")) < 0)
+                {
+                    #region Update 'OrdersInsert' stored procedure
+                    commandText =
+                           @"ALTER PROCEDURE dbo.OrdersInsert 
+	@OwnerID		int,
+	@ForCorp		bit,
+	@StationID		int,
+	@TotalVol		int,
+	@RemainingVol	int,
+	@MinVolume		int,
+	@OrderState		smallint,
+	@ItemID			int,
+	@Range			smallint,
+	@walletID		smallint,
+	@Duration		smallint,
+	@Escrow			decimal(18,2),
+	@Price			decimal(18,2),
+	@BuyOrder		bit,
+	@Issued			datetime,
+	@Processed		bit,
+	@EveOrderID		bigint	
+AS
+	INSERT INTO [dbo].[Orders] ([OwnerID], [ForCorp], [StationID], [TotalVol], [RemainingVol], [MinVolume], [OrderState], [ItemID], [Range], [WalletID], [Duration], [Escrow], [Price], [BuyOrder], [Issued], [Processed], [EveOrderID]) 
+	VALUES (@OwnerID, @ForCorp, @StationID, @TotalVol, @RemainingVol, @MinVolume, @OrderState, @ItemID, @Range, @WalletID, @Duration, @Escrow, @Price, @BuyOrder, @Issued, @Processed, @EveOrderID);
+
+	SELECT ID, OwnerID, ForCorp, StationID, TotalVol, RemainingVol, MinVolume, OrderState, ItemID, Range, WalletID, Duration, Escrow, Price, BuyOrder, Issued, Processed, EveOrderID
+	FROM Orders 
+	WHERE (ID = SCOPE_IDENTITY())
+	
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.5.0.9"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'OrdersInsert' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                if (dbVersion.CompareTo(new Version("1.5.0.10")) < 0)
+                {
+                    #region Update 'OrdersUpdate' stored procedure
+                    commandText =
+                           @"ALTER PROCEDURE dbo.OrdersUpdate 
+	@ID					int,
+	@OwnerID			int,
+	@ForCorp			bit,
+	@StationID			int,
+	@TotalVol			int,
+	@RemainingVol		int,
+	@MinVolume			int,
+	@OrderState			smallint,
+	@ItemID				int,
+	@Range				smallint,
+	@WalletID			smallint,
+	@Duration			smallint,
+	@Escrow				decimal(18,2),
+	@Price				decimal(18,2),
+	@BuyOrder			bit,
+	@Issued				datetime,
+	@Processed			bit,
+	@EveOrderID			bigint,
+	@Original_ID		int
+AS
+
+	UPDATE [dbo].[Orders] SET [OwnerID] = @OwnerID, [ForCorp] = @ForCorp, [StationID] = @StationID, [TotalVol] = @TotalVol, [RemainingVol] = @RemainingVol, [MinVolume] = @MinVolume, [OrderState] = @OrderState, [ItemID] = @ItemID, [Range] = @Range, [WalletID] = @WalletID, [Duration] = @Duration, [Escrow] = @Escrow, [Price] = @Price, [BuyOrder] = @BuyOrder, [Issued] = @Issued, [Processed] = @Processed, [EveOrderID] = @EveOrderID
+	WHERE ([ID] = @Original_ID);
+
+	SELECT ID, OwnerID, ForCorp, StationID, TotalVol, RemainingVol, MinVolume, OrderState, ItemID, Range, WalletID, Duration, Escrow, Price, BuyOrder, Issued, Processed, EveOrderID
+	FROM Orders 
+	WHERE (ID = @ID)
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.5.0.10"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updating 'OrdersUpdate' stored procedure", ex);
+                    }
+                    #endregion
+                }
 
                 
             }

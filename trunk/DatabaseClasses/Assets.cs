@@ -659,7 +659,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     AssetExists(assetsData, ownerID, useCorp, trans.StationID, trans.ItemID,
                         (int)AssetStatus.States.Normal, false, 0, false, false, true, false, true, 0, ref assetID);
 
-                    if (assetID == 0)
+                    if (assetID != 0)
                     {
                         // Asset stack already exists in database and/or datatable, modify it 
                         // based upon the transaction data.
