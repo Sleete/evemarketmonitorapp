@@ -352,6 +352,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     // 23 hours to get the date/time that the snapshot was actually taken.
                     retVal = DateTime.Parse(timeNode.InnerText, 
                         System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                    // C# will asume that the value from the file is for the local time zone.
+                    // in fact it is UTC so we need to specify this.
+                    retVal = TimeZoneInfo.ConvertTime(retVal, TimeZoneInfo.Utc, TimeZoneInfo.Utc);
+                    // Convert from UTC to local time.
+                    //TimeZoneInfo.ConvertTimeFromUtc(retVal, TimeZoneInfo.Utc);
                     retVal = retVal.AddHours(-23);
                 }
             }
@@ -376,7 +381,13 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 {
                     // Get the date/time that the assets data is cached until and then subtract
                     // 23 hours to get the date/time that the snapshot was actually taken.
-                    retVal = DateTime.Parse(timeNode.InnerText, System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                    retVal = DateTime.Parse(timeNode.InnerText, 
+                        System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                    // C# will asume that the value from the file is for the local time zone.
+                    // in fact it is UTC so we need to specify this.
+                    retVal = TimeZoneInfo.ConvertTime(retVal, TimeZoneInfo.Utc, TimeZoneInfo.Utc);
+                    // Convert from UTC to local time.
+                    //TimeZoneInfo.ConvertTimeFromUtc(retVal, TimeZoneInfo.Utc);
                     retVal = retVal.AddHours(-1);
                 }
             }

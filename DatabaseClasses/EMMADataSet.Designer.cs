@@ -41,8 +41,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         
         private NamesDataTable tableNames;
         
-        private OrdersDataTable tableOrders;
-        
         private UserSettingsDataTable tableUserSettings;
         
         private IDTableDataTable tableIDTable;
@@ -119,6 +117,8 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         
         private AssetsDataTable tableAssets;
         
+        private OrdersDataTable tableOrders;
+        
         private WalletDivisionsDataTable tableWalletDivisions;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
@@ -170,9 +170,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 }
                 if ((ds.Tables["Names"] != null)) {
                     base.Tables.Add(new NamesDataTable(ds.Tables["Names"]));
-                }
-                if ((ds.Tables["Orders"] != null)) {
-                    base.Tables.Add(new OrdersDataTable(ds.Tables["Orders"]));
                 }
                 if ((ds.Tables["UserSettings"] != null)) {
                     base.Tables.Add(new UserSettingsDataTable(ds.Tables["UserSettings"]));
@@ -288,6 +285,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 if ((ds.Tables["Assets"] != null)) {
                     base.Tables.Add(new AssetsDataTable(ds.Tables["Assets"]));
                 }
+                if ((ds.Tables["Orders"] != null)) {
+                    base.Tables.Add(new OrdersDataTable(ds.Tables["Orders"]));
+                }
                 if ((ds.Tables["WalletDivisions"] != null)) {
                     base.Tables.Add(new WalletDivisionsDataTable(ds.Tables["WalletDivisions"]));
                 }
@@ -378,15 +378,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         public NamesDataTable Names {
             get {
                 return this.tableNames;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Browsable(false)]
-        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public OrdersDataTable Orders {
-            get {
-                return this.tableOrders;
             }
         }
         
@@ -735,6 +726,15 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public OrdersDataTable Orders {
+            get {
+                return this.tableOrders;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
         public WalletDivisionsDataTable WalletDivisions {
             get {
                 return this.tableWalletDivisions;
@@ -823,9 +823,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 }
                 if ((ds.Tables["Names"] != null)) {
                     base.Tables.Add(new NamesDataTable(ds.Tables["Names"]));
-                }
-                if ((ds.Tables["Orders"] != null)) {
-                    base.Tables.Add(new OrdersDataTable(ds.Tables["Orders"]));
                 }
                 if ((ds.Tables["UserSettings"] != null)) {
                     base.Tables.Add(new UserSettingsDataTable(ds.Tables["UserSettings"]));
@@ -941,6 +938,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 if ((ds.Tables["Assets"] != null)) {
                     base.Tables.Add(new AssetsDataTable(ds.Tables["Assets"]));
                 }
+                if ((ds.Tables["Orders"] != null)) {
+                    base.Tables.Add(new OrdersDataTable(ds.Tables["Orders"]));
+                }
                 if ((ds.Tables["WalletDivisions"] != null)) {
                     base.Tables.Add(new WalletDivisionsDataTable(ds.Tables["WalletDivisions"]));
                 }
@@ -1020,12 +1020,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             if ((initTable == true)) {
                 if ((this.tableNames != null)) {
                     this.tableNames.InitVars();
-                }
-            }
-            this.tableOrders = ((OrdersDataTable)(base.Tables["Orders"]));
-            if ((initTable == true)) {
-                if ((this.tableOrders != null)) {
-                    this.tableOrders.InitVars();
                 }
             }
             this.tableUserSettings = ((UserSettingsDataTable)(base.Tables["UserSettings"]));
@@ -1256,6 +1250,12 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                     this.tableAssets.InitVars();
                 }
             }
+            this.tableOrders = ((OrdersDataTable)(base.Tables["Orders"]));
+            if ((initTable == true)) {
+                if ((this.tableOrders != null)) {
+                    this.tableOrders.InitVars();
+                }
+            }
             this.tableWalletDivisions = ((WalletDivisionsDataTable)(base.Tables["WalletDivisions"]));
             if ((initTable == true)) {
                 if ((this.tableWalletDivisions != null)) {
@@ -1287,8 +1287,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             base.Tables.Add(this.tableJournalGenerations);
             this.tableNames = new NamesDataTable();
             base.Tables.Add(this.tableNames);
-            this.tableOrders = new OrdersDataTable();
-            base.Tables.Add(this.tableOrders);
             this.tableUserSettings = new UserSettingsDataTable();
             base.Tables.Add(this.tableUserSettings);
             this.tableIDTable = new IDTableDataTable();
@@ -1365,6 +1363,8 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             base.Tables.Add(this.tableTransactions);
             this.tableAssets = new AssetsDataTable();
             base.Tables.Add(this.tableAssets);
+            this.tableOrders = new OrdersDataTable();
+            base.Tables.Add(this.tableOrders);
             this.tableWalletDivisions = new WalletDivisionsDataTable();
             base.Tables.Add(this.tableWalletDivisions);
         }
@@ -1406,11 +1406,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         private bool ShouldSerializeNames() {
-            return false;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private bool ShouldSerializeOrders() {
             return false;
         }
         
@@ -1605,6 +1600,11 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private bool ShouldSerializeOrders() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         private bool ShouldSerializeWalletDivisions() {
             return false;
         }
@@ -1677,8 +1677,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         public delegate void JournalGenerationsRowChangeEventHandler(object sender, JournalGenerationsRowChangeEvent e);
         
         public delegate void NamesRowChangeEventHandler(object sender, NamesRowChangeEvent e);
-        
-        public delegate void OrdersRowChangeEventHandler(object sender, OrdersRowChangeEvent e);
         
         public delegate void UserSettingsRowChangeEventHandler(object sender, UserSettingsRowChangeEvent e);
         
@@ -1755,6 +1753,8 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         public delegate void TransactionsRowChangeEventHandler(object sender, TransactionsRowChangeEvent e);
         
         public delegate void AssetsRowChangeEventHandler(object sender, AssetsRowChangeEvent e);
+        
+        public delegate void OrdersRowChangeEventHandler(object sender, OrdersRowChangeEvent e);
         
         public delegate void WalletDivisionsRowChangeEventHandler(object sender, WalletDivisionsRowChangeEvent e);
         
@@ -3899,482 +3899,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
                 attribute2.FixedValue = "NamesDataTable";
-                type.Attributes.Add(attribute2);
-                type.Particle = sequence;
-                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
-                if (xs.Contains(dsSchema.TargetNamespace)) {
-                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
-                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
-                    try {
-                        global::System.Xml.Schema.XmlSchema schema = null;
-                        dsSchema.Write(s1);
-                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
-                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
-                            s2.SetLength(0);
-                            schema.Write(s2);
-                            if ((s1.Length == s2.Length)) {
-                                s1.Position = 0;
-                                s2.Position = 0;
-                                for (; ((s1.Position != s1.Length) 
-                                            && (s1.ReadByte() == s2.ReadByte())); ) {
-                                    ;
-                                }
-                                if ((s1.Position == s1.Length)) {
-                                    return type;
-                                }
-                            }
-                        }
-                    }
-                    finally {
-                        if ((s1 != null)) {
-                            s1.Close();
-                        }
-                        if ((s2 != null)) {
-                            s2.Close();
-                        }
-                    }
-                }
-                xs.Add(dsSchema);
-                return type;
-            }
-        }
-        
-        /// <summary>
-        ///Represents the strongly named DataTable class.
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-        [global::System.Serializable()]
-        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class OrdersDataTable : global::System.Data.TypedTableBase<OrdersRow> {
-            
-            private global::System.Data.DataColumn columnID;
-            
-            private global::System.Data.DataColumn columnOwnerID;
-            
-            private global::System.Data.DataColumn columnForCorp;
-            
-            private global::System.Data.DataColumn columnStationID;
-            
-            private global::System.Data.DataColumn columnTotalVol;
-            
-            private global::System.Data.DataColumn columnRemainingVol;
-            
-            private global::System.Data.DataColumn columnMinVolume;
-            
-            private global::System.Data.DataColumn columnOrderState;
-            
-            private global::System.Data.DataColumn columnItemID;
-            
-            private global::System.Data.DataColumn columnRange;
-            
-            private global::System.Data.DataColumn columnWalletID;
-            
-            private global::System.Data.DataColumn columnDuration;
-            
-            private global::System.Data.DataColumn columnEscrow;
-            
-            private global::System.Data.DataColumn columnPrice;
-            
-            private global::System.Data.DataColumn columnBuyOrder;
-            
-            private global::System.Data.DataColumn columnIssued;
-            
-            private global::System.Data.DataColumn columnProcessed;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public OrdersDataTable() {
-                this.TableName = "Orders";
-                this.BeginInit();
-                this.InitClass();
-                this.EndInit();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            internal OrdersDataTable(global::System.Data.DataTable table) {
-                this.TableName = table.TableName;
-                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
-                    this.CaseSensitive = table.CaseSensitive;
-                }
-                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
-                    this.Locale = table.Locale;
-                }
-                if ((table.Namespace != table.DataSet.Namespace)) {
-                    this.Namespace = table.Namespace;
-                }
-                this.Prefix = table.Prefix;
-                this.MinimumCapacity = table.MinimumCapacity;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected OrdersDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
-                    base(info, context) {
-                this.InitVars();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn IDColumn {
-                get {
-                    return this.columnID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn OwnerIDColumn {
-                get {
-                    return this.columnOwnerID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn ForCorpColumn {
-                get {
-                    return this.columnForCorp;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn StationIDColumn {
-                get {
-                    return this.columnStationID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn TotalVolColumn {
-                get {
-                    return this.columnTotalVol;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn RemainingVolColumn {
-                get {
-                    return this.columnRemainingVol;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn MinVolumeColumn {
-                get {
-                    return this.columnMinVolume;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn OrderStateColumn {
-                get {
-                    return this.columnOrderState;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn ItemIDColumn {
-                get {
-                    return this.columnItemID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn RangeColumn {
-                get {
-                    return this.columnRange;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn WalletIDColumn {
-                get {
-                    return this.columnWalletID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn DurationColumn {
-                get {
-                    return this.columnDuration;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn EscrowColumn {
-                get {
-                    return this.columnEscrow;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn PriceColumn {
-                get {
-                    return this.columnPrice;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn BuyOrderColumn {
-                get {
-                    return this.columnBuyOrder;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn IssuedColumn {
-                get {
-                    return this.columnIssued;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn ProcessedColumn {
-                get {
-                    return this.columnProcessed;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.ComponentModel.Browsable(false)]
-            public int Count {
-                get {
-                    return this.Rows.Count;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public OrdersRow this[int index] {
-                get {
-                    return ((OrdersRow)(this.Rows[index]));
-                }
-            }
-            
-            public event OrdersRowChangeEventHandler OrdersRowChanging;
-            
-            public event OrdersRowChangeEventHandler OrdersRowChanged;
-            
-            public event OrdersRowChangeEventHandler OrdersRowDeleting;
-            
-            public event OrdersRowChangeEventHandler OrdersRowDeleted;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public void AddOrdersRow(OrdersRow row) {
-                this.Rows.Add(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public OrdersRow AddOrdersRow(
-                        int OwnerID, 
-                        bool ForCorp, 
-                        int StationID, 
-                        int TotalVol, 
-                        int RemainingVol, 
-                        int MinVolume, 
-                        short OrderState, 
-                        int ItemID, 
-                        short Range, 
-                        short WalletID, 
-                        short Duration, 
-                        decimal Escrow, 
-                        decimal Price, 
-                        bool BuyOrder, 
-                        System.DateTime Issued, 
-                        bool Processed) {
-                OrdersRow rowOrdersRow = ((OrdersRow)(this.NewRow()));
-                object[] columnValuesArray = new object[] {
-                        null,
-                        OwnerID,
-                        ForCorp,
-                        StationID,
-                        TotalVol,
-                        RemainingVol,
-                        MinVolume,
-                        OrderState,
-                        ItemID,
-                        Range,
-                        WalletID,
-                        Duration,
-                        Escrow,
-                        Price,
-                        BuyOrder,
-                        Issued,
-                        Processed};
-                rowOrdersRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowOrdersRow);
-                return rowOrdersRow;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public OrdersRow FindByID(int ID) {
-                return ((OrdersRow)(this.Rows.Find(new object[] {
-                            ID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public override global::System.Data.DataTable Clone() {
-                OrdersDataTable cln = ((OrdersDataTable)(base.Clone()));
-                cln.InitVars();
-                return cln;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override global::System.Data.DataTable CreateInstance() {
-                return new OrdersDataTable();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            internal void InitVars() {
-                this.columnID = base.Columns["ID"];
-                this.columnOwnerID = base.Columns["OwnerID"];
-                this.columnForCorp = base.Columns["ForCorp"];
-                this.columnStationID = base.Columns["StationID"];
-                this.columnTotalVol = base.Columns["TotalVol"];
-                this.columnRemainingVol = base.Columns["RemainingVol"];
-                this.columnMinVolume = base.Columns["MinVolume"];
-                this.columnOrderState = base.Columns["OrderState"];
-                this.columnItemID = base.Columns["ItemID"];
-                this.columnRange = base.Columns["Range"];
-                this.columnWalletID = base.Columns["WalletID"];
-                this.columnDuration = base.Columns["Duration"];
-                this.columnEscrow = base.Columns["Escrow"];
-                this.columnPrice = base.Columns["Price"];
-                this.columnBuyOrder = base.Columns["BuyOrder"];
-                this.columnIssued = base.Columns["Issued"];
-                this.columnProcessed = base.Columns["Processed"];
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            private void InitClass() {
-                this.columnID = new global::System.Data.DataColumn("ID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnID);
-                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnOwnerID);
-                this.columnForCorp = new global::System.Data.DataColumn("ForCorp", typeof(bool), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnForCorp);
-                this.columnStationID = new global::System.Data.DataColumn("StationID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnStationID);
-                this.columnTotalVol = new global::System.Data.DataColumn("TotalVol", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTotalVol);
-                this.columnRemainingVol = new global::System.Data.DataColumn("RemainingVol", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnRemainingVol);
-                this.columnMinVolume = new global::System.Data.DataColumn("MinVolume", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnMinVolume);
-                this.columnOrderState = new global::System.Data.DataColumn("OrderState", typeof(short), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnOrderState);
-                this.columnItemID = new global::System.Data.DataColumn("ItemID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnItemID);
-                this.columnRange = new global::System.Data.DataColumn("Range", typeof(short), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnRange);
-                this.columnWalletID = new global::System.Data.DataColumn("WalletID", typeof(short), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnWalletID);
-                this.columnDuration = new global::System.Data.DataColumn("Duration", typeof(short), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDuration);
-                this.columnEscrow = new global::System.Data.DataColumn("Escrow", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnEscrow);
-                this.columnPrice = new global::System.Data.DataColumn("Price", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnPrice);
-                this.columnBuyOrder = new global::System.Data.DataColumn("BuyOrder", typeof(bool), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnBuyOrder);
-                this.columnIssued = new global::System.Data.DataColumn("Issued", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIssued);
-                this.columnProcessed = new global::System.Data.DataColumn("Processed", typeof(bool), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnProcessed);
-                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnID}, true));
-                this.columnID.AutoIncrement = true;
-                this.columnID.AutoIncrementSeed = 2000000000;
-                this.columnID.AllowDBNull = false;
-                this.columnID.ReadOnly = true;
-                this.columnID.Unique = true;
-                this.columnOwnerID.AllowDBNull = false;
-                this.columnForCorp.AllowDBNull = false;
-                this.columnStationID.AllowDBNull = false;
-                this.columnTotalVol.AllowDBNull = false;
-                this.columnRemainingVol.AllowDBNull = false;
-                this.columnMinVolume.AllowDBNull = false;
-                this.columnOrderState.AllowDBNull = false;
-                this.columnItemID.AllowDBNull = false;
-                this.columnRange.AllowDBNull = false;
-                this.columnWalletID.AllowDBNull = false;
-                this.columnDuration.AllowDBNull = false;
-                this.columnEscrow.AllowDBNull = false;
-                this.columnPrice.AllowDBNull = false;
-                this.columnBuyOrder.AllowDBNull = false;
-                this.columnIssued.AllowDBNull = false;
-                this.columnProcessed.AllowDBNull = false;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public OrdersRow NewOrdersRow() {
-                return ((OrdersRow)(this.NewRow()));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new OrdersRow(builder);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override global::System.Type GetRowType() {
-                return typeof(OrdersRow);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanged(e);
-                if ((this.OrdersRowChanged != null)) {
-                    this.OrdersRowChanged(this, new OrdersRowChangeEvent(((OrdersRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanging(e);
-                if ((this.OrdersRowChanging != null)) {
-                    this.OrdersRowChanging(this, new OrdersRowChangeEvent(((OrdersRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleted(e);
-                if ((this.OrdersRowDeleted != null)) {
-                    this.OrdersRowDeleted(this, new OrdersRowChangeEvent(((OrdersRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleting(e);
-                if ((this.OrdersRowDeleting != null)) {
-                    this.OrdersRowDeleting(this, new OrdersRowChangeEvent(((OrdersRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public void RemoveOrdersRow(OrdersRow row) {
-                this.Rows.Remove(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
-                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                EMMADataSet ds = new EMMADataSet();
-                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
-                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
-                any1.MinOccurs = new decimal(0);
-                any1.MaxOccurs = decimal.MaxValue;
-                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any1);
-                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
-                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
-                any2.MinOccurs = new decimal(1);
-                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any2);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute1.Name = "namespace";
-                attribute1.FixedValue = ds.Namespace;
-                type.Attributes.Add(attribute1);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "OrdersDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -16038,6 +15562,498 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class OrdersDataTable : global::System.Data.TypedTableBase<OrdersRow> {
+            
+            private global::System.Data.DataColumn columnID;
+            
+            private global::System.Data.DataColumn columnOwnerID;
+            
+            private global::System.Data.DataColumn columnForCorp;
+            
+            private global::System.Data.DataColumn columnStationID;
+            
+            private global::System.Data.DataColumn columnTotalVol;
+            
+            private global::System.Data.DataColumn columnRemainingVol;
+            
+            private global::System.Data.DataColumn columnMinVolume;
+            
+            private global::System.Data.DataColumn columnOrderState;
+            
+            private global::System.Data.DataColumn columnItemID;
+            
+            private global::System.Data.DataColumn columnRange;
+            
+            private global::System.Data.DataColumn columnWalletID;
+            
+            private global::System.Data.DataColumn columnDuration;
+            
+            private global::System.Data.DataColumn columnEscrow;
+            
+            private global::System.Data.DataColumn columnPrice;
+            
+            private global::System.Data.DataColumn columnBuyOrder;
+            
+            private global::System.Data.DataColumn columnIssued;
+            
+            private global::System.Data.DataColumn columnProcessed;
+            
+            private global::System.Data.DataColumn columnEveOrderID;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public OrdersDataTable() {
+                this.TableName = "Orders";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            internal OrdersDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected OrdersDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn IDColumn {
+                get {
+                    return this.columnID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn OwnerIDColumn {
+                get {
+                    return this.columnOwnerID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn ForCorpColumn {
+                get {
+                    return this.columnForCorp;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn StationIDColumn {
+                get {
+                    return this.columnStationID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn TotalVolColumn {
+                get {
+                    return this.columnTotalVol;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn RemainingVolColumn {
+                get {
+                    return this.columnRemainingVol;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn MinVolumeColumn {
+                get {
+                    return this.columnMinVolume;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn OrderStateColumn {
+                get {
+                    return this.columnOrderState;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn ItemIDColumn {
+                get {
+                    return this.columnItemID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn RangeColumn {
+                get {
+                    return this.columnRange;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn WalletIDColumn {
+                get {
+                    return this.columnWalletID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn DurationColumn {
+                get {
+                    return this.columnDuration;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn EscrowColumn {
+                get {
+                    return this.columnEscrow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn PriceColumn {
+                get {
+                    return this.columnPrice;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn BuyOrderColumn {
+                get {
+                    return this.columnBuyOrder;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn IssuedColumn {
+                get {
+                    return this.columnIssued;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn ProcessedColumn {
+                get {
+                    return this.columnProcessed;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn EveOrderIDColumn {
+                get {
+                    return this.columnEveOrderID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public OrdersRow this[int index] {
+                get {
+                    return ((OrdersRow)(this.Rows[index]));
+                }
+            }
+            
+            public event OrdersRowChangeEventHandler OrdersRowChanging;
+            
+            public event OrdersRowChangeEventHandler OrdersRowChanged;
+            
+            public event OrdersRowChangeEventHandler OrdersRowDeleting;
+            
+            public event OrdersRowChangeEventHandler OrdersRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public void AddOrdersRow(OrdersRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public OrdersRow AddOrdersRow(
+                        int OwnerID, 
+                        bool ForCorp, 
+                        int StationID, 
+                        int TotalVol, 
+                        int RemainingVol, 
+                        int MinVolume, 
+                        short OrderState, 
+                        int ItemID, 
+                        short Range, 
+                        short WalletID, 
+                        short Duration, 
+                        decimal Escrow, 
+                        decimal Price, 
+                        bool BuyOrder, 
+                        System.DateTime Issued, 
+                        bool Processed, 
+                        long EveOrderID) {
+                OrdersRow rowOrdersRow = ((OrdersRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        null,
+                        OwnerID,
+                        ForCorp,
+                        StationID,
+                        TotalVol,
+                        RemainingVol,
+                        MinVolume,
+                        OrderState,
+                        ItemID,
+                        Range,
+                        WalletID,
+                        Duration,
+                        Escrow,
+                        Price,
+                        BuyOrder,
+                        Issued,
+                        Processed,
+                        EveOrderID};
+                rowOrdersRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowOrdersRow);
+                return rowOrdersRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public OrdersRow FindByID(int ID) {
+                return ((OrdersRow)(this.Rows.Find(new object[] {
+                            ID})));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public override global::System.Data.DataTable Clone() {
+                OrdersDataTable cln = ((OrdersDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new OrdersDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            internal void InitVars() {
+                this.columnID = base.Columns["ID"];
+                this.columnOwnerID = base.Columns["OwnerID"];
+                this.columnForCorp = base.Columns["ForCorp"];
+                this.columnStationID = base.Columns["StationID"];
+                this.columnTotalVol = base.Columns["TotalVol"];
+                this.columnRemainingVol = base.Columns["RemainingVol"];
+                this.columnMinVolume = base.Columns["MinVolume"];
+                this.columnOrderState = base.Columns["OrderState"];
+                this.columnItemID = base.Columns["ItemID"];
+                this.columnRange = base.Columns["Range"];
+                this.columnWalletID = base.Columns["WalletID"];
+                this.columnDuration = base.Columns["Duration"];
+                this.columnEscrow = base.Columns["Escrow"];
+                this.columnPrice = base.Columns["Price"];
+                this.columnBuyOrder = base.Columns["BuyOrder"];
+                this.columnIssued = base.Columns["Issued"];
+                this.columnProcessed = base.Columns["Processed"];
+                this.columnEveOrderID = base.Columns["EveOrderID"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            private void InitClass() {
+                this.columnID = new global::System.Data.DataColumn("ID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnID);
+                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOwnerID);
+                this.columnForCorp = new global::System.Data.DataColumn("ForCorp", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnForCorp);
+                this.columnStationID = new global::System.Data.DataColumn("StationID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnStationID);
+                this.columnTotalVol = new global::System.Data.DataColumn("TotalVol", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalVol);
+                this.columnRemainingVol = new global::System.Data.DataColumn("RemainingVol", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRemainingVol);
+                this.columnMinVolume = new global::System.Data.DataColumn("MinVolume", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMinVolume);
+                this.columnOrderState = new global::System.Data.DataColumn("OrderState", typeof(short), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOrderState);
+                this.columnItemID = new global::System.Data.DataColumn("ItemID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnItemID);
+                this.columnRange = new global::System.Data.DataColumn("Range", typeof(short), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRange);
+                this.columnWalletID = new global::System.Data.DataColumn("WalletID", typeof(short), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnWalletID);
+                this.columnDuration = new global::System.Data.DataColumn("Duration", typeof(short), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDuration);
+                this.columnEscrow = new global::System.Data.DataColumn("Escrow", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEscrow);
+                this.columnPrice = new global::System.Data.DataColumn("Price", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPrice);
+                this.columnBuyOrder = new global::System.Data.DataColumn("BuyOrder", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBuyOrder);
+                this.columnIssued = new global::System.Data.DataColumn("Issued", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIssued);
+                this.columnProcessed = new global::System.Data.DataColumn("Processed", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnProcessed);
+                this.columnEveOrderID = new global::System.Data.DataColumn("EveOrderID", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEveOrderID);
+                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
+                                this.columnID}, true));
+                this.columnID.AutoIncrement = true;
+                this.columnID.AutoIncrementSeed = 2000000000;
+                this.columnID.AutoIncrementStep = -1;
+                this.columnID.AllowDBNull = false;
+                this.columnID.ReadOnly = true;
+                this.columnID.Unique = true;
+                this.columnOwnerID.AllowDBNull = false;
+                this.columnForCorp.AllowDBNull = false;
+                this.columnStationID.AllowDBNull = false;
+                this.columnTotalVol.AllowDBNull = false;
+                this.columnRemainingVol.AllowDBNull = false;
+                this.columnMinVolume.AllowDBNull = false;
+                this.columnOrderState.AllowDBNull = false;
+                this.columnItemID.AllowDBNull = false;
+                this.columnRange.AllowDBNull = false;
+                this.columnWalletID.AllowDBNull = false;
+                this.columnDuration.AllowDBNull = false;
+                this.columnEscrow.AllowDBNull = false;
+                this.columnPrice.AllowDBNull = false;
+                this.columnBuyOrder.AllowDBNull = false;
+                this.columnIssued.AllowDBNull = false;
+                this.columnProcessed.AllowDBNull = false;
+                this.columnEveOrderID.AllowDBNull = false;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public OrdersRow NewOrdersRow() {
+                return ((OrdersRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new OrdersRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override global::System.Type GetRowType() {
+                return typeof(OrdersRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.OrdersRowChanged != null)) {
+                    this.OrdersRowChanged(this, new OrdersRowChangeEvent(((OrdersRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.OrdersRowChanging != null)) {
+                    this.OrdersRowChanging(this, new OrdersRowChangeEvent(((OrdersRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.OrdersRowDeleted != null)) {
+                    this.OrdersRowDeleted(this, new OrdersRowChangeEvent(((OrdersRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.OrdersRowDeleting != null)) {
+                    this.OrdersRowDeleting(this, new OrdersRowChangeEvent(((OrdersRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public void RemoveOrdersRow(OrdersRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                EMMADataSet ds = new EMMADataSet();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "OrdersDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class WalletDivisionsDataTable : global::System.Data.TypedTableBase<WalletDivisionsRow> {
             
             private global::System.Data.DataColumn columnID;
@@ -16688,191 +16704,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 }
                 set {
                     this[this.tableNames.NameColumn] = value;
-                }
-            }
-        }
-        
-        /// <summary>
-        ///Represents strongly named DataRow class.
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-        public partial class OrdersRow : global::System.Data.DataRow {
-            
-            private OrdersDataTable tableOrders;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            internal OrdersRow(global::System.Data.DataRowBuilder rb) : 
-                    base(rb) {
-                this.tableOrders = ((OrdersDataTable)(this.Table));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int ID {
-                get {
-                    return ((int)(this[this.tableOrders.IDColumn]));
-                }
-                set {
-                    this[this.tableOrders.IDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int OwnerID {
-                get {
-                    return ((int)(this[this.tableOrders.OwnerIDColumn]));
-                }
-                set {
-                    this[this.tableOrders.OwnerIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public bool ForCorp {
-                get {
-                    return ((bool)(this[this.tableOrders.ForCorpColumn]));
-                }
-                set {
-                    this[this.tableOrders.ForCorpColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int StationID {
-                get {
-                    return ((int)(this[this.tableOrders.StationIDColumn]));
-                }
-                set {
-                    this[this.tableOrders.StationIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int TotalVol {
-                get {
-                    return ((int)(this[this.tableOrders.TotalVolColumn]));
-                }
-                set {
-                    this[this.tableOrders.TotalVolColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int RemainingVol {
-                get {
-                    return ((int)(this[this.tableOrders.RemainingVolColumn]));
-                }
-                set {
-                    this[this.tableOrders.RemainingVolColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int MinVolume {
-                get {
-                    return ((int)(this[this.tableOrders.MinVolumeColumn]));
-                }
-                set {
-                    this[this.tableOrders.MinVolumeColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public short OrderState {
-                get {
-                    return ((short)(this[this.tableOrders.OrderStateColumn]));
-                }
-                set {
-                    this[this.tableOrders.OrderStateColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int ItemID {
-                get {
-                    return ((int)(this[this.tableOrders.ItemIDColumn]));
-                }
-                set {
-                    this[this.tableOrders.ItemIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public short Range {
-                get {
-                    return ((short)(this[this.tableOrders.RangeColumn]));
-                }
-                set {
-                    this[this.tableOrders.RangeColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public short WalletID {
-                get {
-                    return ((short)(this[this.tableOrders.WalletIDColumn]));
-                }
-                set {
-                    this[this.tableOrders.WalletIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public short Duration {
-                get {
-                    return ((short)(this[this.tableOrders.DurationColumn]));
-                }
-                set {
-                    this[this.tableOrders.DurationColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public decimal Escrow {
-                get {
-                    return ((decimal)(this[this.tableOrders.EscrowColumn]));
-                }
-                set {
-                    this[this.tableOrders.EscrowColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public decimal Price {
-                get {
-                    return ((decimal)(this[this.tableOrders.PriceColumn]));
-                }
-                set {
-                    this[this.tableOrders.PriceColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public bool BuyOrder {
-                get {
-                    return ((bool)(this[this.tableOrders.BuyOrderColumn]));
-                }
-                set {
-                    this[this.tableOrders.BuyOrderColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public System.DateTime Issued {
-                get {
-                    return ((global::System.DateTime)(this[this.tableOrders.IssuedColumn]));
-                }
-                set {
-                    this[this.tableOrders.IssuedColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public bool Processed {
-                get {
-                    return ((bool)(this[this.tableOrders.ProcessedColumn]));
-                }
-                set {
-                    this[this.tableOrders.ProcessedColumn] = value;
                 }
             }
         }
@@ -19741,6 +19572,201 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///Represents strongly named DataRow class.
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+        public partial class OrdersRow : global::System.Data.DataRow {
+            
+            private OrdersDataTable tableOrders;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            internal OrdersRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableOrders = ((OrdersDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int ID {
+                get {
+                    return ((int)(this[this.tableOrders.IDColumn]));
+                }
+                set {
+                    this[this.tableOrders.IDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int OwnerID {
+                get {
+                    return ((int)(this[this.tableOrders.OwnerIDColumn]));
+                }
+                set {
+                    this[this.tableOrders.OwnerIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool ForCorp {
+                get {
+                    return ((bool)(this[this.tableOrders.ForCorpColumn]));
+                }
+                set {
+                    this[this.tableOrders.ForCorpColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int StationID {
+                get {
+                    return ((int)(this[this.tableOrders.StationIDColumn]));
+                }
+                set {
+                    this[this.tableOrders.StationIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int TotalVol {
+                get {
+                    return ((int)(this[this.tableOrders.TotalVolColumn]));
+                }
+                set {
+                    this[this.tableOrders.TotalVolColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int RemainingVol {
+                get {
+                    return ((int)(this[this.tableOrders.RemainingVolColumn]));
+                }
+                set {
+                    this[this.tableOrders.RemainingVolColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int MinVolume {
+                get {
+                    return ((int)(this[this.tableOrders.MinVolumeColumn]));
+                }
+                set {
+                    this[this.tableOrders.MinVolumeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public short OrderState {
+                get {
+                    return ((short)(this[this.tableOrders.OrderStateColumn]));
+                }
+                set {
+                    this[this.tableOrders.OrderStateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int ItemID {
+                get {
+                    return ((int)(this[this.tableOrders.ItemIDColumn]));
+                }
+                set {
+                    this[this.tableOrders.ItemIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public short Range {
+                get {
+                    return ((short)(this[this.tableOrders.RangeColumn]));
+                }
+                set {
+                    this[this.tableOrders.RangeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public short WalletID {
+                get {
+                    return ((short)(this[this.tableOrders.WalletIDColumn]));
+                }
+                set {
+                    this[this.tableOrders.WalletIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public short Duration {
+                get {
+                    return ((short)(this[this.tableOrders.DurationColumn]));
+                }
+                set {
+                    this[this.tableOrders.DurationColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public decimal Escrow {
+                get {
+                    return ((decimal)(this[this.tableOrders.EscrowColumn]));
+                }
+                set {
+                    this[this.tableOrders.EscrowColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public decimal Price {
+                get {
+                    return ((decimal)(this[this.tableOrders.PriceColumn]));
+                }
+                set {
+                    this[this.tableOrders.PriceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool BuyOrder {
+                get {
+                    return ((bool)(this[this.tableOrders.BuyOrderColumn]));
+                }
+                set {
+                    this[this.tableOrders.BuyOrderColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public System.DateTime Issued {
+                get {
+                    return ((global::System.DateTime)(this[this.tableOrders.IssuedColumn]));
+                }
+                set {
+                    this[this.tableOrders.IssuedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool Processed {
+                get {
+                    return ((bool)(this[this.tableOrders.ProcessedColumn]));
+                }
+                set {
+                    this[this.tableOrders.ProcessedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public long EveOrderID {
+                get {
+                    return ((long)(this[this.tableOrders.EveOrderIDColumn]));
+                }
+                set {
+                    this[this.tableOrders.EveOrderIDColumn] = value;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
         public partial class WalletDivisionsRow : global::System.Data.DataRow {
             
             private WalletDivisionsDataTable tableWalletDivisions;
@@ -20022,37 +20048,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             public NamesRow Row {
-                get {
-                    return this.eventRow;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataRowAction Action {
-                get {
-                    return this.eventAction;
-                }
-            }
-        }
-        
-        /// <summary>
-        ///Row event argument class
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-        public class OrdersRowChangeEvent : global::System.EventArgs {
-            
-            private OrdersRow eventRow;
-            
-            private global::System.Data.DataRowAction eventAction;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public OrdersRowChangeEvent(OrdersRow row, global::System.Data.DataRowAction action) {
-                this.eventRow = row;
-                this.eventAction = action;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public OrdersRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -21231,6 +21226,37 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             public AssetsRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+        public class OrdersRowChangeEvent : global::System.EventArgs {
+            
+            private OrdersRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public OrdersRowChangeEvent(OrdersRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public OrdersRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -24192,1309 +24218,6 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             }
             else {
                 Name = ((string)(command.Parameters[2].Value));
-            }
-            return returnValue;
-        }
-    }
-    
-    /// <summary>
-    ///Represents the connection and commands used to retrieve and save data.
-    ///</summary>
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-    [global::System.ComponentModel.DesignerCategoryAttribute("code")]
-    [global::System.ComponentModel.ToolboxItem(true)]
-    [global::System.ComponentModel.DataObjectAttribute(true)]
-    [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
-        ", Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-    [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class OrdersTableAdapter : global::System.ComponentModel.Component {
-        
-        private global::System.Data.SqlClient.SqlDataAdapter _adapter;
-        
-        private global::System.Data.SqlClient.SqlConnection _connection;
-        
-        private global::System.Data.SqlClient.SqlCommand[] _commandCollection;
-        
-        private bool _clearBeforeFill;
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public OrdersTableAdapter() {
-            this.ClearBeforeFill = true;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private global::System.Data.SqlClient.SqlDataAdapter Adapter {
-            get {
-                if ((this._adapter == null)) {
-                    this.InitAdapter();
-                }
-                return this._adapter;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        internal global::System.Data.SqlClient.SqlConnection Connection {
-            get {
-                if ((this._connection == null)) {
-                    this.InitConnection();
-                }
-                return this._connection;
-            }
-            set {
-                this._connection = value;
-                if ((this.Adapter.InsertCommand != null)) {
-                    this.Adapter.InsertCommand.Connection = value;
-                }
-                if ((this.Adapter.DeleteCommand != null)) {
-                    this.Adapter.DeleteCommand.Connection = value;
-                }
-                if ((this.Adapter.UpdateCommand != null)) {
-                    this.Adapter.UpdateCommand.Connection = value;
-                }
-                for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
-                    if ((this.CommandCollection[i] != null)) {
-                        ((global::System.Data.SqlClient.SqlCommand)(this.CommandCollection[i])).Connection = value;
-                    }
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        protected global::System.Data.SqlClient.SqlCommand[] CommandCollection {
-            get {
-                if ((this._commandCollection == null)) {
-                    this.InitCommandCollection();
-                }
-                return this._commandCollection;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public bool ClearBeforeFill {
-            get {
-                return this._clearBeforeFill;
-            }
-            set {
-                this._clearBeforeFill = value;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private void InitAdapter() {
-            this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
-            global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
-            tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "Orders";
-            tableMapping.ColumnMappings.Add("ID", "ID");
-            tableMapping.ColumnMappings.Add("OwnerID", "OwnerID");
-            tableMapping.ColumnMappings.Add("ForCorp", "ForCorp");
-            tableMapping.ColumnMappings.Add("StationID", "StationID");
-            tableMapping.ColumnMappings.Add("TotalVol", "TotalVol");
-            tableMapping.ColumnMappings.Add("RemainingVol", "RemainingVol");
-            tableMapping.ColumnMappings.Add("MinVolume", "MinVolume");
-            tableMapping.ColumnMappings.Add("OrderState", "OrderState");
-            tableMapping.ColumnMappings.Add("ItemID", "ItemID");
-            tableMapping.ColumnMappings.Add("Range", "Range");
-            tableMapping.ColumnMappings.Add("WalletID", "WalletID");
-            tableMapping.ColumnMappings.Add("Duration", "Duration");
-            tableMapping.ColumnMappings.Add("Escrow", "Escrow");
-            tableMapping.ColumnMappings.Add("Price", "Price");
-            tableMapping.ColumnMappings.Add("BuyOrder", "BuyOrder");
-            tableMapping.ColumnMappings.Add("Issued", "Issued");
-            tableMapping.ColumnMappings.Add("Processed", "Processed");
-            this._adapter.TableMappings.Add(tableMapping);
-            this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM Orders
-WHERE     (ID = @Original_ID) AND (OwnerID = @Original_OwnerID) AND (ForCorp = @Original_ForCorp) AND (StationID = @Original_StationID) AND 
-                      (TotalVol = @Original_TotalVol) AND (RemainingVol = @Original_RemainingVol) AND (MinVolume = @Original_MinVolume) AND 
-                      (OrderState = @Original_OrderState) AND (ItemID = @Original_ItemID) AND (Range = @Original_Range) AND (WalletID = @Original_WalletID) AND 
-                      (Duration = @Original_Duration) AND (Escrow = @Original_Escrow) AND (Price = @Original_Price) AND (BuyOrder = @Original_BuyOrder) AND 
-                      (Issued = @Original_Issued) AND (Processed = @Original_Processed)";
-            this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ForCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 0, 0, "ForCorp", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_StationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_TotalVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "TotalVol", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RemainingVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "RemainingVol", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_MinVolume", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "MinVolume", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OrderState", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 0, 0, "OrderState", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ItemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Range", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 0, 0, "Range", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_WalletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 0, 0, "WalletID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Duration", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 0, 0, "Duration", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Escrow", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "Escrow", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Price", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "Price", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_BuyOrder", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 0, 0, "BuyOrder", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Issued", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 0, 0, "Issued", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 0, 0, "Processed", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "OrdersInsert";
-            this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ForCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "ForCorp", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TotalVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "TotalVol", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RemainingVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RemainingVol", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@MinVolume", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "MinVolume", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OrderState", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "OrderState", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Range", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "Range", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "WalletID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Duration", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "Duration", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Escrow", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "Escrow", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Price", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "Price", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyOrder", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "BuyOrder", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Issued", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "Issued", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "Processed", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = "OrdersUpdate";
-            this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ForCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "ForCorp", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TotalVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "TotalVol", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RemainingVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RemainingVol", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@MinVolume", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "MinVolume", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OrderState", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "OrderState", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Range", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "Range", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@WalletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "WalletID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Duration", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "Duration", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Escrow", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "Escrow", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Price", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "Price", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyOrder", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "BuyOrder", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Issued", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "Issued", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "Processed", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private void InitConnection() {
-            this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::EveMarketMonitorApp.Properties.Settings.Default.EMMA_DatabaseConnectionString;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[9];
-            this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ID, OwnerID, ForCorp, StationID, TotalVol, RemainingVol, MinVolume, OrderS" +
-                "tate, ItemID, Range, WalletID, Duration, Escrow, Price, BuyOrder, Issued, Proces" +
-                "sed FROM dbo.Orders";
-            this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
-            this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "OrderGetAny";
-            this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@state", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@type", global::System.Data.SqlDbType.VarChar, 4, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "OrderGetByAnySingle";
-            this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@forCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@state", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@type", global::System.Data.SqlDbType.VarChar, 4, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[3] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[3].Connection = this.Connection;
-            this._commandCollection[3].CommandText = "dbo.OrdersGetByID";
-            this._commandCollection[3].CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@orderID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[4] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[4].Connection = this.Connection;
-            this._commandCollection[4].CommandText = "dbo.OrdersGetByDate";
-            this._commandCollection[4].CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@forCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@earliestIssueDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@latestIssueDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[5].Connection = this.Connection;
-            this._commandCollection[5].CommandText = "dbo.OrderExists";
-            this._commandCollection[5].CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@forCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@totalVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@remainingVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@range", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@orderState", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@buyOrder", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@price", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@exists", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.InputOutput, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@orderID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.InputOutput, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[6] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[6].Connection = this.Connection;
-            this._commandCollection[6].CommandText = "dbo.OrdersFinishUnProcessed";
-            this._commandCollection[6].CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@notify", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@notifyBuy", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@notifySell", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@forCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[7] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[7].Connection = this.Connection;
-            this._commandCollection[7].CommandText = "dbo.OrdersSetProcessed";
-            this._commandCollection[7].CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@forCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[8] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[8].Connection = this.Connection;
-            this._commandCollection[8].CommandText = "dbo.OrdersSetProcessedByID";
-            this._commandCollection[8].CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@orderID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(EMMADataSet.OrdersDataTable dataTable) {
-            this.Adapter.SelectCommand = this.CommandCollection[0];
-            if ((this.ClearBeforeFill == true)) {
-                dataTable.Clear();
-            }
-            int returnValue = this.Adapter.Fill(dataTable);
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual EMMADataSet.OrdersDataTable GetData() {
-            this.Adapter.SelectCommand = this.CommandCollection[0];
-            EMMADataSet.OrdersDataTable dataTable = new EMMADataSet.OrdersDataTable();
-            this.Adapter.Fill(dataTable);
-            return dataTable;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByAny(EMMADataSet.OrdersDataTable dataTable, string accessList, string itemIDs, string stationIDs, global::System.Nullable<int> state, string type) {
-            this.Adapter.SelectCommand = this.CommandCollection[1];
-            if ((accessList == null)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((string)(accessList));
-            }
-            if ((itemIDs == null)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((string)(itemIDs));
-            }
-            if ((stationIDs == null)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((string)(stationIDs));
-            }
-            if ((state.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(state.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((type == null)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((string)(type));
-            }
-            if ((this.ClearBeforeFill == true)) {
-                dataTable.Clear();
-            }
-            int returnValue = this.Adapter.Fill(dataTable);
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.OrdersDataTable GetDataByAny(string accessList, string itemIDs, string stationIDs, global::System.Nullable<int> state, string type) {
-            this.Adapter.SelectCommand = this.CommandCollection[1];
-            if ((accessList == null)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((string)(accessList));
-            }
-            if ((itemIDs == null)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((string)(itemIDs));
-            }
-            if ((stationIDs == null)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((string)(stationIDs));
-            }
-            if ((state.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(state.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((type == null)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((string)(type));
-            }
-            EMMADataSet.OrdersDataTable dataTable = new EMMADataSet.OrdersDataTable();
-            this.Adapter.Fill(dataTable);
-            return dataTable;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByAnySingle(EMMADataSet.OrdersDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<bool> forCorp, global::System.Nullable<short> walletID, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> state, string type) {
-            this.Adapter.SelectCommand = this.CommandCollection[2];
-            if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((forCorp.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((bool)(forCorp.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((walletID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((short)(walletID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            if ((itemID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(itemID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(stationID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            if ((state.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[6].Value = ((int)(state.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[6].Value = global::System.DBNull.Value;
-            }
-            if ((type == null)) {
-                this.Adapter.SelectCommand.Parameters[7].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[7].Value = ((string)(type));
-            }
-            if ((this.ClearBeforeFill == true)) {
-                dataTable.Clear();
-            }
-            int returnValue = this.Adapter.Fill(dataTable);
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.OrdersDataTable GetDataByAnySingle(global::System.Nullable<int> ownerID, global::System.Nullable<bool> forCorp, global::System.Nullable<short> walletID, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> state, string type) {
-            this.Adapter.SelectCommand = this.CommandCollection[2];
-            if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((forCorp.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((bool)(forCorp.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((walletID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((short)(walletID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            if ((itemID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(itemID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(stationID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            if ((state.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[6].Value = ((int)(state.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[6].Value = global::System.DBNull.Value;
-            }
-            if ((type == null)) {
-                this.Adapter.SelectCommand.Parameters[7].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[7].Value = ((string)(type));
-            }
-            EMMADataSet.OrdersDataTable dataTable = new EMMADataSet.OrdersDataTable();
-            this.Adapter.Fill(dataTable);
-            return dataTable;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByID(EMMADataSet.OrdersDataTable dataTable, global::System.Nullable<int> orderID) {
-            this.Adapter.SelectCommand = this.CommandCollection[3];
-            if ((orderID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(orderID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((this.ClearBeforeFill == true)) {
-                dataTable.Clear();
-            }
-            int returnValue = this.Adapter.Fill(dataTable);
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.OrdersDataTable GetDataByID(global::System.Nullable<int> orderID) {
-            this.Adapter.SelectCommand = this.CommandCollection[3];
-            if ((orderID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(orderID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            EMMADataSet.OrdersDataTable dataTable = new EMMADataSet.OrdersDataTable();
-            this.Adapter.Fill(dataTable);
-            return dataTable;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByIssueDate(EMMADataSet.OrdersDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<bool> forCorp, global::System.Nullable<short> walletID, global::System.Nullable<global::System.DateTime> earliestIssueDate, global::System.Nullable<global::System.DateTime> latestIssueDate) {
-            this.Adapter.SelectCommand = this.CommandCollection[4];
-            if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((forCorp.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((bool)(forCorp.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((walletID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((short)(walletID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            if ((earliestIssueDate.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((System.DateTime)(earliestIssueDate.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((latestIssueDate.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((System.DateTime)(latestIssueDate.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            if ((this.ClearBeforeFill == true)) {
-                dataTable.Clear();
-            }
-            int returnValue = this.Adapter.Fill(dataTable);
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.OrdersDataTable GetDataByIssueDate(global::System.Nullable<int> ownerID, global::System.Nullable<bool> forCorp, global::System.Nullable<short> walletID, global::System.Nullable<global::System.DateTime> earliestIssueDate, global::System.Nullable<global::System.DateTime> latestIssueDate) {
-            this.Adapter.SelectCommand = this.CommandCollection[4];
-            if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((forCorp.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((bool)(forCorp.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((walletID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((short)(walletID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            if ((earliestIssueDate.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((System.DateTime)(earliestIssueDate.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((latestIssueDate.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((System.DateTime)(latestIssueDate.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            EMMADataSet.OrdersDataTable dataTable = new EMMADataSet.OrdersDataTable();
-            this.Adapter.Fill(dataTable);
-            return dataTable;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillOrderExists(EMMADataSet.OrdersDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<bool> forCorp, global::System.Nullable<short> walletID, global::System.Nullable<int> stationID, global::System.Nullable<int> itemID, global::System.Nullable<int> totalVol, global::System.Nullable<int> remainingVol, global::System.Nullable<short> range, global::System.Nullable<short> orderState, global::System.Nullable<bool> buyOrder, global::System.Nullable<decimal> price, ref global::System.Nullable<bool> exists, ref global::System.Nullable<int> orderID) {
-            this.Adapter.SelectCommand = this.CommandCollection[5];
-            if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((forCorp.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((bool)(forCorp.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((walletID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((short)(walletID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(stationID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((itemID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(itemID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            if ((totalVol.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[6].Value = ((int)(totalVol.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[6].Value = global::System.DBNull.Value;
-            }
-            if ((remainingVol.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[7].Value = ((int)(remainingVol.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[7].Value = global::System.DBNull.Value;
-            }
-            if ((range.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[8].Value = ((short)(range.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[8].Value = global::System.DBNull.Value;
-            }
-            if ((orderState.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[9].Value = ((short)(orderState.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[9].Value = global::System.DBNull.Value;
-            }
-            if ((buyOrder.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[10].Value = ((bool)(buyOrder.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[10].Value = global::System.DBNull.Value;
-            }
-            if ((price.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[11].Value = ((decimal)(price.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[11].Value = global::System.DBNull.Value;
-            }
-            if ((exists.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[12].Value = ((bool)(exists.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[12].Value = global::System.DBNull.Value;
-            }
-            if ((orderID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[13].Value = ((int)(orderID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[13].Value = global::System.DBNull.Value;
-            }
-            if ((this.ClearBeforeFill == true)) {
-                dataTable.Clear();
-            }
-            int returnValue = this.Adapter.Fill(dataTable);
-            if (((this.Adapter.SelectCommand.Parameters[12].Value == null) 
-                        || (this.Adapter.SelectCommand.Parameters[12].Value.GetType() == typeof(global::System.DBNull)))) {
-                exists = new global::System.Nullable<bool>();
-            }
-            else {
-                exists = new global::System.Nullable<bool>(((bool)(this.Adapter.SelectCommand.Parameters[12].Value)));
-            }
-            if (((this.Adapter.SelectCommand.Parameters[13].Value == null) 
-                        || (this.Adapter.SelectCommand.Parameters[13].Value.GetType() == typeof(global::System.DBNull)))) {
-                orderID = new global::System.Nullable<int>();
-            }
-            else {
-                orderID = new global::System.Nullable<int>(((int)(this.Adapter.SelectCommand.Parameters[13].Value)));
-            }
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.OrdersDataTable GetOrderExists(global::System.Nullable<int> ownerID, global::System.Nullable<bool> forCorp, global::System.Nullable<short> walletID, global::System.Nullable<int> stationID, global::System.Nullable<int> itemID, global::System.Nullable<int> totalVol, global::System.Nullable<int> remainingVol, global::System.Nullable<short> range, global::System.Nullable<short> orderState, global::System.Nullable<bool> buyOrder, global::System.Nullable<decimal> price, ref global::System.Nullable<bool> exists, ref global::System.Nullable<int> orderID) {
-            this.Adapter.SelectCommand = this.CommandCollection[5];
-            if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((forCorp.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((bool)(forCorp.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((walletID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((short)(walletID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(stationID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((itemID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(itemID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            if ((totalVol.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[6].Value = ((int)(totalVol.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[6].Value = global::System.DBNull.Value;
-            }
-            if ((remainingVol.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[7].Value = ((int)(remainingVol.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[7].Value = global::System.DBNull.Value;
-            }
-            if ((range.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[8].Value = ((short)(range.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[8].Value = global::System.DBNull.Value;
-            }
-            if ((orderState.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[9].Value = ((short)(orderState.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[9].Value = global::System.DBNull.Value;
-            }
-            if ((buyOrder.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[10].Value = ((bool)(buyOrder.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[10].Value = global::System.DBNull.Value;
-            }
-            if ((price.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[11].Value = ((decimal)(price.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[11].Value = global::System.DBNull.Value;
-            }
-            if ((exists.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[12].Value = ((bool)(exists.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[12].Value = global::System.DBNull.Value;
-            }
-            if ((orderID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[13].Value = ((int)(orderID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[13].Value = global::System.DBNull.Value;
-            }
-            EMMADataSet.OrdersDataTable dataTable = new EMMADataSet.OrdersDataTable();
-            this.Adapter.Fill(dataTable);
-            if (((this.Adapter.SelectCommand.Parameters[12].Value == null) 
-                        || (this.Adapter.SelectCommand.Parameters[12].Value.GetType() == typeof(global::System.DBNull)))) {
-                exists = new global::System.Nullable<bool>();
-            }
-            else {
-                exists = new global::System.Nullable<bool>(((bool)(this.Adapter.SelectCommand.Parameters[12].Value)));
-            }
-            if (((this.Adapter.SelectCommand.Parameters[13].Value == null) 
-                        || (this.Adapter.SelectCommand.Parameters[13].Value.GetType() == typeof(global::System.DBNull)))) {
-                orderID = new global::System.Nullable<int>();
-            }
-            else {
-                orderID = new global::System.Nullable<int>(((int)(this.Adapter.SelectCommand.Parameters[13].Value)));
-            }
-            return dataTable;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(EMMADataSet.OrdersDataTable dataTable) {
-            return this.Adapter.Update(dataTable);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(EMMADataSet dataSet) {
-            return this.Adapter.Update(dataSet, "Orders");
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(global::System.Data.DataRow dataRow) {
-            return this.Adapter.Update(new global::System.Data.DataRow[] {
-                        dataRow});
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(global::System.Data.DataRow[] dataRows) {
-            return this.Adapter.Update(dataRows);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(
-                    int Original_ID, 
-                    int Original_OwnerID, 
-                    bool Original_ForCorp, 
-                    int Original_StationID, 
-                    int Original_TotalVol, 
-                    int Original_RemainingVol, 
-                    int Original_MinVolume, 
-                    short Original_OrderState, 
-                    int Original_ItemID, 
-                    short Original_Range, 
-                    short Original_WalletID, 
-                    short Original_Duration, 
-                    decimal Original_Escrow, 
-                    decimal Original_Price, 
-                    bool Original_BuyOrder, 
-                    System.DateTime Original_Issued, 
-                    bool Original_Processed) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ID));
-            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_OwnerID));
-            this.Adapter.DeleteCommand.Parameters[2].Value = ((bool)(Original_ForCorp));
-            this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_StationID));
-            this.Adapter.DeleteCommand.Parameters[4].Value = ((int)(Original_TotalVol));
-            this.Adapter.DeleteCommand.Parameters[5].Value = ((int)(Original_RemainingVol));
-            this.Adapter.DeleteCommand.Parameters[6].Value = ((int)(Original_MinVolume));
-            this.Adapter.DeleteCommand.Parameters[7].Value = ((short)(Original_OrderState));
-            this.Adapter.DeleteCommand.Parameters[8].Value = ((int)(Original_ItemID));
-            this.Adapter.DeleteCommand.Parameters[9].Value = ((short)(Original_Range));
-            this.Adapter.DeleteCommand.Parameters[10].Value = ((short)(Original_WalletID));
-            this.Adapter.DeleteCommand.Parameters[11].Value = ((short)(Original_Duration));
-            this.Adapter.DeleteCommand.Parameters[12].Value = ((decimal)(Original_Escrow));
-            this.Adapter.DeleteCommand.Parameters[13].Value = ((decimal)(Original_Price));
-            this.Adapter.DeleteCommand.Parameters[14].Value = ((bool)(Original_BuyOrder));
-            this.Adapter.DeleteCommand.Parameters[15].Value = ((System.DateTime)(Original_Issued));
-            this.Adapter.DeleteCommand.Parameters[16].Value = ((bool)(Original_Processed));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
-            if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.DeleteCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.DeleteCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.DeleteCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(
-                    global::System.Nullable<int> OwnerID, 
-                    global::System.Nullable<bool> ForCorp, 
-                    global::System.Nullable<int> StationID, 
-                    global::System.Nullable<int> TotalVol, 
-                    global::System.Nullable<int> RemainingVol, 
-                    global::System.Nullable<int> MinVolume, 
-                    global::System.Nullable<short> OrderState, 
-                    global::System.Nullable<int> ItemID, 
-                    global::System.Nullable<short> Range, 
-                    global::System.Nullable<short> walletID, 
-                    global::System.Nullable<short> Duration, 
-                    global::System.Nullable<decimal> Escrow, 
-                    global::System.Nullable<decimal> Price, 
-                    global::System.Nullable<bool> BuyOrder, 
-                    global::System.Nullable<global::System.DateTime> Issued, 
-                    bool Processed) {
-            if ((OwnerID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[1].Value = ((int)(OwnerID.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((ForCorp.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[2].Value = ((bool)(ForCorp.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((StationID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[3].Value = ((int)(StationID.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            if ((TotalVol.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[4].Value = ((int)(TotalVol.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((RemainingVol.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[5].Value = ((int)(RemainingVol.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            if ((MinVolume.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[6].Value = ((int)(MinVolume.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[6].Value = global::System.DBNull.Value;
-            }
-            if ((OrderState.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[7].Value = ((short)(OrderState.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[7].Value = global::System.DBNull.Value;
-            }
-            if ((ItemID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[8].Value = ((int)(ItemID.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[8].Value = global::System.DBNull.Value;
-            }
-            if ((Range.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[9].Value = ((short)(Range.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[9].Value = global::System.DBNull.Value;
-            }
-            if ((walletID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[10].Value = ((short)(walletID.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[10].Value = global::System.DBNull.Value;
-            }
-            if ((Duration.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[11].Value = ((short)(Duration.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[11].Value = global::System.DBNull.Value;
-            }
-            if ((Escrow.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[12].Value = ((decimal)(Escrow.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[12].Value = global::System.DBNull.Value;
-            }
-            if ((Price.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[13].Value = ((decimal)(Price.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[13].Value = global::System.DBNull.Value;
-            }
-            if ((BuyOrder.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[14].Value = ((bool)(BuyOrder.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[14].Value = global::System.DBNull.Value;
-            }
-            if ((Issued.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[15].Value = ((System.DateTime)(Issued.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[15].Value = global::System.DBNull.Value;
-            }
-            this.Adapter.InsertCommand.Parameters[16].Value = ((bool)(Processed));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
-            if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.InsertCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.InsertCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.InsertCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(
-                    global::System.Nullable<int> ID, 
-                    global::System.Nullable<int> OwnerID, 
-                    global::System.Nullable<bool> ForCorp, 
-                    global::System.Nullable<int> StationID, 
-                    global::System.Nullable<int> TotalVol, 
-                    global::System.Nullable<int> RemainingVol, 
-                    global::System.Nullable<int> MinVolume, 
-                    global::System.Nullable<short> OrderState, 
-                    global::System.Nullable<int> ItemID, 
-                    global::System.Nullable<short> Range, 
-                    global::System.Nullable<short> WalletID, 
-                    global::System.Nullable<short> Duration, 
-                    global::System.Nullable<decimal> Escrow, 
-                    global::System.Nullable<decimal> Price, 
-                    global::System.Nullable<bool> BuyOrder, 
-                    global::System.Nullable<global::System.DateTime> Issued, 
-                    bool Processed, 
-                    global::System.Nullable<int> Original_ID) {
-            if ((ID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(ID.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((OwnerID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(OwnerID.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((ForCorp.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[3].Value = ((bool)(ForCorp.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            if ((StationID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(StationID.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((TotalVol.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(TotalVol.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            if ((RemainingVol.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(RemainingVol.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[6].Value = global::System.DBNull.Value;
-            }
-            if ((MinVolume.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(MinVolume.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[7].Value = global::System.DBNull.Value;
-            }
-            if ((OrderState.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[8].Value = ((short)(OrderState.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[8].Value = global::System.DBNull.Value;
-            }
-            if ((ItemID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(ItemID.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[9].Value = global::System.DBNull.Value;
-            }
-            if ((Range.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[10].Value = ((short)(Range.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[10].Value = global::System.DBNull.Value;
-            }
-            if ((WalletID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[11].Value = ((short)(WalletID.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[11].Value = global::System.DBNull.Value;
-            }
-            if ((Duration.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[12].Value = ((short)(Duration.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[12].Value = global::System.DBNull.Value;
-            }
-            if ((Escrow.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[13].Value = ((decimal)(Escrow.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[13].Value = global::System.DBNull.Value;
-            }
-            if ((Price.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[14].Value = ((decimal)(Price.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[14].Value = global::System.DBNull.Value;
-            }
-            if ((BuyOrder.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[15].Value = ((bool)(BuyOrder.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[15].Value = global::System.DBNull.Value;
-            }
-            if ((Issued.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[16].Value = ((System.DateTime)(Issued.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[16].Value = global::System.DBNull.Value;
-            }
-            this.Adapter.UpdateCommand.Parameters[17].Value = ((bool)(Processed));
-            if ((Original_ID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[18].Value = ((int)(Original_ID.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[18].Value = global::System.DBNull.Value;
-            }
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
-            if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.UpdateCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.UpdateCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.UpdateCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(
-                    global::System.Nullable<int> OwnerID, 
-                    global::System.Nullable<bool> ForCorp, 
-                    global::System.Nullable<int> StationID, 
-                    global::System.Nullable<int> TotalVol, 
-                    global::System.Nullable<int> RemainingVol, 
-                    global::System.Nullable<int> MinVolume, 
-                    global::System.Nullable<short> OrderState, 
-                    global::System.Nullable<int> ItemID, 
-                    global::System.Nullable<short> Range, 
-                    global::System.Nullable<short> WalletID, 
-                    global::System.Nullable<short> Duration, 
-                    global::System.Nullable<decimal> Escrow, 
-                    global::System.Nullable<decimal> Price, 
-                    global::System.Nullable<bool> BuyOrder, 
-                    global::System.Nullable<global::System.DateTime> Issued, 
-                    bool Processed, 
-                    global::System.Nullable<int> Original_ID) {
-            return this.Update(Original_ID, OwnerID, ForCorp, StationID, TotalVol, RemainingVol, MinVolume, OrderState, ItemID, Range, WalletID, Duration, Escrow, Price, BuyOrder, Issued, Processed, Original_ID);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int FinishUnProcessed(global::System.Nullable<int> ownerID, global::System.Nullable<bool> notify, global::System.Nullable<bool> notifyBuy, global::System.Nullable<bool> notifySell, global::System.Nullable<bool> forCorp) {
-            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[6];
-            if ((ownerID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(ownerID.Value));
-            }
-            else {
-                command.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((notify.HasValue == true)) {
-                command.Parameters[2].Value = ((bool)(notify.Value));
-            }
-            else {
-                command.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((notifyBuy.HasValue == true)) {
-                command.Parameters[3].Value = ((bool)(notifyBuy.Value));
-            }
-            else {
-                command.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            if ((notifySell.HasValue == true)) {
-                command.Parameters[4].Value = ((bool)(notifySell.Value));
-            }
-            else {
-                command.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((forCorp.HasValue == true)) {
-                command.Parameters[5].Value = ((bool)(forCorp.Value));
-            }
-            else {
-                command.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
-            if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                command.Connection.Open();
-            }
-            int returnValue;
-            try {
-                returnValue = command.ExecuteNonQuery();
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    command.Connection.Close();
-                }
-            }
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int SetProcessed(global::System.Nullable<int> ownerID, global::System.Nullable<bool> forCorp, global::System.Nullable<bool> processed) {
-            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[7];
-            if ((ownerID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(ownerID.Value));
-            }
-            else {
-                command.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((forCorp.HasValue == true)) {
-                command.Parameters[2].Value = ((bool)(forCorp.Value));
-            }
-            else {
-                command.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((processed.HasValue == true)) {
-                command.Parameters[3].Value = ((bool)(processed.Value));
-            }
-            else {
-                command.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
-            if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                command.Connection.Open();
-            }
-            int returnValue;
-            try {
-                returnValue = command.ExecuteNonQuery();
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    command.Connection.Close();
-                }
-            }
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int SetProcessedByID(global::System.Nullable<int> orderID, global::System.Nullable<bool> processed) {
-            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[8];
-            if ((orderID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(orderID.Value));
-            }
-            else {
-                command.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((processed.HasValue == true)) {
-                command.Parameters[2].Value = ((bool)(processed.Value));
-            }
-            else {
-                command.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
-            if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                command.Connection.Open();
-            }
-            int returnValue;
-            try {
-                returnValue = command.ExecuteNonQuery();
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    command.Connection.Close();
-                }
             }
             return returnValue;
         }
@@ -44286,6 +43009,1348 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             }
             else {
                 totQuantity = new global::System.Nullable<long>(((long)(command.Parameters[7].Value)));
+            }
+            return returnValue;
+        }
+    }
+    
+    /// <summary>
+    ///Represents the connection and commands used to retrieve and save data.
+    ///</summary>
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+    [global::System.ComponentModel.DesignerCategoryAttribute("code")]
+    [global::System.ComponentModel.ToolboxItem(true)]
+    [global::System.ComponentModel.DataObjectAttribute(true)]
+    [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
+        ", Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
+    [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+    public partial class OrdersTableAdapter : global::System.ComponentModel.Component {
+        
+        private global::System.Data.SqlClient.SqlDataAdapter _adapter;
+        
+        private global::System.Data.SqlClient.SqlConnection _connection;
+        
+        private global::System.Data.SqlClient.SqlCommand[] _commandCollection;
+        
+        private bool _clearBeforeFill;
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public OrdersTableAdapter() {
+            this.ClearBeforeFill = true;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private global::System.Data.SqlClient.SqlDataAdapter Adapter {
+            get {
+                if ((this._adapter == null)) {
+                    this.InitAdapter();
+                }
+                return this._adapter;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        internal global::System.Data.SqlClient.SqlConnection Connection {
+            get {
+                if ((this._connection == null)) {
+                    this.InitConnection();
+                }
+                return this._connection;
+            }
+            set {
+                this._connection = value;
+                if ((this.Adapter.InsertCommand != null)) {
+                    this.Adapter.InsertCommand.Connection = value;
+                }
+                if ((this.Adapter.DeleteCommand != null)) {
+                    this.Adapter.DeleteCommand.Connection = value;
+                }
+                if ((this.Adapter.UpdateCommand != null)) {
+                    this.Adapter.UpdateCommand.Connection = value;
+                }
+                for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
+                    if ((this.CommandCollection[i] != null)) {
+                        ((global::System.Data.SqlClient.SqlCommand)(this.CommandCollection[i])).Connection = value;
+                    }
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        protected global::System.Data.SqlClient.SqlCommand[] CommandCollection {
+            get {
+                if ((this._commandCollection == null)) {
+                    this.InitCommandCollection();
+                }
+                return this._commandCollection;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public bool ClearBeforeFill {
+            get {
+                return this._clearBeforeFill;
+            }
+            set {
+                this._clearBeforeFill = value;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private void InitAdapter() {
+            this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
+            global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
+            tableMapping.SourceTable = "Table";
+            tableMapping.DataSetTable = "Orders";
+            tableMapping.ColumnMappings.Add("ID", "ID");
+            tableMapping.ColumnMappings.Add("OwnerID", "OwnerID");
+            tableMapping.ColumnMappings.Add("ForCorp", "ForCorp");
+            tableMapping.ColumnMappings.Add("StationID", "StationID");
+            tableMapping.ColumnMappings.Add("TotalVol", "TotalVol");
+            tableMapping.ColumnMappings.Add("RemainingVol", "RemainingVol");
+            tableMapping.ColumnMappings.Add("MinVolume", "MinVolume");
+            tableMapping.ColumnMappings.Add("OrderState", "OrderState");
+            tableMapping.ColumnMappings.Add("ItemID", "ItemID");
+            tableMapping.ColumnMappings.Add("Range", "Range");
+            tableMapping.ColumnMappings.Add("WalletID", "WalletID");
+            tableMapping.ColumnMappings.Add("Duration", "Duration");
+            tableMapping.ColumnMappings.Add("Escrow", "Escrow");
+            tableMapping.ColumnMappings.Add("Price", "Price");
+            tableMapping.ColumnMappings.Add("BuyOrder", "BuyOrder");
+            tableMapping.ColumnMappings.Add("Issued", "Issued");
+            tableMapping.ColumnMappings.Add("Processed", "Processed");
+            tableMapping.ColumnMappings.Add("EveOrderID", "EveOrderID");
+            this._adapter.TableMappings.Add(tableMapping);
+            this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.DeleteCommand.Connection = this.Connection;
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[Orders] WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([ForCorp] = @Original_ForCorp) AND ([StationID] = @Original_StationID) AND ([TotalVol] = @Original_TotalVol) AND ([RemainingVol] = @Original_RemainingVol) AND ([MinVolume] = @Original_MinVolume) AND ([OrderState] = @Original_OrderState) AND ([ItemID] = @Original_ItemID) AND ([Range] = @Original_Range) AND ([WalletID] = @Original_WalletID) AND ([Duration] = @Original_Duration) AND ([Escrow] = @Original_Escrow) AND ([Price] = @Original_Price) AND ([BuyOrder] = @Original_BuyOrder) AND ([Issued] = @Original_Issued) AND ([Processed] = @Original_Processed) AND ([EveOrderID] = @Original_EveOrderID))";
+            this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ForCorp", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ForCorp", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_StationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_TotalVol", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TotalVol", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RemainingVol", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RemainingVol", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_MinVolume", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "MinVolume", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OrderState", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OrderState", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Range", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Range", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_WalletID", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "WalletID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Duration", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Duration", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Escrow", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Escrow", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Price", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Price", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_BuyOrder", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "BuyOrder", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Issued", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Issued", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Processed", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Processed", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_EveOrderID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "EveOrderID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.InsertCommand.Connection = this.Connection;
+            this._adapter.InsertCommand.CommandText = "OrdersInsert";
+            this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ForCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "ForCorp", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TotalVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "TotalVol", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RemainingVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RemainingVol", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@MinVolume", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "MinVolume", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OrderState", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "OrderState", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Range", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "Range", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "WalletID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Duration", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "Duration", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Escrow", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "Escrow", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Price", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "Price", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyOrder", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "BuyOrder", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Issued", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "Issued", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "Processed", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@EveOrderID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "EveOrderID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.UpdateCommand.Connection = this.Connection;
+            this._adapter.UpdateCommand.CommandText = "OrdersUpdate";
+            this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ForCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "ForCorp", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TotalVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "TotalVol", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RemainingVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RemainingVol", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@MinVolume", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "MinVolume", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OrderState", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "OrderState", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Range", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "Range", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@WalletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "WalletID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Duration", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "Duration", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Escrow", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "Escrow", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Price", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "Price", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyOrder", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "BuyOrder", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Issued", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "Issued", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "Processed", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@EveOrderID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "EveOrderID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private void InitConnection() {
+            this._connection = new global::System.Data.SqlClient.SqlConnection();
+            this._connection.ConnectionString = global::EveMarketMonitorApp.Properties.Settings.Default.EMMA_DatabaseConnectionString;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private void InitCommandCollection() {
+            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[9];
+            this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[0].Connection = this.Connection;
+            this._commandCollection[0].CommandText = "SELECT ID, OwnerID, ForCorp, StationID, TotalVol, RemainingVol, MinVolume, OrderS" +
+                "tate, ItemID, Range, WalletID, Duration, Escrow, Price, BuyOrder, Issued, Proces" +
+                "sed, EveOrderID FROM dbo.Orders";
+            this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[1].Connection = this.Connection;
+            this._commandCollection[1].CommandText = "dbo.OrderGetAny";
+            this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@state", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@type", global::System.Data.SqlDbType.VarChar, 4, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[2].Connection = this.Connection;
+            this._commandCollection[2].CommandText = "dbo.OrderGetByAnySingle";
+            this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@forCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@state", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@type", global::System.Data.SqlDbType.VarChar, 4, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[3].Connection = this.Connection;
+            this._commandCollection[3].CommandText = "dbo.OrdersGetByID";
+            this._commandCollection[3].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@orderID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[4].Connection = this.Connection;
+            this._commandCollection[4].CommandText = "dbo.OrdersGetByDate";
+            this._commandCollection[4].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@forCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@earliestIssueDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@latestIssueDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[5].Connection = this.Connection;
+            this._commandCollection[5].CommandText = "dbo.OrderExists";
+            this._commandCollection[5].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@forCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@totalVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@remainingVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@range", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@orderState", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@buyOrder", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@price", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@eveOrderID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@exists", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.InputOutput, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@orderID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.InputOutput, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[6] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[6].Connection = this.Connection;
+            this._commandCollection[6].CommandText = "dbo.OrdersFinishUnProcessed";
+            this._commandCollection[6].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@notify", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@notifyBuy", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@notifySell", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@forCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[7] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[7].Connection = this.Connection;
+            this._commandCollection[7].CommandText = "dbo.OrdersSetProcessed";
+            this._commandCollection[7].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@forCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[8] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[8].Connection = this.Connection;
+            this._commandCollection[8].CommandText = "dbo.OrdersSetProcessedByID";
+            this._commandCollection[8].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@orderID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
+        public virtual int Fill(EMMADataSet.OrdersDataTable dataTable) {
+            this.Adapter.SelectCommand = this.CommandCollection[0];
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
+        public virtual EMMADataSet.OrdersDataTable GetData() {
+            this.Adapter.SelectCommand = this.CommandCollection[0];
+            EMMADataSet.OrdersDataTable dataTable = new EMMADataSet.OrdersDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByAny(EMMADataSet.OrdersDataTable dataTable, string accessList, string itemIDs, string stationIDs, global::System.Nullable<int> state, string type) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((accessList == null)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((string)(accessList));
+            }
+            if ((itemIDs == null)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((string)(itemIDs));
+            }
+            if ((stationIDs == null)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((string)(stationIDs));
+            }
+            if ((state.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(state.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((type == null)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((string)(type));
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual EMMADataSet.OrdersDataTable GetDataByAny(string accessList, string itemIDs, string stationIDs, global::System.Nullable<int> state, string type) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((accessList == null)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((string)(accessList));
+            }
+            if ((itemIDs == null)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((string)(itemIDs));
+            }
+            if ((stationIDs == null)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((string)(stationIDs));
+            }
+            if ((state.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(state.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((type == null)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((string)(type));
+            }
+            EMMADataSet.OrdersDataTable dataTable = new EMMADataSet.OrdersDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByAnySingle(EMMADataSet.OrdersDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<bool> forCorp, global::System.Nullable<short> walletID, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> state, string type) {
+            this.Adapter.SelectCommand = this.CommandCollection[2];
+            if ((ownerID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((forCorp.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((bool)(forCorp.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((walletID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((short)(walletID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((itemID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(itemID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((stationID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(stationID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            if ((state.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[6].Value = ((int)(state.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((type == null)) {
+                this.Adapter.SelectCommand.Parameters[7].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[7].Value = ((string)(type));
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual EMMADataSet.OrdersDataTable GetDataByAnySingle(global::System.Nullable<int> ownerID, global::System.Nullable<bool> forCorp, global::System.Nullable<short> walletID, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> state, string type) {
+            this.Adapter.SelectCommand = this.CommandCollection[2];
+            if ((ownerID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((forCorp.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((bool)(forCorp.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((walletID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((short)(walletID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((itemID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(itemID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((stationID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(stationID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            if ((state.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[6].Value = ((int)(state.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((type == null)) {
+                this.Adapter.SelectCommand.Parameters[7].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[7].Value = ((string)(type));
+            }
+            EMMADataSet.OrdersDataTable dataTable = new EMMADataSet.OrdersDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByID(EMMADataSet.OrdersDataTable dataTable, global::System.Nullable<int> orderID) {
+            this.Adapter.SelectCommand = this.CommandCollection[3];
+            if ((orderID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(orderID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual EMMADataSet.OrdersDataTable GetDataByID(global::System.Nullable<int> orderID) {
+            this.Adapter.SelectCommand = this.CommandCollection[3];
+            if ((orderID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(orderID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            EMMADataSet.OrdersDataTable dataTable = new EMMADataSet.OrdersDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByIssueDate(EMMADataSet.OrdersDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<bool> forCorp, global::System.Nullable<short> walletID, global::System.Nullable<global::System.DateTime> earliestIssueDate, global::System.Nullable<global::System.DateTime> latestIssueDate) {
+            this.Adapter.SelectCommand = this.CommandCollection[4];
+            if ((ownerID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((forCorp.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((bool)(forCorp.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((walletID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((short)(walletID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((earliestIssueDate.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = ((System.DateTime)(earliestIssueDate.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((latestIssueDate.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((System.DateTime)(latestIssueDate.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual EMMADataSet.OrdersDataTable GetDataByIssueDate(global::System.Nullable<int> ownerID, global::System.Nullable<bool> forCorp, global::System.Nullable<short> walletID, global::System.Nullable<global::System.DateTime> earliestIssueDate, global::System.Nullable<global::System.DateTime> latestIssueDate) {
+            this.Adapter.SelectCommand = this.CommandCollection[4];
+            if ((ownerID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((forCorp.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((bool)(forCorp.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((walletID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((short)(walletID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((earliestIssueDate.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = ((System.DateTime)(earliestIssueDate.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((latestIssueDate.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((System.DateTime)(latestIssueDate.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            EMMADataSet.OrdersDataTable dataTable = new EMMADataSet.OrdersDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillOrderExists(EMMADataSet.OrdersDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<bool> forCorp, global::System.Nullable<short> walletID, global::System.Nullable<int> stationID, global::System.Nullable<int> itemID, global::System.Nullable<int> totalVol, global::System.Nullable<int> remainingVol, global::System.Nullable<short> range, global::System.Nullable<short> orderState, global::System.Nullable<bool> buyOrder, global::System.Nullable<decimal> price, global::System.Nullable<long> eveOrderID, ref global::System.Nullable<bool> exists, ref global::System.Nullable<int> orderID) {
+            this.Adapter.SelectCommand = this.CommandCollection[5];
+            if ((ownerID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((forCorp.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((bool)(forCorp.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((walletID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((short)(walletID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((stationID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(stationID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((itemID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(itemID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            if ((totalVol.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[6].Value = ((int)(totalVol.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((remainingVol.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[7].Value = ((int)(remainingVol.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[7].Value = global::System.DBNull.Value;
+            }
+            if ((range.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[8].Value = ((short)(range.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[8].Value = global::System.DBNull.Value;
+            }
+            if ((orderState.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[9].Value = ((short)(orderState.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[9].Value = global::System.DBNull.Value;
+            }
+            if ((buyOrder.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[10].Value = ((bool)(buyOrder.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[10].Value = global::System.DBNull.Value;
+            }
+            if ((price.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[11].Value = ((decimal)(price.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[11].Value = global::System.DBNull.Value;
+            }
+            if ((eveOrderID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[12].Value = ((long)(eveOrderID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[12].Value = global::System.DBNull.Value;
+            }
+            if ((exists.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[13].Value = ((bool)(exists.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[13].Value = global::System.DBNull.Value;
+            }
+            if ((orderID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[14].Value = ((int)(orderID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[14].Value = global::System.DBNull.Value;
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            if (((this.Adapter.SelectCommand.Parameters[13].Value == null) 
+                        || (this.Adapter.SelectCommand.Parameters[13].Value.GetType() == typeof(global::System.DBNull)))) {
+                exists = new global::System.Nullable<bool>();
+            }
+            else {
+                exists = new global::System.Nullable<bool>(((bool)(this.Adapter.SelectCommand.Parameters[13].Value)));
+            }
+            if (((this.Adapter.SelectCommand.Parameters[14].Value == null) 
+                        || (this.Adapter.SelectCommand.Parameters[14].Value.GetType() == typeof(global::System.DBNull)))) {
+                orderID = new global::System.Nullable<int>();
+            }
+            else {
+                orderID = new global::System.Nullable<int>(((int)(this.Adapter.SelectCommand.Parameters[14].Value)));
+            }
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual EMMADataSet.OrdersDataTable GetOrderExists(global::System.Nullable<int> ownerID, global::System.Nullable<bool> forCorp, global::System.Nullable<short> walletID, global::System.Nullable<int> stationID, global::System.Nullable<int> itemID, global::System.Nullable<int> totalVol, global::System.Nullable<int> remainingVol, global::System.Nullable<short> range, global::System.Nullable<short> orderState, global::System.Nullable<bool> buyOrder, global::System.Nullable<decimal> price, global::System.Nullable<long> eveOrderID, ref global::System.Nullable<bool> exists, ref global::System.Nullable<int> orderID) {
+            this.Adapter.SelectCommand = this.CommandCollection[5];
+            if ((ownerID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((forCorp.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((bool)(forCorp.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((walletID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((short)(walletID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((stationID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(stationID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((itemID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(itemID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            if ((totalVol.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[6].Value = ((int)(totalVol.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((remainingVol.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[7].Value = ((int)(remainingVol.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[7].Value = global::System.DBNull.Value;
+            }
+            if ((range.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[8].Value = ((short)(range.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[8].Value = global::System.DBNull.Value;
+            }
+            if ((orderState.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[9].Value = ((short)(orderState.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[9].Value = global::System.DBNull.Value;
+            }
+            if ((buyOrder.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[10].Value = ((bool)(buyOrder.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[10].Value = global::System.DBNull.Value;
+            }
+            if ((price.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[11].Value = ((decimal)(price.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[11].Value = global::System.DBNull.Value;
+            }
+            if ((eveOrderID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[12].Value = ((long)(eveOrderID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[12].Value = global::System.DBNull.Value;
+            }
+            if ((exists.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[13].Value = ((bool)(exists.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[13].Value = global::System.DBNull.Value;
+            }
+            if ((orderID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[14].Value = ((int)(orderID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[14].Value = global::System.DBNull.Value;
+            }
+            EMMADataSet.OrdersDataTable dataTable = new EMMADataSet.OrdersDataTable();
+            this.Adapter.Fill(dataTable);
+            if (((this.Adapter.SelectCommand.Parameters[13].Value == null) 
+                        || (this.Adapter.SelectCommand.Parameters[13].Value.GetType() == typeof(global::System.DBNull)))) {
+                exists = new global::System.Nullable<bool>();
+            }
+            else {
+                exists = new global::System.Nullable<bool>(((bool)(this.Adapter.SelectCommand.Parameters[13].Value)));
+            }
+            if (((this.Adapter.SelectCommand.Parameters[14].Value == null) 
+                        || (this.Adapter.SelectCommand.Parameters[14].Value.GetType() == typeof(global::System.DBNull)))) {
+                orderID = new global::System.Nullable<int>();
+            }
+            else {
+                orderID = new global::System.Nullable<int>(((int)(this.Adapter.SelectCommand.Parameters[14].Value)));
+            }
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(EMMADataSet.OrdersDataTable dataTable) {
+            return this.Adapter.Update(dataTable);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(EMMADataSet dataSet) {
+            return this.Adapter.Update(dataSet, "Orders");
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(global::System.Data.DataRow dataRow) {
+            return this.Adapter.Update(new global::System.Data.DataRow[] {
+                        dataRow});
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(global::System.Data.DataRow[] dataRows) {
+            return this.Adapter.Update(dataRows);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
+        public virtual int Delete(
+                    int Original_ID, 
+                    int Original_OwnerID, 
+                    bool Original_ForCorp, 
+                    int Original_StationID, 
+                    int Original_TotalVol, 
+                    int Original_RemainingVol, 
+                    int Original_MinVolume, 
+                    short Original_OrderState, 
+                    int Original_ItemID, 
+                    short Original_Range, 
+                    short Original_WalletID, 
+                    short Original_Duration, 
+                    decimal Original_Escrow, 
+                    decimal Original_Price, 
+                    bool Original_BuyOrder, 
+                    System.DateTime Original_Issued, 
+                    bool Original_Processed, 
+                    long Original_EveOrderID) {
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ID));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_OwnerID));
+            this.Adapter.DeleteCommand.Parameters[2].Value = ((bool)(Original_ForCorp));
+            this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_StationID));
+            this.Adapter.DeleteCommand.Parameters[4].Value = ((int)(Original_TotalVol));
+            this.Adapter.DeleteCommand.Parameters[5].Value = ((int)(Original_RemainingVol));
+            this.Adapter.DeleteCommand.Parameters[6].Value = ((int)(Original_MinVolume));
+            this.Adapter.DeleteCommand.Parameters[7].Value = ((short)(Original_OrderState));
+            this.Adapter.DeleteCommand.Parameters[8].Value = ((int)(Original_ItemID));
+            this.Adapter.DeleteCommand.Parameters[9].Value = ((short)(Original_Range));
+            this.Adapter.DeleteCommand.Parameters[10].Value = ((short)(Original_WalletID));
+            this.Adapter.DeleteCommand.Parameters[11].Value = ((short)(Original_Duration));
+            this.Adapter.DeleteCommand.Parameters[12].Value = ((decimal)(Original_Escrow));
+            this.Adapter.DeleteCommand.Parameters[13].Value = ((decimal)(Original_Price));
+            this.Adapter.DeleteCommand.Parameters[14].Value = ((bool)(Original_BuyOrder));
+            this.Adapter.DeleteCommand.Parameters[15].Value = ((System.DateTime)(Original_Issued));
+            this.Adapter.DeleteCommand.Parameters[16].Value = ((bool)(Original_Processed));
+            this.Adapter.DeleteCommand.Parameters[17].Value = ((long)(Original_EveOrderID));
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
+            if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.DeleteCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.DeleteCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.DeleteCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
+        public virtual int Insert(
+                    global::System.Nullable<int> OwnerID, 
+                    global::System.Nullable<bool> ForCorp, 
+                    global::System.Nullable<int> StationID, 
+                    global::System.Nullable<int> TotalVol, 
+                    global::System.Nullable<int> RemainingVol, 
+                    global::System.Nullable<int> MinVolume, 
+                    global::System.Nullable<short> OrderState, 
+                    global::System.Nullable<int> ItemID, 
+                    global::System.Nullable<short> Range, 
+                    global::System.Nullable<short> walletID, 
+                    global::System.Nullable<short> Duration, 
+                    global::System.Nullable<decimal> Escrow, 
+                    global::System.Nullable<decimal> Price, 
+                    global::System.Nullable<bool> BuyOrder, 
+                    global::System.Nullable<global::System.DateTime> Issued, 
+                    global::System.Nullable<bool> Processed, 
+                    global::System.Nullable<long> EveOrderID) {
+            if ((OwnerID.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[1].Value = ((int)(OwnerID.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((ForCorp.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[2].Value = ((bool)(ForCorp.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((StationID.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[3].Value = ((int)(StationID.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((TotalVol.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[4].Value = ((int)(TotalVol.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((RemainingVol.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[5].Value = ((int)(RemainingVol.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            if ((MinVolume.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[6].Value = ((int)(MinVolume.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((OrderState.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[7].Value = ((short)(OrderState.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[7].Value = global::System.DBNull.Value;
+            }
+            if ((ItemID.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[8].Value = ((int)(ItemID.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[8].Value = global::System.DBNull.Value;
+            }
+            if ((Range.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[9].Value = ((short)(Range.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[9].Value = global::System.DBNull.Value;
+            }
+            if ((walletID.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[10].Value = ((short)(walletID.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[10].Value = global::System.DBNull.Value;
+            }
+            if ((Duration.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[11].Value = ((short)(Duration.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[11].Value = global::System.DBNull.Value;
+            }
+            if ((Escrow.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[12].Value = ((decimal)(Escrow.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[12].Value = global::System.DBNull.Value;
+            }
+            if ((Price.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[13].Value = ((decimal)(Price.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[13].Value = global::System.DBNull.Value;
+            }
+            if ((BuyOrder.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[14].Value = ((bool)(BuyOrder.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[14].Value = global::System.DBNull.Value;
+            }
+            if ((Issued.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[15].Value = ((System.DateTime)(Issued.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[15].Value = global::System.DBNull.Value;
+            }
+            if ((Processed.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[16].Value = ((bool)(Processed.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[16].Value = global::System.DBNull.Value;
+            }
+            if ((EveOrderID.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[17].Value = ((long)(EveOrderID.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[17].Value = global::System.DBNull.Value;
+            }
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
+            if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.InsertCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.InsertCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.InsertCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
+        public virtual int Update(
+                    global::System.Nullable<int> ID, 
+                    global::System.Nullable<int> OwnerID, 
+                    global::System.Nullable<bool> ForCorp, 
+                    global::System.Nullable<int> StationID, 
+                    global::System.Nullable<int> TotalVol, 
+                    global::System.Nullable<int> RemainingVol, 
+                    global::System.Nullable<int> MinVolume, 
+                    global::System.Nullable<short> OrderState, 
+                    global::System.Nullable<int> ItemID, 
+                    global::System.Nullable<short> Range, 
+                    global::System.Nullable<short> WalletID, 
+                    global::System.Nullable<short> Duration, 
+                    global::System.Nullable<decimal> Escrow, 
+                    global::System.Nullable<decimal> Price, 
+                    global::System.Nullable<bool> BuyOrder, 
+                    global::System.Nullable<global::System.DateTime> Issued, 
+                    global::System.Nullable<bool> Processed, 
+                    global::System.Nullable<long> EveOrderID, 
+                    global::System.Nullable<int> Original_ID) {
+            if ((ID.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(ID.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((OwnerID.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(OwnerID.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((ForCorp.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[3].Value = ((bool)(ForCorp.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((StationID.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(StationID.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((TotalVol.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(TotalVol.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            if ((RemainingVol.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(RemainingVol.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((MinVolume.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(MinVolume.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[7].Value = global::System.DBNull.Value;
+            }
+            if ((OrderState.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[8].Value = ((short)(OrderState.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[8].Value = global::System.DBNull.Value;
+            }
+            if ((ItemID.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(ItemID.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[9].Value = global::System.DBNull.Value;
+            }
+            if ((Range.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[10].Value = ((short)(Range.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[10].Value = global::System.DBNull.Value;
+            }
+            if ((WalletID.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[11].Value = ((short)(WalletID.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[11].Value = global::System.DBNull.Value;
+            }
+            if ((Duration.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[12].Value = ((short)(Duration.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[12].Value = global::System.DBNull.Value;
+            }
+            if ((Escrow.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[13].Value = ((decimal)(Escrow.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[13].Value = global::System.DBNull.Value;
+            }
+            if ((Price.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[14].Value = ((decimal)(Price.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[14].Value = global::System.DBNull.Value;
+            }
+            if ((BuyOrder.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[15].Value = ((bool)(BuyOrder.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[15].Value = global::System.DBNull.Value;
+            }
+            if ((Issued.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[16].Value = ((System.DateTime)(Issued.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[16].Value = global::System.DBNull.Value;
+            }
+            if ((Processed.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[17].Value = ((bool)(Processed.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[17].Value = global::System.DBNull.Value;
+            }
+            if ((EveOrderID.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[18].Value = ((long)(EveOrderID.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[18].Value = global::System.DBNull.Value;
+            }
+            if ((Original_ID.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[19].Value = ((int)(Original_ID.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[19].Value = global::System.DBNull.Value;
+            }
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
+            if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.UpdateCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.UpdateCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.UpdateCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
+        public virtual int Update(
+                    global::System.Nullable<int> OwnerID, 
+                    global::System.Nullable<bool> ForCorp, 
+                    global::System.Nullable<int> StationID, 
+                    global::System.Nullable<int> TotalVol, 
+                    global::System.Nullable<int> RemainingVol, 
+                    global::System.Nullable<int> MinVolume, 
+                    global::System.Nullable<short> OrderState, 
+                    global::System.Nullable<int> ItemID, 
+                    global::System.Nullable<short> Range, 
+                    global::System.Nullable<short> WalletID, 
+                    global::System.Nullable<short> Duration, 
+                    global::System.Nullable<decimal> Escrow, 
+                    global::System.Nullable<decimal> Price, 
+                    global::System.Nullable<bool> BuyOrder, 
+                    global::System.Nullable<global::System.DateTime> Issued, 
+                    global::System.Nullable<bool> Processed, 
+                    global::System.Nullable<long> EveOrderID, 
+                    global::System.Nullable<int> Original_ID) {
+            return this.Update(Original_ID, OwnerID, ForCorp, StationID, TotalVol, RemainingVol, MinVolume, OrderState, ItemID, Range, WalletID, Duration, Escrow, Price, BuyOrder, Issued, Processed, EveOrderID, Original_ID);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int FinishUnProcessed(global::System.Nullable<int> ownerID, global::System.Nullable<bool> notify, global::System.Nullable<bool> notifyBuy, global::System.Nullable<bool> notifySell, global::System.Nullable<bool> forCorp) {
+            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[6];
+            if ((ownerID.HasValue == true)) {
+                command.Parameters[1].Value = ((int)(ownerID.Value));
+            }
+            else {
+                command.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((notify.HasValue == true)) {
+                command.Parameters[2].Value = ((bool)(notify.Value));
+            }
+            else {
+                command.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((notifyBuy.HasValue == true)) {
+                command.Parameters[3].Value = ((bool)(notifyBuy.Value));
+            }
+            else {
+                command.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((notifySell.HasValue == true)) {
+                command.Parameters[4].Value = ((bool)(notifySell.Value));
+            }
+            else {
+                command.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((forCorp.HasValue == true)) {
+                command.Parameters[5].Value = ((bool)(forCorp.Value));
+            }
+            else {
+                command.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
+            if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                command.Connection.Open();
+            }
+            int returnValue;
+            try {
+                returnValue = command.ExecuteNonQuery();
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    command.Connection.Close();
+                }
+            }
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int SetProcessed(global::System.Nullable<int> ownerID, global::System.Nullable<bool> forCorp, global::System.Nullable<bool> processed) {
+            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[7];
+            if ((ownerID.HasValue == true)) {
+                command.Parameters[1].Value = ((int)(ownerID.Value));
+            }
+            else {
+                command.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((forCorp.HasValue == true)) {
+                command.Parameters[2].Value = ((bool)(forCorp.Value));
+            }
+            else {
+                command.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((processed.HasValue == true)) {
+                command.Parameters[3].Value = ((bool)(processed.Value));
+            }
+            else {
+                command.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
+            if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                command.Connection.Open();
+            }
+            int returnValue;
+            try {
+                returnValue = command.ExecuteNonQuery();
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    command.Connection.Close();
+                }
+            }
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int SetProcessedByID(global::System.Nullable<int> orderID, global::System.Nullable<bool> processed) {
+            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[8];
+            if ((orderID.HasValue == true)) {
+                command.Parameters[1].Value = ((int)(orderID.Value));
+            }
+            else {
+                command.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((processed.HasValue == true)) {
+                command.Parameters[2].Value = ((bool)(processed.Value));
+            }
+            else {
+                command.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
+            if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                command.Connection.Open();
+            }
+            int returnValue;
+            try {
+                returnValue = command.ExecuteNonQuery();
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    command.Connection.Close();
+                }
             }
             return returnValue;
         }
