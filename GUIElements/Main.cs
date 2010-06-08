@@ -76,6 +76,7 @@ namespace EveMarketMonitorApp.GUIElements
 
             try
             {
+                //splash.ShowMessage("Test Message", "Test", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DateTime start = DateTime.UtcNow;
 
                 // DO ANY SETUP HERE.
@@ -92,17 +93,17 @@ namespace EveMarketMonitorApp.GUIElements
                     Diagnostics.StartTimer("Updates");
                     // Update settings and user database if needed.
                     UpdateStatus(0, 0, "Initalising database", "", false);
-                    try
-                    {
+                    //try
+                    //{
                         Updater.Update();
-                    }
-                    catch (EMMAException)
-                    {
-                        UpdateStatus(0, 0, "Done", "", true);
-                        MessageBox.Show("Critical error updating EMMA database. For details, see " +
-                            "\"Logging/ExceptionLog.txt\"", "Ciritcal error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    //}
+                    //catch (EMMAException)
+                    //{
+                        //UpdateStatus(0, 0, "Done", "", true);
+                        //MessageBox.Show(splash, "Critical error updating EMMA database. For details, see " +
+                        //    "\"Logging/ExceptionLog.txt\"", "Ciritcal error",
+                        //    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //}
                     Updater.InitDBs();
                     checkForUpdates = checkForUpdates && EveMarketMonitorApp.Properties.Settings.Default.AutoUpdate; 
                     if (checkForUpdates)
@@ -126,10 +127,6 @@ namespace EveMarketMonitorApp.GUIElements
                     // ... it looks wierd otherwise.
                     while (start.AddSeconds(1).CompareTo(DateTime.UtcNow) > 0) { }
                 }
-                else
-                {
-                    this.Close();
-                }
             }
             catch (Exception ex)
             {
@@ -138,14 +135,15 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     emmaEx = new EMMAException(ExceptionSeverity.Critical, "Error during startup", ex);
                 }
-                UpdateStatus(0, 0, "Done", "", true);
-                MessageBox.Show("Problem during EMMA startup.\r\nCheck " + Globals.AppDataDir + "Logging\\exceptionlog.txt" +
+                splash.ShowMessage("Problem during EMMA startup.\r\nCheck " + EMMAException.logFile + 
                     " for details.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UpdateStatus(0, 0, "Done", "", true);
                 this.Close();
             }
             finally
             {
                 UpdateStatus(0, 0, "Done", "", true);
+                splash = null;
             }
         }
 
@@ -302,9 +300,10 @@ namespace EveMarketMonitorApp.GUIElements
                     Globals.AppDataDir, Path.DirectorySeparatorChar)) ||
                 !Directory.Exists(string.Format("{0}Temp", Globals.AppDataDir)))
             {
-                UpdateStatus(0, 0, "Done", "", true);
-                MessageBox.Show("Unable to create required sub-directories.", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //UpdateStatus(0, 0, "Done", "", true);
+                //MessageBox.Show((splash != null ? (IWin32Window)splash : (IWin32Window)this), 
+                //    "Unable to create required sub-directories.", "Error",
+                //   MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw new EMMAException(ExceptionSeverity.Critical, "Unable to create required " +
                     "sub-directories.");
             }
@@ -805,6 +804,7 @@ namespace EveMarketMonitorApp.GUIElements
                 else
                 {
                     _unackAssets = new ViewUnacknowledgedAssets();
+                    _unackAssets.MdiParent = this;
                     _unackAssets.AssetChangesAcknowledged +=
                         new AssetChangesAcknowledgedHandler(unack_AssetChangesAcknowledged);
                     _unackAssets.Show();
@@ -996,11 +996,11 @@ namespace EveMarketMonitorApp.GUIElements
                 }
                 catch(Exception ex)
                 {
-                    UpdateStatus(0, 0, "Done", "", true);
-                    MessageBox.Show("Problem during auto login: " + ex.Message, "Error", MessageBoxButtons.OK,
+                    //UpdateStatus(0, 0, "Done", "", true);
+                    splash.ShowMessage( 
+                        "Problem during auto login: " + ex.Message, "Error", MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
-                }
-                
+                }                
             }
 
             return retVal;
@@ -1338,8 +1338,8 @@ namespace EveMarketMonitorApp.GUIElements
         private bool Prerequs()
         {
             bool retVal = true;
-            try
-            {
+            //try
+            //{
                 if (!EveMarketMonitorApp.Properties.Settings.Default.SkipExpressCheck)
                 {
                     if (!isSQLExpressInstalled())
@@ -1354,31 +1354,31 @@ namespace EveMarketMonitorApp.GUIElements
                     if (retVal && !isSQLExpressRunning())
                     {
                         retVal = false;
-                        UpdateStatus(0, 0, "Done", "", true);
-                        MessageBox.Show("It appears that the SQL Express service is not running and cannot be " +
+                        //UpdateStatus(0, 0, "Done", "", true);
+                        throw new EMMAException(ExceptionSeverity.Critical, 
+                            "It appears that the SQL Express service is not running and cannot be " +
                             "started.\r\nIf you wish to skip this " +
                             "check in the future then you can disable it in the "+
-                            "'EveMarketMonitorApp.exe.config' file.\r\nEMMA will now close.",
-                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            "'EveMarketMonitorApp.exe.config' file.");
                     }
                     if (retVal && !waitForSQLAcknowledge())
                     {
                         retVal = false;
-                        UpdateStatus(0, 0, "Done", "", true);
-                        MessageBox.Show("EMMA is unable to connect to the database. Please try restarting " +
-                            "if the problem persists then more detail can be found in " +
-                            "Logging/ExceptionLog.txt", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        //UpdateStatus(0, 0, "Done", "", true);
+                        throw new EMMAException(ExceptionSeverity.Critical,
+                            "EMMA is unable to connect to the database.");
                     }
                 }
-            }
-            catch (EMMAException)
-            {
-                UpdateStatus(0, 0, "Done", "", true);
-                MessageBox.Show("There was an error while checking if SQL server express is installed and " +
-                    "running. (Check " + Globals.AppDataDir + "Logging\\exceptionlog.txt for details)\r\nEMMA will attempt to " +
-                    "continue but if things don't work then that's probably the reason.", 
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            //}
+            //catch (EMMAException)
+            //{
+                //UpdateStatus(0, 0, "Done", "", true);
+            //    MessageBox.Show((splash != null ? (IWin32Window)splash : (IWin32Window)this), 
+            //        "There was an error while checking if SQL server express is installed and " +
+            //        "running. (Check " + Globals.AppDataDir + "Logging\\exceptionlog.txt for details)\r\nEMMA will attempt to " +
+            //        "continue but if things don't work then that's probably the reason.", 
+            //        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
             return retVal;
         }
 
@@ -1630,30 +1630,32 @@ namespace EveMarketMonitorApp.GUIElements
                 catch (EMMAException)
                 {
                     Globals.EveAPIDown = true;
-                    UpdateStatus(0, 0, "Done", "", true);
-                    MessageBox.Show("Failed to contact the Eve API.\r\nAPI updates " +
-                        "will be disabled until EMMA is restarted.\r\n" +
-                        "(See " + Globals.AppDataDir + "Logging\\exceptionlog.txt for more detailed information)", "Communication failure",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    //UpdateStatus(0, 0, "Done", "", true);
+                    splash.ShowMessage(
+                        "Failed to contact the Eve API.\r\nAPI updates will be disabled until EMMA is restarted.\r\n" +
+                        "(See " + EMMAException.logFile + " for more detailed information)",
+                        "Communication failure", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 try { Ping("www.eve-central.com"); }
                 catch (EMMAException)
                 {
                     Globals.EveCentralDown = true;
-                    UpdateStatus(0, 0, "Done", "", true);
-                    MessageBox.Show("Failed to contact eve-central.\r\n" +
-                        "Price updates from eve-central will be disabled until EMMA is restarted.\r\n" +
-                        "(See " + Globals.AppDataDir + "Logging\\ExceptionLog.txt for more detailed information)", "Communication failure",
+                    //UpdateStatus(0, 0, "Done", "", true);
+                    splash.ShowMessage(
+                        "Failed to contact eve-central.\r\nPrice updates from eve-central will be disabled until " +
+                        "EMMA is restarted.\r\n(See " + EMMAException.logFile + " for more " +
+                        "detailed information)", "Communication failure",
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 try { Ping("www.eve-metrics.com"); }
                 catch (EMMAException)
                 {
                     Globals.EveMetricsDown = true;
-                    UpdateStatus(0, 0, "Done", "", true);
-                    MessageBox.Show("Failed to contact eve-metrics.\r\n" +
+                    //UpdateStatus(0, 0, "Done", "", true);
+                    splash.ShowMessage( 
+                        "Failed to contact eve-metrics.\r\n" +
                         "Price updates from eve-metrics will be disabled until EMMA is restarted.\r\n" +
-                        "(See " + Globals.AppDataDir + "Logging\\ExceptionLog.txt for more detailed information)", "Communication failure",
+                        "(See " + EMMAException.logFile + " for more detailed information)", "Communication failure",
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
@@ -1684,25 +1686,27 @@ namespace EveMarketMonitorApp.GUIElements
                 if (Globals.EMMAUpdateServer.Equals("") &&
                     updateServers.Count > 0)
                 {
-                    UpdateStatus(0, 0, "Done", "", true);
-                    MessageBox.Show("Failed to contact any auto-update server.\r\n" +
+                    //UpdateStatus(0, 0, "Done", "", true);
+                    splash.ShowMessage(
+                        "Failed to contact any auto-update server.\r\n" +
                         "EMMA will be unable to update until it is restarted.\r\n" +
-                        "(See " + Globals.AppDataDir + "Logging\\ExceptionLog.txt for more detailed information)", "Communication failure",
+                        "(See " + EMMAException.logFile + " for more detailed information)", "Communication failure",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
 
-                if (Globals.EMMAUpdateServer.Equals("") && Globals.EveAPIDown &&
-                    Globals.EveCentralDown)
-                {
-                    UpdateStatus(0, 0, "Done", "", true);
-                    if (MessageBox.Show("Connection checks to ALL servers have failed.\r\n" +
-                        "Do you wish to skip these checks in future?", "Communication failure",
-                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    {
-                        Properties.Settings.Default.SkipConnectionCheck = true;
-                    }
-                }
+                //if (Globals.EMMAUpdateServer.Equals("") && Globals.EveAPIDown &&
+                //    Globals.EveCentralDown)
+                //{
+                    //UpdateStatus(0, 0, "Done", "", true);
+                    //if (MessageBox.Show((splash != null ? (IWin32Window)splash : (IWin32Window)this), 
+                    //    "Connection checks to ALL servers have failed.\r\n" +
+                    //    "Do you wish to skip these checks in future?", "Communication failure",
+                    //        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    //{
+                    //    Properties.Settings.Default.SkipConnectionCheck = true;
+                    //}
+                //}
             }
         }
 

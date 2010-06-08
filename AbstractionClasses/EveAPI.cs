@@ -355,8 +355,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     // C# will asume that the value from the file is for the local time zone.
                     // in fact it is UTC so we need to specify this.
                     retVal = TimeZoneInfo.ConvertTime(retVal, TimeZoneInfo.Utc, TimeZoneInfo.Utc);
-                    // Convert from UTC to local time.
-                    //TimeZoneInfo.ConvertTimeFromUtc(retVal, TimeZoneInfo.Utc);
+                    // The time from the file is the 'cached until' time. Take off 23 hours to get the
+                    // time that the data in the file was generated
                     retVal = retVal.AddHours(-23);
                 }
             }
@@ -386,8 +386,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     // C# will asume that the value from the file is for the local time zone.
                     // in fact it is UTC so we need to specify this.
                     retVal = TimeZoneInfo.ConvertTime(retVal, TimeZoneInfo.Utc, TimeZoneInfo.Utc);
-                    // Convert from UTC to local time.
-                    //TimeZoneInfo.ConvertTimeFromUtc(retVal, TimeZoneInfo.Utc);
+                    // The time from the file is teh 'cached until' time. Take off one hour to get the
+                    // time that the data in the file was generated
                     retVal = retVal.AddHours(-1);
                 }
             }

@@ -41150,7 +41150,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@systemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@containerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@containerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoConExclude", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@deltaQuantity", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@addedItemsCost", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -42573,7 +42573,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int AddQuantity(global::System.Nullable<int> ownerID, global::System.Nullable<bool> corpAsset, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> systemID, global::System.Nullable<int> regionID, global::System.Nullable<int> status, global::System.Nullable<int> containerID, global::System.Nullable<bool> autoConExclude, global::System.Nullable<long> deltaQuantity, global::System.Nullable<decimal> addedItemsCost, global::System.Nullable<bool> costCalc) {
+        public virtual int AddQuantity(global::System.Nullable<int> ownerID, global::System.Nullable<bool> corpAsset, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> systemID, global::System.Nullable<int> regionID, global::System.Nullable<int> status, global::System.Nullable<long> containerID, global::System.Nullable<bool> autoConExclude, global::System.Nullable<long> deltaQuantity, global::System.Nullable<decimal> addedItemsCost, global::System.Nullable<bool> costCalc) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[1];
             if ((ownerID.HasValue == true)) {
                 command.Parameters[1].Value = ((int)(ownerID.Value));
@@ -42618,7 +42618,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 command.Parameters[7].Value = global::System.DBNull.Value;
             }
             if ((containerID.HasValue == true)) {
-                command.Parameters[8].Value = ((int)(containerID.Value));
+                command.Parameters[8].Value = ((long)(containerID.Value));
             }
             else {
                 command.Parameters[8].Value = global::System.DBNull.Value;
