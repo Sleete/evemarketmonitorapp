@@ -787,7 +787,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     // Use the currently active sell order to account for assets that appear to be
                     // missing.
                     if (fromFile) { UpdateStatus(0, 0, "Processing active sell orders", "", false); }
-                    Assets.ProcessSellOrders(assetData, changes, _charID, corc == CharOrCorp.Corp);
+                    Assets.ProcessSellOrders(assetData, changes, _charID, _corpID, corc == CharOrCorp.Corp);
                     if (fromFile) { UpdateStatus(0, 0, "", "Complete", false); }
                     // Use transactions that occured after the effective date of the asset data file
                     // to ensure that the asset list is as up-to-date as possible.
@@ -987,13 +987,28 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 EMMADataSet.AssetsRow assetRow;
                 needNewRow = true;
 
-                // Note that if a match is not found for teh specific eve instance ID we pass in then
+                // Note that if a match is not found for the specific eve instance ID we pass in then
                 // EMMA will automatically search for an asset matching all the other parameters.
                 if (Assets.AssetExists(assetData, _charID, corc == CharOrCorp.Corp, locationID,
                     itemID, (int)AssetStatus.States.Normal, containerID != 0, containerID, isContainer,
                     false, !isContainer, false, true, eveInstanceID, ref assetID))
                 {
                     needNewRow = false;
+                }
+                else if(!isContainer)
+                {
+                    // We havn't actually updated the database with anything yet so we may already have an item
+                    // stack in memory but not in the database. Check for that here.
+                    DataRow[] data =
+                        assetData.Select("ItemID = " + itemID + " AND OwnerID = " + _charID + " AND CorpAsset = " +
+                        (corc == CharOrCorp.Corp ? 1 : 0) + " AND LocationID = " + locationID +
+                        " AND Status = " + (int)AssetStatus.States.Normal + " AND ContainerID = " + containerID +
+                        " AND EveItemID = " + eveInstanceID);
+                    if (data != null && data.Length > 0)
+                    {
+                        needNewRow = false;
+                        assetID = ((EMMADataSet.AssetsRow)data[0]).ID;
+                    }
                 }
 
                 Asset change = null;
@@ -1009,6 +1024,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         // EMMA merges these since we don't care how things are stacked and it makes
                         // things a little easier.)
                         assetRow.Quantity = assetRow.Quantity + quantity;
+                        // We're stacking multiple eve item instances so just set the eve item ID to zero.
+                        assetRow.EveItemID = 0;
 
                         // Store the changes that are being made to the quantity of 
                         // items here. 
@@ -1020,6 +1037,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         {
                             change = (Asset)changes.FiltredItems[0];
                             change.Quantity += quantity;
+                            change.EveItemInstanceID = 0;
+                            if (change.Quantity == 0) { changes.ItemFilter = ""; changes.Remove(change); }
                         }
                         else
                         {
@@ -1040,8 +1059,18 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             // is updated.
                             // Note the processed flag MUST be set on the database for later routines
                             // to work correctly. (e.g. Assets.ProcessSellOrders)
-                            Assets.SetProcessedFlag(assetID, true);
-                            assetData.RemoveAssetsRow(assetRow);
+                            if (assetRow.EveItemID == 0)
+                            {
+                                Assets.SetProcessedFlag(assetID, true);
+                                assetData.RemoveAssetsRow(assetRow);
+                            }
+                            else
+                            {
+                                // If Eve instance ID is not yet set then set it.
+                                Assets.SetProcessedFlag(assetID, true);
+                                assetRow.Processed = true;
+                                assetRow.EveItemID = eveInstanceID;
+                            }
                         }
                         else if (assetRow.Quantity != quantity)
                         {
@@ -1055,6 +1084,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             #region Remember changes to item quantities
                             change = new Asset(assetRow);
                             change.Quantity = quantity - assetRow.Quantity;
+                            change.EveItemInstanceID = eveInstanceID;
                             change.Processed = false;
                             changes.Add(change);
                             #endregion
@@ -1062,6 +1092,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             // All we need to do is update the quantity and set the processed flag.
                             assetRow.Quantity = quantity;
                             assetRow.Processed = true;
+                            assetRow.EveItemID = eveInstanceID;
                             // Also set the processed flag on the database directly. This will
                             // stop us from picking up this row later on (e.g. Assets.ProcessSellOrders)
                             Assets.SetProcessedFlag(assetID, true);
@@ -1169,74 +1200,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 }
             }
 
-            // This is me experimenting with a different method for doing this...
-
-            /*AssetList newAssets = new AssetList();
-            List<AssetAccessParams> accessParams = new List<AssetAccessParams>();
-            accessParams.Add(new AssetAccessParams(_charID, corc == CharOrCorp.Char, corc == CharOrCorp.Corp));
-            AssetList oldAssets = Assets.LoadAssets(accessParams, new List<int>(), 0, 0);
-
-            foreach (XmlNode asset in assetList)
-            {
-                newAssets.Add(new Asset(asset, corc == CharOrCorp.Char ? _charID : _corpID, null));
-            }
-
-            foreach (Asset asset in newAssets)
-            {
-                // IndexOf uses the Equals method so we're matching by owner, location, item and
-                // contents but NOT quantity.
-                int oldAssetIndex = oldAssets.IndexOf(asset);
-                if (oldAssetIndex != 0)
-                {
-                    Asset oldAsset = oldAssets[oldAssetIndex];
-                    if (oldAsset.Processed)
-                    {
-                        // Row is already in the database but has been processed (i.e. there has already
-                        // been another asset row in the XML with the same item, location, etc).
-                        // Just add the current quantity to the row.
-                        oldAsset.Quantity += asset.Quantity;
-                    }
-                    else
-                    {
-                        if (oldAsset.Quantity == asset.Quantity)
-                        {
-                            // The row already exists in the database and quantity is the same so
-                            // just set the processed flag.
-                            oldAsset.Processed = true;
-                        }
-                        else
-                        {
-                            // The row already exists in the database, has not yet been processed
-                            // and the quantity does not match what we've got from the XML.
-                            // All we need to do is update the quantity and set the processed flag.
-                            oldAsset.Quantity = quantity;
-                            oldAsset.Processed = true;
-                        }
-                    }
-                }
-                else
-                {
-                    // The row does not currently exist in the database so we need to create it. 
-                    oldAssets.Add(asset);
-                }
-                
-            }*/
-
         }
-
-        /*private static void UpdateExpectedChanges(Dictionary<int, Dictionary<int, int>> expectedChanges, 
-            int locationID, int itemID, int deltaQuantity)
-        {
-            if (!expectedChanges.ContainsKey(locationID))
-            {
-                expectedChanges.Add(locationID, new Dictionary<int, int>());
-            }
-            if (!expectedChanges[locationID].ContainsKey(itemID))
-            {
-                expectedChanges[locationID].Add(itemID, 0);
-            }
-            expectedChanges[locationID][itemID] = deltaQuantity;
-        }*/
         #endregion
 
         #region Update Journal

@@ -71,8 +71,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
             foreach (EMMADataSet.AssetsRow unprocMatch in unprocMatches)
             {
                 Asset change = new Asset(unprocMatch);
-                change.Quantity *= -1; // These assets are effectively missing so invert the quantity.
-                changes.Add(change);
+                if (change.Quantity != 0)
+                {
+                    change.Quantity *= -1; // These assets are effectively missing so invert the quantity.
+                    changes.Add(change);
+                }
             }
 
             // Note 'changes2' is a list of the same items as 'changes'.
@@ -88,11 +91,60 @@ namespace EveMarketMonitorApp.DatabaseClasses
             // calculated during an assets update.
             #region Update transactions with CalcProfitFromAssets flag
             EMMADataSet.TransactionsDataTable transData = new EMMADataSet.TransactionsDataTable();
-            Dictionary<long, TransProcessData> processData = new Dictionary<long, TransProcessData>();
-            List<long> completedTrans = new List<long>();
-            List<long> uncompletedTrans = new List<long>();
-            List<int> noTransItemIDs = new List<int>();
+            Transactions.AddTransByCalcProfitFromAssets(transData,
+                UserAccount.CurrentGroup.GetFinanceAccessParams(APIDataType.Transactions), 0, true);
 
+            foreach (EMMADataSet.TransactionsRow trans in transData)
+            {
+                long quantityRemaining = trans.Quantity;
+                decimal totalBuyPrice = 0;
+
+                changes.ItemFilter = "ItemID = " + trans.ItemID + " AND Quantity < 0";
+                foreach (Asset change in changes.FiltredItems)
+                {
+                    // If we get a match then use the missing items's cost to calculate the 
+                    // transaction's profit.
+                    // Note that we don't need to adjust any item quantities since either the
+                    // changes have already been made or the item stack is 'unprocessed' and will
+                    // be cleared out anyway.
+                    long deltaQ = Math.Min(Math.Abs(change.Quantity), quantityRemaining);
+                    // Adjust the quantity of the 'missing' items.
+                    change.Quantity += deltaQ;
+                    quantityRemaining -= deltaQ;
+                    // Because this transaction's asset quantity change will have been made
+                    // back when the transaction was processed, we will have some unexpected
+                    // added items as well.
+                    // 
+                    // E.g. Consider station A and B. At A, there are 2 units of item X, at B 
+                    // there is nothing. 
+                    // At a later date, the player moves 2 of X from A to B and sells it.
+                    // When the sell transaction is processed, station B will be set to -2 
+                    // units of X and the transaction will be set as 'CalcProfitFromAssets'.
+                    // When the asset update occurs, it will show zero for both locations so 
+                    // they will be unprocessed.
+                    // This will result in 2 unexplained units gained at station B and 2 lost 
+                    // at station A. (We've gone from A=2,B=-2 to A=0 B=0)
+                    changes2.ItemFilter = "ItemID = " + trans.ItemID + " AND LocationID = " + trans.StationID +
+                        " AND Status = 1";
+                    if (changes2.FiltredItems.Count > 0)
+                    {
+                        // We've already accounted for the cost of items, etc so just reduce the 
+                        // quantity.
+                        changes2[0].Quantity -= deltaQ;
+                    }
+
+                    totalBuyPrice += (change.UnitBuyPrice * deltaQ);
+
+                    if (quantityRemaining != trans.Quantity)
+                    {
+                        // We've found enough missing items to match this transaction either completely
+                        // or partially so calculate it's profit and set it as completed.
+                        trans.CalcProfitFromAssets = false;
+                        trans.SellerUnitProfit = trans.Price - (totalBuyPrice / trans.Quantity);
+                    }
+                }
+            }
+            /*
             foreach (Asset change in changes)
             {
                 // Note: because we are changing quantity within the foreach loop
@@ -191,6 +243,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     trans.SellerUnitProfit = trans.Price - (data.TotalBuyPrice / data.QuantityMatched);
                 }
             }
+             * */
             // Update transactions database
             Transactions.Store(transData);
             #endregion
@@ -326,13 +379,20 @@ namespace EveMarketMonitorApp.DatabaseClasses
             #endregion
         }
 
-        private class TransProcessData
+        /*private class TransProcessData
         {
             // Used by AnalyseChanges method.
             public long QuantityRemaining { get; set; }
             public long QuantityMatched { get; set; }
             public decimal TotalBuyPrice { get; set; }
+        }*/
+
+        private struct AssetInfo
+        {
+            public long assetID;
+            public long quantity;
         }
+
 
         /// <summary>
         /// This ensures that items in sell orders appear in the list of the player's assets.
@@ -340,7 +400,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// the update is applied to the database.
         /// </summary>
         public static void ProcessSellOrders(EMMADataSet.AssetsDataTable assetData, AssetList changes,
-            int charID, bool corp)
+            int charID, int corpID, bool corp)
         {
             List<int> itemIDs = new List<int>();
             itemIDs.Add(0);
@@ -350,168 +410,92 @@ namespace EveMarketMonitorApp.DatabaseClasses
             accessParams.Add(new AssetAccessParams(charID, !corp, corp));
             // Get active sell orders
             OrdersList sellOrders = Orders.LoadOrders(accessParams, itemIDs, stationIDs, 999, "Sell");
-            EMMADataSet.AssetsDataTable assets = new EMMADataSet.AssetsDataTable();
             EMMADataSet.AssetsRow changedAsset = null;
-            // Note that removedAssets is indexed first by itemID and second by stationID
-            Dictionary<int, Dictionary<int, long>> removedAssets = new Dictionary<int, Dictionary<int, long>>();
+            // Note that modifiedAssets is indexed first by itemID and second by stationID
+            Dictionary<int, Dictionary<int, AssetInfo>> modifiedAssets = new Dictionary<int, Dictionary<int, AssetInfo>>();
 
             foreach (Order sellOrder in sellOrders)
             {
-                bool orderDone = false;
+                bool foundMatch = false;
                 long assetID = 0;
 
 
                 // If there is already an asset row with a state of 'ForSaleViaMarket' in the same location,
-                // same item type and same quantity then just use that and set it to processed
-                // (Note that transaction updates should have updated the asset quantity to match whatever
-                // the remaining volume of the order is) 
-                // Above note is correct. However, if there are multiple sell orders in the same station for 
-                // the same item then the asset quantity will be the combined total volume of all the orders.
-                if (Assets.AssetExists(assets, charID, corp, sellOrder.StationID, sellOrder.ItemID,
-                    (int)AssetStatus.States.ForSaleViaMarket, false, 0, false, false, true, true, 
+                // and with the same item type then check quantity.
+                // If it matches then just set to processed and move on.
+                // If it does not then record the difference in quantities and go to the next order.
+                // If we can't find a match then add a new asset row and record the items gained.
+                if (Assets.AssetExists(assetData, charID, corp, sellOrder.StationID, sellOrder.ItemID,
+                    (int)AssetStatus.States.ForSaleViaMarket, false, 0, false, false, true, true,
                     true, 0, ref assetID))
                 {
-                    changedAsset = assets.FindByID(assetID);
-                    if (changedAsset.Quantity <= sellOrder.RemainingVol)
+                    foundMatch = true;
+                }
+                else
+                {
+                    DataRow[] data =
+                        assetData.Select("ItemID = " + sellOrder.ItemID + " AND OwnerID = " + charID + " AND CorpAsset = " +
+                        (corp ? 1 : 0) + " AND LocationID = " + sellOrder.StationID +
+                        " AND Status = " + (int)AssetStatus.States.ForSaleViaMarket);
+                    if (data != null && data.Length > 0)
                     {
-                        if (!changedAsset.Processed)
-                        {
-                            if (changedAsset.Quantity < sellOrder.RemainingVol)
-                            {
-                                // If the quantities do not match then store how many units we are removing 
-                                // from the stack, the most likely cause is more than one sell order for 
-                                // this item in this location and if we know how many units we've removed 
-                                // We can make sure that the other order(s) quantity matches up.
-                                Dictionary<int, long> itemVolRemoved = new Dictionary<int, long>();
-                                if (removedAssets.ContainsKey(sellOrder.ItemID))
-                                {
-                                    itemVolRemoved = removedAssets[sellOrder.ItemID];
-                                }
-                                else
-                                {
-                                    removedAssets.Add(sellOrder.ItemID, itemVolRemoved);
-                                }
-                                if (itemVolRemoved.ContainsKey(sellOrder.StationID))
-                                {
-                                    itemVolRemoved[sellOrder.StationID] = changedAsset.Quantity - sellOrder.RemainingVol;
-                                }
-                                else
-                                {
-                                    itemVolRemoved.Add(sellOrder.StationID, changedAsset.Quantity - sellOrder.RemainingVol);
-                                }
-                                changedAsset.Quantity = sellOrder.RemainingVol;
-                            }
-                            changedAsset.Processed = true;
-                            orderDone = true;
-                        }
-                        else
-                        {
-                            // The asset record has already been processed.
-                            // This means that there must be more than one sell order for the same item 
-                            // at this station.
-                            // Use the 'removedAssets' dictionary to validate the amounts rather than just 
-                            // adding them blindly.
-                            if (removedAssets.ContainsKey(sellOrder.ItemID))
-                            {
-                                Dictionary<int, long> itemVolRemoved = removedAssets[sellOrder.ItemID];
-                                if (itemVolRemoved.ContainsKey(sellOrder.StationID))
-                                {
-                                    long remainingRemoved = itemVolRemoved[sellOrder.StationID];
-                                    if (remainingRemoved >= sellOrder.RemainingVol)
-                                    {
-                                        remainingRemoved -= sellOrder.RemainingVol;
-                                        itemVolRemoved[sellOrder.StationID] = remainingRemoved;
-                                        changedAsset.Quantity += sellOrder.RemainingVol;
-                                        orderDone = true;
-                                    }
-                                }
-                            }
-                        }
+                        foundMatch = true;
+                        assetID = ((EMMADataSet.AssetsRow)data[0]).ID;
                     }
                 }
 
+                if (foundMatch)
+                {
+                    changedAsset = assetData.FindByID(assetID);
+                    if (changedAsset.Quantity != sellOrder.RemainingVol)
+                    {
+                        // If the quantities do not match then store how many units we are removing 
+                        // from the stack, the most likely cause is more than one sell order for 
+                        // this item in this location and if we know how many units we've removed 
+                        // We can make sure that the other order(s) quantity matches up.
+                        Dictionary<int, AssetInfo> itemDeltaVol = new Dictionary<int, AssetInfo>();
+                        if (modifiedAssets.ContainsKey(sellOrder.ItemID))
+                        {
+                            itemDeltaVol = modifiedAssets[sellOrder.ItemID];
+                        }
+                        else
+                        {
+                            modifiedAssets.Add(sellOrder.ItemID, itemDeltaVol);
+                        }
+                        if (itemDeltaVol.ContainsKey(sellOrder.StationID))
+                        {
+                            AssetInfo info = itemDeltaVol[sellOrder.StationID];
+                            info.quantity += sellOrder.RemainingVol - changedAsset.Quantity;
+                            itemDeltaVol[sellOrder.StationID] = info;
+                            changedAsset.Quantity += sellOrder.RemainingVol;
+                        }
+                        else
+                        {
+                            AssetInfo info = new AssetInfo();
+                            info.quantity = sellOrder.RemainingVol - changedAsset.Quantity;
+                            info.assetID = changedAsset.ID;
+                            itemDeltaVol.Add(sellOrder.StationID, info);
+                            changedAsset.Quantity = sellOrder.RemainingVol;
+                        }
+                    }
+                    changedAsset.Processed = true;
+                    // Also set it to processed in the database.
+                    SetProcessedFlag(changedAsset.ID, true);
+                }
 
                 // We havn't managed to match the order to an existing 'ForSaleViaMarket' stack in
-                // the database.
-                // As such, we need to work out where the items in the sell order have come from in
-                // order to calculate the correct 'cost' value.
-                if (!orderDone)
+                // the database or in memory.
+                // As such, we need to create a new one.
+                if (!foundMatch)
                 {
-                    decimal assetCost = 0;
-                    long qToFind = sellOrder.RemainingVol;
-                    // Check the asset update changes for any reductions in quantity of the same item 
-                    // as the sell order.
-                    // E.g. The database has 20 of an item at a location but the XML update only had
-                    // 10 there. This would be a change of -10 at that location. 
-                    // If there are any reductions in quantity of the item we're looking for then use 
-                    // those to calculate the cost of the items in the sell order.
-                    if (qToFind > 0)
-                    {
-                        changes.ItemFilter = "ItemID = " + sellOrder.ItemID + " AND Quantity < 0";
-                        foreach (Asset change in changes.FiltredItems)
-                        {
-                            if (qToFind > 0 && change.Quantity < 0)
-                            {
-                                long q = Math.Min(qToFind, Math.Abs(change.Quantity));
-                                qToFind -= q;
-                                assetCost += q * change.UnitBuyPrice;
-
-                                // We are accounting for the changes that have been made so need 
-                                // to adjust the object from the 'changes' collection.
-                                // 'changes' will be used later so it must always reflect any 
-                                // unexplained changes.
-                                change.Quantity += q;
-                            }
-                        }
-                    }
-
-                    // If we still have more items to account for then check for any unprocessed 
-                    // asset stacks of the same item as the sell order.
-                    // I.e. items that are in the database but did not appear in the assets XML
-                    // update file.
-                    if (qToFind > 0)
-                    {
-                        // Although the main data changes have not yet been supplied to the database,
-                        // the processed flags have been set for the relevant asset rows.
-                        // This means that we can get the list of unprocessed assets direct from
-                        // the database.
-                        EMMADataSet.AssetsDataTable unprocMatches = new EMMADataSet.AssetsDataTable();
-                        Assets.GetAssets(unprocMatches, accessParams, 0, 0, sellOrder.ItemID, 0, false);
-
-                        // Work through the unprocessed stacks until we've found enough items 
-                        // to match the sell order.
-                        foreach (EMMADataSet.AssetsRow unprocMatch in unprocMatches)
-                        {
-                            if (qToFind > 0 && unprocMatch.Quantity > 0)
-                            {
-                                long q = Math.Min(qToFind, unprocMatch.Quantity);
-                                qToFind -= q;
-                                Asset unproc = new Asset(unprocMatch, null);
-                                assetCost += q * unproc.UnitBuyPrice;
-
-                                // Remove the matching unprocessed items from the database.
-                                // By definition, unprocessed items will not be in the database update
-                                // represented by the 'assets' table so we don't have to worry about
-                                // conflicts.
-                                // (Note we could just leave it and it would get removed when all 
-                                // unprocessed assets are removed but we want to make sure it is not
-                                // picked up by another market order or later in the assets change
-                                // resolution process)
-                                Assets.ChangeAssets(charID, corp, unprocMatch.LocationID, unprocMatch.ItemID,
-                                    unprocMatch.ContainerID, unprocMatch.Status, unprocMatch.AutoConExclude, 
-                                    -1 * q, 0, false);
-                            }
-                        }
-                    }
-
                     // Create the new asset row..
-                    changedAsset = assets.NewAssetsRow();
+                    changedAsset = assetData.NewAssetsRow();
                     changedAsset.AutoConExclude = true;
                     changedAsset.ContainerID = 0;
                     changedAsset.CorpAsset = corp;
-                    changedAsset.Cost = qToFind < sellOrder.RemainingVol ?
-                        assetCost / (sellOrder.RemainingVol - qToFind) : 0;
-                    changedAsset.CostCalc = qToFind < sellOrder.RemainingVol;
+                    // Set cost to zero for now, it will be worked out later when gains/losses are reconciled.
+                    changedAsset.Cost = 0;
+                    changedAsset.CostCalc = false;
                     changedAsset.IsContainer = false;
                     changedAsset.ItemID = sellOrder.ItemID;
                     changedAsset.EveItemID = 0;
@@ -524,8 +508,58 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     changedAsset.SystemID = sellOrder.SystemID;
                     changedAsset.Status = (int)AssetStatus.States.ForSaleViaMarket;
 
-                    assets.AddAssetsRow(changedAsset);
-                }              
+                    assetData.AddAssetsRow(changedAsset);
+
+                    // Store the changes we are making to quantities
+                    Dictionary<int, AssetInfo> itemDeltaVol = new Dictionary<int, AssetInfo>();
+                    if (modifiedAssets.ContainsKey(sellOrder.ItemID))
+                    {
+                        itemDeltaVol = modifiedAssets[sellOrder.ItemID];
+                    }
+                    else
+                    {
+                        modifiedAssets.Add(sellOrder.ItemID, itemDeltaVol);
+                    }
+                    if (itemDeltaVol.ContainsKey(sellOrder.StationID))
+                    {
+                        AssetInfo info = itemDeltaVol[sellOrder.StationID];
+                        info.quantity += sellOrder.RemainingVol;
+                        itemDeltaVol[sellOrder.StationID] = info;
+                    }
+                    else
+                    {
+                        AssetInfo info = new AssetInfo();
+                        info.quantity = sellOrder.RemainingVol;
+                        info.assetID = changedAsset.ID;
+                        itemDeltaVol.Add(sellOrder.StationID, info);
+                    }
+                } 
+                 
+            }
+
+
+            // Once we've finished processing all the orders, store the overall quantity changes. 
+            Dictionary<int, Dictionary<int, AssetInfo>>.Enumerator enumerator = modifiedAssets.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                Dictionary<int, AssetInfo>.Enumerator enumerator2 = enumerator.Current.Value.GetEnumerator();
+                while(enumerator2.MoveNext())
+                {
+                    Asset change = new Asset();
+                    change.ID = enumerator2.Current.Value.assetID;
+                    change.ItemID = enumerator.Current.Key;
+                    change.LocationID = enumerator2.Current.Key;
+                    change.Quantity = enumerator2.Current.Value.quantity;
+                    change.StatusID = (int)AssetStatus.States.ForSaleViaMarket;
+                    change.IsContainer = false;
+                    change.Container = null;
+                    change.AutoConExclude = true;
+                    change.OwnerID = corp ? corpID : charID;
+                    change.UnitBuyPrice = 0;
+                    change.UnitBuyPricePrecalculated = false;    
+     
+                    changes.Add(change);
+                }
             }
         }
 
@@ -1251,7 +1285,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             lock (assetsTableAdapter)
             {
                 assetsTableAdapter.AddQuantity(ownerID, corpAsset, itemID, locationID, systemID,
-                    regionID, status, 0, autoConExclude, deltaQuantity, addedItemsCost, costCalculated);
+                    regionID, status, containerID, autoConExclude, deltaQuantity, addedItemsCost, costCalculated);
             }
         }
         

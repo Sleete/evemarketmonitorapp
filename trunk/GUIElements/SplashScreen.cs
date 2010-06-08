@@ -20,6 +20,7 @@ namespace EveMarketMonitorApp.GUIElements
         private IProvideStatus _progressObject;
 
         delegate void RefreshProgress();
+        delegate void ShowMessageCallback(string message, string caption, MessageBoxButtons buttons, MessageBoxIcon icon);
 
         public SplashScreen(IProvideStatus progressObject)
         {
@@ -72,6 +73,19 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     this.Close();
                 }
+            }
+        }
+
+        public void ShowMessage(string message, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
+        {
+            if (this.InvokeRequired)
+            {
+                ShowMessageCallback callback = new ShowMessageCallback(ShowMessage);
+                this.Invoke(callback, new object[] {message, caption, buttons, icon});
+            }
+            else
+            {
+                MessageBox.Show(message, caption, buttons, icon);
             }
         }
 

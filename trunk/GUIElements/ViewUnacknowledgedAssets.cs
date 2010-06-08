@@ -205,6 +205,10 @@ namespace EveMarketMonitorApp.GUIElements
                 gainedItemsGrid.Visible = false;
                 lostItemsGrid.DataSource = null;
                 gainedItemsGrid.DataSource = null;
+                // For some reason, the lost items data source gets reset when the gained 
+                // items data source is set to null... Wierd but just null it again and
+                // it'll be fine.
+                lostItemsGrid.DataSource = null;
             }
         }
 
@@ -469,14 +473,17 @@ namespace EveMarketMonitorApp.GUIElements
                     }
                     else
                     {
-                        new EMMAException(ExceptionSeverity.Warning, "Could not find gained asset to update\r\n" +
-                            "\tOwner: " + gainedAsset.OwnerID + "\r\n\tCorpAsset: " + gainedAsset.CorpAsset +
-                            "\r\n\tLocation: " + gainedAsset.LocationID + "\r\n\tItem : " + gainedAsset.ItemID +
-                            "\r\n\tStatus: " + gainedAsset.StatusID + "\r\n\tContainerID: " +
-                            gainedAsset.ContainerID + "\r\n\tIsContainer: " + gainedAsset.IsContainer.ToString() +
-                            "\r\n\tAutoConExclude: " + gainedAsset.AutoConExclude.ToString() +
-                            "\r\n\tEveItemInstanceID: " + gainedAsset.EveItemInstanceID, true);
-                        _errorCount++;
+                        // This indicates that the asset row was removed due to being marked as unprocessed.
+                        // i.e. the gain in items was from -x to 0.
+                        // We can happily ignore this.
+                        //new EMMAException(ExceptionSeverity.Warning, "Could not find gained asset to update\r\n" +
+                        //    "\tOwner: " + gainedAsset.OwnerID + "\r\n\tCorpAsset: " + gainedAsset.CorpAsset +
+                        //    "\r\n\tLocation: " + gainedAsset.LocationID + "\r\n\tItem : " + gainedAsset.ItemID +
+                        //    "\r\n\tStatus: " + gainedAsset.StatusID + "\r\n\tContainerID: " +
+                        //    gainedAsset.ContainerID + "\r\n\tIsContainer: " + gainedAsset.IsContainer.ToString() +
+                        //    "\r\n\tAutoConExclude: " + gainedAsset.AutoConExclude.ToString() +
+                        //    "\r\n\tEveItemInstanceID: " + gainedAsset.EveItemInstanceID, true);
+                        //_errorCount++;
                     }
                 }
                 foreach (Asset a in assetsToRemove)
