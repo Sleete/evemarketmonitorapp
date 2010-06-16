@@ -64,7 +64,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     default:
                         break;
                 }
-                retVal.Add(new AssetChangeType(i, GetChangeTypeDesc((ChangeType)i)));
+                if (addit) { retVal.Add(new AssetChangeType(i, GetChangeTypeDesc((ChangeType)i))); }
             }
             return retVal;
         }
