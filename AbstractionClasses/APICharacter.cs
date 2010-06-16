@@ -839,7 +839,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         (int)AssetStatus.States.ForSaleViaContract, true);
                     Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, 
                         (int)AssetStatus.States.InTransit, true);                    
-                    // Clear any assets remaining assets that have not been processed.
+                    // Clear any remaining assets that have not been processed.
                     Assets.ClearUnProcessed(_charID, corc == CharOrCorp.Char, corc == CharOrCorp.Corp, false);
                     Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, 0, false);
 
@@ -997,8 +997,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 }
                 else if(!isContainer)
                 {
-                    // We havn't actually updated the database with anything yet so we may already have an item
-                    // stack in memory but not in the database. Check for that here.
+                    // We havn't actually updated the database with anything yet so we may already have a
+                    // matching item stack in memory but not in the database. Check for that here.
                     DataRow[] data =
                         assetData.Select("ItemID = " + itemID + " AND OwnerID = " + _charID + " AND CorpAsset = " +
                         (corc == CharOrCorp.Corp ? 1 : 0) + " AND LocationID = " + locationID +

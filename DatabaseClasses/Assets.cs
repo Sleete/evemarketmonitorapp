@@ -71,7 +71,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             foreach (EMMADataSet.AssetsRow unprocMatch in unprocMatches)
             {
                 Asset change = new Asset(unprocMatch);
-                if (change.Quantity != 0)
+                // Ignore any assets 'for sale via contract' or 'in transit' 
+                if (change.Quantity != 0 && change.StatusID != (int)AssetStatus.States.ForSaleViaContract && 
+                    change.StatusID != (int)AssetStatus.States.InTransit)
                 {
                     change.Quantity *= -1; // These assets are effectively missing so invert the quantity.
                     changes.Add(change);
