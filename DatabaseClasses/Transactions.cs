@@ -278,12 +278,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
              List<int> regionIDs, List<int> stationIDs, DateTime startDate, DateTime endDate,
             ref decimal avgSellPrice, ref decimal avgBuyPrice, ref long unitsBought, ref long unitsSold,
             ref decimal brokerBuyFees, ref decimal brokerSellFees, ref decimal transactionTax,
-            ref decimal transportCosts, bool calcBrokerFees, bool calcTransTax, bool useReprocessData)
+            ref decimal transportCosts, ref decimal avgSellProfit,
+            bool calcBrokerFees, bool calcTransTax, bool useReprocessData)
         {
             decimal blank1 = 0, blank2 = 0;
             GetItemTransData(accessParams, itemIDs, regionIDs, stationIDs, startDate, endDate, 0, 0,
                 ref avgSellPrice, ref blank1, ref avgBuyPrice, ref blank2, ref unitsBought, ref unitsSold,
-                ref brokerBuyFees, ref brokerSellFees, ref transactionTax, ref transportCosts,
+                ref brokerBuyFees, ref brokerSellFees, ref transactionTax, ref transportCosts, ref avgSellProfit,
                 calcBrokerFees, calcTransTax, true, true, false, true, useReprocessData);
         }
 
@@ -293,14 +294,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
             ref decimal brokerBuyFees, ref decimal brokerSellFees, ref decimal transactionTax,
             bool calcBrokerFees, bool calcTransTax, bool useReprocessData)
         {
-            decimal blank1 = 0, blank2 = 0, blank3 = 0;
+            decimal blank1 = 0, blank2 = 0, blank3 = 0, blank4 = 0;
             DateTime startDate = SqlDateTime.MinValue.Value;
             DateTime endDate = SqlDateTime.MaxValue.Value;
 
             GetItemTransData(accessParams, itemIDs, new List<int>(), new List<int>(), startDate, endDate,
                 quantity, recentBuyUnitsToIgnore, ref avgSellPrice, ref blank1, ref avgBuyPrice, ref blank2,
                 ref unitsBought, ref unitsSold, ref brokerBuyFees, ref brokerSellFees, ref transactionTax,
-                ref blank3, calcBrokerFees, calcTransTax, true, true, false, false, useReprocessData);
+                ref blank3, ref blank4, calcBrokerFees, calcTransTax, true, true, false, false, useReprocessData);
         }
 
         public static void GetAverageBuyPrice(List<FinanceAccessParams> accessParams, List<int> itemIDs,
@@ -308,14 +309,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
             long recentBuyUnitsToIgnore, ref decimal avgBuyPrice, ref decimal brokerBuyFees,
             bool useReprocessData)
         {
-            decimal blank1 = 0, blank5 = 0, blank6 = 0, blank7 = 0, blank8 = 0, blank9 = 0;
+            decimal blank1 = 0, blank5 = 0, blank6 = 0, blank7 = 0, blank8 = 0, blank9 = 0, blank10 = 0;
             long blank3 = 0, blank4 = 0;
             DateTime startDate = SqlDateTime.MinValue.Value;
             DateTime endDate = SqlDateTime.MaxValue.Value;
 
             GetItemTransData(accessParams, itemIDs, regionIDs, stationIDs, startDate, endDate,
                 quantity, recentBuyUnitsToIgnore, ref blank1, ref blank7, ref avgBuyPrice, ref blank8,
-                ref blank3, ref blank4, ref brokerBuyFees, ref blank5, ref blank6, ref blank9,
+                ref blank3, ref blank4, ref brokerBuyFees, ref blank5, ref blank6, ref blank9, ref blank10,
                 true, false, true, false, false, false, useReprocessData);
         }
 
@@ -325,26 +326,26 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             List<int> itemIDs = new List<int>();
             itemIDs.Add(itemID);
-            decimal blank1 = 0, blank5 = 0, blank6 = 0, blank7 = 0, blank8 = 0, blank9 = 0, blank10 = 0;
+            decimal blank1 = 0, blank5 = 0, blank6 = 0, blank7 = 0, blank8 = 0, blank9 = 0, blank10 = 0, blank11 = 0;
             long blank3 = 0, blank4 = 0;
             DateTime startDate = SqlDateTime.MinValue.Value;
             DateTime endDate = SqlDateTime.MaxValue.Value;
 
             GetItemTransData(accessParams, itemIDs, regionIDs, stationIDs, startDate, endDate,
                 quantity, recentBuyUnitsToIgnore, ref blank1, ref blank7, ref avgBuyPrice, ref blank8,
-                ref blank3, ref blank4, ref blank10, ref blank5, ref blank6, ref blank9,
+                ref blank3, ref blank4, ref blank10, ref blank5, ref blank6, ref blank9, ref blank11,
                 false, false, true, false, false, false, false);
         }
 
         public static void GetMedianSellPrice(List<FinanceAccessParams> accessParams, List<int> itemIDs,
             List<int> regionIDs, DateTime startDate, DateTime endDate, ref decimal medianSellPrice)
         {
-            decimal blank1 = 0, blank2 = 0, blank5 = 0, blank6 = 0, blank7 = 0, blank8 = 0, blank9 = 0;
+            decimal blank1 = 0, blank2 = 0, blank5 = 0, blank6 = 0, blank7 = 0, blank8 = 0, blank9 = 0, blank10 = 0;
             long blank3 = 0, blank4 = 0;
 
             GetItemTransData(accessParams, itemIDs, regionIDs, new List<int>(), startDate, endDate,
                 0, 0, ref blank1, ref medianSellPrice, ref blank2, ref blank5, ref blank3, ref blank4,
-                ref blank6, ref blank7, ref blank8, ref blank9,
+                ref blank6, ref blank7, ref blank8, ref blank9, ref blank10,
                 false, false, false, true, true, false, true);
         }
 
@@ -352,12 +353,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
             List<int> regionIDs, DateTime startDate, DateTime endDate, ref decimal medianBuyPrice,
             bool useReprocessData)
         {
-            decimal blank1 = 0, blank2 = 0, blank5 = 0, blank6 = 0, blank7 = 0, blank8 = 0, blank9 = 0;
+            decimal blank1 = 0, blank2 = 0, blank5 = 0, blank6 = 0, blank7 = 0, blank8 = 0, blank9 = 0, blank10 = 0;
             long blank3 = 0, blank4 = 0;
 
             GetItemTransData(accessParams, itemIDs, regionIDs, new List<int>(), startDate, endDate,
                 0, 0, ref blank1, ref blank5, ref blank2, ref medianBuyPrice, ref blank3, ref blank4,
-                ref blank6, ref blank7, ref blank8, ref blank9,
+                ref blank6, ref blank7, ref blank8, ref blank9, ref blank10,
                 false, false, true, false, true, false, useReprocessData);
         }
 
@@ -367,12 +368,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
             ref decimal avgSellPrice, ref decimal medianSellPrice, ref decimal avgBuyPrice,
             ref decimal medianBuyPrice, ref long unitsBought, ref long unitsSold,
             ref decimal brokerBuyFees, ref decimal brokerSellFees, ref decimal transactionTax,
-            ref decimal transportCosts,
+            ref decimal transportCosts, ref decimal avgSellProfit,
             bool calcBrokerFees, bool calcTransTax, bool getBuyData, bool getSellData, bool getMedians,
             bool calcTransportCosts, bool useReprocessData)
         {
             long totBuy = 0, totSell = 0;
-            decimal totIskBuy = 0, totIskSell = 0;
+            decimal totIskBuy = 0, totIskSell = 0, totIskSellProfit = 0;
             brokerBuyFees = 0;
             brokerSellFees = 0;
             transactionTax = 0;
@@ -666,6 +667,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         totSell += quantityToUse;
                         decimal transTot = trans.Price * quantityToUse;
                         totIskSell += transTot;
+                        totIskSellProfit += trans.SellerUnitProfit * quantityToUse;
 
                         if (getMedians)
                         {
@@ -857,6 +859,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             // Set values for return parameters. (note, broker fees and transaction tax are already set for us.)
             avgSellPrice = (totSell == 0 ? 0 : totIskSell / totSell);
             avgBuyPrice = (totBuy == 0 ? 0 : totIskBuy / totBuy);
+            avgSellProfit = (totSell == 0 ? 0 : totIskSellProfit / totSell);
             unitsBought = totBuy;
             unitsSold = totSell;
         }

@@ -638,6 +638,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public int ChangeTypeIntID
         {
             get { return (int)ChangeTypeID; }
+            set
+            {
+                if (!_changeTypeLocked)
+                {
+                    ChangeTypeID = (AssetChangeTypes.ChangeType)value;
+                    _changeTypeSet = true;
+                }
+            }
         }
         public AssetChangeTypes.ChangeType ChangeTypeID
         {

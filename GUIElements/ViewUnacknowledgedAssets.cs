@@ -594,6 +594,11 @@ namespace EveMarketMonitorApp.GUIElements
                             // materials that have been used in thier construction.
                             //
 
+                            // What we need:
+                            // perfect blueprint material requirements (http://wiki.eve-id.net/Bill_of_Materials)
+                            // relevant skill levels
+                            // ME (and PE?) - this is tricky. Perhaps this can be inferred?
+                            
                         }
                         else
                         {
@@ -772,7 +777,6 @@ namespace EveMarketMonitorApp.GUIElements
                 g.DrawString(text, font, new SolidBrush(col), bounds);
             }
         }
-
 
     }
 

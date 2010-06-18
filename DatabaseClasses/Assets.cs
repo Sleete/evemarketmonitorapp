@@ -615,8 +615,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 foreach (EMMADataSet.AssetsRow asset in assets)
                 {
                     // Use The forge to value items if possible.
-                    decimal value = UserAccount.CurrentGroup.ItemValues.GetItemValue(asset.ItemID, 10000002, true);
-                    retVal += value * asset.Quantity;
+                    //decimal value = UserAccount.CurrentGroup.ItemValues.GetItemValue(asset.ItemID, 10000002, true);
+                    //retVal += value * asset.Quantity;
+                    retVal = new Asset(asset).TotalValue;
                     //log.WriteLine(Items.GetItemName(asset.ItemID) + ", " + asset.Quantity + ", " + value); 
                 }
             //}
@@ -1303,6 +1304,44 @@ namespace EveMarketMonitorApp.DatabaseClasses
             assetsTableAdapter.FillByItemAndLocation(retVal, BuildAccessList(accessParams), "", stationID, 0);
             return retVal;
         }*/
+
+
+        static public AssetList GetAssets(List<AssetAccessParams> accessParams, int itemID, List<int> stationIDs,
+            List<int> regionIDs, bool includeInTransit, bool includeContainers)
+        {
+            AssetList retVal = new AssetList();
+            EMMADataSet.AssetsDataTable data = new EMMADataSet.AssetsDataTable();
+            if (regionIDs == null || regionIDs.Count == 0) { regionIDs = new List<int>(); regionIDs.Add(0); }
+            if (stationIDs == null || stationIDs.Count == 0) { stationIDs = new List<int>(); stationIDs.Add(0); }
+
+            StringBuilder regionString = new StringBuilder("");
+            StringBuilder stationString = new StringBuilder("");
+            foreach (int regionID in regionIDs)
+            {
+                if (regionString.Length > 0) { regionString.Append(","); }
+                regionString.Append(regionID);
+            }
+            foreach (int stationID in stationIDs)
+            {
+                if (stationString.Length > 0) { stationString.Append(","); }
+                regionString.Append(stationID);
+            }
+
+            lock (assetsTableAdapter)
+            {
+                assetsTableAdapter.FillByItem(data, AssetAccessParams.BuildAccessList(accessParams), 
+                    regionString.ToString(), stationString.ToString(), itemID, 
+                    includeInTransit, includeContainers);
+            }
+
+            foreach (EMMADataSet.AssetsRow asset in data)
+            {
+                retVal.Add(new Asset(asset));
+            }
+
+
+            return retVal;
+        }
 
         /// <summary>
         /// Return the assets owned by the specified characters and corps

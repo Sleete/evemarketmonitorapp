@@ -84,6 +84,9 @@ namespace EveMarketMonitorApp.GUIElements
                             if (!ids.Contains(character.CharID))
                             {
                                 UpdatePanel panel = new UpdatePanel(CharOrCorp.Char, character);
+                                panel.Size = new Size(this.Width - 12 - (position > this.Height ? 
+                                    System.Windows.Forms.SystemInformation.VerticalScrollBarWidth : 0), 
+                                    panel.Size.Height);
                                 panel.Location = new Point(4, position);
                                 panel.Anchor = AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Top;
                                 panel.UpdateEvent += new APIUpdateEvent(panel_UpdateEvent);
@@ -98,6 +101,9 @@ namespace EveMarketMonitorApp.GUIElements
                             if (!ids.Contains(character.CorpID))
                             {
                                 UpdatePanel panel = new UpdatePanel(CharOrCorp.Corp, character);
+                                panel.Size = new Size(this.Width - 12 - (position > this.Height ? 
+                                    System.Windows.Forms.SystemInformation.VerticalScrollBarWidth : 0), 
+                                    panel.Size.Height);
                                 panel.Location = new Point(4, position);
                                 panel.Anchor = AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Top;
                                 panel.UpdateEvent += new APIUpdateEvent(panel_UpdateEvent);
@@ -159,6 +165,7 @@ namespace EveMarketMonitorApp.GUIElements
             while (_updating && startBlockTime.AddMinutes(1).CompareTo(DateTime.UtcNow) > 0) { }
             PauseUpdates();
         }
+
 
     }
 }
