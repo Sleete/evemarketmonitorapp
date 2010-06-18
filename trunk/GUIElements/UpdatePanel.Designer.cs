@@ -225,6 +225,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.Controls.Add(this.lblJournal);
             this.Controls.Add(this.lblTransactions);
             this.Controls.Add(this.picPortrait);
+            this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "UpdatePanel";
             this.Size = new System.Drawing.Size(276, 82);
             ((System.ComponentModel.ISupportInitialize)(this.picPortrait)).EndInit();

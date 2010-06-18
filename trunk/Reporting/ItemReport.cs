@@ -287,7 +287,7 @@ namespace EveMarketMonitorApp.Reporting
                 decimal avgBuyPrice = 0, avgSellPrice = 0;
                 decimal marginPerc = 0, marginAbs = 0, netProfit = 0;
                 decimal brokerBuyFees = 0, brokerSellFees = 0, displayedBrokerFees = 0;
-                decimal transFees = 0, transportCosts = 0, grossProfit = 0;
+                decimal transFees = 0, transportCosts = 0, grossProfit = 0, avgSellProfit = 0;
                 decimal soldUnitsBuyPrice = 0, soldUnitsPurchaseBrokerFees = 0;
                 decimal overheads = 0, overheadsPerc = 0;
 
@@ -298,7 +298,9 @@ namespace EveMarketMonitorApp.Reporting
                 Transactions.GetItemTransData(
                     _financeAccessParams, itemIDList, _regionIDs, _stationIDs, _startDate, _endDate,
                     ref avgSellPrice, ref avgBuyPrice, ref totBuyVolume, ref totSellVolume,
-                    ref brokerBuyFees, ref brokerSellFees, ref transFees, ref transportCosts, true, true, false);
+                    ref brokerBuyFees, ref brokerSellFees, ref transFees, ref transportCosts, ref avgSellProfit,
+                    true, true, false);
+
                 Diagnostics.StopTimer("ItemReport.Part1");
 
                 // Only add the item if we actually have any purchases or sales during this time period..
@@ -325,38 +327,42 @@ namespace EveMarketMonitorApp.Reporting
                     count2++;
                     if (avgSellPrice != 0)
                     {
-                        Diagnostics.StartTimer("ItemReport.Part2");
+                        //Diagnostics.StartTimer("ItemReport.Part2");
                         // To calculate profit, we don't want to use the purchase price listed but instead the 
                         // average buy price of x units of this item, ignoring the most recent y units bought.
                         // where x = quantity sold and y = current units as assets.
                         // Also, don't want to restrict this to a specific region.
-                        long quantityToIgnore = 0;
-                        if (!_useMostRecentBuyPrice)
-                        {
-                            quantityToIgnore = Assets.GetTotalQuantity(_assetAccessParams, itemID);
-                            OrdersList sellOrders = Orders.LoadOrders(_assetAccessParams, itemIDList, 
-                                new List<int>(), (int)OrderState.Active, "sell");
-                            foreach (Order sellOrder in sellOrders)
-                            {
-                                quantityToIgnore += sellOrder.RemainingVol;
-                            }
-                        }
-                        Transactions.GetAverageBuyPrice(_financeAccessParams, itemIDList, new List<int>(),
-                            new List<int>(), (int)totSellVolume, quantityToIgnore,
-                            ref soldUnitsBuyPrice, ref soldUnitsPurchaseBrokerFees, true);
-                        Diagnostics.StopTimer("ItemReport.Part2");
+                        //long quantityToIgnore = 0;
+                        //if (!_useMostRecentBuyPrice)
+                        //{
+                        //    quantityToIgnore = Assets.GetTotalQuantity(_assetAccessParams, itemID);
+                        //    OrdersList sellOrders = Orders.LoadOrders(_assetAccessParams, itemIDList,
+                        //        new List<int>(), (int)OrderState.Active, "sell");
+                        //    foreach (Order sellOrder in sellOrders)
+                        //    {
+                        //        quantityToIgnore += sellOrder.RemainingVol;
+                        //    }
+                        //}
+                        //Transactions.GetAverageBuyPrice(_financeAccessParams, itemIDList, new List<int>(),
+                        //    new List<int>(), (int)totSellVolume, quantityToIgnore,
+                        //    ref soldUnitsBuyPrice, ref soldUnitsPurchaseBrokerFees, true);
 
-                        DiagnosticUpdate("", "\tTime getting extended data: " + Diagnostics.GetRunningTime("ItemReport.Part2"));
-                        DiagnosticUpdate("", "\t\tGet buy transactions: " + Diagnostics.GetRunningTime("Transactions.GetBuyTrans"));
-                        DiagnosticUpdate("", "\t\tProcess buy transactions: " + Diagnostics.GetRunningTime("Transactions.ProcessBuyTrans"));
-                        //DiagnosticUpdate("", "\t\t\tCalc buy broker fees: " + Diagnostics.GetRunningTime("Transactions.CalcBuyBrokerFees"));
-                        DiagnosticUpdate("", "\t\tCalc buy median: " + Diagnostics.GetRunningTime("Transactions.CalcBuyMedian"));
-                        DiagnosticUpdate("", "\t\tGet sell transactions: " + Diagnostics.GetRunningTime("Transactions.GetSellTrans"));
-                        DiagnosticUpdate("", "\t\tProcess sell transactions: " + Diagnostics.GetRunningTime("Transactions.ProcessSellTrans"));
-                        //DiagnosticUpdate("", "\t\t\tCalc sell broker fees: " + Diagnostics.GetRunningTime("Transactions.CalcSellBrokerFees"));
-                        //DiagnosticUpdate("", "\t\t\tCalc sell transaction tax: " + Diagnostics.GetRunningTime("Transactions.CalcSellTransTax"));
-                        DiagnosticUpdate("", "\t\tCalc sell transport costs: " + Diagnostics.GetRunningTime("Transactions.CalcSellTransportCosts"));
-                        DiagnosticUpdate("", "\t\tCalc sell median: " + Diagnostics.GetRunningTime("Transactions.CalcSellMedian"));
+                        soldUnitsBuyPrice = avgSellPrice - avgSellProfit;
+
+
+                        //Diagnostics.StopTimer("ItemReport.Part2");
+
+                        //DiagnosticUpdate("", "\tTime getting extended data: " + Diagnostics.GetRunningTime("ItemReport.Part2"));
+                        //DiagnosticUpdate("", "\t\tGet buy transactions: " + Diagnostics.GetRunningTime("Transactions.GetBuyTrans"));
+                        //DiagnosticUpdate("", "\t\tProcess buy transactions: " + Diagnostics.GetRunningTime("Transactions.ProcessBuyTrans"));
+                        ////DiagnosticUpdate("", "\t\t\tCalc buy broker fees: " + Diagnostics.GetRunningTime("Transactions.CalcBuyBrokerFees"));
+                        //DiagnosticUpdate("", "\t\tCalc buy median: " + Diagnostics.GetRunningTime("Transactions.CalcBuyMedian"));
+                        //DiagnosticUpdate("", "\t\tGet sell transactions: " + Diagnostics.GetRunningTime("Transactions.GetSellTrans"));
+                        //DiagnosticUpdate("", "\t\tProcess sell transactions: " + Diagnostics.GetRunningTime("Transactions.ProcessSellTrans"));
+                        ////DiagnosticUpdate("", "\t\t\tCalc sell broker fees: " + Diagnostics.GetRunningTime("Transactions.CalcSellBrokerFees"));
+                        ////DiagnosticUpdate("", "\t\t\tCalc sell transaction tax: " + Diagnostics.GetRunningTime("Transactions.CalcSellTransTax"));
+                        //DiagnosticUpdate("", "\t\tCalc sell transport costs: " + Diagnostics.GetRunningTime("Transactions.CalcSellTransportCosts"));
+                        //DiagnosticUpdate("", "\t\tCalc sell median: " + Diagnostics.GetRunningTime("Transactions.CalcSellMedian"));
                     }
 
                     if (totSellVolume > 0 && (soldUnitsBuyPrice == 0 || 

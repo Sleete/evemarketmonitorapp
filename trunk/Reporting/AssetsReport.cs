@@ -254,9 +254,19 @@ namespace EveMarketMonitorApp.Reporting
                     if (quantity > 0)
                     {
                         // Get values from database
-                        Transactions.GetAverageBuyPrice(_financeAccessParams, itemIDs, _stationsIDs, _regionIDs,
-                            quantity, 0, ref avgBuyPrice, ref blank1, true);
-                        avgSellPrice = UserAccount.CurrentGroup.ItemValues.GetItemValue(item.typeID, _valueRegionID, false);
+                        //Transactions.GetAverageBuyPrice(_financeAccessParams, itemIDs, _stationsIDs, _regionIDs,
+                        //    quantity, 0, ref avgBuyPrice, ref blank1, true);
+                        quantity = 0;
+                        AssetList assets = Assets.GetAssets(_assetAccessParams, itemID, _stationsIDs, _regionIDs, 
+                            _includeInTransit, _includeContainers);
+                        foreach (Asset a in assets)
+                        {
+                            avgBuyPrice += a.TotalBuyPrice;
+                            quantity += a.Quantity;
+                        }
+                        avgBuyPrice /= quantity;
+                        avgSellPrice = UserAccount.CurrentGroup.ItemValues.GetItemValue(item.typeID, 
+                            _valueRegionID, false);
 
                         // If we couldn't find a buy price for the sold items then try and 
                         // get a buy price from other sources

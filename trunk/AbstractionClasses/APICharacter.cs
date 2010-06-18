@@ -1059,7 +1059,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             // is updated.
                             // Note the processed flag MUST be set on the database for later routines
                             // to work correctly. (e.g. Assets.ProcessSellOrders)
-                            if (assetRow.EveItemID == 0)
+                            if (assetRow.EveItemID != 0)
                             {
                                 Assets.SetProcessedFlag(assetID, true);
                                 assetData.RemoveAssetsRow(assetRow);

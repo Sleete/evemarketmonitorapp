@@ -46,17 +46,21 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 switch (metaType)
                 {
                     case ChangeMetaType.Any:
-                        addit = true;
+                        if ((UserAccount.Settings.ManufacturingMode || i != (int)ChangeType.Unknown))
+                        {
+                            addit = true;
+                        }
                         break;
                     case ChangeMetaType.Loss:
                         if (i == (int)ChangeType.DestroyedOrUsed || i == (int)ChangeType.ForSaleViaContract
-                            || i == (int)ChangeType.Unknown)
+                            || (UserAccount.Settings.ManufacturingMode && i == (int)ChangeType.Unknown))
                         {
                             addit = true;
                         }
                         break;
                     case ChangeMetaType.Gain:
-                        if (i == (int)ChangeType.Found || i == (int)ChangeType.Made || i == (int)ChangeType.Unknown)
+                        if (i == (int)ChangeType.Found || i == (int)ChangeType.Made ||
+                            (UserAccount.Settings.ManufacturingMode && i == (int)ChangeType.Unknown))
                         {
                             addit = true;
                         }
