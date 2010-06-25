@@ -310,6 +310,7 @@ namespace EveMarketMonitorApp.GUIElements
             // chkManufacturing
             // 
             this.chkManufacturing.AutoSize = true;
+            this.chkManufacturing.Enabled = false;
             this.chkManufacturing.Location = new System.Drawing.Point(9, 216);
             this.chkManufacturing.Name = "chkManufacturing";
             this.chkManufacturing.Size = new System.Drawing.Size(123, 17);

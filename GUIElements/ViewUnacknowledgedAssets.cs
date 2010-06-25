@@ -455,12 +455,12 @@ namespace EveMarketMonitorApp.GUIElements
                                 AssetsProduced.Add(gainedAsset);
                                 assetsToRemove.Add(gainedAsset);
                                 break;
-                            case AssetChangeTypes.ChangeType.Made:
-                                assetRow.Cost = gainedAsset.UnitBuyPricePrecalculated ? gainedAsset.UnitBuyPrice : 0;
-                                assetRow.CostCalc = gainedAsset.UnitBuyPricePrecalculated;
-                                AssetsProduced.Add(gainedAsset);
-                                assetsToRemove.Add(gainedAsset);
-                                break;
+                            //case AssetChangeTypes.ChangeType.Made:
+                            //    assetRow.Cost = gainedAsset.UnitBuyPricePrecalculated ? gainedAsset.UnitBuyPrice : 0;
+                            //    assetRow.CostCalc = gainedAsset.UnitBuyPricePrecalculated;
+                            //    AssetsProduced.Add(gainedAsset);
+                            //    assetsToRemove.Add(gainedAsset);
+                            //    break;
                             case AssetChangeTypes.ChangeType.Unknown:
                                 // Can only be 'unknown' if we're in manufacturing mode.
                                 // let the cross check sort it out...
@@ -577,56 +577,58 @@ namespace EveMarketMonitorApp.GUIElements
             // accordingly.
             if (e.ColumnIndex >= 0 && e.RowIndex >= 0)
             {
-                if (gainedItemsGrid.Columns[e.ColumnIndex].Equals(GainedReasonColumn))
-                {
-                    this.Cursor = Cursors.WaitCursor;
+                //if (gainedItemsGrid.Columns[e.ColumnIndex].Equals(GainedReasonColumn))
+                //{
+                //    this.Cursor = Cursors.WaitCursor;
 
-                    try
-                    {
-                        Asset producedAsset = (Asset)gainedItemsGrid.Rows[e.RowIndex].DataBoundItem;
-                        TempAssetKey prodAssetKey = new TempAssetKey(producedAsset.ID, producedAsset.OwnerID, 
-                            producedAsset.CorpAsset);
-                        if ((int)gainedItemsGrid[e.ColumnIndex, e.RowIndex].Value ==
-                            (int)AssetChangeTypes.ChangeType.Made)
-                        {
-                            //
-                            // What we want to do here is match manufactured items with
-                            // materials that have been used in thier construction.
-                            //
+                //    try
+                //    {
+                //        //Asset producedAsset = (Asset)gainedItemsGrid.Rows[e.RowIndex].DataBoundItem;
+                //        //TempAssetKey prodAssetKey = new TempAssetKey(producedAsset.ID, producedAsset.OwnerID, 
+                //        //    producedAsset.CorpAsset);
+                //        //if ((int)gainedItemsGrid[e.ColumnIndex, e.RowIndex].Value ==
+                //        //    (int)AssetChangeTypes.ChangeType.Made)
+                //        //{
+                //            //
+                //            // What we want to do here is match manufactured items with
+                //            // materials that have been used in thier construction.
+                //            //
 
-                            // What we need:
-                            // perfect blueprint material requirements (http://wiki.eve-id.net/Bill_of_Materials)
-                            // relevant skill levels
-                            // ME (and PE?) - this is tricky. Perhaps this can be inferred?
+                //            // What we need:
+                //            // perfect blueprint material requirements (http://wiki.eve-id.net/Bill_of_Materials)
+                //            // relevant skill levels
+                //            // ME - this is tricky. Perhaps this can be inferred?
                             
-                        }
-                        else
-                        {
-                            // If this item was previously set to having been made then clear the
-                            // locked flag of any items that were thought to have been used in it's 
-                            // construction.
-                            if (_assetsUsedForManufacture.ContainsKey(prodAssetKey))
-                            {
-                                List<TempAssetKey> materials = _assetsUsedForManufacture[prodAssetKey];
-                                foreach (TempAssetKey mat in materials)
-                                {
-                                    _lostAssets.ItemFilter = "ID = " + mat.AssetID + " AND OwnerID = " +
-                                        mat.OwnerID + " AND CorpAsset = " + mat.ForCorp;
-                                    if (_lostAssets.ItemFilter.Length > 0)
-                                    {
-                                        Asset materialAsset = (Asset)_lostAssets.FiltredItems[0];
-                                        materialAsset.ChangeTypeLocked = false;
-                                    }
-                                }
-                                _assetsUsedForManufacture.Remove(prodAssetKey);
-                            }
-                        }
-                    }
-                    finally
-                    {
-                        this.Cursor = Cursors.Default;
-                    }
-                }
+                //            // Also need to cover T2 POS production chain, Invented T2 BPCs, etc
+                //            // ...On hold for now...
+                //        //}
+                //        //else
+                //        //{
+                //        //    // If this item was previously set to having been made then clear the
+                //        //    // locked flag of any items that were thought to have been used in it's 
+                //        //    // construction.
+                //        //    if (_assetsUsedForManufacture.ContainsKey(prodAssetKey))
+                //        //    {
+                //        //        List<TempAssetKey> materials = _assetsUsedForManufacture[prodAssetKey];
+                //        //        foreach (TempAssetKey mat in materials)
+                //        //        {
+                //        //            _lostAssets.ItemFilter = "ID = " + mat.AssetID + " AND OwnerID = " +
+                //        //                mat.OwnerID + " AND CorpAsset = " + mat.ForCorp;
+                //        //            if (_lostAssets.ItemFilter.Length > 0)
+                //        //            {
+                //        //                Asset materialAsset = (Asset)_lostAssets.FiltredItems[0];
+                //        //                materialAsset.ChangeTypeLocked = false;
+                //        //            }
+                //        //        }
+                //        //        _assetsUsedForManufacture.Remove(prodAssetKey);
+                //        //    }
+                //        //}
+                //    }
+                //    finally
+                //    {
+                //        this.Cursor = Cursors.Default;
+                //    }
+                //}
             }
         }
 
@@ -641,13 +643,11 @@ namespace EveMarketMonitorApp.GUIElements
         {
             if (e.RowIndex > 0)
             {
-                Asset asset = (Asset)gainedItemsGrid.Rows[e.RowIndex].DataBoundItem;
-                if (asset.ChangeTypeID == AssetChangeTypes.ChangeType.Made)
-                {
-
-                    grpMaterials.Enabled = true;
-
-                }
+                //Asset asset = (Asset)gainedItemsGrid.Rows[e.RowIndex].DataBoundItem;
+                //if (asset.ChangeTypeID == AssetChangeTypes.ChangeType.Made)
+                //{
+                //    grpMaterials.Enabled = true;
+                //}
             }
         }
 
