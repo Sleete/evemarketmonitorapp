@@ -16,9 +16,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 case ChangeType.Found:
                     retVal = "Found";
                     break;
-                case ChangeType.Made:
-                    retVal = "Made";
-                    break;
+                //case ChangeType.Made:
+                //    retVal = "Made";
+                //    break;
                 case ChangeType.DestroyedOrUsed:
                     retVal = "Destroyed or Used";
                     break;
@@ -59,7 +59,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         }
                         break;
                     case ChangeMetaType.Gain:
-                        if (i == (int)ChangeType.Found || i == (int)ChangeType.Made ||
+                        if (i == (int)ChangeType.Found || /*i == (int)ChangeType.Made ||*/
                             (UserAccount.Settings.ManufacturingMode && i == (int)ChangeType.Unknown))
                         {
                             addit = true;
@@ -77,7 +77,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public enum ChangeType
         {
             Found,
-            Made,
+            //Made,
             DestroyedOrUsed,
             ForSaleViaContract,
             Unknown
