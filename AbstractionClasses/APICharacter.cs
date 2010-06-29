@@ -588,17 +588,21 @@ namespace EveMarketMonitorApp.AbstractionClasses
             bool askUser = false;
             while (!updateAllowed)
             {
+                // This time limit approach is rather confusing for the user. Instead, we change EMMA
+                // to not allow the user to update from specific parts of the API, they have to update
+                // from all or none.
+
                 // Only allow the assets update to run if there has been an update to transactions and 
                 // orders within the last x minutes, the number of minutes is specified by the user.
-                TimeSpan timeSinceTransUpdate = DateTime.UtcNow.Subtract(
-                    GetLastAPIUpdateTime(corc, APIDataType.Transactions));
-                TimeSpan timeSinceOrdersUpdate = DateTime.UtcNow.Subtract(
-                    GetLastAPIUpdateTime(corc, APIDataType.Orders));
-                int minutes = UserAccount.Settings.AssetsUpdateMaxMinutes;
+                //TimeSpan timeSinceTransUpdate = DateTime.UtcNow.Subtract(
+                //    GetLastAPIUpdateTime(corc, APIDataType.Transactions));
+                //TimeSpan timeSinceOrdersUpdate = DateTime.UtcNow.Subtract(
+                //    GetLastAPIUpdateTime(corc, APIDataType.Orders));
+                //int minutes = UserAccount.Settings.AssetsUpdateMaxMinutes;
 
-                if (minutes == 0 ||
-                    (timeSinceOrdersUpdate.TotalMinutes < minutes && timeSinceTransUpdate.TotalMinutes < minutes))
-                {
+                //if (minutes == 0 ||
+                //    (timeSinceOrdersUpdate.TotalMinutes < minutes && timeSinceTransUpdate.TotalMinutes < minutes))
+                //{
                     updateAllowed = true;
                     // Note, the sync lock is used to make sure that a transaction, assets or orders update do
                     // not run at the same time for a character. 
@@ -607,17 +611,17 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         SetLastAPIUpdateError(corc, APIDataType.Assets, "UPDATING");
                         RetrieveAssets(corc, null);
                     }
-                }
-                else
-                {
-                    // Wait for five seconds before checking order/transaction update times again.
-                    Thread.Sleep(5000);
-                    if (!askUser && startTryUpdate.AddMinutes(2).CompareTo(DateTime.Now) < 0)
-                    {
-                        SetLastAPIUpdateError(corc, APIDataType.Assets, "BLOCKED");                       
-                        askUser = true;
-                    }
-                }
+                //}
+                //else
+                //{
+                //    // Wait for five seconds before checking order/transaction update times again.
+                //    Thread.Sleep(5000);
+                //    if (!askUser && startTryUpdate.AddMinutes(2).CompareTo(DateTime.Now) < 0)
+                //    {
+                //        SetLastAPIUpdateError(corc, APIDataType.Assets, "BLOCKED");                       
+                //        askUser = true;
+                //    }
+                //}
             }
 
             try
@@ -2315,8 +2319,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 newRow.SellerWalletID = 0;
                 newRow.SellerUnitProfit = 0;
                 // Update asset quantities.
-                Assets.ChangeAssets(forCorp ? _corpID : _charID, forCorp, newRow.StationID, newRow.ItemID, 0,
-                    (int)AssetStatus.States.Normal, false, newRow.Quantity, newRow.Price, true);
+                Assets.BuyAssets(forCorp ? _corpID : _charID, forCorp, newRow.StationID, newRow.ItemID,
+                    newRow.Quantity, newRow.Price);
             }
             else
             {

@@ -327,27 +327,34 @@ namespace EveMarketMonitorApp.Reporting
                     count2++;
                     if (avgSellPrice != 0)
                     {
-                        //Diagnostics.StartTimer("ItemReport.Part2");
-                        // To calculate profit, we don't want to use the purchase price listed but instead the 
-                        // average buy price of x units of this item, ignoring the most recent y units bought.
-                        // where x = quantity sold and y = current units as assets.
-                        // Also, don't want to restrict this to a specific region.
-                        //long quantityToIgnore = 0;
-                        //if (!_useMostRecentBuyPrice)
-                        //{
-                        //    quantityToIgnore = Assets.GetTotalQuantity(_assetAccessParams, itemID);
-                        //    OrdersList sellOrders = Orders.LoadOrders(_assetAccessParams, itemIDList,
-                        //        new List<int>(), (int)OrderState.Active, "sell");
-                        //    foreach (Order sellOrder in sellOrders)
-                        //    {
-                        //        quantityToIgnore += sellOrder.RemainingVol;
-                        //    }
-                        //}
-                        //Transactions.GetAverageBuyPrice(_financeAccessParams, itemIDList, new List<int>(),
-                        //    new List<int>(), (int)totSellVolume, quantityToIgnore,
-                        //    ref soldUnitsBuyPrice, ref soldUnitsPurchaseBrokerFees, true);
-
-                        soldUnitsBuyPrice = avgSellPrice - avgSellProfit;
+                        if (avgSellProfit == 0)
+                        {
+                            // If we don't have a profit value from the transaction record, fall back
+                            // onto the old way of calulating profit.
+                            Diagnostics.StartTimer("ItemReport.Part2");
+                            // To calculate profit, we don't want to use the purchase price listed but instead the 
+                            // average buy price of x units of this item, ignoring the most recent y units bought.
+                            // where x = quantity sold and y = current units as assets.
+                            // Also, don't want to restrict this to a specific region.
+                            long quantityToIgnore = 0;
+                            if (!_useMostRecentBuyPrice)
+                            {
+                                quantityToIgnore = Assets.GetTotalQuantity(_assetAccessParams, itemID);
+                                OrdersList sellOrders = Orders.LoadOrders(_assetAccessParams, itemIDList,
+                                    new List<int>(), (int)OrderState.Active, "sell");
+                                foreach (Order sellOrder in sellOrders)
+                                {
+                                    quantityToIgnore += sellOrder.RemainingVol;
+                                }
+                            }
+                            Transactions.GetAverageBuyPrice(_financeAccessParams, itemIDList, new List<int>(),
+                                new List<int>(), (int)totSellVolume, quantityToIgnore,
+                                ref soldUnitsBuyPrice, ref soldUnitsPurchaseBrokerFees, true);
+                        }
+                        else
+                        {
+                            soldUnitsBuyPrice = avgSellPrice - avgSellProfit;
+                        }
 
 
                         //Diagnostics.StopTimer("ItemReport.Part2");

@@ -320,6 +320,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // txtAssetsUpdateMaxMinutes
             // 
+            this.txtAssetsUpdateMaxMinutes.Enabled = false;
             this.txtAssetsUpdateMaxMinutes.Location = new System.Drawing.Point(315, 83);
             this.txtAssetsUpdateMaxMinutes.Name = "txtAssetsUpdateMaxMinutes";
             this.txtAssetsUpdateMaxMinutes.Size = new System.Drawing.Size(50, 20);
