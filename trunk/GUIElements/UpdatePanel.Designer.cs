@@ -45,6 +45,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.lblAssetsStatus = new System.Windows.Forms.Label();
             this.lblCorpTag = new System.Windows.Forms.Label();
             this.errorToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.chkUpdate = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.picPortrait)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,18 +56,17 @@ namespace EveMarketMonitorApp.GUIElements
             this.picPortrait.InitialImage = null;
             this.picPortrait.Location = new System.Drawing.Point(3, 3);
             this.picPortrait.Name = "picPortrait";
-            this.picPortrait.Size = new System.Drawing.Size(76, 76);
+            this.picPortrait.Size = new System.Drawing.Size(96, 96);
             this.picPortrait.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picPortrait.TabIndex = 0;
             this.picPortrait.TabStop = false;
-            this.picPortrait.Click += new System.EventHandler(this.picPortrait_Click);
             // 
             // lblTransactions
             // 
             this.lblTransactions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTransactions.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.lblTransactions.Location = new System.Drawing.Point(85, 3);
+            this.lblTransactions.Location = new System.Drawing.Point(105, 22);
             this.lblTransactions.Name = "lblTransactions";
             this.lblTransactions.Size = new System.Drawing.Size(165, 14);
             this.lblTransactions.TabIndex = 1;
@@ -77,7 +78,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.lblJournal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblJournal.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.lblJournal.Location = new System.Drawing.Point(85, 23);
+            this.lblJournal.Location = new System.Drawing.Point(105, 42);
             this.lblJournal.Name = "lblJournal";
             this.lblJournal.Size = new System.Drawing.Size(165, 14);
             this.lblJournal.TabIndex = 2;
@@ -89,7 +90,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.lblOrders.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblOrders.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.lblOrders.Location = new System.Drawing.Point(85, 43);
+            this.lblOrders.Location = new System.Drawing.Point(105, 63);
             this.lblOrders.Name = "lblOrders";
             this.lblOrders.Size = new System.Drawing.Size(165, 14);
             this.lblOrders.TabIndex = 3;
@@ -101,7 +102,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.lblAssets.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAssets.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.lblAssets.Location = new System.Drawing.Point(85, 63);
+            this.lblAssets.Location = new System.Drawing.Point(105, 83);
             this.lblAssets.Name = "lblAssets";
             this.lblAssets.Size = new System.Drawing.Size(165, 14);
             this.lblAssets.TabIndex = 4;
@@ -112,41 +113,45 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.chkAutoTrans.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkAutoTrans.AutoSize = true;
-            this.chkAutoTrans.Location = new System.Drawing.Point(258, 3);
+            this.chkAutoTrans.Location = new System.Drawing.Point(258, 23);
             this.chkAutoTrans.Name = "chkAutoTrans";
             this.chkAutoTrans.Size = new System.Drawing.Size(15, 14);
             this.chkAutoTrans.TabIndex = 5;
             this.chkAutoTrans.UseVisualStyleBackColor = true;
+            this.chkAutoTrans.Visible = false;
             // 
             // chkAutoJournal
             // 
             this.chkAutoJournal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkAutoJournal.AutoSize = true;
-            this.chkAutoJournal.Location = new System.Drawing.Point(258, 23);
+            this.chkAutoJournal.Location = new System.Drawing.Point(258, 43);
             this.chkAutoJournal.Name = "chkAutoJournal";
             this.chkAutoJournal.Size = new System.Drawing.Size(15, 14);
             this.chkAutoJournal.TabIndex = 6;
             this.chkAutoJournal.UseVisualStyleBackColor = true;
+            this.chkAutoJournal.Visible = false;
             // 
             // chkAutoOrders
             // 
             this.chkAutoOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkAutoOrders.AutoSize = true;
-            this.chkAutoOrders.Location = new System.Drawing.Point(258, 43);
+            this.chkAutoOrders.Location = new System.Drawing.Point(258, 63);
             this.chkAutoOrders.Name = "chkAutoOrders";
             this.chkAutoOrders.Size = new System.Drawing.Size(15, 14);
             this.chkAutoOrders.TabIndex = 7;
             this.chkAutoOrders.UseVisualStyleBackColor = true;
+            this.chkAutoOrders.Visible = false;
             // 
             // chkAutoAssets
             // 
             this.chkAutoAssets.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkAutoAssets.AutoSize = true;
-            this.chkAutoAssets.Location = new System.Drawing.Point(258, 63);
+            this.chkAutoAssets.Location = new System.Drawing.Point(258, 83);
             this.chkAutoAssets.Name = "chkAutoAssets";
             this.chkAutoAssets.Size = new System.Drawing.Size(15, 14);
             this.chkAutoAssets.TabIndex = 8;
             this.chkAutoAssets.UseVisualStyleBackColor = true;
+            this.chkAutoAssets.Visible = false;
             // 
             // lblTransStatus
             // 
@@ -154,7 +159,7 @@ namespace EveMarketMonitorApp.GUIElements
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTransStatus.AutoEllipsis = true;
             this.lblTransStatus.BackColor = System.Drawing.Color.Lavender;
-            this.lblTransStatus.Location = new System.Drawing.Point(155, 3);
+            this.lblTransStatus.Location = new System.Drawing.Point(178, 22);
             this.lblTransStatus.Name = "lblTransStatus";
             this.lblTransStatus.Size = new System.Drawing.Size(95, 14);
             this.lblTransStatus.TabIndex = 9;
@@ -166,7 +171,7 @@ namespace EveMarketMonitorApp.GUIElements
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblJournalStatus.AutoEllipsis = true;
             this.lblJournalStatus.BackColor = System.Drawing.Color.Lavender;
-            this.lblJournalStatus.Location = new System.Drawing.Point(155, 23);
+            this.lblJournalStatus.Location = new System.Drawing.Point(178, 42);
             this.lblJournalStatus.Name = "lblJournalStatus";
             this.lblJournalStatus.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lblJournalStatus.Size = new System.Drawing.Size(95, 14);
@@ -179,7 +184,7 @@ namespace EveMarketMonitorApp.GUIElements
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblOrdersStatus.AutoEllipsis = true;
             this.lblOrdersStatus.BackColor = System.Drawing.Color.Lavender;
-            this.lblOrdersStatus.Location = new System.Drawing.Point(155, 43);
+            this.lblOrdersStatus.Location = new System.Drawing.Point(178, 63);
             this.lblOrdersStatus.Name = "lblOrdersStatus";
             this.lblOrdersStatus.Size = new System.Drawing.Size(95, 14);
             this.lblOrdersStatus.TabIndex = 11;
@@ -191,7 +196,7 @@ namespace EveMarketMonitorApp.GUIElements
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAssetsStatus.AutoEllipsis = true;
             this.lblAssetsStatus.BackColor = System.Drawing.Color.Lavender;
-            this.lblAssetsStatus.Location = new System.Drawing.Point(155, 63);
+            this.lblAssetsStatus.Location = new System.Drawing.Point(178, 83);
             this.lblAssetsStatus.Name = "lblAssetsStatus";
             this.lblAssetsStatus.Size = new System.Drawing.Size(95, 14);
             this.lblAssetsStatus.TabIndex = 12;
@@ -200,17 +205,38 @@ namespace EveMarketMonitorApp.GUIElements
             // lblCorpTag
             // 
             this.lblCorpTag.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCorpTag.Location = new System.Drawing.Point(4, 30);
+            this.lblCorpTag.Location = new System.Drawing.Point(5, 40);
             this.lblCorpTag.Name = "lblCorpTag";
-            this.lblCorpTag.Size = new System.Drawing.Size(74, 23);
+            this.lblCorpTag.Size = new System.Drawing.Size(92, 23);
             this.lblCorpTag.TabIndex = 13;
             this.lblCorpTag.Text = "[CORP]";
             this.lblCorpTag.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCorpTag.Visible = false;
-            this.lblCorpTag.Click += new System.EventHandler(this.lblCorpTag_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(105, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(85, 13);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "Update from API";
+            // 
+            // chkUpdate
+            // 
+            this.chkUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkUpdate.AutoSize = true;
+            this.chkUpdate.Location = new System.Drawing.Point(258, 2);
+            this.chkUpdate.Name = "chkUpdate";
+            this.chkUpdate.Size = new System.Drawing.Size(15, 14);
+            this.chkUpdate.TabIndex = 15;
+            this.chkUpdate.UseVisualStyleBackColor = true;
+            this.chkUpdate.CheckedChanged += new System.EventHandler(this.chkUpdate_CheckedChanged);
             // 
             // UpdatePanel
             // 
+            this.Controls.Add(this.chkUpdate);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.lblCorpTag);
             this.Controls.Add(this.lblAssetsStatus);
             this.Controls.Add(this.lblOrdersStatus);
@@ -227,7 +253,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.Controls.Add(this.picPortrait);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "UpdatePanel";
-            this.Size = new System.Drawing.Size(276, 82);
+            this.Size = new System.Drawing.Size(276, 102);
             ((System.ComponentModel.ISupportInitialize)(this.picPortrait)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -251,5 +277,7 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.Label lblAssetsStatus;
         private System.Windows.Forms.Label lblCorpTag;
         private System.Windows.Forms.ToolTip errorToolTip;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox chkUpdate;
     }
 }

@@ -264,79 +264,82 @@ namespace EveMarketMonitorApp.Reporting
                             avgBuyPrice += a.TotalBuyPrice;
                             quantity += a.Quantity;
                         }
-                        avgBuyPrice /= quantity;
-                        avgSellPrice = UserAccount.CurrentGroup.ItemValues.GetItemValue(item.typeID, 
-                            _valueRegionID, false);
-
-                        // If we couldn't find a buy price for the sold items then try and 
-                        // get a buy price from other sources
-                        if (avgBuyPrice == 0 || UserAccount.CurrentGroup.ItemValues.ForceDefaultBuyPriceGet(itemID))
+                        if (quantity > 0)
                         {
-                            bool tmp = UserAccount.CurrentGroup.Settings.UseEveCentral;
-                            UserAccount.CurrentGroup.Settings.UseEveCentral = false;
-                            avgBuyPrice = UserAccount.CurrentGroup.ItemValues.GetBuyPrice(itemID,
-                                _regionIDs.Count == 1 ? _regionIDs[0] : 0);
-                            UserAccount.CurrentGroup.Settings.UseEveCentral = tmp;
+                            avgBuyPrice /= quantity;
+                            avgSellPrice = UserAccount.CurrentGroup.ItemValues.GetItemValue(item.typeID,
+                                _valueRegionID, false);
 
-                            if (avgBuyPrice == 0)
+                            // If we couldn't find a buy price for the sold items then try and 
+                            // get a buy price from other sources
+                            if (avgBuyPrice == 0 || UserAccount.CurrentGroup.ItemValues.ForceDefaultBuyPriceGet(itemID))
                             {
-                                // If we still fail to get a buy price then just set it to the same as the
-                                // sell price.
-                                avgBuyPrice = avgSellPrice;
+                                bool tmp = UserAccount.CurrentGroup.Settings.UseEveCentral;
+                                UserAccount.CurrentGroup.Settings.UseEveCentral = false;
+                                avgBuyPrice = UserAccount.CurrentGroup.ItemValues.GetBuyPrice(itemID,
+                                    _regionIDs.Count == 1 ? _regionIDs[0] : 0);
+                                UserAccount.CurrentGroup.Settings.UseEveCentral = tmp;
+
+                                if (avgBuyPrice == 0)
+                                {
+                                    // If we still fail to get a buy price then just set it to the same as the
+                                    // sell price.
+                                    avgBuyPrice = avgSellPrice;
+                                }
                             }
-                        }
 
 
-                        //log.WriteLine(Items.GetItemName(itemID) + ", " + quantity + ", " + avgSellPrice);
+                            //log.WriteLine(Items.GetItemName(itemID) + ", " + quantity + ", " + avgSellPrice);
 
 
-                        // Calculate data for columns
-                        if (avgSellPrice > 0) marginAbs = avgSellPrice - avgBuyPrice;
-                        totalProfit = marginAbs * quantity;
-                        bestProfit = totalProfit;
+                            // Calculate data for columns
+                            if (avgSellPrice > 0) marginAbs = avgSellPrice - avgBuyPrice;
+                            totalProfit = marginAbs * quantity;
+                            bestProfit = totalProfit;
 
-                        // Get reprocess value
-                        // reproValue = quantity * Items.GetItemReprocessValue(itemID);
-                        ReprocessJob job = new ReprocessJob(0, 0, 0);
-                        job.AddItem(itemID, quantity, avgBuyPrice * quantity);
-                        job.UpdateResults();
-                        reproValue = job.TotalResultsValue;
-                        if (reproValue > quantity * avgSellPrice)
-                        {
-                            bestProfit = reproValue - (avgBuyPrice * quantity);
-                        }
-
-                        // Add a row for this item to the grid.
-                        EveDataSet.invTypesRow itemData = Items.GetItem(itemID);
-                        string itemName = itemData.typeName;
-                        ReportSection section = null;
-                        if (_byItemGroup)
-                        {
-                            if (itemData.IsmarketGroupIDNull())
+                            // Get reprocess value
+                            // reproValue = quantity * Items.GetItemReprocessValue(itemID);
+                            ReprocessJob job = new ReprocessJob(0, 0, 0);
+                            job.AddItem(itemID, quantity, avgBuyPrice * quantity);
+                            job.UpdateResults();
+                            reproValue = job.TotalResultsValue;
+                            if (reproValue > quantity * avgSellPrice)
                             {
-                                section = _sections.GetSection("Non-Market Items");
+                                bestProfit = reproValue - (avgBuyPrice * quantity);
+                            }
+
+                            // Add a row for this item to the grid.
+                            EveDataSet.invTypesRow itemData = Items.GetItem(itemID);
+                            string itemName = itemData.typeName;
+                            ReportSection section = null;
+                            if (_byItemGroup)
+                            {
+                                if (itemData.IsmarketGroupIDNull())
+                                {
+                                    section = _sections.GetSection("Non-Market Items");
+                                }
+                                else
+                                {
+                                    section = _sections.GetSection(itemData.marketGroupID.ToString());
+                                }
                             }
                             else
                             {
-                                section = _sections.GetSection(itemData.marketGroupID.ToString());
+                                section = _sections[0];
                             }
-                        }
-                        else
-                        {
-                            section = _sections[0];
-                        }
-                        section.AddRow(_columns.Length, itemID.ToString(), itemName);
+                            section.AddRow(_columns.Length, itemID.ToString(), itemName);
 
-                        // Add the data for this row.
-                        SetValue("Average Buy Price", itemID.ToString(), avgBuyPrice, true);
-                        SetValue("Est. Sell Price", itemID.ToString(), avgSellPrice, true);
-                        SetValue("Total Units", itemID.ToString(), quantity, true);
-                        SetValue("Total Est. Value", itemID.ToString(), quantity * avgSellPrice, true);
-                        SetValue("Total Est. Gross Profit", itemID.ToString(), totalProfit, true);
-                        SetValue("Reprocess Value", itemID.ToString(), reproValue, true);
-                        SetValue("Best Gross Profit", itemID.ToString(), bestProfit, true);
+                            // Add the data for this row.
+                            SetValue("Average Buy Price", itemID.ToString(), avgBuyPrice, true);
+                            SetValue("Est. Sell Price", itemID.ToString(), avgSellPrice, true);
+                            SetValue("Total Units", itemID.ToString(), quantity, true);
+                            SetValue("Total Est. Value", itemID.ToString(), quantity * avgSellPrice, true);
+                            SetValue("Total Est. Gross Profit", itemID.ToString(), totalProfit, true);
+                            SetValue("Reprocess Value", itemID.ToString(), reproValue, true);
+                            SetValue("Best Gross Profit", itemID.ToString(), bestProfit, true);
 
-                        UpdateStatus(j, maxProgress, "", itemName, false);
+                            UpdateStatus(j, maxProgress, "", itemName, false);
+                        }
                     }
                 }
             //}

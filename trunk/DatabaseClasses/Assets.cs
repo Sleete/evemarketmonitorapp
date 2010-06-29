@@ -1249,6 +1249,67 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return retVal;
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ownerID"></param>
+        /// <param name="corpAsset"></param>
+        /// <param name="locationID"></param>
+        /// <param name="itemID"></param>
+        /// <param name="containerID"></param>
+        /// <param name="status"></param>
+        /// <param name="autoConExclude"></param>
+        /// <param name="deltaQuatnity"></param>
+        static public void BuyAssets(int ownerID, bool corpAsset, int stationID, int itemID,
+            long deltaQuantity, decimal addedItemsCost)
+        {
+            int systemID = 0, regionID = 0;
+
+                EveDataSet.staStationsRow station = Stations.GetStation(stationID);
+                if (station != null)
+                {
+                    systemID = station.solarSystemID;
+                    regionID = station.regionID;
+                }
+
+            // The situation described in the comments below should never arrise, just ignore it.
+
+
+            //AssetAccessParams access = new AssetAccessParams(ownerID, !corpAsset, corpAsset);
+            //List<AssetAccessParams> accessParams = new List<AssetAccessParams>();
+            //accessParams.Add(access);
+            //List<int> stationIDs= new List<int>();
+            //stationIDs.Add(stationID);
+            //List<int> regionIDs = new List<int>();
+            //regionIDs.Add(regionID);
+
+            //long currentQ = GetTotalQuantity(accessParams, itemID, stationIDs, regionIDs, false, false);
+
+            // If the current quantity of assets at the station where the buy transaction occurs is less
+            // that zero then we must have some transactions marked with the 'calc profit from assets' 
+            // flag.
+            // We can use the value of these bought items to calculate the profit instead.
+            // Note: Since this buy transaction must be occuring AFTER the sell transactions, these 
+            // cannot be the items that were sold. However, they must have gone somewhere and if the
+            // quantity is just added to the negative amount already present then the purchase price 
+            // will effectively be 'lost'. This would be even worse than a little inaccuracy in profit 
+            // calculations.
+            //if (currentQ < 0)
+            //{
+
+            //}
+            //else
+            //{
+                lock (assetsTableAdapter)
+                {
+                    assetsTableAdapter.AddQuantity(ownerID, corpAsset, itemID, stationID, systemID,
+                        regionID, (int)AssetStatus.States.Normal, 0, false, deltaQuantity, addedItemsCost, true);
+                }
+            //}
+        }
+
+
         /// <summary>
         /// Modify the quantity of the specified asset.
         /// </summary>
@@ -1324,7 +1385,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             foreach (int stationID in stationIDs)
             {
                 if (stationString.Length > 0) { stationString.Append(","); }
-                regionString.Append(stationID);
+                stationString.Append(stationID);
             }
 
             lock (assetsTableAdapter)
