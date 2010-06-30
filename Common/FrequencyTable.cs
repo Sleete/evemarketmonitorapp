@@ -133,7 +133,7 @@ namespace EveMarketMonitorApp.Common
 
 	/// <summary>
 	/// A generic structure storing the frequency information for each value
-	/// </summary>
+	/// </summary> 
 	public struct FrequencyTableEntry<T> where T : IComparable<T>
 	{
 		/// <summary>
@@ -1266,29 +1266,74 @@ namespace EveMarketMonitorApp.Common
 		/// <summary>
 		/// Returns the median. If the data are not numerical, double.NaN will be returned.
 		/// </summary>
-		public double Median
-		{
-			get
-			{
-				if (!Double.IsNaN(_mean))
-				{
+        public double Median
+        {
+            get
+            {
+                double retVal = 0;
+                if (!Double.IsNaN(_mean))
+                {
                     if (SampleSize != 0)
                     {
-                        T[] _data = GetData(false);
-                        if ((SampleSize % 2) == 0)
-                            return ((double)Convert.ChangeType(_data[(SampleSize - 1) / 2 + 1], TypeCode.Double) + (double)Convert.ChangeType(_data[(SampleSize - 1) / 2], TypeCode.Double)) / 2.0;
+                        if (SampleSize < 100000)
+                        {
+                            // If sample size is less than 100,000 then this approach is fine but going
+                            // higher will use a lot of memory, cause slowness and even crashes.
+                            T[] _data = GetData(false);
+                            if ((SampleSize % 2) == 0)
+                                retVal = ((double)Convert.ChangeType(_data[(SampleSize - 1) / 2 + 1], TypeCode.Double) + (double)Convert.ChangeType(_data[(SampleSize - 1) / 2], TypeCode.Double)) / 2.0;
+                            else
+                                retVal = (double)Convert.ChangeType(_data[(SampleSize - 1) / 2], TypeCode.Double);
+                        }
                         else
-                            return (double)Convert.ChangeType(_data[(SampleSize - 1) / 2], TypeCode.Double);
+                        {
+                            // If sample size > 100000 then use a different method for figuring out the
+                            // median.
+                            long medianPos = 0;
+                            long currentPos = 0;
+                            bool done = false;
+                            bool avgNext = false;
+                            SortedDictionary<T, double> sortedDic = Sort(0, this.Length - 1);
+                            if ((SampleSize % 2) == 0) { medianPos = SampleSize / 2; }
+                            else { medianPos = SampleSize + 1 / 2; }
+
+                            foreach (KeyValuePair<T, double> entry in sortedDic)
+                            {
+                                if (!done)
+                                {
+                                    currentPos += (long)entry.Value;
+                                    if (currentPos >= medianPos)
+                                    {
+                                        done = true;
+                                        retVal = (double)Convert.ChangeType(entry.Key, TypeCode.Double);
+                                        if ((SampleSize % 2) == 0)
+                                        {
+                                            if (currentPos < medianPos + 1)
+                                            {
+                                                avgNext = true;
+                                            }
+                                        }
+                                    }
+                                }
+                                if (avgNext)
+                                {
+                                    retVal += (double)Convert.ChangeType(entry.Value, TypeCode.Double);
+                                    retVal /= 2;
+                                    avgNext = false;
+                                }
+                            }
+                        }
                     }
                     else
                     {
-                        return 0;
+                        retVal = 0;
                     }
-				}
-				else
-					return double.NaN;
-			}
-		}
+                    return retVal;
+                }
+                else
+                    return double.NaN;
+            }
+        }
 
 		/// <summary>
 		/// The sum over all datapoints. If the data are not numerical, double.NaN will be returned.
@@ -1459,39 +1504,69 @@ namespace EveMarketMonitorApp.Common
 		/// <summary>
 		/// Returns the largest value
 		/// </summary>
-		public T Maximum
+		public double Maximum
 		{
-			get
-			{
-				T[] _data = GetData(false);
+            get
+            {
                 if (SampleSize != 0)
                 {
-                    return _data[_data.Length - 1];
+                    if (SampleSize < 100000)
+                    {
+                        T[] _data = GetData(false);
+                        return (double)Convert.ChangeType(_data[_data.Length - 1], TypeCode.Double);
+                    }
+                    else
+                    {
+                        double max = double.MinValue;
+                        foreach (FrequencyTableEntry<T> entry in this)
+                        {
+                            if ((double)Convert.ChangeType(entry.Value, TypeCode.Double) > max)
+                            {
+                                max = (double)Convert.ChangeType(entry.Value, TypeCode.Double);
+                            }
+                        }
+                        return max;
+                    }
                 }
                 else
                 {
-                    return default(T);
+                    return 0;
                 }
-			}
+            }
 		}
 		/// <summary>
 		/// Returns the lowest value
 		/// </summary>
-		public T Minimum
-		{
+        public double Minimum
+        {
             get
             {
-                T[] _data = GetData(false);
                 if (SampleSize != 0)
                 {
-                    return _data[0];
+                    if (SampleSize < 100000)
+                    {
+                        T[] _data = GetData(false);
+                        return (double)Convert.ChangeType(_data[0], TypeCode.Double);
+                    }
+                    else
+                    {
+                        double min = double.MaxValue;
+                        foreach (FrequencyTableEntry<T> entry in this)
+                        {
+                            if ((double)Convert.ChangeType(entry.Value, TypeCode.Double) < min)
+                            {
+                                min = (double)Convert.ChangeType(entry.Value, TypeCode.Double);
+                            }
+                        }
+                        return min;
+                    }
                 }
                 else
                 {
-                    return default(T);
+                    return 0;
                 }
             }
-		}
+        }
 		/// <summary>
 		/// Returns the range. If data are not numerical, double.NaN will be returned.
 		/// </summary>
@@ -1499,7 +1574,7 @@ namespace EveMarketMonitorApp.Common
 		{
 			get
 			{
-				T[] _data = GetData(false);
+				//T[] _data = GetData(false);
 				if (!Double.IsNaN(_dblSum))
 				{
 					return ((double)Convert.ChangeType(Maximum, TypeCode.Double) - (double)Convert.ChangeType(Minimum, TypeCode.Double));
@@ -1560,6 +1635,58 @@ namespace EveMarketMonitorApp.Common
 				return _p;
 			}
 		}
+
+        // Sorts the table into order by value (Descending)
+        // The sorted table is returned as a 'SortedDictionary' object
+        private SortedDictionary<T, double> Sort(long l, long u)
+        {
+            SortedDictionary<T, double> retVal = new SortedDictionary<T, double>();
+            foreach (FrequencyTableEntry<T> entry in this)
+            {
+                retVal.Add(entry.Value, entry.RelativeFreq);
+            }
+            /*T[] values = new T[this._entries.Count];
+            int index = 0;
+            foreach (FrequencyTableEntry<T> entry in this)
+            {
+                values[index] = entry.Value;
+                index++;
+            }
+
+            if (u >= 0)
+            {
+                long i = l;
+                long j = u;
+                T v = values[(l + u) / 2];
+                while (i <= j)
+                {
+                    while (values[i].CompareTo(v) > 0)
+                        i++;
+                    while (values[j].CompareTo(v) < 0)
+                        j--;
+                    if (i <= j)
+                    {
+                        T temp = values[i];
+                        values[i] = values[j];
+                        values[j] = temp;
+                        i++;
+                        j--;
+                    }
+                }
+                if (l < j)
+                    Sort(l, j);
+                if (i < u)
+                    Sort(i, u);
+            }
+
+            foreach (T value in values)
+            {
+                retVal.Add(value, this._entries[value]);
+            }*/
+
+            return retVal;
+        }
+    
 		#endregion
 		#region Sort
 		/// <summary>
