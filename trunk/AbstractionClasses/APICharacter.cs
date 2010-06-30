@@ -1754,6 +1754,21 @@ namespace EveMarketMonitorApp.AbstractionClasses
             decimal amount = decimal.Parse(journEntry.SelectSingleNode("@amount").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             retVal.Amount = Math.Abs(amount);
+            // Entries of type 42 (market escrow) do not have a reciever ID whene retrieved from the API.
+            // ID 1000132 is the secure commerce commission.
+            // If the sender is the secure commerce commission then the receiver must be the current
+            // char/corp and vice versa.
+            if (retVal.TypeID == 42 && retVal.RecieverID == 0)
+            {
+                if (retVal.SenderID == 1000132)
+                {
+                    retVal.RecieverID = corc == CharOrCorp.Char ? _charID : _corpID;
+                }
+                else
+                {
+                    retVal.RecieverID = 1000132;
+                }
+            }
             if (amount < 0)
             {
                 retVal.SBalance = decimal.Parse(journEntry.SelectSingleNode("@balance").Value,

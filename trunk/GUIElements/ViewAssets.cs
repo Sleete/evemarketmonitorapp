@@ -38,11 +38,11 @@ namespace EveMarketMonitorApp.GUIElements
 
             _recentItems = UserAccount.CurrentGroup.Settings.RecentItems;
             UserAccount.Settings.GetFormSizeLoc(this);
-            AssetsGrid.Tag = "Assets Data";
-            if (Globals.calculator != null)
-            {
-                Globals.calculator.BindGrid(AssetsGrid);
-            }
+            //AssetsGrid.Tag = "Assets Data";
+            //if (Globals.calculator != null)
+            //{
+            //    Globals.calculator.BindGrid(AssetsGrid);
+            //}
         }
 
         private void ViewAssets_Load(object sender, EventArgs e)

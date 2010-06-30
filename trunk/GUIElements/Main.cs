@@ -886,6 +886,10 @@ namespace EveMarketMonitorApp.GUIElements
                             idsUpdating.Remove(args.OwnerID);
                         }
                     }
+                    if (args.UpdateType == APIDataType.Assets)
+                    {
+                        DisplayAssetChangeScreen();
+                    }
                     RefreshDisplay();
                     break;
                 case APIUpdateEventType.OrderHasExpiredOrCompleted:
@@ -894,26 +898,11 @@ namespace EveMarketMonitorApp.GUIElements
                     RefreshUnackOrders(false);
                     break;
                 case APIUpdateEventType.AssetsAwaitingAcknowledgement:
-                    // Check if there are any other assets updates either in progress or pending
-                    // If there are none then show the 'AcknowledgeAssetChanges' screen
                     if (!_assetUpdatesAwaitingAcknowledgement.Contains(args.OwnerID))
                     {
                         _assetUpdatesAwaitingAcknowledgement.Add(args.OwnerID);
                     }
-                    idsUpdating = _updatesRunning[args.UpdateType];
-                    bool updatesStillRunning = false;
-                    foreach (int id in idsUpdating)
-                    {
-                        if (!_assetUpdatesAwaitingAcknowledgement.Contains(id))
-                        {
-                            updatesStillRunning = true;
-                        }
-                    }
-
-                    if (!updatesStillRunning)
-                    {
-                        AcknowledgeAssetChanges();
-                    }
+                    DisplayAssetChangeScreen();
                     break;
                 default:
                     break;
@@ -933,6 +922,33 @@ namespace EveMarketMonitorApp.GUIElements
         void ControlPanel_Move(object sender, EventArgs e)
         {
             UserAccount.Settings.ControlPanelPos = _controlPanel.Location;
+        }
+
+        private void DisplayAssetChangeScreen()
+        {
+            if (_assetUpdatesAwaitingAcknowledgement.Count > 0)
+            {
+                // Check if there are any assets updates either in progress or pending
+                // If there are none then show the 'AcknowledgeAssetChanges' screen
+                List<int> idsUpdating = _updatesRunning[APIDataType.Assets];
+                bool updatesStillRunning = false;
+                foreach (int id in idsUpdating)
+                {
+                    // If there are any ids in the 'updates running' list but NOT in the 
+                    // 'updates awaiting acknowledgement' list then there must still be
+                    // processing going on for another character/corp.
+                    if (!_assetUpdatesAwaitingAcknowledgement.Contains(id))
+                    {
+                        updatesStillRunning = true;
+                    }
+                }
+
+                if (!updatesStillRunning)
+                {
+                    // If no asset updates are still running then display the form.
+                    AcknowledgeAssetChanges();
+                }
+            }
         }
 
         private void DisplayTutorial()
