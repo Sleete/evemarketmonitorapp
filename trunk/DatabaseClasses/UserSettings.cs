@@ -74,6 +74,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.CSVExportDir);
             GetValue(Setting.api_assetsUpdateMaxMinutes);
             GetValue(Setting.ManufacturingMode);
+            GetValue(Setting.AssetsViewWarning);
+            GetValue(Setting.APIIndividualUpdate);
         }
 
         /// <summary>
@@ -232,19 +234,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     retVal = val.ToString();
                     break;
                 case Setting.APITransUpdatePeriod:
-                    TimeSpan time = new TimeSpan(1, 0, 10);
+                    TimeSpan time = new TimeSpan(1, 1, 0);
                     retVal = time.ToString();
                     break;
                 case Setting.APIJournUpdatePeriod:
-                    TimeSpan time2 = new TimeSpan(1, 0, 10);
+                    TimeSpan time2 = new TimeSpan(1, 1, 0);
                     retVal = time2.ToString();
                     break;
                 case Setting.APIOrderUpdatePeriod:
-                    TimeSpan time3 = new TimeSpan(1, 0, 10);
+                    TimeSpan time3 = new TimeSpan(1, 1, 0);
                     retVal = time3.ToString();
                     break;
                 case Setting.APIAssetUpdatePeriod:
-                    TimeSpan time4 = new TimeSpan(23, 0, 10);
+                    TimeSpan time4 = new TimeSpan(23, 1, 0);
                     retVal = time4.ToString();
                     break;
                 case Setting.UseLocalTimezone:
@@ -260,6 +262,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     retVal = "10";
                     break;
                 case Setting.ManufacturingMode:
+                    retVal = bool.FalseString;
+                    break;
+                case Setting.AssetsViewWarning:
+                    retVal = "WARN"; // Can be 'WARN', 'FORCE YES', 'FORCE NO'
+                    break;
+                case Setting.APIIndividualUpdate:
                     retVal = bool.FalseString;
                     break;
                 default:
@@ -466,6 +474,18 @@ namespace EveMarketMonitorApp.DatabaseClasses
             get { return bool.Parse(GetValue(Setting.ManufacturingMode)); }
             set { SetValue(Setting.ManufacturingMode, value.ToString()); }
         }
+
+        public string AssetsViewWarning
+        {
+            get { return GetValue(Setting.AssetsViewWarning); }
+            set { SetValue(Setting.AssetsViewWarning, value); }
+        }
+
+        public bool APIIndividualUpdate
+        {
+            get { return bool.Parse(GetValue(Setting.APIIndividualUpdate)); }
+            set { SetValue(Setting.APIIndividualUpdate, value.ToString()); }
+        }
         #endregion
 
         #region Public methods
@@ -609,7 +629,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GridCalcEnabled,
             CSVExportDir,
             api_assetsUpdateMaxMinutes,
-            ManufacturingMode
+            ManufacturingMode,
+            AssetsViewWarning,
+            APIIndividualUpdate,
        }
 
     }

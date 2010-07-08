@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using EveMarketMonitorApp.DatabaseClasses;
 using EveMarketMonitorApp.Common;
 using EveMarketMonitorApp.AbstractionClasses;
+using EveMarketMonitorApp.Reporting;
 
 namespace EveMarketMonitorApp.GUIElements
 {
@@ -38,11 +39,11 @@ namespace EveMarketMonitorApp.GUIElements
 
             _recentItems = UserAccount.CurrentGroup.Settings.RecentItems;
             UserAccount.Settings.GetFormSizeLoc(this);
-            //AssetsGrid.Tag = "Assets Data";
-            //if (Globals.calculator != null)
-            //{
-            //    Globals.calculator.BindGrid(AssetsGrid);
-            //}
+            AssetsGrid.Tag = "Assets Data";
+            if (Globals.calculator != null)
+            {
+                Globals.calculator.BindGrid(AssetsGrid);
+            }
         }
 
         private void ViewAssets_Load(object sender, EventArgs e)
@@ -52,6 +53,10 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 Diagnostics.StartTimer("ViewAssets");
                 Diagnostics.StartTimer("ViewAssets.Part1");
+                DataGridViewCellStyle style = new DataGridViewCellStyle(CostColumn.DefaultCellStyle);
+                style.Format = IskAmount.FormatString();
+                CostColumn.DefaultCellStyle = style;
+
                 _assets = new AssetList();
                 _assetsBindingSource = new BindingSource();
                 _assetsBindingSource.DataSource = _assets;
@@ -67,6 +72,7 @@ namespace EveMarketMonitorApp.GUIElements
                 AutoConExcludeColumn.DataPropertyName = "AutoConExclude";
                 ReprocessorExcludeColumn.DataPropertyName = "ReprocessorExclude";
                 StatusColumn.DataPropertyName = "Status";
+                CostColumn.DataPropertyName = "UnitBuyPrice";
                 inTransitStyle = OwnerColumn.DefaultCellStyle.Clone();
                 inTransitStyle.BackColor = Color.Yellow;
 
@@ -180,18 +186,45 @@ namespace EveMarketMonitorApp.GUIElements
         {
             AssetViewNode node = (AssetViewNode)e.Node.Tag;
             AssetViewNodeType type = node.Type;
+            bool displayAssets = true;
             if (type != AssetViewNodeType.All && type != AssetViewNodeType.Region)
             {
-                DisplayAssets();
             }
             else
             {
-                if (MessageBox.Show("Warning, displaying assets for " + node.Text +
+                /*if (MessageBox.Show("Warning, displaying assets for " + node.Text +
                     " may take a long time, really display these assets?", "Confirm",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     DisplayAssets();
+                }*/
+                string warningDefault = UserAccount.Settings.AssetsViewWarning;
+                if (warningDefault.Equals("WARN"))
+                {
+                    ChkMessageBox message = new ChkMessageBox();
+                    DialogResult result = message.Show("Don't ask me again", 
+                        "Warning, displaying assets for " + node.Text +
+                        " may take a long time, really display these assets?", "Confirm", 
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.No)
+                    {
+                        displayAssets = false;
+                        if (message.Checked) { UserAccount.Settings.AssetsViewWarning = "FORCE NO"; }
+                    }
+                    if (result == DialogResult.Yes && message.Checked)
+                    {
+                        UserAccount.Settings.AssetsViewWarning = "FORCE YES";
+                    }
                 }
+                else
+                {
+                    if (warningDefault.Equals("FORCE NO")) { displayAssets = false; }
+                }
+            }
+
+            if (displayAssets)
+            {
+                DisplayAssets();
             }
         }
 
@@ -361,6 +394,22 @@ namespace EveMarketMonitorApp.GUIElements
                 if (status.Equals("In Transit"))
                 {
                     AssetsGrid.Rows[e.RowIndex].DefaultCellStyle = inTransitStyle;
+                }
+
+                if (AssetsGrid.Columns[e.ColumnIndex].Name.Equals("CostColumn"))
+                {
+                    Asset a = (Asset)AssetsGrid.Rows[e.RowIndex].DataBoundItem;
+                    DataGridViewCellStyle style = e.CellStyle;
+                    if (a.UnitBuyPricePrecalculated)
+                    {
+                        style.ForeColor = Color.Black;
+                    }
+                    else
+                    {
+                        style.ForeColor = Color.Orange;
+                    }
+
+                    e.CellStyle = style;
                 }
             }
         }

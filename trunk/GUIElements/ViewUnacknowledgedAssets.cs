@@ -461,6 +461,60 @@ namespace EveMarketMonitorApp.GUIElements
                             //    AssetsProduced.Add(gainedAsset);
                             //    assetsToRemove.Add(gainedAsset);
                             //    break;
+                            case AssetChangeTypes.ChangeType.WasNeverMissing:
+                                assetRow.Cost = 0;
+                                assetRow.CostCalc = false;
+                                assetsToRemove.Add(gainedAsset);
+                                break;
+                            case AssetChangeTypes.ChangeType.BoughtViaContract:
+                                assetRow.Cost = 0;
+                                assetRow.CostCalc = false;
+                                assetRow.BoughtViaContract = true;
+                                assetsToRemove.Add(gainedAsset);
+                                break;
+                            case AssetChangeTypes.ChangeType.CancelledContract:
+                                List<AssetAccessParams> access = new List<AssetAccessParams>();
+                                bool corporate = false;
+                                access.Add(new AssetAccessParams(assetRow.OwnerID, !assetRow.CorpAsset, assetRow.CorpAsset));
+                                AssetList assets = Assets.LoadAssets(access, new List<int>(), assetRow.ItemID, 0, 0, 
+                                    false, (int)AssetStatus.States.ForSaleViaContract, true);
+                                if (assets.Count > 0)
+                                {
+                                    List<long> matchedAssetsForSale = new List<long>(); 
+                                    long qToFind = assetRow.Quantity;
+                                    decimal totalCost = 0;
+                                    long costq = 0;
+                                    bool costPreCalc = false;
+                                    foreach (Asset a in assets)
+                                    {
+                                        if (qToFind > 0)
+                                        {
+                                            long deltaQ = Math.Min(a.Quantity, qToFind);
+                                            qToFind -= deltaQ;
+                                            totalCost += a.UnitBuyPricePrecalculated ? a.TotalBuyPrice : 0;
+                                            costq += a.UnitBuyPricePrecalculated ? deltaQ : 0;
+                                            if (a.UnitBuyPricePrecalculated) { costPreCalc = true; }
+                                            matchedAssetsForSale.Add(a.ID);
+                                        }
+                                    }
+
+                                    assetRow.Cost = (costq > 0 ? totalCost / costq : 0);
+                                    assetRow.CostCalc = costPreCalc;
+                                    // We've set the cost of the asset, now to remove the old one(s).
+                                    foreach (long matchedAssetID in matchedAssetsForSale)
+                                    {
+                                        EMMADataSet.AssetsRow assetData = Assets.GetAssetDetail(matchedAssetID);
+                                        assetData.Delete();
+                                        Assets.UpdateDatabase(assetData);
+                                    }
+                                }
+                                else
+                                {
+                                    // Can't find old asset so don't know cost.
+                                    assetRow.Cost = 0;
+                                    assetRow.CostCalc = false;
+                                }
+                                break;
                             case AssetChangeTypes.ChangeType.Unknown:
                                 // Can only be 'unknown' if we're in manufacturing mode.
                                 // let the cross check sort it out...
@@ -514,6 +568,7 @@ namespace EveMarketMonitorApp.GUIElements
                             assetRow.ReprocExclude = true;
                             assetRow.Status = (int)AssetStatus.States.ForSaleViaContract;
                             assetRow.SystemID = lostAsset.SystemID;
+                            assetRow.BoughtViaContract = false;
                             assetChanges.AddAssetsRow(assetRow);
                             assetsToRemove.Add(lostAsset);
                             break;
@@ -559,7 +614,8 @@ namespace EveMarketMonitorApp.GUIElements
 
         void itemsGrid_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            if (e.ColumnIndex >= 0 && e.RowIndex >= 0)
+            if (e.ColumnIndex >= 0 && e.ColumnIndex < gainedItemsGrid.ColumnCount &&
+                e.RowIndex >= 0 && e.RowIndex < gainedItemsGrid.RowCount)
             {
                 if (gainedItemsGrid.Columns[e.ColumnIndex].Equals(GainedReasonColumn))
                 {

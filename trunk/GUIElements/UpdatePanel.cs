@@ -26,6 +26,7 @@ namespace EveMarketMonitorApp.GUIElements
         private Color _updatingColour = Color.Yellow;
 
         private static bool _updating = false;
+        private static bool _chkClicked = false;
 
         private Dictionary<APIDataType, bool> _showingTT = new Dictionary<APIDataType, bool>();
         private Dictionary<APIDataType, DateTime> _lastUpdateAttempt = new Dictionary<APIDataType, DateTime>();
@@ -33,6 +34,7 @@ namespace EveMarketMonitorApp.GUIElements
         public event APIUpdateEvent UpdateEvent;
 
         public bool _toggleAll = false;
+        public bool _individualUpdate = false;
 
         private static string BLOCKEDTEXT = "Blocked, Retrying..";
         private static string WAITINGTEXT = "Waiting..";
@@ -66,19 +68,14 @@ namespace EveMarketMonitorApp.GUIElements
             _lastUpdateAttempt.Add(APIDataType.Orders, DateTime.MinValue);
             _lastUpdateAttempt.Add(APIDataType.Transactions, DateTime.MinValue);
 
+            _individualUpdate = UserAccount.Settings.APIIndividualUpdate;
+
+            RefreshCheckboxDisplay();
+
             if (type == CharOrCorp.Char)
             {
                 picPortrait.Image = Portaits.GetPortrait(character.CharID);
                 lblCorpTag.Visible = false;
-                //chkAutoAssets.Checked = !Globals.EveAPIDown && character.GetAPIAutoUpdate(CharOrCorp.Char, APIDataType.Assets);
-                //chkAutoJournal.Checked = !Globals.EveAPIDown && character.GetAPIAutoUpdate(CharOrCorp.Char, APIDataType.Journal);
-                //chkAutoOrders.Checked = !Globals.EveAPIDown && character.GetAPIAutoUpdate(CharOrCorp.Char, APIDataType.Orders);
-                //chkAutoTrans.Checked = !Globals.EveAPIDown && character.GetAPIAutoUpdate(CharOrCorp.Char, APIDataType.Transactions);
-                chkUpdate.Checked = !Globals.EveAPIDown &&
-                    character.GetAPIAutoUpdate(CharOrCorp.Char, APIDataType.Assets) ||
-                    character.GetAPIAutoUpdate(CharOrCorp.Char, APIDataType.Journal) ||
-                    character.GetAPIAutoUpdate(CharOrCorp.Char, APIDataType.Transactions) ||
-                    character.GetAPIAutoUpdate(CharOrCorp.Char, APIDataType.Orders);
             }
             else
             {
@@ -86,15 +83,6 @@ namespace EveMarketMonitorApp.GUIElements
                 picPortrait.BorderStyle = BorderStyle.FixedSingle;
                 lblCorpTag.Visible = true;
                 lblCorpTag.Text = "[" + character.CorpTag + "]";
-                //chkAutoAssets.Checked = !Globals.EveAPIDown && character.GetAPIAutoUpdate(CharOrCorp.Corp, APIDataType.Assets);
-                //chkAutoJournal.Checked = !Globals.EveAPIDown && character.GetAPIAutoUpdate(CharOrCorp.Corp, APIDataType.Journal);
-                //chkAutoOrders.Checked = !Globals.EveAPIDown && character.GetAPIAutoUpdate(CharOrCorp.Corp, APIDataType.Orders);
-                //chkAutoTrans.Checked = !Globals.EveAPIDown && character.GetAPIAutoUpdate(CharOrCorp.Corp, APIDataType.Transactions);
-                chkUpdate.Checked = !Globals.EveAPIDown && 
-                    character.GetAPIAutoUpdate(CharOrCorp.Corp, APIDataType.Assets) ||
-                    character.GetAPIAutoUpdate(CharOrCorp.Corp, APIDataType.Journal) ||
-                    character.GetAPIAutoUpdate(CharOrCorp.Corp, APIDataType.Transactions) ||
-                    character.GetAPIAutoUpdate(CharOrCorp.Corp, APIDataType.Orders);
             
                 // Get any other characters in the group with the same corp.
                 List<APICharacter> otherCorpChars = new List<APICharacter>();
@@ -115,15 +103,15 @@ namespace EveMarketMonitorApp.GUIElements
             _toggleAll = !chkAutoTrans.Checked && !chkAutoOrders.Checked && !chkAutoJournal.Checked && !chkAutoAssets.Checked;
 
             chkUpdate.Enabled = !Globals.EveAPIDown;
-            //chkAutoAssets.Enabled = !Globals.EveAPIDown;
-            //chkAutoJournal.Enabled = !Globals.EveAPIDown;
-            //chkAutoOrders.Enabled = !Globals.EveAPIDown;
-            //chkAutoTrans.Enabled = !Globals.EveAPIDown;
+            chkAutoAssets.Enabled = !Globals.EveAPIDown;
+            chkAutoJournal.Enabled = !Globals.EveAPIDown;
+            chkAutoOrders.Enabled = !Globals.EveAPIDown;
+            chkAutoTrans.Enabled = !Globals.EveAPIDown;
 
-            //chkAutoAssets.CheckedChanged += new EventHandler(chkAutoAssets_CheckedChanged);
-            //chkAutoJournal.CheckedChanged += new EventHandler(chkAutoJournal_CheckedChanged);
-            //chkAutoOrders.CheckedChanged += new EventHandler(chkAutoOrders_CheckedChanged);
-            //chkAutoTrans.CheckedChanged += new EventHandler(chkAutoTrans_CheckedChanged);
+            chkAutoAssets.CheckedChanged += new EventHandler(chkAutoAssets_CheckedChanged);
+            chkAutoJournal.CheckedChanged += new EventHandler(chkAutoJournal_CheckedChanged);
+            chkAutoOrders.CheckedChanged += new EventHandler(chkAutoOrders_CheckedChanged);
+            chkAutoTrans.CheckedChanged += new EventHandler(chkAutoTrans_CheckedChanged);
 
             lblAssets.Tag = new LabelMetaData(APIDataType.Assets);
             lblAssetsStatus.Tag = new LabelMetaData(APIDataType.Assets);
@@ -157,6 +145,24 @@ namespace EveMarketMonitorApp.GUIElements
             //UpdateData();
         }
 
+        private void SetOverallUpdateState()
+        {
+            if (chkAutoTrans.Checked && chkAutoOrders.Checked &&
+                chkAutoJournal.Checked && chkAutoAssets.Checked)
+            {
+                chkUpdate.CheckState = CheckState.Checked;
+            }
+            else if (!chkAutoTrans.Checked && !chkAutoOrders.Checked &&
+                !chkAutoJournal.Checked && !chkAutoAssets.Checked)
+            {
+                chkUpdate.CheckState = CheckState.Unchecked;
+            }
+            else
+            {
+                chkUpdate.CheckState = CheckState.Indeterminate;
+            }
+        }
+
         void Label_MouseLeave(object sender, EventArgs e)
         {
             Label lbl = sender as Label;
@@ -174,21 +180,35 @@ namespace EveMarketMonitorApp.GUIElements
             if (!_showingTT[type])
             {
                 string tipText = _character.GetLastAPIUpdateError(_type, type);
-                if(tipText.Equals("BLOCKED")) 
+                if (metaData.UpdateType == APIDataType.Orders && _type == CharOrCorp.Corp)
                 {
-                    int minutes = UserAccount.Settings.AssetsUpdateMaxMinutes ;
+                    tipText = "";
+                    List<APICharacter> chars = _character.OtherCorpChars;
+                    foreach (APICharacter character in chars)
+                    {
+                        if(tipText.Length != 0) { tipText = tipText + "\r\n"; }
+                        string detail = character.GetLastAPIUpdateError(_type, type);
+                        detail = detail.Replace("\r\n", " ");
+                        if (detail.Trim().Length == 0) { detail = "Success"; }
+                        tipText = tipText + character.CharName + ": " + detail;
+                    }
+                }
+                else if (tipText.Equals("BLOCKED"))
+                {
+                    int minutes = UserAccount.Settings.AssetsUpdateMaxMinutes;
                     tipText = "This update is currently blocked because transaction and order updates " +
                         "have not occured within the last " + minutes + " minutes.\r\n" +
                         "To adjust this setting, goto Settings -> API Update Settings.";
                 }
-                else if(tipText.Equals("AWAITING ACKNOWLEDGEMENT")) 
+                else if (tipText.Equals("AWAITING ACKNOWLEDGEMENT"))
                 {
                     tipText = "This update has completed but is currently waiting for other asset " +
                         "updates to complete in order to compare lost/gained items.";
                 }
+
                 errorToolTip.Show(tipText, this.Parent,
-                    new Point(MousePosition.X - Parent.PointToScreen(Parent.Location).X + 10, 
-                    MousePosition.Y - Parent.PointToScreen(Parent.Location).Y), 3000);
+                    new Point(MousePosition.X - Parent.PointToScreen(Parent.Location).X + 10,
+                    MousePosition.Y - Parent.PointToScreen(Parent.Location).Y), 6000);
                 _showingTT[type] = true;
             }
         }
@@ -213,6 +233,53 @@ namespace EveMarketMonitorApp.GUIElements
                     UserAccount.Settings.APIAssetUpdatePeriod);
 
                 _updating = false;
+            }
+
+            if (UserAccount.Settings.APIIndividualUpdate != _individualUpdate)
+            {
+                RefreshCheckboxDisplay();
+            }
+        }
+
+        private void RefreshCheckboxDisplay()
+        {
+            if (UserAccount.Settings.APIIndividualUpdate)
+            {
+                _individualUpdate = true;
+                chkAutoAssets.Visible = true;
+                chkAutoJournal.Visible = true;
+                chkAutoOrders.Visible = true;
+                chkAutoTrans.Visible = true;
+                lblAssetsStatus.Width -= chkAutoAssets.Width;
+                lblJournalStatus.Width -= chkAutoAssets.Width;
+                lblOrdersStatus.Width -= chkAutoAssets.Width;
+                lblTransStatus.Width -= chkAutoAssets.Width;
+                chkAutoAssets.Checked = !Globals.EveAPIDown && _character.GetAPIAutoUpdate(_type, APIDataType.Assets);
+                chkAutoJournal.Checked = !Globals.EveAPIDown && _character.GetAPIAutoUpdate(_type, APIDataType.Journal);
+                chkAutoOrders.Checked = !Globals.EveAPIDown && _character.GetAPIAutoUpdate(_type, APIDataType.Orders);
+                chkAutoTrans.Checked = !Globals.EveAPIDown && _character.GetAPIAutoUpdate(_type, APIDataType.Transactions);
+                SetOverallUpdateState();
+            }
+            else
+            {
+                if (_individualUpdate)
+                {
+                    // Only resize status labels if the individual API update setting has just been changed.
+                    lblAssetsStatus.Width += chkAutoAssets.Width;
+                    lblJournalStatus.Width += chkAutoAssets.Width;
+                    lblOrdersStatus.Width += chkAutoAssets.Width;
+                    lblTransStatus.Width += chkAutoAssets.Width;
+                }
+                _individualUpdate = false;
+                chkAutoAssets.Visible = false;
+                chkAutoJournal.Visible = false;
+                chkAutoOrders.Visible = false;
+                chkAutoTrans.Visible = false;
+                chkUpdate.Checked = !Globals.EveAPIDown &&
+                    _character.GetAPIAutoUpdate(_type, APIDataType.Assets) &&
+                    _character.GetAPIAutoUpdate(_type, APIDataType.Journal) &&
+                    _character.GetAPIAutoUpdate(_type, APIDataType.Transactions) &&
+                    _character.GetAPIAutoUpdate(_type, APIDataType.Orders);
             }
         }
 
@@ -421,36 +488,47 @@ namespace EveMarketMonitorApp.GUIElements
 
             if (checkForAccess || (doUpdate && _character.GetAPIAutoUpdate(corc, dataType)))
             {
-                // If we're auto updating then kick it off.
-                LabelMetaData metaData = (LabelMetaData)otherLabel.Tag;
-                metaData.TimerType = APIUpdateTimerType.Normal;
-                if (UpdateEvent != null)
+                // If we're updating assets and order or transaction updates are pending then do those first.
+                if (dataType == APIDataType.Assets &&
+                    ((_character.GetAPIAutoUpdate(corc, APIDataType.Orders) && 
+                    (lblOrders.Text.Equals("Overdue") || lblOrders.Text.Equals("Queued"))) ||
+                    (_character.GetAPIAutoUpdate(corc, APIDataType.Transactions) && 
+                    (lblTransactions.Text.Equals("Overdue") || lblTransactions.Text.Equals("Queued")))))
                 {
-                    UpdateEvent(this, new APIUpdateEventArgs(dataType, corc ==
-                        CharOrCorp.Char ? _character.CharID : _character.CorpID,
-                        APIUpdateEventType.UpdateStarted));
                 }
-                if (_lastUpdateAttempt.ContainsKey(dataType))
+                else
                 {
-                    _lastUpdateAttempt.Remove(dataType);
-                }
-                _lastUpdateAttempt.Add(dataType, DateTime.UtcNow);
-                _character.UpdateDataFromAPI(corc, dataType);
-                if (corc == CharOrCorp.Corp && dataType == APIDataType.Orders)
-                {
-                    // If we're dealing with corporate orders then we need to grab corporate orders for 
-                    // all characters in this report group that are part of the corp.
-                    // This is because orders will only be returned that were actually created by
-                    // the character we are retrieving data for.
-                    foreach (EVEAccount account in UserAccount.CurrentGroup.Accounts)
+                    // If we're auto updating then kick it off.
+                    LabelMetaData metaData = (LabelMetaData)otherLabel.Tag;
+                    metaData.TimerType = APIUpdateTimerType.Normal;
+                    if (UpdateEvent != null)
                     {
-                        foreach(APICharacter character in account.Chars) 
+                        UpdateEvent(this, new APIUpdateEventArgs(dataType, corc ==
+                            CharOrCorp.Char ? _character.CharID : _character.CorpID,
+                            APIUpdateEventType.UpdateStarted));
+                    }
+                    if (_lastUpdateAttempt.ContainsKey(dataType))
+                    {
+                        _lastUpdateAttempt.Remove(dataType);
+                    }
+                    _lastUpdateAttempt.Add(dataType, DateTime.UtcNow);
+                    _character.UpdateDataFromAPI(corc, dataType);
+                    if (corc == CharOrCorp.Corp && dataType == APIDataType.Orders)
+                    {
+                        // If we're dealing with corporate orders then we need to grab corporate orders for 
+                        // all characters in this report group that are part of the corp.
+                        // This is because orders will only be returned that were actually created by
+                        // the character we are retrieving data for.
+                        foreach (EVEAccount account in UserAccount.CurrentGroup.Accounts)
                         {
-                            if (character.CorpID == _character.CorpID && character.CharID != _character.CharID)
+                            foreach (APICharacter character in account.Chars)
                             {
-                                if (character.CharHasCorporateAccess(APIDataType.Orders))
+                                if (character.CorpID == _character.CorpID && character.CharID != _character.CharID)
                                 {
-                                    character.UpdateDataFromAPI(corc, dataType);
+                                    if (character.CharHasCorporateAccess(APIDataType.Orders))
+                                    {
+                                        character.UpdateDataFromAPI(corc, dataType);
+                                    }
                                 }
                             }
                         }
@@ -464,88 +542,121 @@ namespace EveMarketMonitorApp.GUIElements
             // data access.
             if (corc == CharOrCorp.Corp)
             {
-                bool enabled = false;
-                enabled = _character.GetAPIAutoUpdate(corc, dataType) || 
-                    _character.GetAPIAutoUpdate(corc, dataType) || _character.GetAPIAutoUpdate(corc, dataType) ||
-                    _character.GetAPIAutoUpdate(corc, dataType);
-                //switch (dataType)
-                //{
-                //    case APIDataType.Transactions:
-                //        chkAutoTrans.Checked = _character.GetAPIAutoUpdate(corc, dataType);
-                //        break;
-                //    case APIDataType.Journal:
-                //        chkAutoJournal.Checked = _character.GetAPIAutoUpdate(corc, dataType);
-                //        break;
-                //    case APIDataType.Assets:
-                //        chkAutoAssets.Checked = _character.GetAPIAutoUpdate(corc, dataType);
-                //        break;
-                //    case APIDataType.Orders:
-                //        chkAutoOrders.Checked = _character.GetAPIAutoUpdate(corc, dataType);
-                //        break;
-                //    default:
-                //        break;
-                //}
-                chkUpdate.Checked = enabled;
+                if (!UserAccount.Settings.APIIndividualUpdate)
+                {
+                    bool enabled = false;
+                    enabled = _character.GetAPIAutoUpdate(corc, dataType) ||
+                        _character.GetAPIAutoUpdate(corc, dataType) || _character.GetAPIAutoUpdate(corc, dataType) ||
+                        _character.GetAPIAutoUpdate(corc, dataType);
+                    chkUpdate.Checked = enabled;
+                }
+                else
+                {
+                    switch (dataType)
+                    {
+                        case APIDataType.Transactions:
+                            chkAutoTrans.Checked = _character.GetAPIAutoUpdate(corc, dataType);
+                            break;
+                        case APIDataType.Journal:
+                            chkAutoJournal.Checked = _character.GetAPIAutoUpdate(corc, dataType);
+                            break;
+                        case APIDataType.Assets:
+                            chkAutoAssets.Checked = _character.GetAPIAutoUpdate(corc, dataType);
+                            break;
+                        case APIDataType.Orders:
+                            chkAutoOrders.Checked = _character.GetAPIAutoUpdate(corc, dataType);
+                            break;
+                        default:
+                            break;
+                    }
+                    SetOverallUpdateState();
+                }
             }
         }
 
-        /*
+        
         private void chkAutoTrans_CheckedChanged(object sender, EventArgs e)
         {
-            _character.SetAPIAutoUpdate(_type, APIDataType.Transactions, chkAutoTrans.Checked);
-            chkAutoJournal.Checked = chkAutoTrans.Checked;
-            chkAutoAssets.Checked = chkAutoTrans.Checked;
-            chkAutoOrders.Checked = chkAutoTrans.Checked;
+            if (!_chkClicked)
+            {
+                _chkClicked = true;
+                _character.SetAPIAutoUpdate(_type, APIDataType.Transactions, chkAutoTrans.Checked);
+                SetOverallUpdateState();
+                _chkClicked = false;
+            }
         }
 
         private void chkAutoJournal_CheckedChanged(object sender, EventArgs e)
         {
-            _character.SetAPIAutoUpdate(_type, APIDataType.Journal, chkAutoJournal.Checked);
-            chkAutoTrans.Checked = chkAutoJournal.Checked;
-            chkAutoAssets.Checked = chkAutoJournal.Checked;
-            chkAutoOrders.Checked = chkAutoJournal.Checked;
+            if (!_chkClicked)
+            {
+                _chkClicked = true;
+                _character.SetAPIAutoUpdate(_type, APIDataType.Journal, chkAutoJournal.Checked);
+                SetOverallUpdateState();
+                _chkClicked = false;
+            }
         }
 
         private void chkAutoOrders_CheckedChanged(object sender, EventArgs e)
         {
-            _character.SetAPIAutoUpdate(_type, APIDataType.Orders, chkAutoOrders.Checked);
-            chkAutoJournal.Checked = chkAutoOrders.Checked;
-            chkAutoAssets.Checked = chkAutoOrders.Checked;
-            chkAutoTrans.Checked = chkAutoOrders.Checked;
+            if (!_chkClicked)
+            {
+                _chkClicked = true;
+                _character.SetAPIAutoUpdate(_type, APIDataType.Orders, chkAutoOrders.Checked);
+                SetOverallUpdateState();
+                _chkClicked = false;
+            }
         }
 
         private void chkAutoAssets_CheckedChanged(object sender, EventArgs e)
         {
-            _character.SetAPIAutoUpdate(_type, APIDataType.Assets, chkAutoAssets.Checked);
-            chkAutoJournal.Checked = chkAutoAssets.Checked;
-            chkAutoTrans.Checked = chkAutoAssets.Checked;
-            chkAutoOrders.Checked = chkAutoAssets.Checked;
+            if (!_chkClicked)
+            {
+                _chkClicked = true;
+                _character.SetAPIAutoUpdate(_type, APIDataType.Assets, chkAutoAssets.Checked);
+                SetOverallUpdateState();
+                _chkClicked = false;
+            }
         }
 
         private void picPortrait_Click(object sender, EventArgs e)
         {
+            _chkClicked = true;
             chkAutoAssets.Checked = _toggleAll;
             chkAutoJournal.Checked = _toggleAll;
             chkAutoOrders.Checked = _toggleAll;
             chkAutoTrans.Checked = _toggleAll;
+            SetOverallUpdateState();
             _toggleAll = !_toggleAll;
+            _chkClicked = false;
         }
 
         private void lblCorpTag_Click(object sender, EventArgs e)
         {
+            _chkClicked = true;
             chkAutoAssets.Checked = _toggleAll;
             chkAutoJournal.Checked = _toggleAll;
             chkAutoOrders.Checked = _toggleAll;
             chkAutoTrans.Checked = _toggleAll;
+            SetOverallUpdateState();
             _toggleAll = !_toggleAll;
-        }*/
+            _chkClicked = false;
+        }
 
         private void chkUpdate_CheckedChanged(object sender, EventArgs e)
         {
-            _character.SetAPIAutoUpdate(_type, APIDataType.Assets, chkUpdate.Checked);
+            /*_character.SetAPIAutoUpdate(_type, APIDataType.Assets, chkUpdate.Checked);
             _character.SetAPIAutoUpdate(_type, APIDataType.Orders, chkUpdate.Checked);
             _character.SetAPIAutoUpdate(_type, APIDataType.Journal, chkUpdate.Checked);
-            _character.SetAPIAutoUpdate(_type, APIDataType.Transactions, chkUpdate.Checked);
+            _character.SetAPIAutoUpdate(_type, APIDataType.Transactions, chkUpdate.Checked);*/
+            if (!_chkClicked && chkUpdate.CheckState != CheckState.Indeterminate)
+            {
+                bool state = chkUpdate.Checked;
+                chkAutoAssets.Checked = state;
+                chkAutoJournal.Checked = state;
+                chkAutoOrders.Checked = state;
+                chkAutoTrans.Checked = state;
+            }
         }
 
 

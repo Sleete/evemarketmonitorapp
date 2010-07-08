@@ -54,6 +54,7 @@ namespace EveMarketMonitorApp.GUIElements
                 style.Format = IskAmount.FormatString();
                 PriceColumn.DefaultCellStyle = style;
                 TotalValueColumn.DefaultCellStyle = style;
+                UnitProfitColumn.DefaultCellStyle = style;
 
                 transactionGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                 transactionGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
@@ -76,6 +77,7 @@ namespace EveMarketMonitorApp.GUIElements
                 SellerCharIDColumn.DataPropertyName = "SellerCharID";
                 BuyerWalletColumn.DataPropertyName = "BuyerWallet";
                 SellerWalletColumn.DataPropertyName = "SellerWallet";
+                UnitProfitColumn.DataPropertyName = "GrossUnitProfit";
 
                 UserAccount.Settings.GetColumnWidths(this.Name, transactionGrid);
 

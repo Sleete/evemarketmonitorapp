@@ -251,20 +251,59 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
                 foreach (ContractItem item in items)
                 {
-                    // Only remove the item from the assets 'ForSaleViaContract' stack if there is actually 
-                    // an item there to remove.
                     long assetID = 0;
-                    EMMADataSet.AssetsDataTable assets = new EMMADataSet.AssetsDataTable();
-                    if (Assets.AssetExists(assets, contract.OwnerID, corp,
-                        contract.PickupStationID, item.ItemID, (int)AssetStatus.States.ForSaleViaContract,
-                        false, 0, false, false, true, true, true, 0, ref assetID))
+                    if (reverse)
                     {
-                        EMMADataSet.AssetsRow asset = assets.FindByID(assetID);
-                        if (asset.Quantity > 0)
+                        // Don't do anything to assets when reversing the contract, 
+                        // asset tracking is handled elsewhere.
+
+                        // Only remove the item from the assets 'ForSaleViaContract' stack if there is actually 
+                        // an item there to remove.
+                        //EMMADataSet.AssetsDataTable assets = new EMMADataSet.AssetsDataTable();
+                        //if (Assets.AssetExists(assets, contract.OwnerID, corp,
+                        //    contract.PickupStationID, item.ItemID, (int)AssetStatus.States.ForSaleViaContract,
+                        //    false, 0, false, false, true, true, true, 0, ref assetID))
+                        //{
+                        //    EMMADataSet.AssetsRow asset = assets.FindByID(assetID);
+                        //    if (asset.Quantity > 0)
+                        //    {
+                        //        Assets.ChangeAssets(contract.OwnerID, corp, contract.PickupStationID, item.ItemID,
+                        //            0, (int)AssetStatus.States.ForSaleViaContract, false,
+                        //            -1 * item.Quantity, 0, false);
+                        //    }
+                        //}
+                    }
+                    else
+                    {
+                        // For sold items, we want to find assets with status 'ForSaleViaContract'.
+                        // For purchased items, we want to find assets marked with the BoughtViaContract flag.
+
+                        // Note, since item exchange contracts were really shoe-horned into the older courier
+                        // contract system, if the contract has collateral > 0 it's a sell contract, otherwise
+                        // it's a buy contract... (yeah, it's shit, I should really sort it out)
+                        if(contract.Collateral > 0)
                         {
-                            Assets.ChangeAssets(contract.OwnerID, corp, contract.PickupStationID, item.ItemID,
-                                0, (int)AssetStatus.States.ForSaleViaContract, false, 
-                                (reverse ? 1 : -1) * item.Quantity, item.BuyPrice, !reverse);
+                            List<AssetAccessParams> access = new List<AssetAccessParams>();
+                            bool corporate = false;
+                            APICharacter character = UserAccount.CurrentGroup.GetCharacter(contract.OwnerID, ref corporate);
+                            access.Add(new AssetAccessParams(character.CharID, !corporate, corporate));
+                            EveDataSet.staStationsRow station = Stations.GetStation(contract.PickupStationID);
+                            AssetList assets = Assets.LoadAssets(access, new List<int>(), item.ItemID, 
+                                station.stationID, station.solarSystemID, false, 
+                                (int)AssetStatus.States.ForSaleViaContract, true);
+
+                            foreach (Asset a in assets)
+                            {
+                                // We've found assets with a status of ForSaleViaContract.
+                                // This means that they were picked up as missing by EMMA and were marked 
+                                // by the user as being for sale in a contract rather than actually missing.
+                                // We can now remove them.
+                            }
+
+                        }
+                        else
+                        {
+
                         }
                     }
                 }

@@ -22,14 +22,43 @@ namespace EveMarketMonitorApp.GUIElements
         {
             txtAssetsHours.Text = UserAccount.Settings.APIAssetUpdatePeriod.Hours.ToString();
             txtAssetsMins.Text = UserAccount.Settings.APIAssetUpdatePeriod.Minutes.ToString();
+            if (UserAccount.Settings.APIAssetUpdatePeriod.Hours < 1 ||
+                (UserAccount.Settings.APIAssetUpdatePeriod.Hours == 1 &&
+                UserAccount.Settings.APIAssetUpdatePeriod.Minutes <= 0))
+            {
+                txtAssetsHours.Text = "1";
+                txtAssetsMins.Text = "1";
+            }
             txtJournHours.Text = UserAccount.Settings.APIJournUpdatePeriod.Hours.ToString();
             txtJournMins.Text = UserAccount.Settings.APIJournUpdatePeriod.Minutes.ToString();
+            if (UserAccount.Settings.APIJournUpdatePeriod.Hours < 1 ||
+                (UserAccount.Settings.APIJournUpdatePeriod.Hours == 1 &&
+                UserAccount.Settings.APIJournUpdatePeriod.Minutes <= 0))
+            {
+                txtJournHours.Text = "1";
+                txtJournMins.Text = "1";
+            }
             txtOrdersHours.Text = UserAccount.Settings.APIOrderUpdatePeriod.Hours.ToString();
             txtOrdersMins.Text = UserAccount.Settings.APIOrderUpdatePeriod.Minutes.ToString();
+            if (UserAccount.Settings.APIOrderUpdatePeriod.Hours < 1 ||
+                (UserAccount.Settings.APIOrderUpdatePeriod.Hours == 1 &&
+                UserAccount.Settings.APIOrderUpdatePeriod.Minutes <= 0))
+            {
+                txtOrdersHours.Text = "1";
+                txtOrdersMins.Text = "1";
+            }
             txtTransHours.Text = UserAccount.Settings.APITransUpdatePeriod.Hours.ToString();
             txtTransMins.Text = UserAccount.Settings.APITransUpdatePeriod.Minutes.ToString();
+            if (UserAccount.Settings.APITransUpdatePeriod.Hours < 1 ||
+                (UserAccount.Settings.APITransUpdatePeriod.Hours == 1 &&
+                UserAccount.Settings.APITransUpdatePeriod.Minutes <= 0))
+            {
+                txtTransHours.Text = "1";
+                txtTransMins.Text = "1";
+            }
             txtAssetsUpdateMaxMinutes.Text = UserAccount.Settings.AssetsUpdateMaxMinutes.ToString();
             chkManufacturing.Checked = UserAccount.Settings.ManufacturingMode;
+            chkAllowIndividualUpdate.Checked = UserAccount.Settings.APIIndividualUpdate;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -51,6 +80,7 @@ namespace EveMarketMonitorApp.GUIElements
                     int.Parse(txtTransMins.Text), 0);
                 UserAccount.Settings.AssetsUpdateMaxMinutes = int.Parse(txtAssetsUpdateMaxMinutes.Text);
                 UserAccount.Settings.ManufacturingMode = chkManufacturing.Checked;
+                UserAccount.Settings.APIIndividualUpdate = chkAllowIndividualUpdate.Checked;
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();

@@ -61,6 +61,10 @@
       <ExecutableExtension>.exe</ExecutableExtension>
       <HintPath>Libs\AutoUpdater.exe</HintPath>
     </Reference>
+    <Reference Include="CbtHook, Version=1.0.3835.14850, Culture=neutral, PublicKeyToken=5e5e54164e8c862d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\CbtHook.dll</HintPath>
+    </Reference>
     <Reference Include="Enforcer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\Enforcer.dll</HintPath>
@@ -81,6 +85,10 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsHook, Version=1.0.3835.14824, Culture=neutral, PublicKeyToken=cbca678f8736083a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\WindowsHook.dll</HintPath>
+    </Reference>
     <Reference Include="ZedGraph, Version=5.1.5.28844, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\ZedGraph.dll</HintPath>
@@ -110,6 +118,7 @@
     <Compile Include="Common\HList.cs" />
     <Compile Include="Common\IProgressDialog.cs" />
     <Compile Include="Common\IProvideStatus.cs" />
+    <Compile Include="Common\MsgBoxCheck.cs" />
     <Compile Include="Common\MultisortDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
