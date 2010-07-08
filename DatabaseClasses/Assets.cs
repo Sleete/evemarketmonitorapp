@@ -947,6 +947,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             AssetList retVal = new AssetList();
             EMMADataSet.AssetsDataTable table = new EMMADataSet.AssetsDataTable();
             string regionString = "";
+            if (regionIDs.Count == 0) { regionIDs.Add(0); }
             foreach (int region in regionIDs)
             {
                 regionString = regionString + (regionString.Length == 0 ? "" : ",") + region;
@@ -1081,7 +1082,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 assetsTableAdapter.Insert(row.OwnerID, row.CorpAsset, row.LocationID, row.ItemID, row.SystemID,
                     row.RegionID, row.ContainerID, row.Quantity, row.Status, row.Processed, row.AutoConExclude,
-                    row.IsContainer, row.ReprocExclude, row.Cost, row.CostCalc, row.EveItemID, out retVal);
+                    row.IsContainer, row.ReprocExclude, row.Cost, row.CostCalc, row.EveItemID, 
+                    row.BoughtViaContract, out retVal);
             }
             return retVal.HasValue ? retVal.Value : 0;
         }

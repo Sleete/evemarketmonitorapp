@@ -1118,6 +1118,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     assetRow.ReprocExclude = false;
                     assetRow.Cost = 0;
                     assetRow.CostCalc = false;
+                    assetRow.BoughtViaContract = false;
 
                     int systemID = 0, regionID = 0;
                     if (locationID >= 30000000 && locationID < 40000000)
@@ -1559,7 +1560,31 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                     {
                                         bool tryUpdate = false;
                                         long id = long.Parse(journEntry.SelectSingleNode("@refID").Value) + offset1;
-                                        int recieverID = int.Parse(journEntry.SelectSingleNode("@ownerID2").Value);
+                                        int recieverID = 0;
+                                        if (corc == CharOrCorp.Corp)
+                                        {
+                                            // This is a special case.
+                                            // When bounty prizes are received by the player, corp tax is applied.
+                                            // This corp tax does not appear as a seperate journal entry for the
+                                            // character. It is specified by the taxReceiverID and taxAmount fields
+                                            // on the bounty prize entry itself in the XML.
+                                            // On the corp side, there is a specifc entry for the tax but it has
+                                            // the same journalentryID and ownerID2 as the character entry. 
+                                            // This means that EMMA does not differentiate between them and the
+                                            // corp tax part is lost.
+                                            // In order to resolve this we simply set receiver ID to be the corp
+                                            // instead of character in these cases.
+                                            // Note that 'BuildJournalEntry' has similar processing.
+                                            if (int.Parse(journEntry.SelectSingleNode("@refTypeID").Value) == 85)
+                                            {
+                                                recieverID = _corpID;
+                                            }
+                                        }
+                                        if (recieverID == 0)
+                                        {
+                                            recieverID = int.Parse(journEntry.SelectSingleNode("@ownerID2").Value);
+                                        }
+
                                         beforeRefID = id - offset1;
 
                                         if (beforeRefID > highestIDSoFar || fromFile)
@@ -1769,6 +1794,29 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     retVal.RecieverID = 1000132;
                 }
             }
+
+            if (corc == CharOrCorp.Corp)
+            {
+                // This is a special case.
+                // When bounty prizes are received by the player, corp tax is applied.
+                // This corp tax does not appear as a seperate journal entry for the
+                // character. It is specified by the taxReceiverID and taxAmount fields
+                // on the bounty prize entry itself in the XML.
+                // On the corp side, there is a specifc entry for the tax but it has
+                // the same journalentryID and ownerID2 as the character entry. 
+                // This means that EMMA does not differentiate between them and the
+                // corp tax part is lost.
+                // In order to resolve this we simply set receiver ID to be the corp
+                // instead of character and the sender to be the character instead
+                // of concord.
+                if (int.Parse(journEntry.SelectSingleNode("@refTypeID").Value) == 85)
+                {
+                    retVal.SenderID = retVal.RecieverID;
+                    retVal.RecieverID = _corpID;
+                }
+            }
+
+
             if (amount < 0)
             {
                 retVal.SBalance = decimal.Parse(journEntry.SelectSingleNode("@balance").Value,
@@ -2415,7 +2463,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
             int updated = 0;
             bool errorOccured = false;
             bool otherChars = true;
+            bool thisCharDone = false;
             int charIndex = 0;
+            List<int> charsDone = new List<int>();
 
             try
             {
@@ -2427,6 +2477,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 }
                 while(otherChars)
                 {
+                    // This section will make sure that if we're doing a corp orders update
+                    // then we also update corp orders for any other chars in the same report
+                    // group that are part of the same corp.
                     APICharacter character = this;
                     int userID = _userID;
                     string apiKey = _apiKey;
@@ -2435,224 +2488,241 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                     if (corc == CharOrCorp.Corp && !fromFile)
                     {
-                        character = OtherCorpChars[charIndex];
-
-                        userID = character.UserID;
-                        apiKey = character.APIKey;
-                        charID = character.CharID;
-                        charIndex++;
-                        if (OtherCorpChars.Count > charIndex) { otherChars = true; }
-                    }
-                    
-                    XmlNodeList orderEntries = null;
-                    XmlDocument xml = new XmlDocument();
-
-                    // Retrieve orders from the Eve API or process the supplied XML. 
-                    try
-                    {
-                        if (fromFile)
+                        if (thisCharDone)
                         {
-                            UpdateStatus(0, 1, "Getting orders from file", "", false);
-                            orderEntries = EveAPI.GetResults(fileXML);
-                            UpdateStatus(1, 1, "", orderEntries.Count + " orders found in file.", false);
+                            List<APICharacter> otherCorpChars = OtherCorpChars;
+                            if (otherCorpChars.Count > 0)
+                            {
+                                character = otherCorpChars[charIndex];
+
+                                userID = character.UserID;
+                                apiKey = character.APIKey;
+                                charID = character.CharID;
+                                charIndex++;
+                                if (otherCorpChars.Count > charIndex) { otherChars = true; }
+                            }
                         }
                         else
                         {
-                            xml = EveAPI.GetXml(
-                                EveAPI.URL_EveApiBase +
-                                (corc == CharOrCorp.Corp ? EveAPI.URL_CorpOrdersApi : EveAPI.URL_CharOrdersApi),
-                                "userid=" + userID + "&apiKey=" + apiKey + "&characterID=" + charID +
-                                "&version=2");
-                            orderEntries = EveAPI.GetResults(xml);
-
-                            // Set last orders update time to now.
-                            character.SetLastAPIUpdateTime(corc, APIDataType.Orders, DateTime.UtcNow);
-
-                            // If we've been successfull in getting data and this is a corporate data request
-                            // then make sure we've got access set to true;
-                            if (corc == CharOrCorp.Corp)
-                            {
-                                character.Settings.CorpOrdersAPIAccess = true;
-                            }
+                            thisCharDone = true;
+                            otherChars = OtherCorpChars.Count > 0;
                         }
                     }
-                    catch (EMMAEveAPIException emmaApiEx)
-                    {
-                        errorOccured = true;
-                        if (emmaApiEx.EveCode == 117)
-                        {
-                            try
-                            {
-                                // If there is a cachedUntil tag, dont try and get data again until
-                                // after it has expired.
-                                XmlNode nextTime = xml.SelectSingleNode("/eveapi/cachedUntil");
-                                XmlNode eveTime = xml.SelectSingleNode("/eveapi/currentTime");
-                                TimeSpan difference = DateTime.UtcNow.Subtract(DateTime.Parse(eveTime.FirstChild.Value,
-                                    System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat));
-                                DateTime nextAllowed = DateTime.Parse(nextTime.FirstChild.Value,
-                                    System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat).Add(difference);
 
-                                character.SetLastAPIUpdateTime(corc, APIDataType.Orders,
-                                    nextAllowed.Subtract(UserAccount.Settings.APIOrderUpdatePeriod));
+                    if (!charsDone.Contains(charID))
+                    {
+                        charsDone.Add(charID);
+
+                        XmlNodeList orderEntries = null;
+                        XmlDocument xml = new XmlDocument();
+
+                        // Retrieve orders from the Eve API or process the supplied XML. 
+                        try
+                        {
+                            if (fromFile)
+                            {
+                                UpdateStatus(0, 1, "Getting orders from file", "", false);
+                                orderEntries = EveAPI.GetResults(fileXML);
+                                UpdateStatus(1, 1, "", orderEntries.Count + " orders found in file.", false);
+                            }
+                            else
+                            {
+                                xml = EveAPI.GetXml(
+                                    EveAPI.URL_EveApiBase +
+                                    (corc == CharOrCorp.Corp ? EveAPI.URL_CorpOrdersApi : EveAPI.URL_CharOrdersApi),
+                                    "userid=" + userID + "&apiKey=" + apiKey + "&characterID=" + charID +
+                                    "&version=2");
+                                orderEntries = EveAPI.GetResults(xml);
+
+                                // Set last orders update time to now.
+                                character.SetLastAPIUpdateTime(corc, APIDataType.Orders, DateTime.UtcNow);
+
+                                // If we've been successfull in getting data and this is a corporate data request
+                                // then make sure we've got access set to true;
+                                if (corc == CharOrCorp.Corp)
+                                {
+                                    character.Settings.CorpOrdersAPIAccess = true;
+                                }
+                            }
+                        }
+                        catch (EMMAEveAPIException emmaApiEx)
+                        {
+                            errorOccured = true;
+                            if (emmaApiEx.EveCode == 117)
+                            {
+                                try
+                                {
+                                    // If there is a cachedUntil tag, dont try and get data again until
+                                    // after it has expired.
+                                    XmlNode nextTime = xml.SelectSingleNode("/eveapi/cachedUntil");
+                                    XmlNode eveTime = xml.SelectSingleNode("/eveapi/currentTime");
+                                    TimeSpan difference = DateTime.UtcNow.Subtract(DateTime.Parse(eveTime.FirstChild.Value,
+                                        System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat));
+                                    DateTime nextAllowed = DateTime.Parse(nextTime.FirstChild.Value,
+                                        System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat).Add(difference);
+
+                                    character.SetLastAPIUpdateTime(corc, APIDataType.Orders,
+                                        nextAllowed.Subtract(UserAccount.Settings.APIOrderUpdatePeriod));
+                                    character.SetLastAPIUpdateError(corc, APIDataType.Orders,
+                                        "The Eve API reports that this data has already been retrieved, no update has occured.");
+                                }
+                                catch (Exception) { }
+                            }
+                            else if (emmaApiEx.EveCode == 200)
+                            {
+                                // Security level not high enough
                                 character.SetLastAPIUpdateError(corc, APIDataType.Orders,
-                                    "The Eve API reports that this data has already been retrieved, no update has occured.");
+                                    "You must enter your FULL api key to retrieve financial data.\r\n" +
+                                    "Use the 'manage group' button to correct this.");
                             }
-                            catch (Exception) { }
-                        }
-                        else if (emmaApiEx.EveCode == 200)
-                        {
-                            // Security level not high enough
-                            character.SetLastAPIUpdateError(corc, APIDataType.Orders,
-                                "You must enter your FULL api key to retrieve financial data.\r\n" +
-                                "Use the 'manage group' button to correct this.");
-                        }
-                        else if (emmaApiEx.EveCode == 206 || emmaApiEx.EveCode == 208 ||
-                            emmaApiEx.EveCode == 209)
-                        {
-                            // Character does not have required corporate role.
-                            character.Settings.CorpOrdersAPIAccess = false;
-                            character.SetAPIAutoUpdate(corc, APIDataType.Orders, false);
-                            character.SetLastAPIUpdateError(corc, APIDataType.Orders, emmaApiEx.Message);
-                        }
-                        else
-                        {
-                            if (!fromFile)
+                            else if (emmaApiEx.EveCode == 206 || emmaApiEx.EveCode == 208 ||
+                                emmaApiEx.EveCode == 209)
                             {
+                                // Character does not have required corporate role.
+                                character.Settings.CorpOrdersAPIAccess = false;
+                                character.SetAPIAutoUpdate(corc, APIDataType.Orders, false);
                                 character.SetLastAPIUpdateError(corc, APIDataType.Orders, emmaApiEx.Message);
                             }
                             else
                             {
-                                throw emmaApiEx;
-                            }
-                        }
-                    }
-
-                    if (orderEntries != null && orderEntries.Count > 0)
-                    {
-                        Orders.SetProcessed(charID, corc == CharOrCorp.Corp, false);
-
-                        if (fromFile)
-                        {
-                            UpdateStatus(0, orderEntries.Count, "Processing orders", "", false);
-                        }
-
-                        foreach (XmlNode orderEntry in orderEntries)
-                        {
-                            EMMADataSet.OrdersRow orderRow = BuildOrdersRow(orderData, orderEntry, corc);
-                            int id = 0;
-
-                            if (!Orders.Exists(orderData, orderRow, ref id))
-                            {
-                                orderData.AddOrdersRow(orderRow);
-                                added++;
-                            }
-                            else
-                            {
-                                EMMADataSet.OrdersRow oldRow = orderData.FindByID(id);
-
-                                if (oldRow.TotalVol == orderRow.TotalVol &&
-                                    oldRow.RemainingVol == orderRow.RemainingVol &&
-                                    oldRow.MinVolume == orderRow.MinVolume && oldRow.Range == orderRow.Range &&
-                                    oldRow.Duration == orderRow.Duration && oldRow.Escrow == orderRow.Escrow &&
-                                    oldRow.Price == orderRow.Price && oldRow.OrderState == orderRow.OrderState &&
-                                    oldRow.EveOrderID == orderRow.EveOrderID)
+                                if (!fromFile)
                                 {
-                                    // If the order from the XML exactly matches what we have in the database
-                                    // then just set the processed flag and remove it from the orderData table
-                                    // without setting it to be removed from the database.
-                                    Orders.SetProcessedByID(oldRow.ID, true);
-                                    orderData.RemoveOrdersRow(oldRow);
+                                    character.SetLastAPIUpdateError(corc, APIDataType.Orders, emmaApiEx.Message);
                                 }
                                 else
                                 {
-                                    // Set the row to processed right now.
-                                    oldRow.Processed = true;
-                                    // Accept the changes to the row (will only be the processed flag at 
-                                    // this point) and set the processed flag on the database.
-                                    // This will prevent the row from being double matched with another
-                                    // order later.
-                                    // The 'accept changes' will prevent the concurency error that we 
-                                    // would get if we only updated the processed flag on the database
-                                    // side.
-                                    oldRow.AcceptChanges();
-                                    Orders.SetProcessedByID(oldRow.ID, true);
-                                    
-                                    // If the order was active and is now completed/expired then flag it for
-                                    // the unacknowledged orders viewer to display.
-                                    bool notify = false;
-                                    notify = UserAccount.CurrentGroup.Settings.OrdersNotifyEnabled &&
-                                        ((UserAccount.CurrentGroup.Settings.OrdersNotifyBuy && orderRow.BuyOrder) ||
-                                        (UserAccount.CurrentGroup.Settings.OrdersNotifySell && !orderRow.BuyOrder));
-
-                                    if (/*orderRow.RemainingVol == 0 &&*/
-                                        orderRow.OrderState == (short)OrderState.ExpiredOrFilled &&
-                                        (oldRow.OrderState == (short)OrderState.Active ||
-                                        oldRow.OrderState == (short)OrderState.ExpiredOrFilled))
-                                    {
-                                        if (notify)
-                                        {
-                                            oldRow.OrderState = (short)OrderState.ExpiredOrFilledAndUnacknowledged;
-                                            // No longer needed as the unacknowledged orders form is displayed/refreshed
-                                            // as needed when refreshing the main form after an update is complete.
-                                            //if (UpdateEvent != null)
-                                            //{
-                                            //    UpdateEvent(this, new APIUpdateEventArgs(APIDataType.Orders,
-                                            //        corc == CharOrCorp.Corp ? _corpID : _charID,
-                                            //        APIUpdateEventType.OrderHasExpiredOrCompleted));
-                                            //}
-                                        }
-                                        else
-                                        {
-                                            oldRow.OrderState = (short)OrderState.ExpiredOrFilledAndAcknowledged;
-                                        }
-                                    }
-                                    else if (orderRow.OrderState != (short)OrderState.ExpiredOrFilled)
-                                    {
-                                        oldRow.OrderState = orderRow.OrderState;
-                                    }
-
-                                    if (oldRow.TotalVol != orderRow.TotalVol ||
-                                        oldRow.RemainingVol != orderRow.RemainingVol ||
-                                        oldRow.MinVolume != orderRow.MinVolume || oldRow.Range != orderRow.Range ||
-                                        oldRow.Duration != orderRow.Duration || oldRow.Escrow != orderRow.Escrow ||
-                                        oldRow.Price != orderRow.Price || oldRow.EveOrderID != orderRow.EveOrderID)
-                                    {
-                                        oldRow.TotalVol = orderRow.TotalVol;
-                                        oldRow.RemainingVol = orderRow.RemainingVol;
-                                        oldRow.MinVolume = orderRow.MinVolume;
-                                        oldRow.Range = orderRow.Range;
-                                        oldRow.Duration = orderRow.Duration;
-                                        oldRow.Escrow = orderRow.Escrow;
-                                        oldRow.Price = orderRow.Price;
-                                        oldRow.EveOrderID = orderRow.EveOrderID;
-                                        // Note, only other fields are 'buyOrder' and 'issued'. Neither of which we want to change.
-                                        updated++;
-                                    }
+                                    throw emmaApiEx;
                                 }
                             }
+                        }
+
+                        if (orderEntries != null && orderEntries.Count > 0)
+                        {
+                            Orders.SetProcessed(charID, corc == CharOrCorp.Corp, false);
 
                             if (fromFile)
                             {
-                                UpdateStatus(added + updated, orderEntries.Count, "", "", false);
+                                UpdateStatus(0, orderEntries.Count, "Processing orders", "", false);
                             }
 
+                            foreach (XmlNode orderEntry in orderEntries)
+                            {
+                                EMMADataSet.OrdersRow orderRow = BuildOrdersRow(orderData, orderEntry, corc);
+                                int id = 0;
+
+                                if (!Orders.Exists(orderData, orderRow, ref id))
+                                {
+                                    orderData.AddOrdersRow(orderRow);
+                                    added++;
+                                }
+                                else
+                                {
+                                    EMMADataSet.OrdersRow oldRow = orderData.FindByID(id);
+
+                                    if (oldRow.TotalVol == orderRow.TotalVol &&
+                                        oldRow.RemainingVol == orderRow.RemainingVol &&
+                                        oldRow.MinVolume == orderRow.MinVolume && oldRow.Range == orderRow.Range &&
+                                        oldRow.Duration == orderRow.Duration && oldRow.Escrow == orderRow.Escrow &&
+                                        oldRow.Price == orderRow.Price && oldRow.OrderState == orderRow.OrderState &&
+                                        oldRow.EveOrderID == orderRow.EveOrderID)
+                                    {
+                                        // If the order from the XML exactly matches what we have in the database
+                                        // then just set the processed flag and remove it from the orderData table
+                                        // without setting it to be removed from the database.
+                                        Orders.SetProcessedByID(oldRow.ID, true);
+                                        orderData.RemoveOrdersRow(oldRow);
+                                    }
+                                    else
+                                    {
+                                        // Set the row to processed right now.
+                                        oldRow.Processed = true;
+                                        // Accept the changes to the row (will only be the processed flag at 
+                                        // this point) and set the processed flag on the database.
+                                        // This will prevent the row from being double matched with another
+                                        // order later.
+                                        // The 'accept changes' will prevent the concurency error that we 
+                                        // would get if we only updated the processed flag on the database
+                                        // side.
+                                        oldRow.AcceptChanges();
+                                        Orders.SetProcessedByID(oldRow.ID, true);
+
+                                        // If the order was active and is now completed/expired then flag it for
+                                        // the unacknowledged orders viewer to display.
+                                        bool notify = false;
+                                        notify = UserAccount.CurrentGroup.Settings.OrdersNotifyEnabled &&
+                                            ((UserAccount.CurrentGroup.Settings.OrdersNotifyBuy && orderRow.BuyOrder) ||
+                                            (UserAccount.CurrentGroup.Settings.OrdersNotifySell && !orderRow.BuyOrder));
+
+                                        if (/*orderRow.RemainingVol == 0 &&*/
+                                            orderRow.OrderState == (short)OrderState.ExpiredOrFilled &&
+                                            (oldRow.OrderState == (short)OrderState.Active ||
+                                            oldRow.OrderState == (short)OrderState.ExpiredOrFilled))
+                                        {
+                                            if (notify)
+                                            {
+                                                oldRow.OrderState = (short)OrderState.ExpiredOrFilledAndUnacknowledged;
+                                                // No longer needed as the unacknowledged orders form is displayed/refreshed
+                                                // as needed when refreshing the main form after an update is complete.
+                                                //if (UpdateEvent != null)
+                                                //{
+                                                //    UpdateEvent(this, new APIUpdateEventArgs(APIDataType.Orders,
+                                                //        corc == CharOrCorp.Corp ? _corpID : _charID,
+                                                //        APIUpdateEventType.OrderHasExpiredOrCompleted));
+                                                //}
+                                            }
+                                            else
+                                            {
+                                                oldRow.OrderState = (short)OrderState.ExpiredOrFilledAndAcknowledged;
+                                            }
+                                        }
+                                        else if (orderRow.OrderState != (short)OrderState.ExpiredOrFilled)
+                                        {
+                                            oldRow.OrderState = orderRow.OrderState;
+                                        }
+
+                                        if (oldRow.TotalVol != orderRow.TotalVol ||
+                                            oldRow.RemainingVol != orderRow.RemainingVol ||
+                                            oldRow.MinVolume != orderRow.MinVolume || oldRow.Range != orderRow.Range ||
+                                            oldRow.Duration != orderRow.Duration || oldRow.Escrow != orderRow.Escrow ||
+                                            oldRow.Price != orderRow.Price || oldRow.EveOrderID != orderRow.EveOrderID)
+                                        {
+                                            oldRow.TotalVol = orderRow.TotalVol;
+                                            oldRow.RemainingVol = orderRow.RemainingVol;
+                                            oldRow.MinVolume = orderRow.MinVolume;
+                                            oldRow.Range = orderRow.Range;
+                                            oldRow.Duration = orderRow.Duration;
+                                            oldRow.Escrow = orderRow.Escrow;
+                                            oldRow.Price = orderRow.Price;
+                                            oldRow.EveOrderID = orderRow.EveOrderID;
+                                            // Note, only other fields are 'buyOrder' and 'issued'. Neither of which we want to change.
+                                            updated++;
+                                        }
+                                    }
+                                }
+
+                                if (fromFile)
+                                {
+                                    UpdateStatus(added + updated, orderEntries.Count, "", "", false);
+                                }
+
+                            }
                         }
-                    }
 
-                    if (fromFile)
-                    {
-                        UpdateStatus(0, 0, added + " orders added to database.", "", false);
-                        UpdateStatus(0, 0, updated + " orders updated.", "", true);
-                    }
+                        if (fromFile)
+                        {
+                            UpdateStatus(0, 0, added + " orders added to database.", "", false);
+                            UpdateStatus(0, 0, updated + " orders updated.", "", true);
+                        }
 
-                    if (orderData.Count > 0)
-                    {
-                        Orders.Store(orderData);
-                    }
+                        if (orderData.Count > 0)
+                        {
+                            Orders.Store(orderData);
+                        }
 
-                    if (!errorOccured)
-                    {
-                        Orders.FinishUnProcessed(charID, corc == CharOrCorp.Corp);
+                        if (!errorOccured)
+                        {
+                            Orders.FinishUnProcessed(charID, corc == CharOrCorp.Corp);
+                        }
                     }
                 }
             }

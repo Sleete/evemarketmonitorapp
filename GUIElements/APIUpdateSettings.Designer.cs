@@ -57,9 +57,12 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtAssetsUpdateMaxMinutes = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.chkAllowIndividualUpdate = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -251,7 +254,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(431, 431);
+            this.btnCancel.Location = new System.Drawing.Point(431, 480);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(79, 30);
             this.btnCancel.TabIndex = 2;
@@ -262,7 +265,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(346, 431);
+            this.btnOk.Location = new System.Drawing.Point(346, 480);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(79, 30);
             this.btnOk.TabIndex = 3;
@@ -280,7 +283,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox3.Controls.Add(this.txtAssetsUpdateMaxMinutes);
             this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Location = new System.Drawing.Point(12, 184);
+            this.groupBox3.Location = new System.Drawing.Point(12, 233);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(498, 241);
             this.groupBox3.TabIndex = 4;
@@ -346,11 +349,32 @@ namespace EveMarketMonitorApp.GUIElements
             this.label10.Text = resources.GetString("label10.Text");
             this.label10.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.chkAllowIndividualUpdate);
+            this.groupBox4.Location = new System.Drawing.Point(12, 184);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(498, 43);
+            this.groupBox4.TabIndex = 5;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "General Update Settings";
+            // 
+            // chkAllowIndividualUpdate
+            // 
+            this.chkAllowIndividualUpdate.AutoSize = true;
+            this.chkAllowIndividualUpdate.Location = new System.Drawing.Point(9, 19);
+            this.chkAllowIndividualUpdate.Name = "chkAllowIndividualUpdate";
+            this.chkAllowIndividualUpdate.Size = new System.Drawing.Size(250, 17);
+            this.chkAllowIndividualUpdate.TabIndex = 0;
+            this.chkAllowIndividualUpdate.Text = "Allow individual API update (Not recommended)";
+            this.chkAllowIndividualUpdate.UseVisualStyleBackColor = true;
+            // 
             // APIUpdateSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(522, 473);
+            this.ClientSize = new System.Drawing.Size(522, 522);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);
@@ -367,6 +391,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -401,5 +427,7 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.CheckBox chkManufacturing;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.CheckBox chkAllowIndividualUpdate;
     }
 }

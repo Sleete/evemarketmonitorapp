@@ -231,6 +231,7 @@ namespace EveMarketMonitorApp.GUIElements
                     {
                         // Get the values of the newly selected cells and add them to the frequency table.
                         decimal value = decimal.Parse(cell.Value.ToString());
+                        if (cell.Style.ForeColor == Color.Red && value > 0) { value *= -1; }
                         long quantity = 1;
                         if (chkQuantityAsFrequency.Checked && gridHasQuantityColumn)
                         {

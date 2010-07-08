@@ -29,8 +29,9 @@ namespace EveMarketMonitorApp.GUIElements
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewAssets));
             this.AssetsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
             this.GridContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -58,6 +59,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.StatusColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AutoConExcludeColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ReprocessorExcludeColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.CostColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.AssetsGrid)).BeginInit();
             this.GridContextMenu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -81,16 +83,17 @@ namespace EveMarketMonitorApp.GUIElements
             this.QuantityColumn,
             this.StatusColumn,
             this.AutoConExcludeColumn,
-            this.ReprocessorExcludeColumn});
+            this.ReprocessorExcludeColumn,
+            this.CostColumn});
             this.AssetsGrid.ContextMenuStrip = this.GridContextMenu;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.AssetsGrid.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.AssetsGrid.DefaultCellStyle = dataGridViewCellStyle3;
             this.AssetsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AssetsGrid.Location = new System.Drawing.Point(0, 0);
             this.AssetsGrid.Name = "AssetsGrid";
@@ -337,6 +340,14 @@ namespace EveMarketMonitorApp.GUIElements
             this.ReprocessorExcludeColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.ReprocessorExcludeColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
+            // CostColumn
+            // 
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.CostColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            this.CostColumn.HeaderText = "Unit Cost";
+            this.CostColumn.Name = "CostColumn";
+            this.CostColumn.Width = 150;
+            // 
             // ViewAssets
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -389,5 +400,6 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.DataGridViewTextBoxColumn StatusColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn AutoConExcludeColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ReprocessorExcludeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CostColumn;
     }
 }

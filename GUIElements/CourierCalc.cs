@@ -593,6 +593,9 @@ namespace EveMarketMonitorApp.GUIElements
                 }
                 else if (_contract.Type == ContractType.ItemExchange)
                 {
+                    // For item exchange contracts, BuyPrice is always the rough item value.
+                    // SellPrice is either the buy price or the sell price depending on what type
+                    // of contract we're creating.
                     decimal tmpCollateral = _contract.Collateral;
                     decimal cashToAllocate = tmpCollateral;
                     decimal totalCash = tmpCollateral;
@@ -601,8 +604,14 @@ namespace EveMarketMonitorApp.GUIElements
                     ContractItemList items = _contract.Items;
                     foreach (ContractItem item in items)
                     {
+                        // Get the item values so we can work out ratios between the value of items
+                        // in the contract.
+                        // The available isk can then be distributed following the same ratios.
                         item.BuyPrice = UserAccount.CurrentGroup.ItemValues.GetItemValue(item.ItemID);
+ 
                         totalValue += (item.ForcePrice ? 0 : item.Quantity * item.BuyPrice);
+                        // If the price for this item is forced (locked) then reduce the
+                        // available case by the appropriate amount.
                         totalCash -= (item.ForcePrice ? item.Quantity * item.SellPrice : 0);
                     }
                     cashToAllocate = totalCash;

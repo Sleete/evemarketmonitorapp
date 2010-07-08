@@ -29,35 +29,22 @@ namespace EveMarketMonitorApp.GUIElements
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewTransactions));
             this.transactionGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
-            this.IDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DateTimeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.QuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TotalValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BuyerColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BuyerIDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SellerColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SellerIDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BuyerCharacterColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BuyerCharIDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SellerCharacterColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SellerCharIDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BuyerWalletColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SellerWalletColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.StationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GridContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyCellDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyRowDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyCellTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyRowTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnCSV = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -75,14 +62,29 @@ namespace EveMarketMonitorApp.GUIElements
             this.cmbItem = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btnCSV = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
+            this.IDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DateTimeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.QuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TotalValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UnitProfitColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BuyerColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BuyerIDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SellerColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SellerIDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BuyerCharacterColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BuyerCharIDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SellerCharacterColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SellerCharIDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BuyerWalletColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SellerWalletColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.transactionGrid)).BeginInit();
             this.GridContextMenu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // transactionGrid
@@ -98,6 +100,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.PriceColumn,
             this.QuantityColumn,
             this.TotalValueColumn,
+            this.UnitProfitColumn,
             this.BuyerColumn,
             this.BuyerIDColumn,
             this.SellerColumn,
@@ -110,14 +113,14 @@ namespace EveMarketMonitorApp.GUIElements
             this.SellerWalletColumn,
             this.StationColumn});
             this.transactionGrid.ContextMenuStrip = this.GridContextMenu;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.transactionGrid.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.transactionGrid.DefaultCellStyle = dataGridViewCellStyle5;
             this.transactionGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.transactionGrid.Location = new System.Drawing.Point(3, 113);
             this.transactionGrid.Name = "transactionGrid";
@@ -127,130 +130,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.transactionGrid.VirtualMode = true;
             this.transactionGrid.MouseDown += new System.Windows.Forms.MouseEventHandler(this.transactionGrid_MouseDown);
             this.transactionGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.transactionGrid_CellFormatting);
-            // 
-            // IDColumn
-            // 
-            this.IDColumn.HeaderText = "ID";
-            this.IDColumn.Name = "IDColumn";
-            this.IDColumn.ReadOnly = true;
-            this.IDColumn.Visible = false;
-            // 
-            // DateTimeColumn
-            // 
-            this.DateTimeColumn.HeaderText = "Date & Time";
-            this.DateTimeColumn.Name = "DateTimeColumn";
-            this.DateTimeColumn.ReadOnly = true;
-            // 
-            // ItemColumn
-            // 
-            this.ItemColumn.HeaderText = "Item";
-            this.ItemColumn.Name = "ItemColumn";
-            this.ItemColumn.ReadOnly = true;
-            this.ItemColumn.Width = 240;
-            // 
-            // PriceColumn
-            // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.PriceColumn.DefaultCellStyle = dataGridViewCellStyle1;
-            this.PriceColumn.HeaderText = "Price";
-            this.PriceColumn.Name = "PriceColumn";
-            this.PriceColumn.ReadOnly = true;
-            this.PriceColumn.Width = 150;
-            // 
-            // QuantityColumn
-            // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.QuantityColumn.DefaultCellStyle = dataGridViewCellStyle2;
-            this.QuantityColumn.HeaderText = "Quantity";
-            this.QuantityColumn.Name = "QuantityColumn";
-            this.QuantityColumn.ReadOnly = true;
-            this.QuantityColumn.Width = 80;
-            // 
-            // TotalValueColumn
-            // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.TotalValueColumn.DefaultCellStyle = dataGridViewCellStyle3;
-            this.TotalValueColumn.HeaderText = "Total";
-            this.TotalValueColumn.Name = "TotalValueColumn";
-            this.TotalValueColumn.ReadOnly = true;
-            this.TotalValueColumn.Width = 150;
-            // 
-            // BuyerColumn
-            // 
-            this.BuyerColumn.HeaderText = "Buyer";
-            this.BuyerColumn.Name = "BuyerColumn";
-            this.BuyerColumn.ReadOnly = true;
-            this.BuyerColumn.Width = 120;
-            // 
-            // BuyerIDColumn
-            // 
-            this.BuyerIDColumn.HeaderText = "BuyerID";
-            this.BuyerIDColumn.Name = "BuyerIDColumn";
-            this.BuyerIDColumn.ReadOnly = true;
-            this.BuyerIDColumn.Visible = false;
-            // 
-            // SellerColumn
-            // 
-            this.SellerColumn.HeaderText = "Seller";
-            this.SellerColumn.Name = "SellerColumn";
-            this.SellerColumn.ReadOnly = true;
-            this.SellerColumn.Width = 120;
-            // 
-            // SellerIDColumn
-            // 
-            this.SellerIDColumn.HeaderText = "SellerID";
-            this.SellerIDColumn.Name = "SellerIDColumn";
-            this.SellerIDColumn.ReadOnly = true;
-            this.SellerIDColumn.Visible = false;
-            // 
-            // BuyerCharacterColumn
-            // 
-            this.BuyerCharacterColumn.HeaderText = "Buyer Character";
-            this.BuyerCharacterColumn.Name = "BuyerCharacterColumn";
-            this.BuyerCharacterColumn.ReadOnly = true;
-            this.BuyerCharacterColumn.Width = 120;
-            // 
-            // BuyerCharIDColumn
-            // 
-            this.BuyerCharIDColumn.HeaderText = "BuyerCharID";
-            this.BuyerCharIDColumn.Name = "BuyerCharIDColumn";
-            this.BuyerCharIDColumn.ReadOnly = true;
-            this.BuyerCharIDColumn.Visible = false;
-            // 
-            // SellerCharacterColumn
-            // 
-            this.SellerCharacterColumn.HeaderText = "Seller Character";
-            this.SellerCharacterColumn.Name = "SellerCharacterColumn";
-            this.SellerCharacterColumn.ReadOnly = true;
-            this.SellerCharacterColumn.Width = 120;
-            // 
-            // SellerCharIDColumn
-            // 
-            this.SellerCharIDColumn.HeaderText = "SellerCharID";
-            this.SellerCharIDColumn.Name = "SellerCharIDColumn";
-            this.SellerCharIDColumn.ReadOnly = true;
-            this.SellerCharIDColumn.Visible = false;
-            // 
-            // BuyerWalletColumn
-            // 
-            this.BuyerWalletColumn.HeaderText = "Buyer Wallet";
-            this.BuyerWalletColumn.Name = "BuyerWalletColumn";
-            this.BuyerWalletColumn.ReadOnly = true;
-            this.BuyerWalletColumn.Width = 180;
-            // 
-            // SellerWalletColumn
-            // 
-            this.SellerWalletColumn.HeaderText = "Seller Wallet";
-            this.SellerWalletColumn.Name = "SellerWalletColumn";
-            this.SellerWalletColumn.ReadOnly = true;
-            this.SellerWalletColumn.Width = 180;
-            // 
-            // StationColumn
-            // 
-            this.StationColumn.HeaderText = "Station";
-            this.StationColumn.Name = "StationColumn";
-            this.StationColumn.ReadOnly = true;
-            this.StationColumn.Width = 300;
             // 
             // GridContextMenu
             // 
@@ -306,6 +185,38 @@ namespace EveMarketMonitorApp.GUIElements
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(997, 480);
             this.tableLayoutPanel1.TabIndex = 1;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.btnCSV);
+            this.panel1.Controls.Add(this.btnClose);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 449);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(991, 28);
+            this.panel1.TabIndex = 3;
+            // 
+            // btnCSV
+            // 
+            this.btnCSV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnCSV.Location = new System.Drawing.Point(0, 0);
+            this.btnCSV.Name = "btnCSV";
+            this.btnCSV.Size = new System.Drawing.Size(93, 29);
+            this.btnCSV.TabIndex = 2;
+            this.btnCSV.Text = "Export to CSV";
+            this.btnCSV.UseVisualStyleBackColor = true;
+            this.btnCSV.Click += new System.EventHandler(this.btnCSV_Click);
+            // 
+            // btnClose
+            // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.Location = new System.Drawing.Point(898, 0);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(93, 29);
+            this.btnClose.TabIndex = 1;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // groupBox1
             // 
@@ -483,37 +394,138 @@ namespace EveMarketMonitorApp.GUIElements
             this.label1.TabIndex = 0;
             this.label1.Text = "Item";
             // 
-            // panel1
+            // IDColumn
             // 
-            this.panel1.Controls.Add(this.btnCSV);
-            this.panel1.Controls.Add(this.btnClose);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 449);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(991, 28);
-            this.panel1.TabIndex = 3;
+            this.IDColumn.HeaderText = "ID";
+            this.IDColumn.Name = "IDColumn";
+            this.IDColumn.ReadOnly = true;
+            this.IDColumn.Visible = false;
             // 
-            // btnCSV
+            // DateTimeColumn
             // 
-            this.btnCSV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnCSV.Location = new System.Drawing.Point(0, 0);
-            this.btnCSV.Name = "btnCSV";
-            this.btnCSV.Size = new System.Drawing.Size(93, 29);
-            this.btnCSV.TabIndex = 2;
-            this.btnCSV.Text = "Export to CSV";
-            this.btnCSV.UseVisualStyleBackColor = true;
-            this.btnCSV.Click += new System.EventHandler(this.btnCSV_Click);
+            this.DateTimeColumn.HeaderText = "Date & Time";
+            this.DateTimeColumn.Name = "DateTimeColumn";
+            this.DateTimeColumn.ReadOnly = true;
             // 
-            // btnClose
+            // ItemColumn
             // 
-            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.Location = new System.Drawing.Point(898, 0);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(93, 29);
-            this.btnClose.TabIndex = 1;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.ItemColumn.HeaderText = "Item";
+            this.ItemColumn.Name = "ItemColumn";
+            this.ItemColumn.ReadOnly = true;
+            this.ItemColumn.Width = 240;
+            // 
+            // PriceColumn
+            // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.PriceColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            this.PriceColumn.HeaderText = "Price";
+            this.PriceColumn.Name = "PriceColumn";
+            this.PriceColumn.ReadOnly = true;
+            this.PriceColumn.Width = 150;
+            // 
+            // QuantityColumn
+            // 
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.QuantityColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            this.QuantityColumn.HeaderText = "Quantity";
+            this.QuantityColumn.Name = "QuantityColumn";
+            this.QuantityColumn.ReadOnly = true;
+            this.QuantityColumn.Width = 80;
+            // 
+            // TotalValueColumn
+            // 
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.TotalValueColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            this.TotalValueColumn.HeaderText = "Total";
+            this.TotalValueColumn.Name = "TotalValueColumn";
+            this.TotalValueColumn.ReadOnly = true;
+            this.TotalValueColumn.Width = 150;
+            // 
+            // UnitProfitColumn
+            // 
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.UnitProfitColumn.DefaultCellStyle = dataGridViewCellStyle4;
+            this.UnitProfitColumn.HeaderText = "Unit Profit";
+            this.UnitProfitColumn.Name = "UnitProfitColumn";
+            this.UnitProfitColumn.ReadOnly = true;
+            this.UnitProfitColumn.Width = 150;
+            // 
+            // BuyerColumn
+            // 
+            this.BuyerColumn.HeaderText = "Buyer";
+            this.BuyerColumn.Name = "BuyerColumn";
+            this.BuyerColumn.ReadOnly = true;
+            this.BuyerColumn.Width = 120;
+            // 
+            // BuyerIDColumn
+            // 
+            this.BuyerIDColumn.HeaderText = "BuyerID";
+            this.BuyerIDColumn.Name = "BuyerIDColumn";
+            this.BuyerIDColumn.ReadOnly = true;
+            this.BuyerIDColumn.Visible = false;
+            // 
+            // SellerColumn
+            // 
+            this.SellerColumn.HeaderText = "Seller";
+            this.SellerColumn.Name = "SellerColumn";
+            this.SellerColumn.ReadOnly = true;
+            this.SellerColumn.Width = 120;
+            // 
+            // SellerIDColumn
+            // 
+            this.SellerIDColumn.HeaderText = "SellerID";
+            this.SellerIDColumn.Name = "SellerIDColumn";
+            this.SellerIDColumn.ReadOnly = true;
+            this.SellerIDColumn.Visible = false;
+            // 
+            // BuyerCharacterColumn
+            // 
+            this.BuyerCharacterColumn.HeaderText = "Buyer Character";
+            this.BuyerCharacterColumn.Name = "BuyerCharacterColumn";
+            this.BuyerCharacterColumn.ReadOnly = true;
+            this.BuyerCharacterColumn.Width = 120;
+            // 
+            // BuyerCharIDColumn
+            // 
+            this.BuyerCharIDColumn.HeaderText = "BuyerCharID";
+            this.BuyerCharIDColumn.Name = "BuyerCharIDColumn";
+            this.BuyerCharIDColumn.ReadOnly = true;
+            this.BuyerCharIDColumn.Visible = false;
+            // 
+            // SellerCharacterColumn
+            // 
+            this.SellerCharacterColumn.HeaderText = "Seller Character";
+            this.SellerCharacterColumn.Name = "SellerCharacterColumn";
+            this.SellerCharacterColumn.ReadOnly = true;
+            this.SellerCharacterColumn.Width = 120;
+            // 
+            // SellerCharIDColumn
+            // 
+            this.SellerCharIDColumn.HeaderText = "SellerCharID";
+            this.SellerCharIDColumn.Name = "SellerCharIDColumn";
+            this.SellerCharIDColumn.ReadOnly = true;
+            this.SellerCharIDColumn.Visible = false;
+            // 
+            // BuyerWalletColumn
+            // 
+            this.BuyerWalletColumn.HeaderText = "Buyer Wallet";
+            this.BuyerWalletColumn.Name = "BuyerWalletColumn";
+            this.BuyerWalletColumn.ReadOnly = true;
+            this.BuyerWalletColumn.Width = 180;
+            // 
+            // SellerWalletColumn
+            // 
+            this.SellerWalletColumn.HeaderText = "Seller Wallet";
+            this.SellerWalletColumn.Name = "SellerWalletColumn";
+            this.SellerWalletColumn.ReadOnly = true;
+            this.SellerWalletColumn.Width = 180;
+            // 
+            // StationColumn
+            // 
+            this.StationColumn.HeaderText = "Station";
+            this.StationColumn.Name = "StationColumn";
+            this.StationColumn.ReadOnly = true;
+            this.StationColumn.Width = 300;
             // 
             // ViewTransactions
             // 
@@ -529,9 +541,9 @@ namespace EveMarketMonitorApp.GUIElements
             ((System.ComponentModel.ISupportInitialize)(this.transactionGrid)).EndInit();
             this.GridContextMenu.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -551,23 +563,6 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox chkIngoreOwner;
         private System.Windows.Forms.CheckBox chkIgnoreWallet;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IDColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DateTimeColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ItemColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PriceColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn QuantityColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TotalValueColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BuyerColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BuyerIDColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SellerColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SellerIDColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BuyerCharacterColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BuyerCharIDColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SellerCharacterColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SellerCharIDColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BuyerWalletColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SellerWalletColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn StationColumn;
         private System.Windows.Forms.DateTimePicker dtpEndDate;
         private System.Windows.Forms.DateTimePicker dtpStartDate;
         private System.Windows.Forms.Label label5;
@@ -582,5 +577,23 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnCSV;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IDColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DateTimeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PriceColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn QuantityColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TotalValueColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn UnitProfitColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BuyerColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BuyerIDColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SellerColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SellerIDColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BuyerCharacterColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BuyerCharIDColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SellerCharacterColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SellerCharIDColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BuyerWalletColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SellerWalletColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StationColumn;
     }
 }

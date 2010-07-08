@@ -38,6 +38,7 @@ namespace EveMarketMonitorApp.GUIElements
                 rdbEveTime.Checked = true;
             }
             chkGridCalcEnabled.Checked = UserAccount.Settings.GridCalcEnabled;
+            cmbAssetsViewWarning.Text = UserAccount.Settings.AssetsViewWarning;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -58,6 +59,7 @@ namespace EveMarketMonitorApp.GUIElements
             Properties.Settings.Default.Save();
             UserAccount.Settings.UseLocalTimezone = rdbLocalTime.Checked;
             UserAccount.Settings.GridCalcEnabled = chkGridCalcEnabled.Checked;
+            UserAccount.Settings.AssetsViewWarning = cmbAssetsViewWarning.Text;
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

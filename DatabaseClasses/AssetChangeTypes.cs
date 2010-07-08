@@ -25,6 +25,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 case ChangeType.ForSaleViaContract:
                     retVal = "For sale via contract";
                     break;
+                case ChangeType.BoughtViaContract:
+                    retVal = "Bought via contract";
+                    break;
+                case ChangeType.WasNeverMissing:
+                    retVal = "Was never missing";
+                    break;
+                case ChangeType.CancelledContract:
+                    retVal = "Sell contract cancelled";
+                    break;
                 case ChangeType.Unknown:
                     retVal = "Unknown";
                     break;
@@ -52,14 +61,16 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         }
                         break;
                     case ChangeMetaType.Loss:
-                        if (i == (int)ChangeType.DestroyedOrUsed || i == (int)ChangeType.ForSaleViaContract
-                            || (UserAccount.Settings.ManufacturingMode && i == (int)ChangeType.Unknown))
+                        if (i == (int)ChangeType.DestroyedOrUsed || i == (int)ChangeType.ForSaleViaContract ||
+                            (UserAccount.Settings.ManufacturingMode && i == (int)ChangeType.Unknown))
                         {
                             addit = true;
                         }
                         break;
                     case ChangeMetaType.Gain:
                         if (i == (int)ChangeType.Found || /*i == (int)ChangeType.Made ||*/
+                            i == (int)ChangeType.BoughtViaContract || i == (int)ChangeType.WasNeverMissing ||
+                            i == (int)ChangeType.CancelledContract ||
                             (UserAccount.Settings.ManufacturingMode && i == (int)ChangeType.Unknown))
                         {
                             addit = true;
@@ -80,6 +91,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             //Made,
             DestroyedOrUsed,
             ForSaleViaContract,
+            BoughtViaContract,
+            WasNeverMissing,
+            CancelledContract,
             Unknown
         }
 
