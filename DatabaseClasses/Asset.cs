@@ -45,6 +45,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private bool _gotUnitValue = false;
         private decimal _unitBuyPrice;
         private bool _gotUnitBuyPrice = false;
+        private decimal _pureUnitBuyPrice;
         private bool _unitBuyPricePrecalc = false;
         private bool _selected = false;
         private decimal _reprocessValue;
@@ -85,6 +86,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 _systemID = dataRow.SystemID;
                 _contents = new AssetList();
                 _unitBuyPrice = dataRow.Cost;
+                _pureUnitBuyPrice = _unitBuyPrice;
                 _gotUnitBuyPrice = dataRow.CostCalc;
                 _unitBuyPricePrecalc = dataRow.CostCalc;
                 _eveItemInstanceID = dataRow.EveItemID;
@@ -115,6 +117,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 _systemID = dataRow.SystemID;
                 _contents = new AssetList();
                 _unitBuyPrice = dataRow.Cost;
+                _pureUnitBuyPrice = _unitBuyPrice;
                 _gotUnitBuyPrice = dataRow.CostCalc;
                 _unitBuyPricePrecalc = dataRow.CostCalc;
                 _eveItemInstanceID = dataRow.EveItemID;
@@ -159,6 +162,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             _containerID = container.ID;
             _contents = new AssetList();
             _unitBuyPrice = 0;
+            _pureUnitBuyPrice = _unitBuyPrice;
             _gotUnitBuyPrice = false;
             _unitBuyPricePrecalc = false;
 
@@ -529,6 +533,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public decimal TotalValue
         {
             get { return UnitValue * _quantity; }
+        }
+
+        // This returns the unit buy price value that is stored in the database
+        // If the value is not precalculated, etc then no attempt is made to calculate
+        // a buy price from other data.
+        public decimal PureUnitBuyPrice
+        {
+            get { return _pureUnitBuyPrice; }
         }
 
         public decimal UnitBuyPrice

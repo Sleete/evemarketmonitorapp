@@ -1642,25 +1642,28 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                                         newRow.RecieverID);
                                                 bool updated = false;
 
-                                                if ((newRow.RBalance > 0 && oldRow.RBalance == 0) ||
-                                                    (newRow.RCorpID != 0 && oldRow.RCorpID == 0))
+                                                if (oldRow != null)
                                                 {
-                                                    oldRow.RBalance = newRow.RBalance;
-                                                    oldRow.RCorpID = newRow.RCorpID;
-                                                    oldRow.RArgID = newRow.RArgID;
-                                                    oldRow.RArgName = newRow.RArgName;
-                                                    oldRow.RWalletID = newRow.RWalletID;
-                                                    updated = true;
-                                                }
-                                                if ((newRow.SBalance > 0 && oldRow.SBalance == 0) ||
-                                                    (newRow.SCorpID != 0 && oldRow.SCorpID == 0))
-                                                {
-                                                    oldRow.SBalance = newRow.SBalance;
-                                                    oldRow.SCorpID = newRow.SCorpID;
-                                                    oldRow.SArgID = newRow.SArgID;
-                                                    oldRow.SArgName = newRow.SArgName;
-                                                    oldRow.SWalletID = newRow.SWalletID;
-                                                    updated = true;
+                                                    if ((newRow.RBalance > 0 && oldRow.RBalance == 0) ||
+                                                        (newRow.RCorpID != 0 && oldRow.RCorpID == 0))
+                                                    {
+                                                        oldRow.RBalance = newRow.RBalance;
+                                                        oldRow.RCorpID = newRow.RCorpID;
+                                                        oldRow.RArgID = newRow.RArgID;
+                                                        oldRow.RArgName = newRow.RArgName;
+                                                        oldRow.RWalletID = newRow.RWalletID;
+                                                        updated = true;
+                                                    }
+                                                    if ((newRow.SBalance > 0 && oldRow.SBalance == 0) ||
+                                                        (newRow.SCorpID != 0 && oldRow.SCorpID == 0))
+                                                    {
+                                                        oldRow.SBalance = newRow.SBalance;
+                                                        oldRow.SCorpID = newRow.SCorpID;
+                                                        oldRow.SArgID = newRow.SArgID;
+                                                        oldRow.SArgName = newRow.SArgName;
+                                                        oldRow.SWalletID = newRow.SWalletID;
+                                                        updated = true;
+                                                    }
                                                 }
 
                                                 if (updated)
@@ -2148,7 +2151,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                         // Actually create the line and add it to the data table
                                         SortedList<int, string> nameIDs = new SortedList<int, string>();
                                         EMMADataSet.TransactionsRow newRow = BuildTransRow(transID, transData,
-                                            transEntry, walletID, nameIDs);
+                                            transEntry, walletID, nameIDs, false);
 
                                         transData.AddTransactionsRow(newRow);
                                         retVal++;
@@ -2170,7 +2173,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                         // We've got a transaction that already exists in the database,
                                         // update the row with additional data if available. 
                                         EMMADataSet.TransactionsRow newRow =
-                                            BuildTransRow(transID, transData, transEntry, walletID, nameIDs);
+                                            BuildTransRow(transID, transData, transEntry, walletID, nameIDs, true);
                                         EMMADataSet.TransactionsRow oldRow = transData.FindByID(transID);
                                         bool updateDone = false;
 
@@ -2338,7 +2341,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         //private EMMADataSet.TransactionsRow BuildTransRow(long transID, EMMADataSet.TransactionsDataTable transData,
         //    XmlNode transEntry, SortedList<int, string> nameIDs, short walletID)
         private EMMADataSet.TransactionsRow BuildTransRow(long transID, EMMADataSet.TransactionsDataTable transData,
-            XmlNode transEntry, short walletID, SortedList<int, string> nameIDs)
+            XmlNode transEntry, short walletID, SortedList<int, string> nameIDs, bool rowInDatabase)
         {
             EMMADataSet.TransactionsRow newRow = transData.NewTransactionsRow();
 
@@ -2382,8 +2385,13 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 newRow.SellerWalletID = 0;
                 newRow.SellerUnitProfit = 0;
                 // Update asset quantities.
-                Assets.BuyAssets(forCorp ? _corpID : _charID, forCorp, newRow.StationID, newRow.ItemID,
-                    newRow.Quantity, newRow.Price);
+                if (!rowInDatabase)
+                {
+                    Assets.BuyAssets(forCorp ? _corpID : _charID, _charID, forCorp, newRow.StationID, 
+                        newRow.ItemID, newRow.Quantity, newRow.Price, 
+                        forCorp ? Settings.CorpAssetsEffectiveDate : Settings.CharAssetsEffectiveDate,
+                        newRow.DateTime);
+                }
             }
             else
             {
@@ -2396,7 +2404,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 newRow.SellerCharacterID = forCorp ? _charID : 0;
                 newRow.SellerWalletID = (walletID == 0 ? (short)1000 : walletID);
                 // Calculate transaction profit and update asset quantities.
-                newRow.SellerUnitProfit = Transactions.CalcProfit(_charID, forCorp, transData, newRow);
+                if (!rowInDatabase)
+                {
+                    newRow.SellerUnitProfit = Transactions.CalcProfit(_charID, forCorp, transData, newRow, 
+                        forCorp ? Settings.CorpAssetsEffectiveDate : Settings.CharAssetsEffectiveDate);
+                }
             }
 
             // Get the IDs and associated names in this transaction.

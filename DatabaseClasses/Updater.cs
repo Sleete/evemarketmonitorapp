@@ -6653,7 +6653,68 @@ RETURN";
                     }
                     #endregion
                 }
+                if (dbVersion.CompareTo(new Version("1.5.0.23")) < 0)
+                {
+                    #region Update 'AssetsGetBoughtViaContract' stored procedure
+                    commandText =
+                            @"ALTER PROCEDURE dbo.AssetsGetBoughtViaContract
+	@accessList			varchar(max),
+	@itemID				int
+AS
+	SELECT Assets.*
+	FROM Assets 
+	JOIN CLR_accesslist_split(@accessList) a ON (Assets.OwnerID = a.ownerID AND ((a.includeCorporate = 1 AND Assets.CorpAsset = 1) OR (a.includePersonal = 1 AND Assets.CorpAsset = 0)))
+	WHERE (Assets.BoughtViaContract = 1) AND (Assets.ItemID = @itemID OR @itemID = 0)
+RETURN";
 
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.5.0.23"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem updaing 'AssetsGetBoughtViaContract' stored procedure", ex);
+                    }
+                    #endregion
+                }
+
+                if (dbVersion.CompareTo(new Version("1.5.0.24")) < 0)
+                {
+                    #region Create 'TransGetItemIDsNoLimits' stored procedure
+                    commandText =
+                            @"CREATE PROCEDURE dbo.TransGetItemIDsNoLimits
+	@accessParams		varchar(max)
+AS
+	SELECT ItemID AS [ID]
+	FROM Transactions
+	JOIN CLR_financelist_split(@accessParams) a ON(
+		((Transactions.BuyerID = a.ownerID OR Transactions.BuyerCharacterID = a.ownerID) AND (a.walletID1 = 0 OR (Transactions.BuyerWalletID = a.walletID1 OR Transactions.BuyerWalletID = a.walletID2 OR Transactions.BuyerWalletID = a.walletID3 OR Transactions.BuyerWalletID = a.walletID4 OR Transactions.BuyerWalletID = a.walletID5 OR Transactions.BuyerWalletID = a.walletID6))) OR 
+		((Transactions.SellerID = a.ownerID OR Transactions.SellerCharacterID = a.ownerID) AND (a.walletID1 = 0 OR (Transactions.SellerWalletID = a.walletID1 OR Transactions.SellerWalletID = a.walletID2 OR Transactions.SellerWalletID = a.walletID3 OR Transactions.SellerWalletID = a.walletID4 OR Transactions.SellerWalletID = a.walletID5 OR Transactions.SellerWalletID = a.walletID6))) OR a.ownerID = 0)
+	GROUP BY ItemID
+	RETURN";
+
+                    adapter = new SqlDataAdapter(commandText, connection);
+
+                    try
+                    {
+                        adapter.SelectCommand.ExecuteNonQuery();
+
+                        SetDBVersion(connection, new Version("1.5.0.24"));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new EMMADataException(ExceptionSeverity.Critical,
+                            "Problem creating 'TransGetItemIDsNoLimits' stored procedure", ex);
+                    }
+                    #endregion
+                }
+                
+                
             }
             catch (Exception ex)
             {

@@ -29,7 +29,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="newRow"></param>
         /// <returns></returns>
         public static decimal CalcProfit(int charID, bool corp, EMMADataSet.TransactionsDataTable transData,
-            EMMADataSet.TransactionsRow newRow)
+            EMMADataSet.TransactionsRow newRow, DateTime assetsEffectiveDate)
         {
             decimal retVal = 0;
             EMMADataSet.AssetsDataTable existingAssets = new EMMADataSet.AssetsDataTable();
@@ -39,48 +39,32 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             try
             {
-                // If there are matching assets for the specified character or corp at the 
-                // transaction location then use the cost of those assets to calculate profit. 
-                List<AssetAccessParams> assetAccessParams = new List<AssetAccessParams>();
-                assetAccessParams.Add(new AssetAccessParams(charID, !corp, corp));
-                Assets.GetAssets(existingAssets, assetAccessParams, stationID,
-                    Stations.GetStation(stationID).solarSystemID, newRow.ItemID);
-                if (existingAssets != null)
+                if (assetsEffectiveDate.CompareTo(newRow.DateTime) > 0)
                 {
-                    decimal totalBuyPrice = 0;
-                    long qToFind = newRow.Quantity;
-                    foreach (EMMADataSet.AssetsRow existingAsset in existingAssets)
-                    {
-                        // If possible, use data from assets that are currently for sale via the market.
-                        if (existingAsset.Status == (int)AssetStatus.States.ForSaleViaMarket &&
-                            existingAsset.Quantity > 0)
-                        {
-                            Asset asset = new Asset(existingAsset, null);
-                            long q = Math.Min(qToFind, asset.Quantity);
-                            qToFind -= q;
-                            totalBuyPrice += asset.UnitBuyPrice * q;
+                    // If assets have been updated from the API after this transaction
+                    // occured then the assets are already gone and we cannot work out 
+                    // the profit.
 
-                            // Adjust assets data in accordance with items that were sold.
-                            long deltaQuantity = -1 * q;
-                            // Note, since we're removing assets, the cost and costcalc parameters
-                            // will be ignored.
-                            Assets.ChangeAssets(ownerID, corp, newRow.StationID, newRow.ItemID,
-                                existingAsset.ContainerID, existingAsset.Status, existingAsset.AutoConExclude,
-                                deltaQuantity, 0, false);
-                        }
-                    }
-                    // If we could not find enough assets 'ForSaleViaMarket' to match the 
-                    // sell transaction then look at assets that are in transit or just sat 
-                    // in the hanger.
-                    // (Don't use assets that are containers!)
-                    if (qToFind > 0)
+                    // Note: in future, we could try and work it out from 'AssetsLost'
+                }
+                else
+                {
+
+                    // If there are matching assets for the specified character or corp at the 
+                    // transaction location then use the cost of those assets to calculate profit. 
+                    List<AssetAccessParams> assetAccessParams = new List<AssetAccessParams>();
+                    assetAccessParams.Add(new AssetAccessParams(charID, !corp, corp));
+                    Assets.GetAssets(existingAssets, assetAccessParams, stationID,
+                        Stations.GetStation(stationID).solarSystemID, newRow.ItemID);
+                    if (existingAssets != null)
                     {
+                        decimal totalBuyPrice = 0;
+                        long qToFind = newRow.Quantity;
                         foreach (EMMADataSet.AssetsRow existingAsset in existingAssets)
                         {
-                            if (existingAsset.Status != (int)AssetStatus.States.ForSaleViaMarket &&
-                                existingAsset.Status != (int)AssetStatus.States.ForSaleViaContract &&
-                                existingAsset.Quantity > 0 &&
-                                !existingAsset.IsContainer)
+                            // If possible, use data from assets that are currently for sale via the market.
+                            if (existingAsset.Status == (int)AssetStatus.States.ForSaleViaMarket &&
+                                existingAsset.Quantity > 0)
                             {
                                 Asset asset = new Asset(existingAsset, null);
                                 long q = Math.Min(qToFind, asset.Quantity);
@@ -96,30 +80,58 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                     deltaQuantity, 0, false);
                             }
                         }
-                    }
-                    if (qToFind < newRow.Quantity)
-                    {
-                        decimal unitBuyPrice = totalBuyPrice / (newRow.Quantity - qToFind);
-                        retVal = newRow.Price - unitBuyPrice;
-                    }
-                    if (qToFind > 0)
-                    {
-                        // If any of the transaction quantity could not be accounted for then simply send
-                        // the 'normal' asset stack at this location to a negative quantity.
-                        Assets.ChangeAssets(ownerID, corp, newRow.StationID, newRow.ItemID,
-                             0, (int)AssetStatus.States.Normal, false, qToFind * -1, 0, false);
-                    }
-                }
-                else
-                {
-                    // If there are no assets at the station where the sell took place then flag
-                    // the transaction to have it's profit calculated when the next assets 
-                    // update is performed.
-                    // Also, set the quantity of assets at this location negative.
-                    newRow.CalcProfitFromAssets = true;
+                        // If we could not find enough assets 'ForSaleViaMarket' to match the 
+                        // sell transaction then look at assets that are in transit or just sat 
+                        // in the hanger.
+                        // (Don't use assets that are containers!)
+                        if (qToFind > 0)
+                        {
+                            foreach (EMMADataSet.AssetsRow existingAsset in existingAssets)
+                            {
+                                if (existingAsset.Status != (int)AssetStatus.States.ForSaleViaMarket &&
+                                    existingAsset.Status != (int)AssetStatus.States.ForSaleViaContract &&
+                                    existingAsset.Quantity > 0 &&
+                                    !existingAsset.IsContainer)
+                                {
+                                    Asset asset = new Asset(existingAsset, null);
+                                    long q = Math.Min(qToFind, asset.Quantity);
+                                    qToFind -= q;
+                                    totalBuyPrice += asset.UnitBuyPrice * q;
 
-                    Assets.ChangeAssets(ownerID, corp, newRow.StationID, newRow.ItemID, 0,
-                        (int)AssetStatus.States.Normal, false, newRow.Quantity * -1, 0, false);
+                                    // Adjust assets data in accordance with items that were sold.
+                                    long deltaQuantity = -1 * q;
+                                    // Note, since we're removing assets, the cost and costcalc parameters
+                                    // will be ignored.
+                                    Assets.ChangeAssets(ownerID, corp, newRow.StationID, newRow.ItemID,
+                                        existingAsset.ContainerID, existingAsset.Status, existingAsset.AutoConExclude,
+                                        deltaQuantity, 0, false);
+                                }
+                            }
+                        }
+                        if (qToFind < newRow.Quantity)
+                        {
+                            decimal unitBuyPrice = totalBuyPrice / (newRow.Quantity - qToFind);
+                            retVal = newRow.Price - unitBuyPrice;
+                        }
+                        if (qToFind > 0)
+                        {
+                            // If any of the transaction quantity could not be accounted for then simply send
+                            // the 'normal' asset stack at this location to a negative quantity.
+                            Assets.ChangeAssets(ownerID, corp, newRow.StationID, newRow.ItemID,
+                                 0, (int)AssetStatus.States.Normal, false, qToFind * -1, 0, false);
+                        }
+                    }
+                    else
+                    {
+                        // If there are no assets at the station where the sell took place then flag
+                        // the transaction to have it's profit calculated when the next assets 
+                        // update is performed.
+                        // Also, set the quantity of assets at this location negative.
+                        newRow.CalcProfitFromAssets = true;
+
+                        Assets.ChangeAssets(ownerID, corp, newRow.StationID, newRow.ItemID, 0,
+                            (int)AssetStatus.States.Normal, false, newRow.Quantity * -1, 0, false);
+                    }
                 }
             }
             catch (Exception ex)
@@ -873,8 +885,22 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public static EMMADataSet.IDTableDataTable GetInvolvedItemIDs(List<FinanceAccessParams> accessParams, 
             int minVolume)
         {
-            return GetInvolvedItemIDs(accessParams, minVolume, SqlDateTime.MinValue.Value,
-                SqlDateTime.MaxValue.Value);
+            if (minVolume == 0)
+            {
+                // If we can, use a simpler query, it'll be faster.
+                EMMADataSet.IDTableDataTable table = new EMMADataSet.IDTableDataTable();
+                lock (tableAdapter)
+                {
+                    IDTableAdapter.FillItemIDsByTransNoLimits(table, 
+                        FinanceAccessParams.BuildAccessList(accessParams));
+                }
+                return table;
+            }
+            else
+            {
+                return GetInvolvedItemIDs(accessParams, minVolume, SqlDateTime.MinValue.Value,
+                    SqlDateTime.MaxValue.Value);
+            }
         }
 
         /// <summary>
@@ -982,7 +1008,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             return retVal;
         }
-
+        
 
         /// <summary>
         /// Get a datatable containing the IDs of stations that are involved in transactions that meet

@@ -85,7 +85,7 @@ namespace EveMarketMonitorApp.GUIElements
                 AcknowledgeColumn.Image = icons.Images["tick.gif"];
                 ordersGrid.CellContentClick += new DataGridViewCellEventHandler(ordersGrid_CellContentClick);
 
-                ordersGrid.Sort(DateTimeColmun, ListSortDirection.Ascending);
+                //ordersGrid.Sort(DateTimeColmun, ListSortDirection.Ascending);
 
                 UserAccount.Settings.GetColumnWidths(this.Name, ordersGrid);
 

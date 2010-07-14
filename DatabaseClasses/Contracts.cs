@@ -227,6 +227,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 // We use GetContractItems rather than the items collection on the contract object because
                 // we want the original items on the contract... not whatever is in memory right now.
+                // (I.e. when reversing a contract, we need to pickup the original items on the contract
+                // not whatever it has in memory right now as that may have been altered by the user)
                 ContractItemList items;
                 if (useItemsInMemory) { items = contract.Items; }
                 else { items = GetContractItems(contract); }
@@ -245,66 +247,76 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
             else if (contract.Type == ContractType.ItemExchange)
             {
-                ContractItemList items = GetContractItems(contract);
-                bool corp = false;
-                UserAccount.CurrentGroup.GetCharacter(contract.OwnerID, ref corp);
+                ContractItemList items = null;
+                if (useItemsInMemory) { items = contract.Items; }
+                else { items = GetContractItems(contract); }
+
+                // For sold items, we want to find assets with status 'ForSaleViaContract'.
+                // For purchased items, we want to find assets marked with the BoughtViaContract flag.
+
+                bool buy = false;
+                bool corporate = false;
+                bool updateAssets = false;
+                APICharacter character = UserAccount.CurrentGroup.GetCharacter(contract.OwnerID, ref corporate);
+                // Note, since item exchange contracts were really shoe-horned into the older courier
+                // contract system, if the contract has collateral > 0 it's a sell contract, otherwise
+                // it's a buy contract... (yeah, it's shit, I should really sort it out, in fact the
+                // whole contracts sub system needs modifying and refactoring... much like everything 
+                // else then.)
+                if (contract.Collateral < 0)
+                {
+                    buy = true;
+                }
+                DateTime assetsEffectiveDate = corporate ? character.Settings.CorpAssetsEffectiveDate :
+                    character.Settings.CharAssetsEffectiveDate;
+                // We only need to worry about updating assets if the last assets update was
+                // before the date of the contract (note 'IssueDate' = item exchange completed date)
+                // We also don't want to move the assets if we're not reversing.
+                // In that case, this will already have been done by 'UpdateExchangeAssets'.
+                if (assetsEffectiveDate.CompareTo(contract.IssueDate) < 0) { updateAssets = reverse; }
 
                 foreach (ContractItem item in items)
                 {
-                    long assetID = 0;
                     if (reverse)
                     {
-                        // Don't do anything to assets when reversing the contract, 
-                        // asset tracking is handled elsewhere.
-
-                        // Only remove the item from the assets 'ForSaleViaContract' stack if there is actually 
-                        // an item there to remove.
-                        //EMMADataSet.AssetsDataTable assets = new EMMADataSet.AssetsDataTable();
-                        //if (Assets.AssetExists(assets, contract.OwnerID, corp,
-                        //    contract.PickupStationID, item.ItemID, (int)AssetStatus.States.ForSaleViaContract,
-                        //    false, 0, false, false, true, true, true, 0, ref assetID))
-                        //{
-                        //    EMMADataSet.AssetsRow asset = assets.FindByID(assetID);
-                        //    if (asset.Quantity > 0)
-                        //    {
-                        //        Assets.ChangeAssets(contract.OwnerID, corp, contract.PickupStationID, item.ItemID,
-                        //            0, (int)AssetStatus.States.ForSaleViaContract, false,
-                        //            -1 * item.Quantity, 0, false);
-                        //    }
-                        //}
+                        if (updateAssets)
+                        {
+                            // If this is a sell contract then try and find the asset that we are selling.
+                            // we can use this to set the profit value.
+                            if (!buy)
+                            {
+                                // Reversing a sell contract...
+                                // First put the asset back into the database.
+                                Assets.ChangeAssets(contract.OwnerID, corporate,
+                                    contract.PickupStationID, item.ItemID,
+                                    0, (int)AssetStatus.States.Normal, false,
+                                    item.Quantity, item.BuyPrice, true);
+                            }
+                            else
+                            {
+                                // Reversing a buy contract...
+                                Assets.ChangeAssets(contract.OwnerID, corporate,
+                                    contract.PickupStationID, item.ItemID,
+                                    0, (int)AssetStatus.States.Normal, false,
+                                    -1 * item.Quantity, 0, false);
+                            }
+                        }
+                        // We also need to remove the transaction record that was created.
+                        Transactions.DeleteTransaction(item.TransactionID);
                     }
                     else
                     {
-                        // For sold items, we want to find assets with status 'ForSaleViaContract'.
-                        // For purchased items, we want to find assets marked with the BoughtViaContract flag.
-
-                        // Note, since item exchange contracts were really shoe-horned into the older courier
-                        // contract system, if the contract has collateral > 0 it's a sell contract, otherwise
-                        // it's a buy contract... (yeah, it's shit, I should really sort it out)
-                        if(contract.Collateral > 0)
-                        {
-                            List<AssetAccessParams> access = new List<AssetAccessParams>();
-                            bool corporate = false;
-                            APICharacter character = UserAccount.CurrentGroup.GetCharacter(contract.OwnerID, ref corporate);
-                            access.Add(new AssetAccessParams(character.CharID, !corporate, corporate));
-                            EveDataSet.staStationsRow station = Stations.GetStation(contract.PickupStationID);
-                            AssetList assets = Assets.LoadAssets(access, new List<int>(), item.ItemID, 
-                                station.stationID, station.solarSystemID, false, 
-                                (int)AssetStatus.States.ForSaleViaContract, true);
-
-                            foreach (Asset a in assets)
-                            {
-                                // We've found assets with a status of ForSaleViaContract.
-                                // This means that they were picked up as missing by EMMA and were marked 
-                                // by the user as being for sale in a contract rather than actually missing.
-                                // We can now remove them.
-                            }
-
-                        }
-                        else
-                        {
-
-                        }
+                        // Note that assets have already been moved in 'UpdateExchangeAssets'
+                        decimal profit = 0;
+                        if (!buy) { profit = item.SellPrice - item.BuyPrice; }
+                        // Create the transaction record.
+                        long transID = 0;
+                        Transactions.NewTransaction(contract.IssueDate, item.Quantity, item.ItemID,
+                            Math.Abs(item.SellPrice), buy ? contract.OwnerID : 0, buy ? 0 : contract.OwnerID,
+                            corporate && buy ? character.CharID : 0, corporate && !buy ? character.CharID : 0,
+                            contract.PickupStationID, Stations.GetStation(contract.PickupStationID).regionID,
+                            buy && corporate, !buy && corporate, 1000, 1000, profit, false, ref transID);
+                        item.TransactionID = transID;
                     }
                 }
             }
@@ -332,7 +344,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 if (contract.Type == ContractType.ItemExchange)
                 {
-                    CreateTransactions(contract);
+                    UpdateExchangeAssets(contract);
+                    // This is now done within 'MoveContractItems'
+                    // CreateTransactions(contract);
                 }
 
                 foreach (ContractItem item in contract.Items)
@@ -346,18 +360,197 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        static public void CreateTransactions(Contract contract)
+        static public void UpdateExchangeAssets(Contract contract)
         {
+            bool buy = false;
+            if (contract.Collateral < 0)
+            {
+                buy = true;
+            }
+
+            bool corporate = false;
+            bool updateAssets = false;
+            APICharacter character = UserAccount.CurrentGroup.GetCharacter(contract.OwnerID, ref corporate);
+            DateTime assetsEffectiveDate = corporate ? character.Settings.CorpAssetsEffectiveDate :
+                character.Settings.CharAssetsEffectiveDate;
+            // We only need to worry about updating assets if the last assets update was
+            // before the date of the contract (note 'IssueDate' = item exchange completed date)
+            if (assetsEffectiveDate.CompareTo(contract.IssueDate) < 0) { updateAssets = true; }
+
+
             foreach (ContractItem item in contract.Items)
             {
-                long transID = 0;
-                Transactions.NewTransaction(contract.IssueDate, item.Quantity, item.ItemID, Math.Abs(item.SellPrice),
-                    contract.Collateral > 0 ? 0 : contract.OwnerID, contract.Collateral < 0 ? 0 : contract.OwnerID,
-                    0, 0, contract.PickupStationID, Stations.GetStation(contract.PickupStationID).regionID, 
-                    false, false, 1000, 1000, item.Profit / item.Quantity, false, ref transID);
-                item.TransactionID = transID;
+                if (!buy)
+                {
+                    long qToFind = item.Quantity;
+                    decimal itemBuyPrice = 0;
+
+                    // Look for assets that are marked as 'for sale via contract'
+                    AssetList assets = Assets.LoadAssets(
+                        UserAccount.CurrentGroup.GetAssetAccessParams(APIDataType.Assets),
+                        new List<int>(), item.ItemID, 0, 0, false,
+                        (int)AssetStatus.States.ForSaleViaContract, true);
+
+                    LookForAssetMatch(contract, updateAssets, ref qToFind, ref itemBuyPrice,
+                        assets, false);
+                    if (qToFind > 0)
+                    {
+                        LookForAssetMatch(contract, updateAssets, ref qToFind, ref itemBuyPrice,
+                            assets, true);
+                    }
+
+                    if (qToFind > 0)
+                    {
+                        // Can't find any/enough assets 'for sale via contract' so check normal
+                        // assets
+                        assets = Assets.LoadAssets(
+                            UserAccount.CurrentGroup.GetAssetAccessParams(APIDataType.Assets),
+                            new List<int>(), item.ItemID, 0, 0, false,
+                            (int)AssetStatus.States.Normal, true);
+
+                        LookForAssetMatch(contract, updateAssets, ref qToFind, ref itemBuyPrice,
+                            assets, false);
+                        if (qToFind > 0)
+                        {
+                            LookForAssetMatch(contract, updateAssets, ref qToFind, ref itemBuyPrice,
+                               assets, false);
+                        }
+                    }
+
+                    long qFound = (item.Quantity - qToFind);
+                    item.BuyPrice = (qFound > 0 ? (itemBuyPrice / qFound) : 0);
+                }
+                else
+                {
+                    // buy contract, first look for assets that are marked as 'bought via contract'
+                    // If there are none then just add the asset directly.
+                    long qToFind = item.Quantity;
+                    bool updates = false;
+                    EMMADataSet.AssetsDataTable assetData = new EMMADataSet.AssetsDataTable();
+                    Assets.GetAssetsBoughtViaContract(assetData,
+                        UserAccount.CurrentGroup.GetAssetAccessParams(APIDataType.Assets), item.ItemID);
+
+                    foreach (EMMADataSet.AssetsRow asset in assetData)
+                    {
+                        if (qToFind > 0 && contract.OwnerID == asset.OwnerID)
+                        {
+                            long deltaQ = Math.Min(asset.Quantity, qToFind);
+                            asset.Cost = item.SellPrice;
+                            asset.CostCalc = true;
+                            asset.BoughtViaContract = false;
+                            updates = true;
+                            // Note, we don't update asset quantities because the asset is 
+                            // clearly already there. (We found it by searching the database)
+                            qToFind -= deltaQ;
+                        }
+                    }
+                    if (qToFind > 0)
+                    {
+                        // We havn't found enough assets to match the contract.
+                        // Check assets 'bought via contract' for all corps/chars in the report group
+                        foreach (EMMADataSet.AssetsRow asset in assetData)
+                        {
+                            if (qToFind > 0)
+                            {
+                                long deltaQ = Math.Min(asset.Quantity, qToFind);
+                                asset.Cost = item.SellPrice;
+                                asset.CostCalc = true;
+                                asset.BoughtViaContract = false;
+                                updates = true;
+                                qToFind -= deltaQ;
+                            }
+                        }
+                    }
+                    if (qToFind > 0)
+                    {
+                        // Still havn't managed to match everything. If we're updating assets 
+                        // (contract date later than asset effective date) then just create
+                        // the new asset records directly.
+                        // If we're not updating assets then look for an asset of the same type
+                        // that does not have it's cost calculated and set that.
+                        if (updateAssets)
+                        {
+                            Assets.ChangeAssets(contract.OwnerID, corporate, contract.PickupStationID,
+                                item.ItemID, 0, (int)AssetStatus.States.Normal, false, qToFind,
+                                -1 * item.SellPrice, true);
+                        }
+                        else
+                        {
+                            // Try to find existing assets that are the same type and do not have
+                            // a calculated cost.
+                            AssetList assets = Assets.LoadAssets(
+                                UserAccount.CurrentGroup.GetAssetAccessParams(APIDataType.Assets),
+                                new List<int>(), item.ItemID, 0, 0, false,
+                                (int)AssetStatus.States.Normal, true);
+                            foreach (Asset asset in assets)
+                            {
+                                if (qToFind > 0 && contract.OwnerID == asset.OwnerID && 
+                                    (asset.UnitBuyPrice == 0 || !asset.UnitBuyPricePrecalculated))
+                                {
+                                    long deltaQ = Math.Min(asset.Quantity, qToFind);
+                                    Assets.AddAssetToTable(assetData, asset.ID);
+                                    EMMADataSet.AssetsRow assetRow = assetData.FindByID(asset.ID);
+                                    assetRow.Cost = item.SellPrice;
+                                    assetRow.CostCalc = true;
+                                    updates = true;
+                                    qToFind -= deltaQ;
+                                }
+                            }
+                            if (qToFind > 0)
+                            {
+                                foreach (Asset asset in assets)
+                                {
+                                    if (qToFind > 0 && 
+                                        (asset.UnitBuyPrice == 0 || !asset.UnitBuyPricePrecalculated))
+                                    {
+                                        long deltaQ = Math.Min(asset.Quantity, qToFind);
+                                        Assets.AddAssetToTable(assetData, asset.ID);
+                                        EMMADataSet.AssetsRow assetRow = assetData.FindByID(asset.ID);
+                                        assetRow.Cost = item.SellPrice;
+                                        assetRow.CostCalc = true;
+                                        updates = true;
+                                        qToFind -= deltaQ;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (updates) { Assets.UpdateDatabase(assetData); }
+
+                }
+
+
             }
         }
+
+        private static void LookForAssetMatch(Contract contract, bool updateAssets, ref long qToFind,
+            ref decimal itemBuyPrice, AssetList assets, bool ignoreOwner)
+        {
+            foreach (Asset a in assets)
+            {
+                if (ignoreOwner || a.OwnerID == contract.OwnerID)
+                {
+                    if (qToFind > 0)
+                    {
+                        long deltaQ = Math.Min(qToFind, a.Quantity);
+                        itemBuyPrice += a.UnitBuyPrice * deltaQ;
+                        qToFind -= deltaQ;
+                        a.Quantity -= deltaQ;
+
+                        // Update the database with changes to the asset row.
+                        if (updateAssets)
+                        {
+                            EMMADataSet.AssetsRow data = Assets.GetAssetDetail(a.ID);
+                            data.Quantity -= deltaQ;
+                            if (data.Quantity == 0) { data.Delete(); }
+                            Assets.UpdateDatabase(data);
+                        }
+                    }
+                }
+            }
+        }
+    
 
 /*
         static public EMMADataSet.ContractsRow GetContract(int contractID)

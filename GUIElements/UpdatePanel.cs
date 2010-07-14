@@ -490,10 +490,10 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 // If we're updating assets and order or transaction updates are pending then do those first.
                 if (dataType == APIDataType.Assets &&
-                    ((_character.GetAPIAutoUpdate(corc, APIDataType.Orders) && 
-                    (lblOrders.Text.Equals("Overdue") || lblOrders.Text.Equals("Queued"))) ||
-                    (_character.GetAPIAutoUpdate(corc, APIDataType.Transactions) && 
-                    (lblTransactions.Text.Equals("Overdue") || lblTransactions.Text.Equals("Queued")))))
+                    ((_character.GetAPIAutoUpdate(corc, APIDataType.Orders) &&
+                    (lblOrdersStatus.Text.Equals("Overdue") || lblOrdersStatus.Text.Equals("Queued"))) ||
+                    (_character.GetAPIAutoUpdate(corc, APIDataType.Transactions) &&
+                    (lblTransStatus.Text.Equals("Overdue") || lblTransStatus.Text.Equals("Queued")))))
                 {
                 }
                 else

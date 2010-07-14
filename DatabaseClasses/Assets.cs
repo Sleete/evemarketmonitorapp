@@ -508,6 +508,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     changedAsset.RegionID = sellOrder.RegionID;
                     changedAsset.ReprocExclude = true;
                     changedAsset.SystemID = sellOrder.SystemID;
+                    changedAsset.BoughtViaContract = false;
                     changedAsset.Status = (int)AssetStatus.States.ForSaleViaMarket;
 
                     assetData.AddAssetsRow(changedAsset);
@@ -947,7 +948,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             AssetList retVal = new AssetList();
             EMMADataSet.AssetsDataTable table = new EMMADataSet.AssetsDataTable();
             string regionString = "";
-            if (regionIDs.Count == 0) { regionIDs.Add(0); }
+            // Do not do this, just pass in an empty list and it'll match all regions.
+            //if (regionIDs.Count == 0) { regionIDs.Add(0); }
             foreach (int region in regionIDs)
             {
                 regionString = regionString + (regionString.Length == 0 ? "" : ",") + region;
@@ -1263,17 +1265,18 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="status"></param>
         /// <param name="autoConExclude"></param>
         /// <param name="deltaQuatnity"></param>
-        static public void BuyAssets(int ownerID, bool corpAsset, int stationID, int itemID,
-            long deltaQuantity, decimal addedItemsCost)
+        static public void BuyAssets(int ownerID, int charID, bool corpAsset, int stationID, int itemID,
+            long deltaQuantity, decimal addedItemsCost, DateTime assetsEffectiveDate, 
+            DateTime transactionDate)
         {
             int systemID = 0, regionID = 0;
 
-                EveDataSet.staStationsRow station = Stations.GetStation(stationID);
-                if (station != null)
-                {
-                    systemID = station.solarSystemID;
-                    regionID = station.regionID;
-                }
+            EveDataSet.staStationsRow station = Stations.GetStation(stationID);
+            if (station != null)
+            {
+                systemID = station.solarSystemID;
+                regionID = station.regionID;
+            }
 
             // The situation described in the comments below should never arrise, just ignore it.
 
@@ -1303,12 +1306,53 @@ namespace EveMarketMonitorApp.DatabaseClasses
             //}
             //else
             //{
+            //    lock (assetsTableAdapter)
+            //    {
+            //        assetsTableAdapter.AddQuantity(ownerID, corpAsset, itemID, stationID, systemID,
+            //            regionID, (int)AssetStatus.States.Normal, 0, false, deltaQuantity, addedItemsCost, true);
+            //    }
+            //}
+
+            if (assetsEffectiveDate.CompareTo(transactionDate) < 0)
+            {
+                // If the transaction occured after the last assets update effetive date then
+                // just add the asset to the database.
                 lock (assetsTableAdapter)
                 {
                     assetsTableAdapter.AddQuantity(ownerID, corpAsset, itemID, stationID, systemID,
                         regionID, (int)AssetStatus.States.Normal, 0, false, deltaQuantity, addedItemsCost, true);
                 }
-            //}
+            }
+            else
+            {
+                // NOTE: Ideally, this shouldn't happen but it's here just in case.
+
+                // If the transaction occured before the last assets update effetive date then
+                // it must already be in the database.
+                // Try and find it to set it's cost.
+                long qToFind = deltaQuantity;
+                bool updates = false;
+                EMMADataSet.AssetsDataTable assetData = new EMMADataSet.AssetsDataTable();
+                List<AssetAccessParams> accessParams = new List<AssetAccessParams>();
+                accessParams.Add(new AssetAccessParams(charID, !corpAsset, corpAsset));
+                AssetList assets = Assets.LoadAssets(accessParams, new List<int>(), itemID, 
+                    0, 0, false, (int)AssetStatus.States.Normal, true);
+                foreach (Asset asset in assets)
+                {
+                    if (qToFind > 0 && (asset.UnitBuyPrice == 0 || !asset.UnitBuyPricePrecalculated))
+                    {
+                        long deltaQ = Math.Min(asset.Quantity, qToFind);
+                        Assets.AddAssetToTable(assetData, asset.ID);
+                        EMMADataSet.AssetsRow assetRow = assetData.FindByID(asset.ID);
+                        assetRow.Cost = addedItemsCost;
+                        assetRow.CostCalc = true;
+                        updates = true;
+                        qToFind -= deltaQ;
+                    }
+                }
+                if (updates) { Assets.UpdateDatabase(assetData); }
+            }
+
         }
 
 
@@ -1457,6 +1501,16 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 assetsTableAdapter.FillByProcessed(table, AssetAccessParams.BuildAccessList(accessParams), 
                     systemID, locationID, itemID, status, processed);
+            }
+        }
+
+        static public void GetAssetsBoughtViaContract(EMMADataSet.AssetsDataTable table,
+            List<AssetAccessParams> accessParams, int itemID)
+        {
+            lock (assetsTableAdapter)
+            {
+                assetsTableAdapter.FillByBoughtViaContract(table, 
+                    AssetAccessParams.BuildAccessList(accessParams), itemID);
             }
         }
 
