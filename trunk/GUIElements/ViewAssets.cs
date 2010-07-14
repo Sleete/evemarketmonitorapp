@@ -30,7 +30,8 @@ namespace EveMarketMonitorApp.GUIElements
         private DataGridViewRow _clickedRow;
         private DataGridViewCell _clickedCell;
 
-        private DataGridViewCellStyle inTransitStyle;
+        //private DataGridViewCellStyle _inTransitStyle;
+        //private DataGridViewCellStyle _regularStyle;
 
         public ViewAssets()
         {
@@ -73,8 +74,9 @@ namespace EveMarketMonitorApp.GUIElements
                 ReprocessorExcludeColumn.DataPropertyName = "ReprocessorExclude";
                 StatusColumn.DataPropertyName = "Status";
                 CostColumn.DataPropertyName = "UnitBuyPrice";
-                inTransitStyle = OwnerColumn.DefaultCellStyle.Clone();
-                inTransitStyle.BackColor = Color.Yellow;
+                //_regularStyle = OwnerColumn.DefaultCellStyle.Clone();
+                //_inTransitStyle = OwnerColumn.DefaultCellStyle.Clone();
+                //_inTransitStyle.BackColor = Color.Yellow;
 
                 UserAccount.Settings.GetColumnWidths(this.Name, AssetsGrid);
 
@@ -390,11 +392,15 @@ namespace EveMarketMonitorApp.GUIElements
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
-                string status = (string)AssetsGrid["StatusColumn", e.RowIndex].Value;
-                if (status.Equals("In Transit"))
-                {
-                    AssetsGrid.Rows[e.RowIndex].DefaultCellStyle = inTransitStyle;
-                }
+                //string status = (string)AssetsGrid["StatusColumn", e.RowIndex].Value;
+                //if (status.Equals("In Transit"))
+                //{
+                //    AssetsGrid.Rows[e.RowIndex].DefaultCellStyle = _inTransitStyle;
+                //}
+                //else
+                //{
+                //    AssetsGrid.Rows[e.RowIndex].DefaultCellStyle = _regularStyle;
+                //}
 
                 if (AssetsGrid.Columns[e.ColumnIndex].Name.Equals("CostColumn"))
                 {

@@ -225,7 +225,7 @@ namespace EveMarketMonitorApp.GUIElements
             foreach (DataGridViewCell cell in grid.SelectedCells)
             {
                 // Only interested in isk values, ignore anything else.
-                if (cell.FormattedValue.ToString().ToUpper().Contains("ISK"))
+                if (cell.FormattedValue.ToString().ToUpper().Contains(" ISK"))
                 {
                     try
                     {
