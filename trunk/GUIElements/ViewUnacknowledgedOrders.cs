@@ -86,6 +86,9 @@ namespace EveMarketMonitorApp.GUIElements
                 ordersGrid.CellContentClick += new DataGridViewCellEventHandler(ordersGrid_CellContentClick);
 
                 //ordersGrid.Sort(DateTimeColmun, ListSortDirection.Ascending);
+                List<SortInfo> sort = new List<SortInfo>();
+                sort.Add(new SortInfo(0, "Date"));
+                ordersGrid.GridSortInfo = sort;
 
                 UserAccount.Settings.GetColumnWidths(this.Name, ordersGrid);
 

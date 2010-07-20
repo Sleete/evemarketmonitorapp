@@ -50,9 +50,11 @@ namespace EveMarketMonitorApp.GUIElements
         public Main(bool checkForUpdates)
         {
             Diagnostics.StartTimer("TotalStartupTimer");
+            Diagnostics.StartTimer("DisplaySplash");
             splash = new SplashScreen(this);
             Thread t0 = new Thread(ShowSplash);
             t0.Start();
+            Diagnostics.StopTimer("DisplaySplash");
 
             Diagnostics.StartTimer("InitGUI");
             InitializeComponent();
@@ -88,8 +90,10 @@ namespace EveMarketMonitorApp.GUIElements
                 UpdateStatus(0, 0, "Checking Prerequesits", "", false);
                 if (Prerequs())
                 {
+                    Diagnostics.StartTimer("PingChecks");
                     UpdateStatus(0, 0, "Checking remote servers", "", false);
                     PingServers();
+                    Diagnostics.StopTimer("PingChecks");
                     Diagnostics.StartTimer("Updates");
                     // Update settings and user database if needed.
                     UpdateStatus(0, 0, "Initalising database", "", false);
@@ -108,15 +112,23 @@ namespace EveMarketMonitorApp.GUIElements
                     checkForUpdates = checkForUpdates && EveMarketMonitorApp.Properties.Settings.Default.AutoUpdate; 
                     if (checkForUpdates)
                     {
-                        UpdateStatus(0, 0, "Checking for updates", "", false);
-                        // Check for updates to EMMA components
-                        AutoUpdate();
+                        DateTime lastCheck = Properties.Settings.Default.LastEMMAUpdateCheck;
+                        if (lastCheck.AddDays(2).CompareTo(DateTime.UtcNow) < 0)
+                        {
+                            UpdateStatus(0, 0, "Checking for updates", "", false);
+                            // Check for updates to EMMA components
+                            AutoUpdate();
+                            Properties.Settings.Default.LastEMMAUpdateCheck = DateTime.UtcNow;
+                            Properties.Settings.Default.Save();
+                        }
                     }
                     Diagnostics.StopTimer("Updates");
+                    Diagnostics.StartTimer("MapInit");
                     // Pre-load map data.
                     Map.InitaliseData();
                     UpdateStatus(0, 0, "Getting latest outpost data", "", false);
                     EveAPI.UpdateOutpostData();
+                    Diagnostics.StopTimer("MapInit");
                     Diagnostics.StartTimer("AutoLogin");
                     // Log user in if they have auto login turned on
                     AutoLogin();
@@ -142,6 +154,7 @@ namespace EveMarketMonitorApp.GUIElements
             }
             finally
             {
+                Diagnostics.StartTimer("LoadMainForm");
                 UpdateStatus(0, 0, "Done", "", true);
                 splash = null;
             }
@@ -156,6 +169,7 @@ namespace EveMarketMonitorApp.GUIElements
         {
             try
             {
+                Diagnostics.StopTimer("LoadMainForm");
                 this.Size = EveMarketMonitorApp.Properties.Settings.Default.WindowSize;
 
                 Diagnostics.StartTimer("Init");
@@ -181,7 +195,12 @@ namespace EveMarketMonitorApp.GUIElements
                     UserAccount.CurrentGroup = null;
                     Diagnostics.StopTimer("TotalStartupTimer");
                     Diagnostics.DisplayDiag("Total Startup Time: " + Diagnostics.GetRunningTime("TotalStartupTimer") +
+                        "\r\n  Display Splashscreen: " + Diagnostics.GetRunningTime("DisplaySplash") +
                         "\r\n  Environment Setup: " + Diagnostics.GetRunningTime("Environment") +
+                        "\r\n  Ping Checks: " + Diagnostics.GetRunningTime("PingChecks") +
+                        "\r\n  EMMA Update Check: " + Diagnostics.GetRunningTime("Updates") +
+                        "\r\n  Map Init: " + Diagnostics.GetRunningTime("MapInit") +
+                        "\r\n  Load Main Form: " + Diagnostics.GetRunningTime("LoadMainForm") +
                         "\r\n  Global Init: " + Diagnostics.GetRunningTime("Init"));
                     if (Login())
                     {
@@ -199,14 +218,19 @@ namespace EveMarketMonitorApp.GUIElements
 
                     Diagnostics.StopTimer("TotalStartupTimer");
                     Diagnostics.DisplayDiag("Total Startup Time: " + Diagnostics.GetRunningTime("TotalStartupTimer") +
+                        "\r\n  Display Splashscreen: " + Diagnostics.GetRunningTime("DisplaySplash") +
                         "\r\n  Init GUI: " + Diagnostics.GetRunningTime("InitGUI") +
                         "\r\n  Environment Setup: " + Diagnostics.GetRunningTime("Environment") +
+                        "\r\n  Ping Checks: " + Diagnostics.GetRunningTime("PingChecks") +
+                        "\r\n  EMMA Update Check: " + Diagnostics.GetRunningTime("Updates") +
+                        "\r\n  Map Init: " + Diagnostics.GetRunningTime("MapInit") +
                         "\r\n  Auto Login: " + Diagnostics.GetRunningTime("AutoLogin") +
                         "\r\n    Open Account: " + Diagnostics.GetRunningTime("OpenAccount") +
                         "\r\n      Load User Account: " + Diagnostics.GetRunningTime("OpenAccount.LoadAccount") +
                         "\r\n      Load Report Groups: " + Diagnostics.GetRunningTime("OpenAccount.GetGroups") +
                         "\r\n      Load Eve Accounts: " + Diagnostics.GetRunningTime("RptGrp.LoadEveAccounts") +
                         "\r\n      Init User Settings: " + Diagnostics.GetRunningTime("OpenAccount.InitSettings") +
+                        "\r\n  Load Main Form: " + Diagnostics.GetRunningTime("LoadMainForm") +
                         "\r\n  Global Init: " + Diagnostics.GetRunningTime("Init") +
                         "\r\n  Refresh Display: " + Diagnostics.GetRunningTime("RefreshDisplay"));
                 }

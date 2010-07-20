@@ -73,7 +73,7 @@ namespace EveMarketMonitorApp.GUIElements
                 AutoConExcludeColumn.DataPropertyName = "AutoConExclude";
                 ReprocessorExcludeColumn.DataPropertyName = "ReprocessorExclude";
                 StatusColumn.DataPropertyName = "Status";
-                CostColumn.DataPropertyName = "UnitBuyPrice";
+                CostColumn.DataPropertyName = UserAccount.Settings.CalcCostInAssetView ? "UnitBuyPrice" : "PureUnitBuyPrice";
                 //_regularStyle = OwnerColumn.DefaultCellStyle.Clone();
                 //_inTransitStyle = OwnerColumn.DefaultCellStyle.Clone();
                 //_inTransitStyle.BackColor = Color.Yellow;
@@ -113,6 +113,8 @@ namespace EveMarketMonitorApp.GUIElements
                 cmbOwner.SelectedIndexChanged += new EventHandler(cmbOwner_SelectedIndexChanged);
                 chkIngoreOwner.Checked = true;
                 chkIngoreOwner.CheckedChanged += new EventHandler(chkIngoreOwner_CheckedChanged);
+                chkCalcCost.Checked = UserAccount.Settings.CalcCostInAssetView;
+                chkCalcCost.CheckedChanged += new EventHandler(chkCalcCost_CheckedChanged);
                 Diagnostics.StopTimer("ViewAssets.Part2");
 
                 Diagnostics.StartTimer("ViewAssets.Part3");
@@ -145,6 +147,12 @@ namespace EveMarketMonitorApp.GUIElements
                     " for details.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+        }
+
+        void chkCalcCost_CheckedChanged(object sender, EventArgs e)
+        {
+            UserAccount.Settings.CalcCostInAssetView = chkCalcCost.Checked;
+            CostColumn.DataPropertyName = UserAccount.Settings.CalcCostInAssetView ? "UnitBuyPrice" : "PureUnitBuyPrice";
         }
 
 
@@ -254,7 +262,7 @@ namespace EveMarketMonitorApp.GUIElements
 
         void cmbItem_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Return)
+            if (e.KeyCode == Keys.Return || e.KeyCode == Keys.Tab)
             {
                 SetSelectedItem();
             }
@@ -299,7 +307,12 @@ namespace EveMarketMonitorApp.GUIElements
                             DisplayTree();
                         }
                     }
-                    if ((short)cmbItem.Tag == 0) { cmbItem.Text = ""; }
+                    if ((short)cmbItem.Tag == 0) 
+                    { 
+                        cmbItem.Text = "";
+                        DisplayTree();
+                        ClearAssets();
+                    }
                 }
             }
             finally
@@ -309,6 +322,16 @@ namespace EveMarketMonitorApp.GUIElements
         }
 
 
+
+        private void ClearAssets()
+        {
+            List<SortInfo> sortInfo = AssetsGrid.GridSortInfo;
+            _assets = new AssetList();
+            _assetsBindingSource.DataSource = _assets;
+            AssetsGrid.GridSortInfo = sortInfo;
+
+            Text = "Viewing " + _assetsBindingSource.Count + " assets";
+        }
 
         private void DisplayAssets()
         {
@@ -362,12 +385,14 @@ namespace EveMarketMonitorApp.GUIElements
 
                     if (container == null)
                     {
-                        _assets = Assets.LoadAssets(_accessParams, regionIDs, _itemID, locationID, systemID, false);
+                        _assets = Assets.LoadAssets(_accessParams, regionIDs, _itemID, locationID, systemID, 
+                            false, 0, true, false);
                     }
                     else
                     {
-                        _assets = Assets.LoadAssets(container);
+                        _assets = Assets.LoadAssets(container, _itemID);
                     }
+
                     _assetsBindingSource.DataSource = _assets;
 
                     //AssetsGrid.AutoResizeColumns();
@@ -520,7 +545,7 @@ namespace EveMarketMonitorApp.GUIElements
                     // This is because we only want assets that are in space in the system.
                     // NOT those in stations in the system.
                     AssetList systemAssets = Assets.LoadAssets(_accessParams, new List<int>(), _itemID,
-                        (int)nodeData.Id, 0, true);
+                        (int)nodeData.Id, 0, true, 0, false, true);
                     foreach(Asset asset in systemAssets) 
                     {
                         TreeNode anode = new TreeNode(asset.Item);
@@ -531,8 +556,8 @@ namespace EveMarketMonitorApp.GUIElements
                 case AssetViewNodeType.Station:
                     // This is a station level node so the next level will be any containers in
                     // the station that contain assets.
-                    AssetList stationContainers = Assets.LoadAssets(_accessParams, new List<int>(), 
-                        _itemID, (int)nodeData.Id, 0, true);
+                    AssetList stationContainers = Assets.LoadAssetsByItemAndContainersOfItem(_accessParams,
+                        new List<int>(), _itemID, (int)nodeData.Id, 0, true);
                     foreach (Asset asset in stationContainers)
                     {
                         TreeNode cnode = new TreeNode(asset.Item);
@@ -545,11 +570,20 @@ namespace EveMarketMonitorApp.GUIElements
                     AssetList subContainers = Assets.LoadAssets(nodeData.Data as Asset);
                     foreach (Asset asset in subContainers)
                     {
+                        bool display = true;
                         if (asset.IsContainer)
                         {
-                            TreeNode cnode = new TreeNode(asset.Item);
-                            cnode.Tag = new AssetViewNode(asset.ID, asset.Item, AssetViewNodeType.Container, asset);
-                            node.Nodes.Add(cnode);
+                            if (_itemID != 0)
+                            {
+                                asset.Contents.ItemFilter = "ItemID = " + _itemID;
+                                display = asset.Contents.FiltredItems.Count > 0;
+                            }
+                            if (display)
+                            {
+                                TreeNode cnode = new TreeNode(asset.Item);
+                                cnode.Tag = new AssetViewNode(asset.ID, asset.Item, AssetViewNodeType.Container, asset);
+                                node.Nodes.Add(cnode);
+                            }
                         }
                     }
 

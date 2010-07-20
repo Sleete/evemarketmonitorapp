@@ -125,6 +125,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     _accounts = new List<EVEAccount>();
                 }
                 _accHashCode = GetAccHashCode();
+
+                foreach (EVEAccount account in _accounts)
+                {
+                    account.UpdateCharList(false);
+                    account.PopulateChars();
+                }
             }
             Diagnostics.StopTimer("RptGrp.LoadEveAccounts");
         }
@@ -134,6 +140,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             if (AccountsChanged())
             {
                 ReportGroups.SetGroupAccounts(_id, Accounts);
+                foreach (EVEAccount account in Accounts) { EveAccounts.Store(account); }
             }
         }
 
@@ -148,6 +155,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             foreach (EVEAccount account in _accounts)
             {
                 str.Append(account.UserID);
+                str.Append(account.LastcharListUpdate.ToString());               
             }
             return str.ToString().GetHashCode();
         }
@@ -171,12 +179,24 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             APICharacter retVal = null;
             corpID = false;
+            bool corpInReportGroup = false;
             foreach (EVEAccount account in _accounts)
             {
                 foreach (APICharacter character in account.Chars)
                 {
                     if (character.CharID == entityID) { retVal = character; }
-                    if (character.CorpID == entityID) { retVal = character; corpID = true; }
+                    if (character.CorpID == entityID) 
+                    {
+                        // There may be several chars that are part of the same corp.
+                        // Favour returning the character that is set as the primary
+                        // API updater for the corp.
+                        if (!corpInReportGroup && character.CorpIncWithRptGroup)
+                        {
+                            retVal = character;
+                            corpID = true;
+                            corpInReportGroup = character.CorpIncWithRptGroup;
+                        }
+                    }
                 }
             }
             return retVal;

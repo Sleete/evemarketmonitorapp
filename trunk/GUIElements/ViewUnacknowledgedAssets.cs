@@ -25,6 +25,8 @@ namespace EveMarketMonitorApp.GUIElements
         private AssetList _gainedAssets = null;
         private List<AssetChangeType> _assetGainChangeTypes = null;
         private List<AssetChangeType> _assetLossChangeTypes = null;
+        private List<long> _gainedExpandedContainers = new List<long>();
+        private List<long> _lostExpandedContainers = new List<long>();
 
         private Dictionary<TempAssetKey, List<TempAssetKey>> _assetsUsedForManufacture =
             new Dictionary<TempAssetKey, List<TempAssetKey>>();
@@ -53,7 +55,7 @@ namespace EveMarketMonitorApp.GUIElements
             lblBusy.Hide();
 
             label1.Text = "This screen shows items that have been added or removed since the last asset " +
-                "API update. Usually, these will have been destroyed or used up in the case of lst items and " +
+                "API update. Usually, these will have been destroyed or used up in the case of lost items and " +
                 "found or built in the case of added items.\r\n";
             if (UserAccount.Settings.ManufacturingMode)
             {
@@ -90,6 +92,8 @@ namespace EveMarketMonitorApp.GUIElements
                 GainedReasonColumn.DataSource = _assetGainChangeTypes;
                 GainedReasonColumn.ValueMember = "ID";
                 GainedReasonColumn.DisplayMember = "Description";
+                GainedContainerColumn.DataPropertyName = "IsContainer";
+                GainedExpandedColumn.DataPropertyName = "Expanded";
                 gainedItemsGrid.CellEndEdit += new DataGridViewCellEventHandler(gainedItemsGrid_CellEndEdit);
                 gainedItemsGrid.CellBeginEdit += new DataGridViewCellCancelEventHandler(itemsGrid_CellBeginEdit);
                 gainedItemsGrid.RowEnter += new DataGridViewCellEventHandler(gainedItemsGrid_RowEnter);
@@ -106,6 +110,8 @@ namespace EveMarketMonitorApp.GUIElements
                 LostReasonColumn.DataSource = _assetLossChangeTypes;
                 LostReasonColumn.ValueMember = "ID";
                 LostReasonColumn.DisplayMember = "Description";
+                LostContainerColumn.DataPropertyName = "IsContainer";
+                LostExpandedColumn.DataPropertyName = "Expanded";
                 lostItemsGrid.CellBeginEdit += new DataGridViewCellCancelEventHandler(itemsGrid_CellBeginEdit);
 
                 PopulateLists();
@@ -135,17 +141,20 @@ namespace EveMarketMonitorApp.GUIElements
                 lblBusy.Hide();
                 busyProgress.Hide();
 
+                //SetContainerFilter();
+                //lostItemsGrid.DataSource = _lostAssets.FiltredItems;
+                //gainedItemsGrid.DataSource = _gainedAssets.FiltredItems;
                 lostItemsGrid.DataSource = _lostAssets;
                 gainedItemsGrid.DataSource = _gainedAssets;
                 lostItemsGrid.Visible = true;
                 gainedItemsGrid.Visible = true;
             }
         }
-        private void FilterData()
+        private void MaterialsFilterData()
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Callback(FilterData));
+                this.Invoke(new Callback(MaterialsFilterData));
             }
             else
             {
@@ -173,10 +182,44 @@ namespace EveMarketMonitorApp.GUIElements
                 }
                 else
                 {
+                    //SetContainerFilter();
+                    //lostItemsGrid.DataSource = _lostAssets.FiltredItems;
                     lostItemsGrid.DataSource = _lostAssets;
                 }
             }
         }
+        //private void SetContainerFilter()
+        //{
+        //    if (this.InvokeRequired)
+        //    {
+        //        this.Invoke(new Callback(SetContainerFilter));
+        //    }
+        //    else
+        //    {
+        //        this.Cursor = Cursors.WaitCursor;
+        //        try
+        //        {
+        //            StringBuilder filter = new StringBuilder("ContainerID = 0");
+        //            foreach (long id in _lostExpandedContainers)
+        //            {
+        //                filter.Append(" OR ContainerID = ");
+        //                filter.Append(id);
+        //            }
+        //            _lostAssets.ItemFilter = filter.ToString();
+        //            filter = new StringBuilder("ContainerID = 0");
+        //            foreach (long id in _gainedExpandedContainers)
+        //            {
+        //                filter.Append(" OR ContainerID = ");
+        //                filter.Append(id);
+        //            }
+        //            _gainedAssets.ItemFilter = filter.ToString();
+        //        }
+        //        finally
+        //        {
+        //            this.Cursor = Cursors.Default;
+        //        }
+        //    }
+        //}
         private void HideData()
         {
             if (this.InvokeRequired)
@@ -436,6 +479,7 @@ namespace EveMarketMonitorApp.GUIElements
 
                 EMMADataSet.AssetsDataTable assetChanges = new EMMADataSet.AssetsDataTable();
                 List<Asset> assetsToRemove = new List<Asset>();
+                _gainedAssets.ItemFilter = "";
                 foreach (Asset gainedAsset in _gainedAssets)
                 {
                     long assetID = 0;
@@ -477,7 +521,7 @@ namespace EveMarketMonitorApp.GUIElements
                                 bool corporate = false;
                                 access.Add(new AssetAccessParams(assetRow.OwnerID, !assetRow.CorpAsset, assetRow.CorpAsset));
                                 AssetList assets = Assets.LoadAssets(access, new List<int>(), assetRow.ItemID, 0, 0, 
-                                    false, (int)AssetStatus.States.ForSaleViaContract, true);
+                                    false, (int)AssetStatus.States.ForSaleViaContract, true, true);
                                 if (assets.Count > 0)
                                 {
                                     List<long> matchedAssetsForSale = new List<long>(); 
@@ -546,6 +590,7 @@ namespace EveMarketMonitorApp.GUIElements
                 }
 
                 assetsToRemove = new List<Asset>();
+                _lostAssets.ItemFilter = "";
                 foreach (Asset lostAsset in _lostAssets)
                 {
                     switch (lostAsset.ChangeTypeID)
@@ -692,7 +737,7 @@ namespace EveMarketMonitorApp.GUIElements
         {
             grpMaterials.Enabled = false;
             lstMaterials.Items.Clear();
-            FilterData();
+            MaterialsFilterData();
         }
 
         void gainedItemsGrid_RowEnter(object sender, DataGridViewCellEventArgs e)
@@ -753,6 +798,85 @@ namespace EveMarketMonitorApp.GUIElements
             }
         }
 
+
+        // Having these expandable containers is much harder than I'd hoped. 
+        // For now, I'll just leave it out.
+        private void gainedItemsGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            //if (e.RowIndex >= 0 && e.ColumnIndex == gainedItemsGrid.Columns.IndexOf(GainedExpanderColumn))
+            //{
+            //    Image value = null;
+            //    Asset asset = (Asset)gainedItemsGrid.Rows[e.RowIndex].DataBoundItem;
+            //    if (asset.IsContainer)
+            //    {
+            //        value = asset.Expanded ? icons.Images["collapse.gif"] : icons.Images["expand.gif"];
+            //    }
+            //    e.Value = value;
+            //}
+        }
+
+        private void lostItemsGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            //if (e.RowIndex >= 0 && e.ColumnIndex == lostItemsGrid.Columns.IndexOf(GainedExpanderColumn))
+            //{
+            //    Image value = null;
+            //    Asset asset = (Asset)lostItemsGrid.Rows[e.RowIndex].DataBoundItem;
+            //    if (asset.IsContainer)
+            //    {
+            //        value = asset.Expanded ? icons.Images["collapse.gif"] : icons.Images["expand.gif"];
+            //    }
+            //    e.Value = value;
+            //}
+        }
+
+        private void gainedItemsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //if (gainedItemsGrid.Columns[e.ColumnIndex] == GainedExpanderColumn && e.RowIndex >= 0)
+            //{
+            //    Asset asset = (Asset)gainedItemsGrid.Rows[e.RowIndex].DataBoundItem;
+            //    asset.Expanded = !asset.Expanded;
+            //    if (asset.Expanded)
+            //    {
+            //        if (!_gainedExpandedContainers.Contains(asset.ID))
+            //        {
+            //            _gainedExpandedContainers.Add(asset.ID);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (_gainedExpandedContainers.Contains(asset.ID))
+            //        {
+            //            _gainedExpandedContainers.Remove(asset.ID);
+            //        }
+            //    }
+            //    SetContainerFilter();
+            //}
+        }
+
+        private void lostItemsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //if (lostItemsGrid.Columns[e.ColumnIndex] == LostExpanderColumn && e.RowIndex >= 0)
+            //{
+            //    Asset asset = (Asset)lostItemsGrid.Rows[e.RowIndex].DataBoundItem;
+            //    asset.Expanded = !asset.Expanded;
+            //    if (asset.Expanded)
+            //    {
+            //        if (!_lostExpandedContainers.Contains(asset.ID))
+            //        {
+            //            _lostExpandedContainers.Add(asset.ID);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (_lostExpandedContainers.Contains(asset.ID))
+            //        {
+            //            _lostExpandedContainers.Remove(asset.ID);
+            //        }
+            //    }
+            //    SetContainerFilter();
+            //}
+        }
+
         private void UpdateStatus(int progress, int maxprogress, string sectionName, string status, bool complete)
         {
             if (StatusChange != null)
@@ -760,7 +884,7 @@ namespace EveMarketMonitorApp.GUIElements
                 StatusChange(this, new StatusChangeArgs(progress, maxprogress, sectionName, status, complete));
             }
         }
-
+        
 
         private class TempAssetKey
         {
@@ -833,6 +957,11 @@ namespace EveMarketMonitorApp.GUIElements
                 g.DrawString(text, font, new SolidBrush(col), bounds);
             }
         }
+
+
+
+
+
 
     }
 

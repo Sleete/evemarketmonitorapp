@@ -618,7 +618,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     // Use The forge to value items if possible.
                     //decimal value = UserAccount.CurrentGroup.ItemValues.GetItemValue(asset.ItemID, 10000002, true);
                     //retVal += value * asset.Quantity;
-                    retVal = new Asset(asset).TotalValue;
+                    retVal += new Asset(asset).TotalValue;
                     //log.WriteLine(Items.GetItemName(asset.ItemID) + ", " + asset.Quantity + ", " + value); 
                 }
             //}
@@ -734,6 +734,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         asset.ReprocExclude = false;
                         asset.Status = (int)AssetStatus.States.Normal;
                         asset.SystemID = Stations.GetStation(trans.StationID).solarSystemID;
+                        asset.BoughtViaContract = false;
                         assetsData.AddAssetsRow(asset);
                         changes.Add(new Asset(asset));
                     }
@@ -903,11 +904,21 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <returns></returns>
         public static AssetList LoadAssets(Asset container)
         {
+            return LoadAssets(container, 0);
+        }
+
+        /// <summary>
+        /// Retrieve assets that are stored in the specified container 
+        /// </summary>
+        /// <param name="container"></param>
+        /// <returns></returns>
+        public static AssetList LoadAssets(Asset container, int itemID)
+        {
             AssetList retVal = new AssetList();
             EMMADataSet.AssetsDataTable table = new EMMADataSet.AssetsDataTable();
             lock (assetsTableAdapter)
             {
-                assetsTableAdapter.FillByContainerID(table, container.ID);
+                assetsTableAdapter.FillByContainerID(table, container.ID, itemID);
             }
 
             foreach (EMMADataSet.AssetsRow row in table)
@@ -927,11 +938,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="itemID"></param>
         /// <param name="locationID"></param>
         /// <returns></returns>
-        public static AssetList LoadAssets(List<AssetAccessParams> accessParams, List<int> regionIDs,
-            int itemID, int locationID, int systemID, bool containersOnly)
-        {
-            return LoadAssets(accessParams, regionIDs, itemID, locationID, systemID, containersOnly, 0, false);
-        }
+        //public static AssetList LoadAssets(List<AssetAccessParams> accessParams, List<int> regionIDs,
+        //    int itemID, int locationID, int systemID, bool containersOnly)
+        //{
+        //    return LoadAssets(accessParams, regionIDs, itemID, locationID, systemID, containersOnly,
+        //        0, false, true);
+        //}
 
         /// <summary>
         /// Return a list of assets that meet the specified parameters.
@@ -943,7 +955,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="locationID"></param>
         /// <returns></returns>
         public static AssetList LoadAssets(List<AssetAccessParams> accessParams, List<int> regionIDs,
-            int itemID, int locationID, int systemID, bool containersOnly, int status, bool excludeContainers)
+            int itemID, int locationID, int systemID, bool containersOnly, int status, bool excludeContainers,
+            bool excludeContained)
         {
             AssetList retVal = new AssetList();
             EMMADataSet.AssetsDataTable table = new EMMADataSet.AssetsDataTable();
@@ -957,7 +970,63 @@ namespace EveMarketMonitorApp.DatabaseClasses
             lock (assetsTableAdapter)
             {
                 assetsTableAdapter.FillByAny(table, AssetAccessParams.BuildAccessList(accessParams),
-                    regionString, systemID, locationID, itemID, containersOnly, false, status);
+                    regionString, systemID, locationID, itemID, containersOnly, !excludeContained, status);
+            }
+
+            foreach (EMMADataSet.AssetsRow row in table)
+            {
+                if (row.Quantity > 0 && (!row.IsContainer || !excludeContainers))
+                {
+                    Asset asset = new Asset(row, null);
+                    retVal.Add(asset);
+                }
+            }
+            return retVal;
+        }
+
+        /// <summary>
+        /// Return a list of assets that meet the specified parameters.
+        /// Note that the list does NOT include assets stored within other containers, ships, etc.
+        /// </summary>
+        /// <param name="accessParams"></param>
+        /// <param name="regionIDs"></param>
+        /// <param name="itemID"></param>
+        /// <param name="locationID"></param>
+        /// <returns></returns>
+        public static AssetList LoadAssetsByItemAndContainersOfItem(List<AssetAccessParams> accessParams, 
+            List<int> regionIDs, int itemID, int locationID, int systemID, bool containersOnly)
+        {
+            return LoadAssetsByItemAndContainersOfItem(accessParams, regionIDs, itemID, locationID, systemID, 
+                containersOnly, 0, false);
+        }
+
+        /// <summary>
+        /// Return a list of assets that meet the specified parameters.
+        /// Note that the list does NOT include assets stored within other containers, ships, etc.
+        /// </summary>
+        /// <param name="accessParams"></param>
+        /// <param name="regionIDs"></param>
+        /// <param name="itemID"></param>
+        /// <param name="locationID"></param>
+        /// <returns></returns>
+        public static AssetList LoadAssetsByItemAndContainersOfItem(List<AssetAccessParams> accessParams, 
+            List<int> regionIDs, int itemID, int locationID, int systemID, bool containersOnly, 
+            int status, bool excludeContainers)
+        {
+            AssetList retVal = new AssetList();
+            EMMADataSet.AssetsDataTable table = new EMMADataSet.AssetsDataTable();
+            string regionString = "";
+            // Do not do this, just pass in an empty list and it'll match all regions.
+            //if (regionIDs.Count == 0) { regionIDs.Add(0); }
+            foreach (int region in regionIDs)
+            {
+                regionString = regionString + (regionString.Length == 0 ? "" : ",") + region;
+            }
+            lock (assetsTableAdapter)
+            {
+                assetsTableAdapter.FillByItemAndContainersOfItem(table, 
+                    AssetAccessParams.BuildAccessList(accessParams), regionString, systemID, 
+                    locationID, itemID, containersOnly, false, status);
             }
 
             foreach (EMMADataSet.AssetsRow row in table)
@@ -1336,7 +1405,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 List<AssetAccessParams> accessParams = new List<AssetAccessParams>();
                 accessParams.Add(new AssetAccessParams(charID, !corpAsset, corpAsset));
                 AssetList assets = Assets.LoadAssets(accessParams, new List<int>(), itemID, 
-                    0, 0, false, (int)AssetStatus.States.Normal, true);
+                    0, 0, false, (int)AssetStatus.States.Normal, true, false);
                 foreach (Asset asset in assets)
                 {
                     if (qToFind > 0 && (asset.UnitBuyPrice == 0 || !asset.UnitBuyPricePrecalculated))

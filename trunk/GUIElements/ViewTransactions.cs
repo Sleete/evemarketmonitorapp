@@ -77,7 +77,8 @@ namespace EveMarketMonitorApp.GUIElements
                 SellerCharIDColumn.DataPropertyName = "SellerCharID";
                 BuyerWalletColumn.DataPropertyName = "BuyerWallet";
                 SellerWalletColumn.DataPropertyName = "SellerWallet";
-                UnitProfitColumn.DataPropertyName = "GrossUnitProfit";
+                UnitProfitColumn.DataPropertyName = UserAccount.Settings.CalcProfitInTransView ? 
+                    "GrossUnitProfit" : "PureGrossUnitProfit";
 
                 UserAccount.Settings.GetColumnWidths(this.Name, transactionGrid);
 
@@ -132,6 +133,9 @@ namespace EveMarketMonitorApp.GUIElements
                 cmbStation.SelectedIndexChanged += new EventHandler(cmbStation_SelectedIndexChanged);
                 cmbStation.Tag = 0;
 
+                chkCalcProfit.Checked = UserAccount.Settings.CalcProfitInTransView;
+                chkCalcProfit.CheckedChanged += new EventHandler(chkCalcProfit_CheckedChanged);
+
                 this.FormClosing += new FormClosingEventHandler(ViewTransactions_FormClosing);
                 DisplayWallets();
                 chkIgnoreWallet.CheckedChanged += new EventHandler(chkIgnoreWallet_CheckedChanged);
@@ -148,6 +152,13 @@ namespace EveMarketMonitorApp.GUIElements
                 MessageBox.Show("Problem setting up transactions view.\r\nCheck " + Globals.AppDataDir + "Logging\\ExceptionLog.txt" +
                     " for details.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        void chkCalcProfit_CheckedChanged(object sender, EventArgs e)
+        {
+            UserAccount.Settings.CalcProfitInTransView = chkCalcProfit.Checked;
+            UnitProfitColumn.DataPropertyName = UserAccount.Settings.CalcProfitInTransView ?
+                "GrossUnitProfit" : "PureGrossUnitProfit";
         }
 
         void ViewTransactions_FormClosing(object sender, FormClosingEventArgs e)

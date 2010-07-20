@@ -390,7 +390,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         {
             XmlDocument xml = null;
 
-            if (DateTime.UtcNow.AddHours(-1).CompareTo(_charSheetXMLLastUpdate) > 0)
+            if (DateTime.UtcNow.AddHours(-48).CompareTo(_charSheetXMLLastUpdate) > 0)
             {
                 xml = EveAPI.GetXml(EveAPI.URL_EveApiBase + EveAPI.URL_CharDataApi,
                   "userid=" + _userID + "&apiKey=" + _apiKey + "&characterID=" + _charID);
@@ -2914,7 +2914,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         public void RefreshCorpXMLFromAPI()
         {
             XmlDocument xml = null;
-            if (DateTime.UtcNow.AddHours(-1).CompareTo(_corpWalletXMLLastUpdate) > 0)
+            if (DateTime.UtcNow.AddHours(-48).CompareTo(_corpSheetXMLLastUpdate) > 0)
             {
                 xml = EveAPI.GetXml(EveAPI.URL_EveApiBase + EveAPI.URL_CorpDataApi,
                    "userid=" + _userID + "&apiKey=" + _apiKey + "&characterID=" + _charID);

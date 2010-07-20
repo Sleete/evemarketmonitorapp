@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewUnacknowledgedAssets));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -36,23 +37,30 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblBusy = new System.Windows.Forms.Label();
             this.gainedItemsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.busyProgress = new System.Windows.Forms.ProgressBar();
+            this.lostItemsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
+            this.grpMaterials = new System.Windows.Forms.GroupBox();
+            this.lstMaterials = new System.Windows.Forms.ListBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.chkMaterialsOnly = new System.Windows.Forms.CheckBox();
+            this.icons = new System.Windows.Forms.ImageList(this.components);
+            this.GainedExpanderColumn = new System.Windows.Forms.DataGridViewImageColumn();
+            this.GainedExpandedColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.GainedContainerColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.GainedOwnerColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GainedItemColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GainedLocationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GainedQuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GainedReasonColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.busyProgress = new System.Windows.Forms.ProgressBar();
-            this.lostItemsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
+            this.LostExpanderColumn = new System.Windows.Forms.DataGridViewImageColumn();
+            this.LostExpandedColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.LostContainerColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.LostOwnerColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostItemColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostLocationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostQuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostReasonColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.grpMaterials = new System.Windows.Forms.GroupBox();
-            this.lstMaterials = new System.Windows.Forms.ListBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.chkMaterialsOnly = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -147,6 +155,9 @@
             this.gainedItemsGrid.AllowUserToResizeRows = false;
             this.gainedItemsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gainedItemsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.GainedExpanderColumn,
+            this.GainedExpandedColumn,
+            this.GainedContainerColumn,
             this.GainedOwnerColumn,
             this.GainedItemColumn,
             this.GainedLocationColumn,
@@ -159,44 +170,8 @@
             this.gainedItemsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gainedItemsGrid.Size = new System.Drawing.Size(922, 183);
             this.gainedItemsGrid.TabIndex = 0;
-            // 
-            // GainedOwnerColumn
-            // 
-            this.GainedOwnerColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.GainedOwnerColumn.HeaderText = "Owner";
-            this.GainedOwnerColumn.Name = "GainedOwnerColumn";
-            this.GainedOwnerColumn.ReadOnly = true;
-            this.GainedOwnerColumn.Width = 160;
-            // 
-            // GainedItemColumn
-            // 
-            this.GainedItemColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.GainedItemColumn.HeaderText = "Item";
-            this.GainedItemColumn.Name = "GainedItemColumn";
-            this.GainedItemColumn.ReadOnly = true;
-            this.GainedItemColumn.Width = 240;
-            // 
-            // GainedLocationColumn
-            // 
-            this.GainedLocationColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.GainedLocationColumn.HeaderText = "Location";
-            this.GainedLocationColumn.Name = "GainedLocationColumn";
-            this.GainedLocationColumn.ReadOnly = true;
-            this.GainedLocationColumn.Width = 240;
-            // 
-            // GainedQuantityColumn
-            // 
-            this.GainedQuantityColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.GainedQuantityColumn.HeaderText = "Quantity";
-            this.GainedQuantityColumn.Name = "GainedQuantityColumn";
-            this.GainedQuantityColumn.ReadOnly = true;
-            // 
-            // GainedReasonColumn
-            // 
-            this.GainedReasonColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.GainedReasonColumn.HeaderText = "Reason";
-            this.GainedReasonColumn.Name = "GainedReasonColumn";
-            this.GainedReasonColumn.Width = 160;
+            this.gainedItemsGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gainedItemsGrid_CellFormatting);
+            this.gainedItemsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gainedItemsGrid_CellContentClick);
             // 
             // groupBox3
             // 
@@ -226,6 +201,9 @@
             this.lostItemsGrid.AllowUserToResizeRows = false;
             this.lostItemsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.lostItemsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.LostExpanderColumn,
+            this.LostExpandedColumn,
+            this.LostContainerColumn,
             this.LostOwnerColumn,
             this.LostItemColumn,
             this.LostLocationColumn,
@@ -238,46 +216,8 @@
             this.lostItemsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.lostItemsGrid.Size = new System.Drawing.Size(922, 183);
             this.lostItemsGrid.TabIndex = 0;
-            // 
-            // LostOwnerColumn
-            // 
-            this.LostOwnerColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.LostOwnerColumn.HeaderText = "Owner";
-            this.LostOwnerColumn.Name = "LostOwnerColumn";
-            this.LostOwnerColumn.ReadOnly = true;
-            this.LostOwnerColumn.Width = 160;
-            // 
-            // LostItemColumn
-            // 
-            this.LostItemColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.LostItemColumn.HeaderText = "Item";
-            this.LostItemColumn.Name = "LostItemColumn";
-            this.LostItemColumn.ReadOnly = true;
-            this.LostItemColumn.Width = 240;
-            // 
-            // LostLocationColumn
-            // 
-            this.LostLocationColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.LostLocationColumn.HeaderText = "Location";
-            this.LostLocationColumn.Name = "LostLocationColumn";
-            this.LostLocationColumn.ReadOnly = true;
-            this.LostLocationColumn.Width = 240;
-            // 
-            // LostQuantityColumn
-            // 
-            this.LostQuantityColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.LostQuantityColumn.HeaderText = "Quantity";
-            this.LostQuantityColumn.Name = "LostQuantityColumn";
-            this.LostQuantityColumn.ReadOnly = true;
-            // 
-            // LostReasonColumn
-            // 
-            this.LostReasonColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.LostReasonColumn.HeaderText = "Reason";
-            this.LostReasonColumn.Name = "LostReasonColumn";
-            this.LostReasonColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.LostReasonColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.LostReasonColumn.Width = 160;
+            this.lostItemsGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.lostItemsGrid_CellFormatting);
+            this.lostItemsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.lostItemsGrid_CellContentClick);
             // 
             // grpMaterials
             // 
@@ -320,6 +260,131 @@
             this.chkMaterialsOnly.Text = "Show only missing materials";
             this.chkMaterialsOnly.UseVisualStyleBackColor = true;
             // 
+            // icons
+            // 
+            this.icons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("icons.ImageStream")));
+            this.icons.TransparentColor = System.Drawing.Color.Transparent;
+            this.icons.Images.SetKeyName(0, "expand.gif");
+            this.icons.Images.SetKeyName(1, "collapse.gif");
+            // 
+            // GainedExpanderColumn
+            // 
+            this.GainedExpanderColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.GainedExpanderColumn.HeaderText = "";
+            this.GainedExpanderColumn.Name = "GainedExpanderColumn";
+            this.GainedExpanderColumn.Visible = false;
+            this.GainedExpanderColumn.Width = 20;
+            // 
+            // GainedExpandedColumn
+            // 
+            this.GainedExpandedColumn.HeaderText = "Is Expanded";
+            this.GainedExpandedColumn.Name = "GainedExpandedColumn";
+            this.GainedExpandedColumn.Visible = false;
+            // 
+            // GainedContainerColumn
+            // 
+            this.GainedContainerColumn.HeaderText = "Is Container";
+            this.GainedContainerColumn.Name = "GainedContainerColumn";
+            this.GainedContainerColumn.Visible = false;
+            // 
+            // GainedOwnerColumn
+            // 
+            this.GainedOwnerColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.GainedOwnerColumn.HeaderText = "Owner";
+            this.GainedOwnerColumn.Name = "GainedOwnerColumn";
+            this.GainedOwnerColumn.ReadOnly = true;
+            this.GainedOwnerColumn.Width = 160;
+            // 
+            // GainedItemColumn
+            // 
+            this.GainedItemColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.GainedItemColumn.HeaderText = "Item";
+            this.GainedItemColumn.Name = "GainedItemColumn";
+            this.GainedItemColumn.ReadOnly = true;
+            this.GainedItemColumn.Width = 240;
+            // 
+            // GainedLocationColumn
+            // 
+            this.GainedLocationColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.GainedLocationColumn.HeaderText = "Location";
+            this.GainedLocationColumn.Name = "GainedLocationColumn";
+            this.GainedLocationColumn.ReadOnly = true;
+            this.GainedLocationColumn.Width = 240;
+            // 
+            // GainedQuantityColumn
+            // 
+            this.GainedQuantityColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.GainedQuantityColumn.HeaderText = "Quantity";
+            this.GainedQuantityColumn.Name = "GainedQuantityColumn";
+            this.GainedQuantityColumn.ReadOnly = true;
+            // 
+            // GainedReasonColumn
+            // 
+            this.GainedReasonColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.GainedReasonColumn.HeaderText = "Reason";
+            this.GainedReasonColumn.Name = "GainedReasonColumn";
+            this.GainedReasonColumn.Width = 160;
+            // 
+            // LostExpanderColumn
+            // 
+            this.LostExpanderColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.LostExpanderColumn.HeaderText = "";
+            this.LostExpanderColumn.Name = "LostExpanderColumn";
+            this.LostExpanderColumn.Visible = false;
+            this.LostExpanderColumn.Width = 20;
+            // 
+            // LostExpandedColumn
+            // 
+            this.LostExpandedColumn.HeaderText = "Is Expanded";
+            this.LostExpandedColumn.Name = "LostExpandedColumn";
+            this.LostExpandedColumn.Visible = false;
+            // 
+            // LostContainerColumn
+            // 
+            this.LostContainerColumn.HeaderText = "Is Container";
+            this.LostContainerColumn.Name = "LostContainerColumn";
+            this.LostContainerColumn.Visible = false;
+            // 
+            // LostOwnerColumn
+            // 
+            this.LostOwnerColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.LostOwnerColumn.HeaderText = "Owner";
+            this.LostOwnerColumn.Name = "LostOwnerColumn";
+            this.LostOwnerColumn.ReadOnly = true;
+            this.LostOwnerColumn.Width = 160;
+            // 
+            // LostItemColumn
+            // 
+            this.LostItemColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.LostItemColumn.HeaderText = "Item";
+            this.LostItemColumn.Name = "LostItemColumn";
+            this.LostItemColumn.ReadOnly = true;
+            this.LostItemColumn.Width = 240;
+            // 
+            // LostLocationColumn
+            // 
+            this.LostLocationColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.LostLocationColumn.HeaderText = "Location";
+            this.LostLocationColumn.Name = "LostLocationColumn";
+            this.LostLocationColumn.ReadOnly = true;
+            this.LostLocationColumn.Width = 240;
+            // 
+            // LostQuantityColumn
+            // 
+            this.LostQuantityColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.LostQuantityColumn.HeaderText = "Quantity";
+            this.LostQuantityColumn.Name = "LostQuantityColumn";
+            this.LostQuantityColumn.ReadOnly = true;
+            // 
+            // LostReasonColumn
+            // 
+            this.LostReasonColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.LostReasonColumn.HeaderText = "Reason";
+            this.LostReasonColumn.Name = "LostReasonColumn";
+            this.LostReasonColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.LostReasonColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.LostReasonColumn.Width = 160;
+            // 
             // ViewUnacknowledgedAssets
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -359,11 +424,18 @@
         private System.Windows.Forms.CheckBox chkMaterialsOnly;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListBox lstMaterials;
+        private System.Windows.Forms.ImageList icons;
+        private System.Windows.Forms.DataGridViewImageColumn GainedExpanderColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn GainedExpandedColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn GainedContainerColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn GainedOwnerColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn GainedItemColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn GainedLocationColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn GainedQuantityColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn GainedReasonColumn;
+        private System.Windows.Forms.DataGridViewImageColumn LostExpanderColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn LostExpandedColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn LostContainerColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LostOwnerColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LostItemColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LostLocationColumn;

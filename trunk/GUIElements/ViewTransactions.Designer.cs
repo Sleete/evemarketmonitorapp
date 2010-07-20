@@ -35,7 +35,6 @@ namespace EveMarketMonitorApp.GUIElements
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewTransactions));
-            this.transactionGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
             this.GridContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyCellDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyRowDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,6 +61,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.cmbItem = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.chkCalcProfit = new System.Windows.Forms.CheckBox();
+            this.transactionGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
             this.IDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateTimeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -80,56 +81,12 @@ namespace EveMarketMonitorApp.GUIElements
             this.BuyerWalletColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SellerWalletColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.transactionGrid)).BeginInit();
             this.GridContextMenu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.transactionGrid)).BeginInit();
             this.SuspendLayout();
-            // 
-            // transactionGrid
-            // 
-            this.transactionGrid.AllowUserToAddRows = false;
-            this.transactionGrid.AllowUserToDeleteRows = false;
-            this.transactionGrid.AllowUserToResizeRows = false;
-            this.transactionGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.transactionGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.IDColumn,
-            this.DateTimeColumn,
-            this.ItemColumn,
-            this.PriceColumn,
-            this.QuantityColumn,
-            this.TotalValueColumn,
-            this.UnitProfitColumn,
-            this.BuyerColumn,
-            this.BuyerIDColumn,
-            this.SellerColumn,
-            this.SellerIDColumn,
-            this.BuyerCharacterColumn,
-            this.BuyerCharIDColumn,
-            this.SellerCharacterColumn,
-            this.SellerCharIDColumn,
-            this.BuyerWalletColumn,
-            this.SellerWalletColumn,
-            this.StationColumn});
-            this.transactionGrid.ContextMenuStrip = this.GridContextMenu;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.transactionGrid.DefaultCellStyle = dataGridViewCellStyle5;
-            this.transactionGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.transactionGrid.Location = new System.Drawing.Point(3, 113);
-            this.transactionGrid.Name = "transactionGrid";
-            this.transactionGrid.ReadOnly = true;
-            this.transactionGrid.Size = new System.Drawing.Size(991, 330);
-            this.transactionGrid.TabIndex = 0;
-            this.transactionGrid.VirtualMode = true;
-            this.transactionGrid.MouseDown += new System.Windows.Forms.MouseEventHandler(this.transactionGrid_MouseDown);
-            this.transactionGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.transactionGrid_CellFormatting);
             // 
             // GridContextMenu
             // 
@@ -188,6 +145,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.chkCalcProfit);
             this.panel1.Controls.Add(this.btnCSV);
             this.panel1.Controls.Add(this.btnClose);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -394,6 +352,61 @@ namespace EveMarketMonitorApp.GUIElements
             this.label1.TabIndex = 0;
             this.label1.Text = "Item";
             // 
+            // chkCalcProfit
+            // 
+            this.chkCalcProfit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkCalcProfit.AutoSize = true;
+            this.chkCalcProfit.Location = new System.Drawing.Point(711, 7);
+            this.chkCalcProfit.Name = "chkCalcProfit";
+            this.chkCalcProfit.Size = new System.Drawing.Size(181, 17);
+            this.chkCalcProfit.TabIndex = 3;
+            this.chkCalcProfit.Text = "Calculate unit profit if unavailable";
+            this.chkCalcProfit.UseVisualStyleBackColor = true;
+            // 
+            // transactionGrid
+            // 
+            this.transactionGrid.AllowUserToAddRows = false;
+            this.transactionGrid.AllowUserToDeleteRows = false;
+            this.transactionGrid.AllowUserToResizeRows = false;
+            this.transactionGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.transactionGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.IDColumn,
+            this.DateTimeColumn,
+            this.ItemColumn,
+            this.PriceColumn,
+            this.QuantityColumn,
+            this.TotalValueColumn,
+            this.UnitProfitColumn,
+            this.BuyerColumn,
+            this.BuyerIDColumn,
+            this.SellerColumn,
+            this.SellerIDColumn,
+            this.BuyerCharacterColumn,
+            this.BuyerCharIDColumn,
+            this.SellerCharacterColumn,
+            this.SellerCharIDColumn,
+            this.BuyerWalletColumn,
+            this.SellerWalletColumn,
+            this.StationColumn});
+            this.transactionGrid.ContextMenuStrip = this.GridContextMenu;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.transactionGrid.DefaultCellStyle = dataGridViewCellStyle5;
+            this.transactionGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.transactionGrid.Location = new System.Drawing.Point(3, 113);
+            this.transactionGrid.Name = "transactionGrid";
+            this.transactionGrid.ReadOnly = true;
+            this.transactionGrid.Size = new System.Drawing.Size(991, 330);
+            this.transactionGrid.TabIndex = 0;
+            this.transactionGrid.VirtualMode = true;
+            this.transactionGrid.MouseDown += new System.Windows.Forms.MouseEventHandler(this.transactionGrid_MouseDown);
+            this.transactionGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.transactionGrid_CellFormatting);
+            // 
             // IDColumn
             // 
             this.IDColumn.HeaderText = "ID";
@@ -538,12 +551,13 @@ namespace EveMarketMonitorApp.GUIElements
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Transactions";
             this.Load += new System.EventHandler(this.ViewTrans_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.transactionGrid)).EndInit();
             this.GridContextMenu.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.transactionGrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -595,5 +609,6 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyerWalletColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn SellerWalletColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn StationColumn;
+        private System.Windows.Forms.CheckBox chkCalcProfit;
     }
 }

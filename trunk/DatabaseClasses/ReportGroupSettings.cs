@@ -133,6 +133,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.reproc_refineryefficiency);
             GetValue(Setting.reproc_reprocessor);
             GetValue(Setting.useEveMetrics);
+            GetValue(Setting.itemValueWebExpiryDays);
 
         }
 
@@ -467,6 +468,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     break;
                 case Setting.reproc_refineryefficiency:
                     retVal = "0";
+                    break;
+                case Setting.itemValueWebExpiryDays:
+                    retVal = "3";
                     break;
                 default:
                     break;
@@ -1032,6 +1036,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             get { return bool.Parse(GetValue(Setting.useEveMetrics)); }
             set { SetValue(Setting.useEveMetrics, value.ToString()); }
+        }
+        public int ItemValueWebExpiryDays
+        {
+            get
+            {
+                return int.Parse(GetValue(Setting.itemValueWebExpiryDays),
+                  System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            }
+            set
+            {
+                SetValue(Setting.itemValueWebExpiryDays,
+                  value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
+            }
         }
         #endregion
         #region Recent lists
@@ -1668,7 +1685,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             autoAddStartDate,
             autoAddBuyStations,
             autoAddSellStations,
-            autocon_tradedItems
+            autocon_tradedItems,
+            itemValueWebExpiryDays
         }
 
 

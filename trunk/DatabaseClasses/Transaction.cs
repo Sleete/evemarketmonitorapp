@@ -47,6 +47,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private TransactionType _type;
         private bool _gotType = false;
         private decimal _profit = 0;
+        private decimal _pureProfit = 0;
         private bool _gotProfit = false;
         private bool _calcProfitFromAssets = false;
 
@@ -80,6 +81,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             _buyerWalletID = dataRow.BuyerWalletID;
             _sellerWalletID = dataRow.SellerWalletID;
             _profit = dataRow.SellerUnitProfit;
+            _pureProfit = _profit;
             _gotProfit = _profit != 0;
             _calcProfitFromAssets = dataRow.CalcProfitFromAssets;
         }
@@ -433,6 +435,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 }
                 return _type;
             }
+        }
+
+        public decimal PureGrossUnitProfit
+        {
+            get { return _pureProfit; }
         }
 
         public decimal GrossUnitProfit

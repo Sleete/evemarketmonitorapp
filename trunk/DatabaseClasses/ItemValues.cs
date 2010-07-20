@@ -65,6 +65,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             bool webPrice = false;
             bool done = false;
             bool storeValue = true;
+            int wrongDateDaysOut = 0;
 
             if (this.ValueCalculationEvent != null)
             {
@@ -163,7 +164,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                 }
                             }
                             else if ((webValue.HasValue && webValue.Value != 999999999999999.99m) &&
-                                wrongDateVal == 0) { 
+                                wrongDateVal == 0) 
+                            { 
                                 wrongDateVal = webValue.Value;
                                 if (this.ValueCalculationEvent != null)
                                 {
@@ -326,11 +328,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                 }
                             }
 
-                            // Make sure we don't grab the same data more than once a day.
+                            // Make sure we don't grab the same data more than ever x days.
                             if ((buyPrice && CalculatedBuyPriceLastUpdateGet(itemID, regionID).CompareTo(
-                                DateTime.UtcNow.AddDays(-1)) < 0) ||
+                                DateTime.UtcNow.AddDays(-1 * 
+                                UserAccount.CurrentGroup.Settings.ItemValueWebExpiryDays)) < 0) ||
                                 (!buyPrice && CalculatedSellPriceLastUpdateGet(itemID, regionID).CompareTo(
-                                DateTime.UtcNow.AddDays(-1)) < 0))
+                                DateTime.UtcNow.AddDays(-1 *
+                                UserAccount.CurrentGroup.Settings.ItemValueWebExpiryDays)) < 0))
                             {
                                 // Need to get a price update from eve central or eve metrics, first make sure this is 
                                 // actually a market item. 

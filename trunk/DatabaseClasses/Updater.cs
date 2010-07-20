@@ -77,745 +77,748 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 Version dbVersion = new Version(param.Value.ToString());
 
 
-                if (dbVersion.CompareTo(new Version("1.0.0.1")) < 0)
+                if (dbVersion.CompareTo(new Version("1.1.1.12")) < 0)
                 {
-                    #region Update RptGroupSetAccounts stored procedure
-                    commandText =
-                            "ALTER PROCEDURE dbo.RptGroupSetAccounts\r\n" +
-                            "@rptGroupID		int,\r\n" +
-                            "@eveAccountIDs	varchar(max)\r\n" +
-                            "AS\r\n" +
-                            "DELETE FROM	RptGroupAccounts\r\n" +
-                            "WHERE	RptGroupID = @rptGroupID\r\n" +
-                            "INSERT INTO RptGroupAccounts (RptGroupID, EveAccountID)\r\n" +
-                            "SELECT @rptGroupID, eveaccounts.number\r\n" +
-                            "FROM CLR_intlist_split(@eveAccountIDs) AS eveaccounts\r\n" +
-                            "RETURN\r\n";
-
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
+                    #region 1.0.0.0 - 1.1.1.12
+                    if (dbVersion.CompareTo(new Version("1.0.0.1")) < 0)
                     {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.1"));
+                        #region Update RptGroupSetAccounts stored procedure
+                        commandText =
+                                "ALTER PROCEDURE dbo.RptGroupSetAccounts\r\n" +
+                                "@rptGroupID		int,\r\n" +
+                                "@eveAccountIDs	varchar(max)\r\n" +
+                                "AS\r\n" +
+                                "DELETE FROM	RptGroupAccounts\r\n" +
+                                "WHERE	RptGroupID = @rptGroupID\r\n" +
+                                "INSERT INTO RptGroupAccounts (RptGroupID, EveAccountID)\r\n" +
+                                "SELECT @rptGroupID, eveaccounts.number\r\n" +
+                                "FROM CLR_intlist_split(@eveAccountIDs) AS eveaccounts\r\n" +
+                                "RETURN\r\n";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.1"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'RptGroupSetAccounts'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.0.0.2")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'RptGroupSetAccounts'.", ex);
+                        #region Update ReportGroupNew stored procedure
+                        commandText =
+                                "ALTER PROCEDURE dbo.ReportGroupNew\r\n" +
+                                "@username char(50),\r\n" +
+                                "@groupname char(50),\r\n" +
+                                "@publicGroup bit\r\n" +
+                                "AS\r\n" +
+                                "DECLARE @newID AS int\r\n" +
+                                "SELECT @newID = (\r\n" +
+                                "   SELECT MAX(ID)\r\n" +
+                                "   FROM ReportGroups) + 1\r\n" +
+                                "INSERT INTO ReportGroups (ID, Name, PublicGroup)\r\n" +
+                                "VALUES (@newID, @groupname, @publicGroup)\r\n" +
+                                "SELECT *\r\n" +
+                                "FROM UserRptGroups\r\n" +
+                                "WHERE (UserName = @username) AND (RptGroupID = @newID)\r\n" +
+                                "IF(@@ROWCOUNT = 0)\r\n" +
+                                "BEGIN\r\n" +
+                                "   INSERT INTO UserRptGroups (UserName, RptGroupID)\r\n" +
+                                "   VALUES (@username, @newID)\r\n" +
+                                "END\r\n" +
+                                "RETURN";
+
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.2"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'ReportGroupNew'.", ex);
+                        }
+                        #endregion
                     }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.2")) < 0)
-                {
-                    #region Update ReportGroupNew stored procedure
-                    commandText =
-                            "ALTER PROCEDURE dbo.ReportGroupNew\r\n" +
-                            "@username char(50),\r\n" +
-                            "@groupname char(50),\r\n" +
-                            "@publicGroup bit\r\n" +
-                            "AS\r\n" +
-                            "DECLARE @newID AS int\r\n" +
-                            "SELECT @newID = (\r\n" +
-                            "   SELECT MAX(ID)\r\n" +
-                            "   FROM ReportGroups) + 1\r\n" +
-                            "INSERT INTO ReportGroups (ID, Name, PublicGroup)\r\n" +
-                            "VALUES (@newID, @groupname, @publicGroup)\r\n" +
-                            "SELECT *\r\n" +
-                            "FROM UserRptGroups\r\n" +
-                            "WHERE (UserName = @username) AND (RptGroupID = @newID)\r\n" +
-                            "IF(@@ROWCOUNT = 0)\r\n" +
-                            "BEGIN\r\n" +
-                            "   INSERT INTO UserRptGroups (UserName, RptGroupID)\r\n" +
-                            "   VALUES (@username, @newID)\r\n" +
-                            "END\r\n" +
+                    if (dbVersion.CompareTo(new Version("1.0.0.3")) < 0)
+                    {
+                        #region Update ReportGroupNew stored procedure
+                        commandText =
+                                "ALTER PROCEDURE dbo.ReportGroupNew\r\n" +
+                                "@username char(50),\r\n" +
+                                "@groupname char(50),\r\n" +
+                                "@publicGroup bit\r\n" +
+                                "AS\r\n" +
+                                "DECLARE @newID AS int\r\n" +
+                                "SELECT @newID = (\r\n" +
+                                "   SELECT MAX(ID)\r\n" +
+                                "   FROM ReportGroups) + 1\r\n" +
+                                "IF(@newID IS NULL)\r\n" +
+                                "BEGIN\r\n" +
+                                "SET @newID = 1\r\n" +
+                                "END\r\n" +
+                                "INSERT INTO ReportGroups (ID, Name, PublicGroup)\r\n" +
+                                "VALUES (@newID, @groupname, @publicGroup)\r\n" +
+                                "SELECT *\r\n" +
+                                "FROM UserRptGroups\r\n" +
+                                "WHERE (UserName = @username) AND (RptGroupID = @newID)\r\n" +
+                                "IF(@@ROWCOUNT = 0)\r\n" +
+                                "BEGIN\r\n" +
+                                "   INSERT INTO UserRptGroups (UserName, RptGroupID)\r\n" +
+                                "   VALUES (@username, @newID)\r\n" +
+                                "END\r\n" +
+                                "RETURN";
+
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.3"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'ReportGroupNew'.", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.0.0.4")) < 0)
+                    {
+                        #region Update DividendFindByCorpAndDate stored procedure
+                        commandText =
+                                "ALTER PROCEDURE dbo.DividendFindByCorpAndDate\r\n" +
+                                "@corpID int,\r\n" +
+                                "@startDate datetime,\r\n" +
+                                "@endDate datetime,\r\n" +
+                                "@mustHaveJournal	bit,\r\n" +
+                                "@mustNotHaveJournal	bit\r\n" +
+                                "AS\r\n" +
+                                "IF(@mustHaveJournal = 0 AND @mustNotHaveJournal = 0)\r\n" +
+                                "BEGIN\r\n" +
+                                "   SELECT Dividends.*\r\n" +
+                                "   FROM Dividends\r\n" +
+                                "   WHERE (CorpID = @corpID OR @corpID = 0) AND (DateTime BETWEEN @startDate AND @endDate)\r\n" +
+                                "END\r\n" +
+                                "ELSE IF (@mustNotHaveJournal = 1)\r\n" +
+                                "BEGIN\r\n" +
+                                "   SELECT Dividends.*\r\n" +
+                                "   FROM Dividends\r\n" +
+                                "   WHERE (CorpID = @corpID OR @corpID = 0) AND (DateTime BETWEEN @startDate AND @endDate) AND\r\n" +
+                                "       (Dividends.DividendID NOT IN\r\n" +
+                                "       (\r\n" +
+                                "           SELECT JournalDividendLink.DividendID\r\n" +
+                                "           FROM JournalDividendLink\r\n" +
+                                "       ))\r\n" +
+                                "END\r\n" +
+                                "ELSE IF (@mustHaveJournal = 1)\r\n" +
+                                "BEGIN\r\n" +
+                                "   SELECT DISTINCT Dividends.*\r\n" +
+                                "   FROM Dividends\r\n" +
+                                "   INNER JOIN JournalDividendLink AS link ON link.DividendID = Dividends.DividendID\r\n" +
+                                "   WHERE (CorpID = @corpID OR @corpID = 0) AND (DateTime BETWEEN @startDate AND @endDate)\r\n" +
+                                "END\r\n" +
+                                "RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.4"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'DividendFindByCorpAndDate'.", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.0.0.5")) < 0)
+                    {
+                        #region Create EveAccountInUse stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'EveAccountInUse') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.EveAccountInUse\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
+
+                        commandText =
+                                "CREATE PROCEDURE dbo.EveAccountInUse\r\n" +
+                                "@accountID		int,\r\n" +
+                                "@inUse			bit		OUTPUT\r\n" +
+                                "AS\r\n" +
+                                "SET NOCOUNT ON\r\n" +
+                                "SET @inUse = 0\r\n" +
+                                "SELECT RptGroupAccounts.*\r\n" +
+                                "FROM RptGroupAccounts\r\n" +
+                                "WHERE RptGroupAccounts.EveAccountID = @accountID\r\n" +
+                                "IF(@@ROWCOUNT > 0)\r\n" +
+                                "BEGIN\r\n" +
+                                "   SET @inUse = 1\r\n" +
+                                "END\r\n" +
+                                "RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.5"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'EveAccountInUse'.", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.0.0.6")) < 0)
+                    {
+                        #region Create PublicCorpAllowDelete stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'PublicCorpAllowDelete') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.PublicCorpAllowDelete\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
+
+                        commandText =
+                                "CREATE PROCEDURE dbo.PublicCorpAllowDelete\r\n" +
+                                "@corpID		int,\r\n" +
+                                "@allowDelete	bit		OUTPUT\r\n" +
+                                "AS\r\n" +
+                                "SET NOCOUNT ON\r\n" +
+                                "DECLARE\r\n" +
+                                "   @counter1	int,\r\n" +
+                                "   @counter2	int,\r\n" +
+                                "   @counter3	int\r\n" +
+                                "SET @allowDelete = 0\r\n" +
+                                "SELECT @counter1 = COUNT(*) FROM Dividends WHERE CorpID = @corpID\r\n" +
+                                "SELECT @counter2 = COUNT(*) FROM WebLinks WHERE CorpID = @corpID\r\n" +
+                                "SELECT @counter3 = COUNT(*) FROM ShareTransaction WHERE CorpID = @corpID\r\n" +
+                                "IF(@counter1 = 0 AND @counter2 = 0 AND @counter3 = 0)\r\n" +
+                                "BEGIN\r\n" +
+                                "   SET @allowDelete = 1\r\n" +
+                                "END\r\n" +
+                                "RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.6"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'PublicCorpAllowDelete'.", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.0.0.7")) < 0)
+                    {
+                        #region Create BankTransactionGetByID stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'BankTransactionGetByID') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.BankTransactionGetByID\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
+
+                        commandText =
+                                "CREATE PROCEDURE dbo.BankTransactionGetByID\r\n" +
+                                "@transactionID		bigint\r\n" +
+                                "AS\r\n" +
+                                "SET NOCOUNT ON\r\n" +
+                                "SELECT * FROM BankTransaction WHERE TransactionID = @transactionID\r\n" +
+                                "RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.7"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'BankTransactionGetByID'.", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.0.0.8")) < 0)
+                    {
+                        #region Create ItemValueHistory table
+                        commandText =
+                            "if exists (select * from dbo.sysobjects where id = " +
+                            "object_id(N'[dbo].[ItemValueHistory]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)\r\n" +
+                            "   drop table [dbo].[ItemValueHistory]\r\n\r\n" +
+                            "CREATE TABLE [dbo].[ItemValueHistory]\r\n" +
+                            "(\r\n" +
+                            "   [ValueDate] [datetime] NOT NULL ,\r\n" +
+                            "   [ItemID] [int] NOT NULL ,\r\n" +
+                            "   [RegionID] [int] NOT NULL ,\r\n" +
+                            "   [ReportGroupID] [int] NOT NULL ,\r\n" +
+                            "   [BuyValue] [numeric](18,2) NOT NULL ,\r\n" +
+                            "   [SellValue] [numeric](18,2) NOT NULL ,\r\n" +
+                            "   CONSTRAINT [PK_ItemValueHistory] PRIMARY KEY  CLUSTERED\r\n" +
+                            "   (\r\n" +
+                            "       [ValueDate],\r\n" +
+                            "       [ItemID],\r\n" +
+                            "       [RegionID],\r\n" +
+                            "       [ReportGroupID]\r\n" +
+                            "   )\r\n" +
+                            ")\r\n" +
                             "RETURN";
 
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.2"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.8"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create database table 'ItemValueHistory'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.0.0.9")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'ReportGroupNew'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.3")) < 0)
-                {
-                    #region Update ReportGroupNew stored procedure
-                    commandText =
-                            "ALTER PROCEDURE dbo.ReportGroupNew\r\n" +
-                            "@username char(50),\r\n" +
-                            "@groupname char(50),\r\n" +
-                            "@publicGroup bit\r\n" +
-                            "AS\r\n" +
-                            "DECLARE @newID AS int\r\n" +
-                            "SELECT @newID = (\r\n" +
-                            "   SELECT MAX(ID)\r\n" +
-                            "   FROM ReportGroups) + 1\r\n" +
-                            "IF(@newID IS NULL)\r\n" +
-                            "BEGIN\r\n" +
-                            "SET @newID = 1\r\n" +
-                            "END\r\n" +
-                            "INSERT INTO ReportGroups (ID, Name, PublicGroup)\r\n" +
-                            "VALUES (@newID, @groupname, @publicGroup)\r\n" +
-                            "SELECT *\r\n" +
-                            "FROM UserRptGroups\r\n" +
-                            "WHERE (UserName = @username) AND (RptGroupID = @newID)\r\n" +
-                            "IF(@@ROWCOUNT = 0)\r\n" +
-                            "BEGIN\r\n" +
-                            "   INSERT INTO UserRptGroups (UserName, RptGroupID)\r\n" +
-                            "   VALUES (@username, @newID)\r\n" +
-                            "END\r\n" +
+                        #region Create ItemWebValueHistory table
+                        commandText =
+                            "if exists (select * from dbo.sysobjects where id = " +
+                            "object_id(N'[dbo].[ItemWebValueHistory]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)\r\n" +
+                            "   drop table [dbo].[ItemWebValueHistory]\r\n\r\n" +
+                            "CREATE TABLE [dbo].[ItemWebValueHistory]\r\n" +
+                            "(\r\n" +
+                            "   [ValueDate] [datetime] NOT NULL ,\r\n" +
+                            "   [ItemID] [int] NOT NULL ,\r\n" +
+                            "   [RegionID] [int] NOT NULL ,\r\n" +
+                            "   [BuyValue] [numeric](18,2) NOT NULL ,\r\n" +
+                            "   [SellValue] [numeric](18,2) NOT NULL ,\r\n" +
+                            "   CONSTRAINT [PK_ItemWebValueHistory] PRIMARY KEY  CLUSTERED\r\n" +
+                            "   (\r\n" +
+                            "       [ValueDate],\r\n" +
+                            "       [ItemID],\r\n" +
+                            "       [RegionID]\r\n" +
+                            "   )\r\n" +
+                            ")\r\n" +
                             "RETURN";
 
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.3"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.9"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create database table 'ItemWebValueHistory'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.0.0.10")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'ReportGroupNew'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.4")) < 0)
-                {
-                    #region Update DividendFindByCorpAndDate stored procedure
-                    commandText =
-                            "ALTER PROCEDURE dbo.DividendFindByCorpAndDate\r\n" +
-                            "@corpID int,\r\n" +
-                            "@startDate datetime,\r\n" +
-                            "@endDate datetime,\r\n" +
-                            "@mustHaveJournal	bit,\r\n" +
-                            "@mustNotHaveJournal	bit\r\n" +
-                            "AS\r\n" +
-                            "IF(@mustHaveJournal = 0 AND @mustNotHaveJournal = 0)\r\n" +
+                        #region Change 'active' order status code from 0 to 999
+                        commandText =
+                            "SELECT * FROM OrderStates WHERE StateID = 999\r\n" +
+                            "IF(@@ROWCOUNT <= 0)\r\n" +
                             "BEGIN\r\n" +
-                            "   SELECT Dividends.*\r\n" +
-                            "   FROM Dividends\r\n" +
-                            "   WHERE (CorpID = @corpID OR @corpID = 0) AND (DateTime BETWEEN @startDate AND @endDate)\r\n" +
-                            "END\r\n" +
-                            "ELSE IF (@mustNotHaveJournal = 1)\r\n" +
-                            "BEGIN\r\n" +
-                            "   SELECT Dividends.*\r\n" +
-                            "   FROM Dividends\r\n" +
-                            "   WHERE (CorpID = @corpID OR @corpID = 0) AND (DateTime BETWEEN @startDate AND @endDate) AND\r\n" +
-                            "       (Dividends.DividendID NOT IN\r\n" +
-                            "       (\r\n" +
-                            "           SELECT JournalDividendLink.DividendID\r\n" +
-                            "           FROM JournalDividendLink\r\n" +
-                            "       ))\r\n" +
-                            "END\r\n" +
-                            "ELSE IF (@mustHaveJournal = 1)\r\n" +
-                            "BEGIN\r\n" +
-                            "   SELECT DISTINCT Dividends.*\r\n" +
-                            "   FROM Dividends\r\n" +
-                            "   INNER JOIN JournalDividendLink AS link ON link.DividendID = Dividends.DividendID\r\n" +
-                            "   WHERE (CorpID = @corpID OR @corpID = 0) AND (DateTime BETWEEN @startDate AND @endDate)\r\n" +
-                            "END\r\n" +
-                            "RETURN";
-
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.4"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'DividendFindByCorpAndDate'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.5")) < 0)
-                {
-                    #region Create EveAccountInUse stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'EveAccountInUse') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.EveAccountInUse\r\n" +
+                            "   INSERT INTO OrderStates ([StateID], [Description])\r\n" +
+                            "   VALUES (999, 'Active')\r\n" +
+                            "   DELETE FROM OrderStates WHERE StateID = 0\r\n" +
+                            "   UPDATE Orders\r\n" +
+                            "   SET OrderState = 999\r\n" +
+                            "   WHERE OrderState = 0\r\n" +
                             "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
 
-                    commandText =
-                            "CREATE PROCEDURE dbo.EveAccountInUse\r\n" +
-                            "@accountID		int,\r\n" +
-                            "@inUse			bit		OUTPUT\r\n" +
-                            "AS\r\n" +
-                            "SET NOCOUNT ON\r\n" +
-                            "SET @inUse = 0\r\n" +
-                            "SELECT RptGroupAccounts.*\r\n" +
-                            "FROM RptGroupAccounts\r\n" +
-                            "WHERE RptGroupAccounts.EveAccountID = @accountID\r\n" +
-                            "IF(@@ROWCOUNT > 0)\r\n" +
-                            "BEGIN\r\n" +
-                            "   SET @inUse = 1\r\n" +
-                            "END\r\n" +
-                            "RETURN";
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.10"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to Change 'active' order status code from 0 to 999.", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.0.0.11")) < 0)
+                    {
+                        #region Create ItemValueGet stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'ItemValueGet') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.ItemValueGet\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.5"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'EveAccountInUse'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.6")) < 0)
-                {
-                    #region Create PublicCorpAllowDelete stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'PublicCorpAllowDelete') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.PublicCorpAllowDelete\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        commandText =
+                                "CREATE PROCEDURE dbo.ItemValueGet\r\n" +
+                                "@valueDate		datetime,\r\n" +
+                                "@itemID		int,\r\n" +
+                                "@regionID		int,\r\n" +
+                                "@reportGroupID	int,\r\n" +
+                                "@buyPrice  	bit,\r\n" +
+                                "@webPrice  	bit,\r\n" +
+                                "@value         numeric(18,2)   OUTPUT,\r\n" +
+                                "@trueDate      datetime        OUTPUT\r\n" +
+                                "AS\r\n" +
+                                "SET NOCOUNT ON\r\n\r\n" +
 
-                    commandText =
-                            "CREATE PROCEDURE dbo.PublicCorpAllowDelete\r\n" +
-                            "@corpID		int,\r\n" +
-                            "@allowDelete	bit		OUTPUT\r\n" +
-                            "AS\r\n" +
-                            "SET NOCOUNT ON\r\n" +
-                            "DECLARE\r\n" +
-                            "   @counter1	int,\r\n" +
-                            "   @counter2	int,\r\n" +
-                            "   @counter3	int\r\n" +
-                            "SET @allowDelete = 0\r\n" +
-                            "SELECT @counter1 = COUNT(*) FROM Dividends WHERE CorpID = @corpID\r\n" +
-                            "SELECT @counter2 = COUNT(*) FROM WebLinks WHERE CorpID = @corpID\r\n" +
-                            "SELECT @counter3 = COUNT(*) FROM ShareTransaction WHERE CorpID = @corpID\r\n" +
-                            "IF(@counter1 = 0 AND @counter2 = 0 AND @counter3 = 0)\r\n" +
-                            "BEGIN\r\n" +
-                            "   SET @allowDelete = 1\r\n" +
-                            "END\r\n" +
-                            "RETURN";
+                                "IF (@buyPrice = 0 AND @webPrice = 0)\r\n" +
+                                "BEGIN\r\n" +
+                                "SELECT @value = SellValue, @trueDate = ValueDate FROM ItemValueHistory\r\n" +
+                                "WHERE ItemID = @itemID AND RegionID = @regionID AND ReportGroupID = @reportGroupID AND\r\n" +
+                                "   (ABS(DATEDIFF(hh, @valueDate, ValueDate)) =\r\n" +
+                                "   (\r\n" +
+                                "       SELECT MIN(ABS(DATEDIFF(hh, @valueDate, ValueDate)))\r\n" +
+                                "       FROM ItemValueHistory\r\n" +
+                                "       WHERE ItemID = @itemID AND RegionID = @regionID AND " +
+                                "           ReportGroupID = @reportGroupID AND NOT SellValue = 0\r\n" +
+                                "       ))\r\n" +
+                                "END\r\n\r\n" +
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                                "IF (@buyPrice = 0 AND NOT @webPrice = 0)\r\n" +
+                                "BEGIN\r\n" +
+                                "SELECT @value = SellValue, @trueDate = ValueDate FROM ItemWebValueHistory\r\n" +
+                                "WHERE ItemID = @itemID AND RegionID = @regionID AND\r\n" +
+                                "   (ABS(DATEDIFF(hh, @valueDate, ValueDate)) =\r\n" +
+                                "   (\r\n" +
+                                "       SELECT MIN(ABS(DATEDIFF(hh, @valueDate, ValueDate)))\r\n" +
+                                "       FROM ItemWebValueHistory\r\n" +
+                                "       WHERE ItemID = @itemID AND RegionID = @regionID AND NOT SellValue = 0\r\n" +
+                                "       ))\r\n" +
+                                "END\r\n\r\n" +
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.6"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'PublicCorpAllowDelete'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.7")) < 0)
-                {
-                    #region Create BankTransactionGetByID stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'BankTransactionGetByID') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.BankTransactionGetByID\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                                "IF (NOT @buyPrice = 0 AND @webPrice = 0)\r\n" +
+                                "BEGIN\r\n" +
+                                "SELECT @value = BuyValue, @trueDate = ValueDate FROM ItemValueHistory\r\n" +
+                                "WHERE ItemID = @itemID AND RegionID = @regionID AND ReportGroupID = @reportGroupID AND\r\n" +
+                                "   (ABS(DATEDIFF(hh, @valueDate, ValueDate)) =\r\n" +
+                                "   (\r\n" +
+                                "       SELECT MIN(ABS(DATEDIFF(hh, @valueDate, ValueDate)))\r\n" +
+                                "       FROM ItemValueHistory\r\n" +
+                                "       WHERE ItemID = @itemID AND RegionID = @regionID AND " +
+                                "           ReportGroupID = @reportGroupID AND NOT BuyValue = 0\r\n" +
+                                "       ))\r\n" +
+                                "END\r\n\r\n" +
 
-                    commandText =
-                            "CREATE PROCEDURE dbo.BankTransactionGetByID\r\n" +
-                            "@transactionID		bigint\r\n" +
-                            "AS\r\n" +
-                            "SET NOCOUNT ON\r\n" +
-                            "SELECT * FROM BankTransaction WHERE TransactionID = @transactionID\r\n" +
-                            "RETURN";
+                                "IF (NOT @buyPrice = 0 AND NOT @webPrice = 0)\r\n" +
+                                "BEGIN\r\n" +
+                                "SELECT @value = BuyValue, @trueDate = ValueDate FROM ItemWebValueHistory\r\n" +
+                                "WHERE ItemID = @itemID AND RegionID = @regionID AND\r\n" +
+                                "   (ABS(DATEDIFF(hh, @valueDate, ValueDate)) =\r\n" +
+                                "   (\r\n" +
+                                "       SELECT MIN(ABS(DATEDIFF(hh, @valueDate, ValueDate)))\r\n" +
+                                "       FROM ItemWebValueHistory\r\n" +
+                                "       WHERE ItemID = @itemID AND RegionID = @regionID AND NOT BuyValue = 0\r\n" +
+                                "       ))\r\n" +
+                                "END\r\n" +
+                                "RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.7"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.11"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'ItemValueGet'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.0.0.12")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'BankTransactionGetByID'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.8")) < 0)
-                {
-                    #region Create ItemValueHistory table
-                    commandText =
-                        "if exists (select * from dbo.sysobjects where id = " +
-                        "object_id(N'[dbo].[ItemValueHistory]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)\r\n" +
-                        "   drop table [dbo].[ItemValueHistory]\r\n\r\n" +
-                        "CREATE TABLE [dbo].[ItemValueHistory]\r\n" +
-                        "(\r\n" +
-                        "   [ValueDate] [datetime] NOT NULL ,\r\n" +
-                        "   [ItemID] [int] NOT NULL ,\r\n" +
-                        "   [RegionID] [int] NOT NULL ,\r\n" +
-                        "   [ReportGroupID] [int] NOT NULL ,\r\n" +
-                        "   [BuyValue] [numeric](18,2) NOT NULL ,\r\n" +
-                        "   [SellValue] [numeric](18,2) NOT NULL ,\r\n" +
-                        "   CONSTRAINT [PK_ItemValueHistory] PRIMARY KEY  CLUSTERED\r\n" +
-                        "   (\r\n" +
-                        "       [ValueDate],\r\n" +
-                        "       [ItemID],\r\n" +
-                        "       [RegionID],\r\n" +
-                        "       [ReportGroupID]\r\n" +
-                        "   )\r\n" +
-                        ")\r\n" +
-                        "RETURN";
+                        #region Create ItemValueSet stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'ItemValueSet') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.ItemValueSet\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.8"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create database table 'ItemValueHistory'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.9")) < 0)
-                {
-                    #region Create ItemWebValueHistory table
-                    commandText =
-                        "if exists (select * from dbo.sysobjects where id = " +
-                        "object_id(N'[dbo].[ItemWebValueHistory]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)\r\n" +
-                        "   drop table [dbo].[ItemWebValueHistory]\r\n\r\n" +
-                        "CREATE TABLE [dbo].[ItemWebValueHistory]\r\n" +
-                        "(\r\n" +
-                        "   [ValueDate] [datetime] NOT NULL ,\r\n" +
-                        "   [ItemID] [int] NOT NULL ,\r\n" +
-                        "   [RegionID] [int] NOT NULL ,\r\n" +
-                        "   [BuyValue] [numeric](18,2) NOT NULL ,\r\n" +
-                        "   [SellValue] [numeric](18,2) NOT NULL ,\r\n" +
-                        "   CONSTRAINT [PK_ItemWebValueHistory] PRIMARY KEY  CLUSTERED\r\n" +
-                        "   (\r\n" +
-                        "       [ValueDate],\r\n" +
-                        "       [ItemID],\r\n" +
-                        "       [RegionID]\r\n" +
-                        "   )\r\n" +
-                        ")\r\n" +
-                        "RETURN";
-
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.9"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create database table 'ItemWebValueHistory'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.10")) < 0)
-                {
-                    #region Change 'active' order status code from 0 to 999
-                    commandText =
-                        "SELECT * FROM OrderStates WHERE StateID = 999\r\n" +
-                        "IF(@@ROWCOUNT <= 0)\r\n" +
-                        "BEGIN\r\n" +
-                        "   INSERT INTO OrderStates ([StateID], [Description])\r\n" +
-                        "   VALUES (999, 'Active')\r\n" +
-                        "   DELETE FROM OrderStates WHERE StateID = 0\r\n" +
-                        "   UPDATE Orders\r\n" +
-                        "   SET OrderState = 999\r\n" +
-                        "   WHERE OrderState = 0\r\n" +
-                        "END";
-
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.10"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to Change 'active' order status code from 0 to 999.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.11")) < 0)
-                {
-                    #region Create ItemValueGet stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'ItemValueGet') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.ItemValueGet\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
-
-                    commandText =
-                            "CREATE PROCEDURE dbo.ItemValueGet\r\n" +
+                        commandText =
+                            "CREATE PROCEDURE dbo.ItemValueSet\r\n" +
                             "@valueDate		datetime,\r\n" +
                             "@itemID		int,\r\n" +
                             "@regionID		int,\r\n" +
                             "@reportGroupID	int,\r\n" +
                             "@buyPrice  	bit,\r\n" +
                             "@webPrice  	bit,\r\n" +
-                            "@value         numeric(18,2)   OUTPUT,\r\n" +
-                            "@trueDate      datetime        OUTPUT\r\n" +
+                            "@value         numeric(18,2)\r\n" +
                             "AS\r\n" +
+                            "DECLARE    @sellValue  numeric(18,2),\r\n" +
+                            "           @buyValue  numeric(18,2)\r\n" +
                             "SET NOCOUNT ON\r\n\r\n" +
 
-                            "IF (@buyPrice = 0 AND @webPrice = 0)\r\n" +
+                            "IF (@buyPrice = 0)\r\n" +
                             "BEGIN\r\n" +
-                            "SELECT @value = SellValue, @trueDate = ValueDate FROM ItemValueHistory\r\n" +
-                            "WHERE ItemID = @itemID AND RegionID = @regionID AND ReportGroupID = @reportGroupID AND\r\n" +
-                            "   (ABS(DATEDIFF(hh, @valueDate, ValueDate)) =\r\n" +
-                            "   (\r\n" +
-                            "       SELECT MIN(ABS(DATEDIFF(hh, @valueDate, ValueDate)))\r\n" +
-                            "       FROM ItemValueHistory\r\n" +
-                            "       WHERE ItemID = @itemID AND RegionID = @regionID AND " +
-                            "           ReportGroupID = @reportGroupID AND NOT SellValue = 0\r\n" +
-                            "       ))\r\n" +
+                            "   SET @sellValue = @value\r\n" +
+                            "   SET @buyValue = 0\r\n" +
+                            "END\r\n" +
+                            "ELSE\r\n" +
+                            "BEGIN\r\n" +
+                            "   SET @sellValue = 0\r\n" +
+                            "   SET @buyValue = @value\r\n" +
                             "END\r\n\r\n" +
 
-                            "IF (@buyPrice = 0 AND NOT @webPrice = 0)\r\n" +
+                            "IF (@webPrice = 0)\r\n" +
                             "BEGIN\r\n" +
-                            "SELECT @value = SellValue, @trueDate = ValueDate FROM ItemWebValueHistory\r\n" +
-                            "WHERE ItemID = @itemID AND RegionID = @regionID AND\r\n" +
-                            "   (ABS(DATEDIFF(hh, @valueDate, ValueDate)) =\r\n" +
-                            "   (\r\n" +
-                            "       SELECT MIN(ABS(DATEDIFF(hh, @valueDate, ValueDate)))\r\n" +
-                            "       FROM ItemWebValueHistory\r\n" +
-                            "       WHERE ItemID = @itemID AND RegionID = @regionID AND NOT SellValue = 0\r\n" +
-                            "       ))\r\n" +
-                            "END\r\n\r\n" +
-
-                            "IF (NOT @buyPrice = 0 AND @webPrice = 0)\r\n" +
+                            "   SELECT * FROM ItemValueHistory\r\n" +
+                            "   WHERE ValueDate = @valueDate AND ItemID = @itemID AND RegionID = @regionID AND\r\n" +
+                            "       ReportGroupID = @reportGroupID\r\n" +
+                            "   IF (@@ROWCOUNT <= 0)\r\n" +
+                            "   BEGIN\r\n" +
+                            "       INSERT INTO ItemValueHistory ([ValueDate], [ItemID], [RegionID], [ReportGroupID], [BuyValue], [SellValue])\r\n" +
+                            "       VALUES (@valueDate, @itemID, @regionID, @reportGroupID, @buyValue, @sellValue)\r\n" +
+                            "   END\r\n" +
+                            "   ELSE\r\n" +
+                            "   BEGIN\r\n" +
+                            "       IF (@buyPrice = 0)\r\n" +
+                            "       BEGIN\r\n" +
+                            "           UPDATE ItemValueHistory\r\n" +
+                            "           SET [SellValue] = @value\r\n" +
+                            "           WHERE ValueDate = @valueDate AND ItemID = @itemID AND RegionID = @regionID AND\r\n" +
+                            "               ReportGroupID = @reportGroupID\r\n" +
+                            "       END\r\n" +
+                            "       ELSE\r\n" +
+                            "       BEGIN\r\n" +
+                            "           UPDATE ItemValueHistory\r\n" +
+                            "           SET [BuyValue] = @value\r\n" +
+                            "           WHERE ValueDate = @valueDate AND ItemID = @itemID AND RegionID = @regionID AND\r\n" +
+                            "               ReportGroupID = @reportGroupID\r\n" +
+                            "       END\r\n" +
+                            "   END\r\n" +
+                            "END\r\n" +
+                            "ELSE\r\n" +
                             "BEGIN\r\n" +
-                            "SELECT @value = BuyValue, @trueDate = ValueDate FROM ItemValueHistory\r\n" +
-                            "WHERE ItemID = @itemID AND RegionID = @regionID AND ReportGroupID = @reportGroupID AND\r\n" +
-                            "   (ABS(DATEDIFF(hh, @valueDate, ValueDate)) =\r\n" +
-                            "   (\r\n" +
-                            "       SELECT MIN(ABS(DATEDIFF(hh, @valueDate, ValueDate)))\r\n" +
-                            "       FROM ItemValueHistory\r\n" +
-                            "       WHERE ItemID = @itemID AND RegionID = @regionID AND " +
-                            "           ReportGroupID = @reportGroupID AND NOT BuyValue = 0\r\n" +
-                            "       ))\r\n" +
-                            "END\r\n\r\n" +
-
-                            "IF (NOT @buyPrice = 0 AND NOT @webPrice = 0)\r\n" +
-                            "BEGIN\r\n" +
-                            "SELECT @value = BuyValue, @trueDate = ValueDate FROM ItemWebValueHistory\r\n" +
-                            "WHERE ItemID = @itemID AND RegionID = @regionID AND\r\n" +
-                            "   (ABS(DATEDIFF(hh, @valueDate, ValueDate)) =\r\n" +
-                            "   (\r\n" +
-                            "       SELECT MIN(ABS(DATEDIFF(hh, @valueDate, ValueDate)))\r\n" +
-                            "       FROM ItemWebValueHistory\r\n" +
-                            "       WHERE ItemID = @itemID AND RegionID = @regionID AND NOT BuyValue = 0\r\n" +
-                            "       ))\r\n" +
+                            "   SELECT * FROM ItemWebValueHistory\r\n" +
+                            "   WHERE ValueDate = @valueDate AND ItemID = @itemID AND RegionID = @regionID\r\n" +
+                            "   IF (@@ROWCOUNT <= 0)\r\n" +
+                            "   BEGIN\r\n" +
+                            "       INSERT INTO ItemWebValueHistory ([ValueDate], [ItemID], [RegionID], [BuyValue], [SellValue])\r\n" +
+                            "       VALUES (@valueDate, @itemID, @regionID, @buyValue, @sellValue)\r\n" +
+                            "   END\r\n" +
+                            "   ELSE\r\n" +
+                            "   BEGIN\r\n" +
+                            "       IF (@buyPrice = 0)\r\n" +
+                            "       BEGIN\r\n" +
+                            "           UPDATE ItemWebValueHistory\r\n" +
+                            "           SET [SellValue] = @value\r\n" +
+                            "           WHERE ValueDate = @valueDate AND ItemID = @itemID AND RegionID = @regionID\r\n" +
+                            "       END\r\n" +
+                            "       ELSE\r\n" +
+                            "       BEGIN\r\n" +
+                            "           UPDATE ItemWebValueHistory\r\n" +
+                            "           SET [BuyValue] = @value\r\n" +
+                            "           WHERE ValueDate = @valueDate AND ItemID = @itemID AND RegionID = @regionID\r\n" +
+                            "       END\r\n" +
+                            "   END\r\n" +
                             "END\r\n" +
                             "RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.11"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.12"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'ItemValueSet'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.0.0.13")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'ItemValueGet'.", ex);
+                        #region Update OrderGetByAnySingle stored procedure
+                        commandText =
+                                "ALTER PROCEDURE dbo.OrderGetByAnySingle\r\n" +
+                                "@ownerID			int,\r\n" +
+                                "@forCorp			bit,\r\n" +
+                                "@walletID			smallint,\r\n" +
+                                "@itemID			int,\r\n" +
+                                "@stationID			int,\r\n" +
+                                "@state             int,\r\n" +
+                                "@type              varchar(4)\r\n" +
+                                "AS\r\n" +
+                                "SET NOCOUNT ON\r\n" +
+                                "SELECT Orders.*\r\n" +
+                                "FROM Orders\r\n" +
+                                "WHERE (Orders.OwnerID = @ownerID) AND (Orders.ForCorp = @forCorp) AND (@walletID = 0 OR WalletID = @walletID)\r\n" +
+                                "   AND (@state = 0 OR Orders.OrderState = @state) AND (@itemID = 0 OR Orders.ItemID = @itemID)\r\n" +
+                                "   AND (@stationID = 0 OR Orders.StationID = @stationID)\r\n" +
+                                "   AND ((@type LIKE 'Sell' AND Orders.BuyOrder = 0) OR (@type LIKE 'Buy' AND Orders.BuyOrder = 1) OR (@type NOT LIKE 'Buy' AND @type NOT LIKE 'Sell'))\r\n" +
+                                "RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.13"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'OrderGetByAnySingle'.", ex);
+                        }
+                        #endregion
                     }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.12")) < 0)
-                {
-                    #region Create ItemValueSet stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'ItemValueSet') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.ItemValueSet\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
+                    if (dbVersion.CompareTo(new Version("1.0.0.14")) < 0)
                     {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        #region Update OrderGetAny stored procedure
+                        commandText =
+                                "ALTER PROCEDURE dbo.OrderGetAny\r\n" +
+                                "@accessList			varchar(max),\r\n" +
+                                "@itemIDs			varchar(max),\r\n" +
+                                "@stationIDs			varchar(max),\r\n" +
+                                "@state				int,\r\n" +
+                                "@type				varchar(4)\r\n" +
+                                "AS\r\n" +
+                                "SET NOCOUNT ON\r\n" +
+                                "SELECT Orders.*\r\n" +
+                                "FROM Orders\r\n" +
+                                "JOIN CLR_accesslist_split(@accessList) a ON (Orders.OwnerID = a.ownerID AND ((a.includeCorporate = 1 AND Orders.ForCorp = 1) OR (a.includePersonal = 1 AND Orders.ForCorp = 0)))\r\n" +
+                                "JOIN CLR_intlist_split(@itemIDs) i ON (Orders.ItemID = i.number OR i.number = 0)\r\n" +
+                                "JOIN CLR_intlist_split(@stationIDs) s ON (Orders.StationID = s.number OR s.number = 0)\r\n" +
+                                "WHERE (Orders.OrderState = @state OR @state = 0) AND ((@type LIKE 'Sell' AND Orders.BuyOrder = 0) OR (@type LIKE 'Buy' AND Orders.BuyOrder = 1) OR (@type NOT LIKE 'Buy' AND @type NOT LIKE 'Sell'))\r\n" +
+                                "RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.14"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'OrderGetAny'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception) { }
-
-                    commandText =
-                        "CREATE PROCEDURE dbo.ItemValueSet\r\n" +
-                        "@valueDate		datetime,\r\n" +
-                        "@itemID		int,\r\n" +
-                        "@regionID		int,\r\n" +
-                        "@reportGroupID	int,\r\n" +
-                        "@buyPrice  	bit,\r\n" +
-                        "@webPrice  	bit,\r\n" +
-                        "@value         numeric(18,2)\r\n" +
-                        "AS\r\n" +
-                        "DECLARE    @sellValue  numeric(18,2),\r\n" +
-                        "           @buyValue  numeric(18,2)\r\n" +
-                        "SET NOCOUNT ON\r\n\r\n" +
-
-                        "IF (@buyPrice = 0)\r\n" +
-                        "BEGIN\r\n" +
-                        "   SET @sellValue = @value\r\n" +
-                        "   SET @buyValue = 0\r\n" +
-                        "END\r\n" +
-                        "ELSE\r\n" +
-                        "BEGIN\r\n" +
-                        "   SET @sellValue = 0\r\n" +
-                        "   SET @buyValue = @value\r\n" +
-                        "END\r\n\r\n" +
-
-                        "IF (@webPrice = 0)\r\n" +
-                        "BEGIN\r\n" +
-                        "   SELECT * FROM ItemValueHistory\r\n" +
-                        "   WHERE ValueDate = @valueDate AND ItemID = @itemID AND RegionID = @regionID AND\r\n" +
-                        "       ReportGroupID = @reportGroupID\r\n" +
-                        "   IF (@@ROWCOUNT <= 0)\r\n" +
-                        "   BEGIN\r\n" +
-                        "       INSERT INTO ItemValueHistory ([ValueDate], [ItemID], [RegionID], [ReportGroupID], [BuyValue], [SellValue])\r\n" +
-                        "       VALUES (@valueDate, @itemID, @regionID, @reportGroupID, @buyValue, @sellValue)\r\n" +
-                        "   END\r\n" +
-                        "   ELSE\r\n" +
-                        "   BEGIN\r\n" +
-                        "       IF (@buyPrice = 0)\r\n" +
-                        "       BEGIN\r\n" +
-                        "           UPDATE ItemValueHistory\r\n" +
-                        "           SET [SellValue] = @value\r\n" +
-                        "           WHERE ValueDate = @valueDate AND ItemID = @itemID AND RegionID = @regionID AND\r\n" +
-                        "               ReportGroupID = @reportGroupID\r\n" +
-                        "       END\r\n" +
-                        "       ELSE\r\n" +
-                        "       BEGIN\r\n" +
-                        "           UPDATE ItemValueHistory\r\n" +
-                        "           SET [BuyValue] = @value\r\n" +
-                        "           WHERE ValueDate = @valueDate AND ItemID = @itemID AND RegionID = @regionID AND\r\n" +
-                        "               ReportGroupID = @reportGroupID\r\n" +
-                        "       END\r\n" +
-                        "   END\r\n" +
-                        "END\r\n" +
-                        "ELSE\r\n" +
-                        "BEGIN\r\n" +
-                        "   SELECT * FROM ItemWebValueHistory\r\n" +
-                        "   WHERE ValueDate = @valueDate AND ItemID = @itemID AND RegionID = @regionID\r\n" +
-                        "   IF (@@ROWCOUNT <= 0)\r\n" +
-                        "   BEGIN\r\n" +
-                        "       INSERT INTO ItemWebValueHistory ([ValueDate], [ItemID], [RegionID], [BuyValue], [SellValue])\r\n" +
-                        "       VALUES (@valueDate, @itemID, @regionID, @buyValue, @sellValue)\r\n" +
-                        "   END\r\n" +
-                        "   ELSE\r\n" +
-                        "   BEGIN\r\n" +
-                        "       IF (@buyPrice = 0)\r\n" +
-                        "       BEGIN\r\n" +
-                        "           UPDATE ItemWebValueHistory\r\n" +
-                        "           SET [SellValue] = @value\r\n" +
-                        "           WHERE ValueDate = @valueDate AND ItemID = @itemID AND RegionID = @regionID\r\n" +
-                        "       END\r\n" +
-                        "       ELSE\r\n" +
-                        "       BEGIN\r\n" +
-                        "           UPDATE ItemWebValueHistory\r\n" +
-                        "           SET [BuyValue] = @value\r\n" +
-                        "           WHERE ValueDate = @valueDate AND ItemID = @itemID AND RegionID = @regionID\r\n" +
-                        "       END\r\n" +
-                        "   END\r\n" +
-                        "END\r\n" +
-                        "RETURN";
-
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
+                    if (dbVersion.CompareTo(new Version("1.0.0.15")) < 0)
                     {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.12"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'ItemValueSet'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.13")) < 0)
-                {
-                    #region Update OrderGetByAnySingle stored procedure
-                    commandText =
-                            "ALTER PROCEDURE dbo.OrderGetByAnySingle\r\n" +
-                            "@ownerID			int,\r\n" +
-                            "@forCorp			bit,\r\n" +
-                            "@walletID			smallint,\r\n" +
-                            "@itemID			int,\r\n" +
-                            "@stationID			int,\r\n" +
-                            "@state             int,\r\n" +
-                            "@type              varchar(4)\r\n" +
-                            "AS\r\n" +
-                            "SET NOCOUNT ON\r\n" +
-                            "SELECT Orders.*\r\n" +
-                            "FROM Orders\r\n" +
-                            "WHERE (Orders.OwnerID = @ownerID) AND (Orders.ForCorp = @forCorp) AND (@walletID = 0 OR WalletID = @walletID)\r\n" +
-                            "   AND (@state = 0 OR Orders.OrderState = @state) AND (@itemID = 0 OR Orders.ItemID = @itemID)\r\n" +
-                            "   AND (@stationID = 0 OR Orders.StationID = @stationID)\r\n" +
-                            "   AND ((@type LIKE 'Sell' AND Orders.BuyOrder = 0) OR (@type LIKE 'Buy' AND Orders.BuyOrder = 1) OR (@type NOT LIKE 'Buy' AND @type NOT LIKE 'Sell'))\r\n" +
-                            "RETURN";
+                        #region Update JournalGetByInvName stored procedure
+                        commandText =
+                                "ALTER PROCEDURE dbo.JournalGetByInvName\r\n" +
+                                "@accessParams	varchar(MAX),\r\n" +
+                                "@typeIDs		varchar(max),\r\n" +
+                                "@startDate		datetime,\r\n" +
+                                "@endDate		datetime,\r\n" +
+                                "@text			varchar(100)\r\n" +
+                                "AS\r\n" +
+                                "SET NOCOUNT ON\r\n" +
+                                "SELECT Journal.*\r\n" +
+                                "FROM Journal INNER JOIN (SELECT ID FROM Names WHERE (Name LIKE @text)) AS charList\r\n" +
+                                "   ON (Journal.RecieverID = charList.ID OR Journal.RCorpID = charList.ID OR Journal.SenderID = charList.ID OR Journal.SCorpID = charList.ID)\r\n" +
+                                "JOIN CLR_financelist_split(@accessParams) a ON(\r\n" +
+                                "   ((Journal.SenderID = a.ownerID OR Journal.SCorpID = a.ownerID) AND (a.walletID1 = 0 OR (Journal.SWalletID = a.walletID1 OR Journal.SWalletID = a.walletID2 OR Journal.SWalletID = a.walletID3 OR Journal.SWalletID = a.walletID4 OR Journal.SWalletID = a.walletID5 OR Journal.SWalletID = a.walletID6))) OR \r\n" +
+                                "   ((Journal.RecieverID = a.ownerID OR Journal.RCorpID = a.ownerID) AND (a.walletID1 = 0 OR  (Journal.RWalletID = a.walletID1 OR Journal.RWalletID = a.walletID2 OR Journal.RWalletID = a.walletID3 OR Journal.RWalletID = a.walletID4 OR Journal.RWalletID = a.walletID5 OR Journal.RWalletID = a.walletID6))) OR a.ownerID = 0)\r\n" +
+                                "JOIN CLR_intlist_split(@typeIDs) i ON (Journal.TypeID = i.number OR i.number = 0)\r\n" +
+                                "WHERE (Date BETWEEN @startDate AND @endDate)\r\n" +
+                                "ORDER BY Date\r\n" +
+                                "RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.13"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.15"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'JournalGetByInvName'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.0.0.16")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'OrderGetByAnySingle'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.14")) < 0)
-                {
-                    #region Update OrderGetAny stored procedure
-                    commandText =
-                            "ALTER PROCEDURE dbo.OrderGetAny\r\n" +
-                            "@accessList			varchar(max),\r\n" +
-                            "@itemIDs			varchar(max),\r\n" +
-                            "@stationIDs			varchar(max),\r\n" +
-                            "@state				int,\r\n" +
-                            "@type				varchar(4)\r\n" +
-                            "AS\r\n" +
-                            "SET NOCOUNT ON\r\n" +
-                            "SELECT Orders.*\r\n" +
-                            "FROM Orders\r\n" +
-                            "JOIN CLR_accesslist_split(@accessList) a ON (Orders.OwnerID = a.ownerID AND ((a.includeCorporate = 1 AND Orders.ForCorp = 1) OR (a.includePersonal = 1 AND Orders.ForCorp = 0)))\r\n" +
-                            "JOIN CLR_intlist_split(@itemIDs) i ON (Orders.ItemID = i.number OR i.number = 0)\r\n" +
-                            "JOIN CLR_intlist_split(@stationIDs) s ON (Orders.StationID = s.number OR s.number = 0)\r\n" +
-                            "WHERE (Orders.OrderState = @state OR @state = 0) AND ((@type LIKE 'Sell' AND Orders.BuyOrder = 0) OR (@type LIKE 'Buy' AND Orders.BuyOrder = 1) OR (@type NOT LIKE 'Buy' AND @type NOT LIKE 'Sell'))\r\n" +
-                            "RETURN";
+                        #region Change type of Assets.Quantity column to bigint
+                        commandText =
+                                "ALTER TABLE dbo.Assets\r\n" +
+                                "ALTER COLUMN Quantity bigint NOT NULL";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.14"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.16"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem changing type of Assets.Quantity column to bigint.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.0.0.17")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'OrderGetAny'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.15")) < 0)
-                {
-                    #region Update JournalGetByInvName stored procedure
-                    commandText =
-                            "ALTER PROCEDURE dbo.JournalGetByInvName\r\n" +
-                            "@accessParams	varchar(MAX),\r\n" +
-                            "@typeIDs		varchar(max),\r\n" +
-                            "@startDate		datetime,\r\n" +
-                            "@endDate		datetime,\r\n" +
-                            "@text			varchar(100)\r\n" +
-                            "AS\r\n" +
-                            "SET NOCOUNT ON\r\n" +
-                            "SELECT Journal.*\r\n" +
-                            "FROM Journal INNER JOIN (SELECT ID FROM Names WHERE (Name LIKE @text)) AS charList\r\n" +
-                            "   ON (Journal.RecieverID = charList.ID OR Journal.RCorpID = charList.ID OR Journal.SenderID = charList.ID OR Journal.SCorpID = charList.ID)\r\n" +
-                            "JOIN CLR_financelist_split(@accessParams) a ON(\r\n" +
-                            "   ((Journal.SenderID = a.ownerID OR Journal.SCorpID = a.ownerID) AND (a.walletID1 = 0 OR (Journal.SWalletID = a.walletID1 OR Journal.SWalletID = a.walletID2 OR Journal.SWalletID = a.walletID3 OR Journal.SWalletID = a.walletID4 OR Journal.SWalletID = a.walletID5 OR Journal.SWalletID = a.walletID6))) OR \r\n" +
-                            "   ((Journal.RecieverID = a.ownerID OR Journal.RCorpID = a.ownerID) AND (a.walletID1 = 0 OR  (Journal.RWalletID = a.walletID1 OR Journal.RWalletID = a.walletID2 OR Journal.RWalletID = a.walletID3 OR Journal.RWalletID = a.walletID4 OR Journal.RWalletID = a.walletID5 OR Journal.RWalletID = a.walletID6))) OR a.ownerID = 0)\r\n" +
-                            "JOIN CLR_intlist_split(@typeIDs) i ON (Journal.TypeID = i.number OR i.number = 0)\r\n" +
-                            "WHERE (Date BETWEEN @startDate AND @endDate)\r\n" +
-                            "ORDER BY Date\r\n" +
-                            "RETURN";
-
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.15"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'JournalGetByInvName'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.16")) < 0)
-                {
-                    #region Change type of Assets.Quantity column to bigint
-                    commandText =
-                            "ALTER TABLE dbo.Assets\r\n" +
-                            "ALTER COLUMN Quantity bigint NOT NULL";
-
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.16"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem changing type of Assets.Quantity column to bigint.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.17")) < 0)
-                {
-                    #region Update AssetsAddQuantity stored procedure
-                    commandText = @"ALTER PROCEDURE dbo.AssetsAddQuantity 
+                        #region Update AssetsAddQuantity stored procedure
+                        commandText = @"ALTER PROCEDURE dbo.AssetsAddQuantity 
 	@ownerID		int,
 	@corpAsset		bit,
 	@itemID			int,
@@ -849,24 +852,24 @@ AS
 	END
 	
 	RETURN";
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.17"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.17"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'AssetsAddQuantity'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.0.0.18")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'AssetsAddQuantity'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.18")) < 0)
-                {
-                    #region Update AssetsInsert stored procedure
-                    commandText = @"ALTER PROCEDURE dbo.AssetsInsert
+                        #region Update AssetsInsert stored procedure
+                        commandText = @"ALTER PROCEDURE dbo.AssetsInsert
 	@OwnerID		int,
 	@CorpAsset		bit,
 	@LocationID		int,
@@ -890,24 +893,24 @@ AS
 	FROM Assets 
 	WHERE (ID = @newID)
 	RETURN";
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.18"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.18"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'AssetsInsert'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.0.0.19")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'AssetsInsert'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.0.0.19")) < 0)
-                {
-                    #region Update AssetsUpdate stored procedure
-                    commandText = @"ALTER PROCEDURE dbo.AssetsUpdate
+                        #region Update AssetsUpdate stored procedure
+                        commandText = @"ALTER PROCEDURE dbo.AssetsUpdate
 	@ID				bigint,
 	@OwnerID		int,
 	@CorpAsset		bit,
@@ -931,149 +934,149 @@ AS
 	WHERE (ID = @ID)
 	
 	RETURN";
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.0.0.19"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.0.0.19"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'AssetsUpdate'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.3")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'AssetsUpdate'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.3")) < 0)
-                {
-                    #region Create ReprocessJob table
-                    commandText =
-                        "if exists (select * from dbo.sysobjects where id = " +
-                        "object_id(N'[dbo].[ReprocessJob]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)\r\n" +
-                        "   drop table [dbo].[ReprocessJob]\r\n\r\n" +
-                        "CREATE TABLE [dbo].[ReprocessJob]\r\n" +
-                        "(\r\n" +
-                        "   [ID] [int] IDENTITY ,\r\n" +
-                        "   [JobDate] [datetime] NOT NULL ,\r\n" +
-                        "   [StationID] [int] NOT NULL ,\r\n" +
-                        "   [GroupID] [int] NOT NULL ,\r\n" +
-                        "   [OwnerID] [int] NOT NULL ,\r\n" +
-                        "   CONSTRAINT [PK_ReprocessJob] PRIMARY KEY  NONCLUSTERED\r\n" +
-                        "   (\r\n" +
-                        "       [ID]\r\n" +
-                        "   )\r\n" +
-                        ")\r\n" +
-                        "\r\n" +
-                        "CREATE INDEX ix_reprocessjob_date ON dbo.ReprocessJob (JobDate)\r\n" +
-                        "CREATE CLUSTERED INDEX ix_reprocessjob_group ON dbo.ReprocessJob (GroupID)\r\n" +
-                        "RETURN";
+                        #region Create ReprocessJob table
+                        commandText =
+                            "if exists (select * from dbo.sysobjects where id = " +
+                            "object_id(N'[dbo].[ReprocessJob]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)\r\n" +
+                            "   drop table [dbo].[ReprocessJob]\r\n\r\n" +
+                            "CREATE TABLE [dbo].[ReprocessJob]\r\n" +
+                            "(\r\n" +
+                            "   [ID] [int] IDENTITY ,\r\n" +
+                            "   [JobDate] [datetime] NOT NULL ,\r\n" +
+                            "   [StationID] [int] NOT NULL ,\r\n" +
+                            "   [GroupID] [int] NOT NULL ,\r\n" +
+                            "   [OwnerID] [int] NOT NULL ,\r\n" +
+                            "   CONSTRAINT [PK_ReprocessJob] PRIMARY KEY  NONCLUSTERED\r\n" +
+                            "   (\r\n" +
+                            "       [ID]\r\n" +
+                            "   )\r\n" +
+                            ")\r\n" +
+                            "\r\n" +
+                            "CREATE INDEX ix_reprocessjob_date ON dbo.ReprocessJob (JobDate)\r\n" +
+                            "CREATE CLUSTERED INDEX ix_reprocessjob_group ON dbo.ReprocessJob (GroupID)\r\n" +
+                            "RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.3"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.3"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create database table 'ReprocessJob'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.4")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create database table 'ReprocessJob'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.4")) < 0)
-                {
-                    #region Create ReprocessItem table
-                    commandText =
-                        "if exists (select * from dbo.sysobjects where id = " +
-                        "object_id(N'[dbo].[ReprocessItem]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)\r\n" +
-                        "   drop table [dbo].[ReprocessItem]\r\n\r\n" +
-                        "CREATE TABLE [dbo].[ReprocessItem]\r\n" +
-                        "(\r\n" +
-                        "   [JobID] [int] NOT NULL ,\r\n" +
-                        "   [ItemID] [int] NOT NULL ,\r\n" +
-                        "   [Quantity] [bigint] NOT NULL ,\r\n" +
-                        "   [BuyPrice] [numeric](18,2) NOT NULL ,\r\n" +
-                        "   CONSTRAINT [PK_ReprocessItem] PRIMARY KEY  CLUSTERED\r\n" +
-                        "   (\r\n" +
-                        "       [JobID],\r\n" +
-                        "       [ItemID]\r\n" +
-                        "   )\r\n" +
-                        ")\r\n" +
-                        "CREATE INDEX ix_reprocessitem_item ON dbo.ReprocessItem (ItemID)\r\n" +
-                        "RETURN";
+                        #region Create ReprocessItem table
+                        commandText =
+                            "if exists (select * from dbo.sysobjects where id = " +
+                            "object_id(N'[dbo].[ReprocessItem]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)\r\n" +
+                            "   drop table [dbo].[ReprocessItem]\r\n\r\n" +
+                            "CREATE TABLE [dbo].[ReprocessItem]\r\n" +
+                            "(\r\n" +
+                            "   [JobID] [int] NOT NULL ,\r\n" +
+                            "   [ItemID] [int] NOT NULL ,\r\n" +
+                            "   [Quantity] [bigint] NOT NULL ,\r\n" +
+                            "   [BuyPrice] [numeric](18,2) NOT NULL ,\r\n" +
+                            "   CONSTRAINT [PK_ReprocessItem] PRIMARY KEY  CLUSTERED\r\n" +
+                            "   (\r\n" +
+                            "       [JobID],\r\n" +
+                            "       [ItemID]\r\n" +
+                            "   )\r\n" +
+                            ")\r\n" +
+                            "CREATE INDEX ix_reprocessitem_item ON dbo.ReprocessItem (ItemID)\r\n" +
+                            "RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.4"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.4"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create database table 'ReprocessItem'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.5")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create database table 'ReprocessItem'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.5")) < 0)
-                {
-                    #region Create ReprocessResult table
-                    commandText =
-                        "if exists (select * from dbo.sysobjects where id = " +
-                        "object_id(N'[dbo].[ReprocessResult]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)\r\n" +
-                        "   drop table [dbo].[ReprocessResult]\r\n\r\n" +
-                        "CREATE TABLE [dbo].[ReprocessResult]\r\n" +
-                        "(\r\n" +
-                        "   [JobID] [int] NOT NULL ,\r\n" +
-                        "   [ItemID] [int] NOT NULL ,\r\n" +
-                        "   [JobDate] [datetime] NOT NULL, \r\n" +
-                        "   [Quantity] [bigint] NOT NULL ,\r\n" +
-                        "   [EffectiveBuyPrice] [numeric](18,2) NOT NULL ,\r\n" +
-                        "   [EstSellPrice] [numeric](18,2) NOT NULL ,\r\n" +
-                        "   CONSTRAINT [PK_ReprocessResult] PRIMARY KEY  CLUSTERED\r\n" +
-                        "   (\r\n" +
-                        "       [JobID],\r\n" +
-                        "       [ItemID]\r\n" +
-                        "   )\r\n" +
-                        ")\r\n" +
-                        "CREATE INDEX ix_reprocessresult_item ON dbo.ReprocessResult (ItemID)\r\n" +
-                        "RETURN";
+                        #region Create ReprocessResult table
+                        commandText =
+                            "if exists (select * from dbo.sysobjects where id = " +
+                            "object_id(N'[dbo].[ReprocessResult]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)\r\n" +
+                            "   drop table [dbo].[ReprocessResult]\r\n\r\n" +
+                            "CREATE TABLE [dbo].[ReprocessResult]\r\n" +
+                            "(\r\n" +
+                            "   [JobID] [int] NOT NULL ,\r\n" +
+                            "   [ItemID] [int] NOT NULL ,\r\n" +
+                            "   [JobDate] [datetime] NOT NULL, \r\n" +
+                            "   [Quantity] [bigint] NOT NULL ,\r\n" +
+                            "   [EffectiveBuyPrice] [numeric](18,2) NOT NULL ,\r\n" +
+                            "   [EstSellPrice] [numeric](18,2) NOT NULL ,\r\n" +
+                            "   CONSTRAINT [PK_ReprocessResult] PRIMARY KEY  CLUSTERED\r\n" +
+                            "   (\r\n" +
+                            "       [JobID],\r\n" +
+                            "       [ItemID]\r\n" +
+                            "   )\r\n" +
+                            ")\r\n" +
+                            "CREATE INDEX ix_reprocessresult_item ON dbo.ReprocessResult (ItemID)\r\n" +
+                            "RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.5"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.5"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create database table 'ReprocessResult'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.6")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create database table 'ReprocessResult'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.6")) < 0)
-                {
-                    #region Create ReprocessItemGetByJob stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'ReprocessItemGetByJob') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.ReprocessItemGetByJob\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Create ReprocessItemGetByJob stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'ReprocessItemGetByJob') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.ReprocessItemGetByJob\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.ReprocessItemGetByJob
+                        commandText = @"CREATE PROCEDURE dbo.ReprocessItemGetByJob
 	@jobID		int
 AS
 	SELECT * 
@@ -1082,37 +1085,37 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.6"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.6"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'ReprocessItemGetByJob'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.7")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'ReprocessItemGetByJob'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.7")) < 0)
-                {
-                    #region Create ReprocessResultsGetByJob stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'ReprocessResultsGetByJob') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.ReprocessResultsGetByJob\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Create ReprocessResultsGetByJob stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'ReprocessResultsGetByJob') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.ReprocessResultsGetByJob\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.ReprocessResultsGetByJob
+                        commandText = @"CREATE PROCEDURE dbo.ReprocessResultsGetByJob
 	@jobID		int
 AS
 	SELECT * 
@@ -1121,37 +1124,37 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.7"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.7"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'ReprocessResultsGetByJob'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.8")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'ReprocessResultsGetByJob'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.8")) < 0)
-                {
-                    #region Create ReprocessJobsGetByGroup stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'ReprocessJobsGetByGroup') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.ReprocessJobsGetByGroup\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Create ReprocessJobsGetByGroup stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'ReprocessJobsGetByGroup') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.ReprocessJobsGetByGroup\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.ReprocessJobsGetByGroup
+                        commandText = @"CREATE PROCEDURE dbo.ReprocessJobsGetByGroup
 	@groupID		int
 AS
 	SELECT * 
@@ -1160,37 +1163,37 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.8"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.8"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'ReprocessJobsGetByGroup'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.9")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'ReprocessJobsGetByGroup'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.9")) < 0)
-                {
-                    #region Create ReprocessResultsGetByItem stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'ReprocessResultsGetByItem') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.ReprocessResultsGetByItem\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Create ReprocessResultsGetByItem stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'ReprocessResultsGetByItem') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.ReprocessResultsGetByItem\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.ReprocessResultsGetByItem
+                        commandText = @"CREATE PROCEDURE dbo.ReprocessResultsGetByItem
 	@itemID		int,
     @groupID    int
 AS
@@ -1207,37 +1210,37 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.9"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.9"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'ReprocessResultsGetByItem'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.10")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'ReprocessResultsGetByItem'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.10")) < 0)
-                {
-                    #region Create ReprocessJobsGetByID stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'ReprocessJobsGetByID') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.ReprocessJobsGetByID\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Create ReprocessJobsGetByID stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'ReprocessJobsGetByID') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.ReprocessJobsGetByID\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.ReprocessJobsGetByID
+                        commandText = @"CREATE PROCEDURE dbo.ReprocessJobsGetByID
 	@jobID		int
 AS
 	SELECT * 
@@ -1246,37 +1249,37 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.10"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.10"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'ReprocessJobsGetByID'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.11")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'ReprocessJobsGetByID'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.11")) < 0)
-                {
-                    #region Create ReprocessItemClearByJob stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'ReprocessItemClearByJob') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.ReprocessItemClearByJob\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Create ReprocessItemClearByJob stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'ReprocessItemClearByJob') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.ReprocessItemClearByJob\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.ReprocessItemClearByJob
+                        commandText = @"CREATE PROCEDURE dbo.ReprocessItemClearByJob
 	@jobID		int
 AS
 	DELETE 
@@ -1285,37 +1288,37 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.11"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.11"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'ReprocessItemClearByJob'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.12")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'ReprocessItemClearByJob'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.12")) < 0)
-                {
-                    #region Create ReprocessResultsClearByJob stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'ReprocessResultsClearByJob') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.ReprocessResultsClearByJob\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Create ReprocessResultsClearByJob stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'ReprocessResultsClearByJob') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.ReprocessResultsClearByJob\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.ReprocessResultsClearByJob
+                        commandText = @"CREATE PROCEDURE dbo.ReprocessResultsClearByJob
 	@jobID		int
 AS
 	DELETE 
@@ -1324,37 +1327,37 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.12"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.12"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'ReprocessResultsClearByJob'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.13")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'ReprocessResultsClearByJob'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.13")) < 0)
-                {
-                    #region Update AssetsGetByLocationAndItem stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'AssetsGetByLocationAndItem') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.AssetsGetByLocationAndItem\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update AssetsGetByLocationAndItem stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'AssetsGetByLocationAndItem') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.AssetsGetByLocationAndItem\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.AssetsGetByLocationAndItem 
+                        commandText = @"CREATE PROCEDURE dbo.AssetsGetByLocationAndItem 
 	@accessList			varchar(max),
 	@regionIDs			varchar(max),
 	@systemID			int,
@@ -1382,37 +1385,37 @@ END
 
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.13"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.13"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'AssetsGetByLocationAndItem'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.14")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'AssetsGetByLocationAndItem'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.14")) < 0)
-                {
-                    #region Create ReprocessJobStoreNew stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'ReprocessJobStoreNew') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.ReprocessJobStoreNew\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Create ReprocessJobStoreNew stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'ReprocessJobStoreNew') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.ReprocessJobStoreNew\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.ReprocessJobStoreNew 
+                        commandText = @"CREATE PROCEDURE dbo.ReprocessJobStoreNew 
 	@jobDate	datetime,
 	@stationID	int,
 	@groupID	int,
@@ -1429,37 +1432,37 @@ AS
 	WHERE (ID = @newID)
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.14"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.14"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'ReprocessJobStoreNew'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.15")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'ReprocessJobStoreNew'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.15")) < 0)
-                {
-                    #region Update TransGetItemIDs stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'TransGetItemIDs') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.TransGetItemIDs\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update TransGetItemIDs stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'TransGetItemIDs') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.TransGetItemIDs\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.TransGetItemIDs
+                        commandText = @"CREATE PROCEDURE dbo.TransGetItemIDs
 	@accessParams		varchar(max),
 	@minUnits			int,
 	@minDate			datetime,
@@ -1475,24 +1478,24 @@ AS
 	HAVING SUM(CAST(Quantity AS bigint)) > @minUnits
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.15"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.15"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'TransGetItemIDs'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.16")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'TransGetItemIDs'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.16")) < 0)
-                {
-                    #region Update OrdersFinishUnProcessed stored procedure
-                    commandText = @"ALTER PROCEDURE dbo.OrdersFinishUnProcessed 
+                        #region Update OrdersFinishUnProcessed stored procedure
+                        commandText = @"ALTER PROCEDURE dbo.OrdersFinishUnProcessed 
 	@ownerID		int,
 	@notify			bit,
 	@notifyBuy		bit,
@@ -1511,24 +1514,24 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.16"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.16"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'OrdersFinishUnProcessed'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.17")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'OrdersFinishUnProcessed'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.17")) < 0)
-                {
-                    #region Update BankTransactionClearAfter stored procedure
-                    commandText = @"ALTER PROCEDURE dbo.BankTransactionClearAfter 
+                        #region Update BankTransactionClearAfter stored procedure
+                        commandText = @"ALTER PROCEDURE dbo.BankTransactionClearAfter 
 	@accountID	int,
 	@corpID		int,
 	@date		datetime,
@@ -1554,121 +1557,121 @@ AS
 	END
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.17"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.17"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'BankTransactionClearAfter'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.0.18")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'BankTransactionClearAfter'.", ex);
+                        #region Add 'DefaultBuyPrice' column to TradedItems table
+                        commandText =
+                                "ALTER TABLE dbo.TradedItems\r\n" +
+                                "ADD DefaultBuyPrice numeric(18,2) NOT NULL DEFAULT 0";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.0.18"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'DefaultBuyPrice' column to TradedItems table", ex);
+                        }
+                        #endregion
                     }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.0.18")) < 0)
-                {
-                    #region Add 'DefaultBuyPrice' column to TradedItems table
-                    commandText =
-                            "ALTER TABLE dbo.TradedItems\r\n" +
-                            "ADD DefaultBuyPrice numeric(18,2) NOT NULL DEFAULT 0";
-
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
+                    if (dbVersion.CompareTo(new Version("1.1.1.1")) < 0)
                     {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.0.18"));
+                        #region Add 'UseReprocessVal' column to TradedItems table
+                        commandText =
+                                "ALTER TABLE dbo.TradedItems\r\n" +
+                                "ADD UseReprocessVal bit NOT NULL DEFAULT 0";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.1.1"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'UseReprocessVal' column to TradedItems table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.1.8")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'DefaultBuyPrice' column to TradedItems table", ex);
+                        #region Add 'ForceDefaultSellPrice' and 'ForceDefaultBuyPrice' columns to TradedItems table
+                        commandText =
+                                "ALTER TABLE dbo.TradedItems\r\n" +
+                                "ADD ForceDefaultSellPrice bit NOT NULL DEFAULT 0\r\n" +
+                                "ALTER TABLE dbo.TradedItems\r\n" +
+                                "ADD ForceDefaultBuyPrice bit NOT NULL DEFAULT 0";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.1.8"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'ForceDefaultSellPrice' and 'ForceDefaultBuyPrice' columns to TradedItems table", ex);
+                        }
+                        #endregion
                     }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.1.1")) < 0)
-                {
-                    #region Add 'UseReprocessVal' column to TradedItems table
-                    commandText =
-                            "ALTER TABLE dbo.TradedItems\r\n" +
-                            "ADD UseReprocessVal bit NOT NULL DEFAULT 0";
-
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
+                    if (dbVersion.CompareTo(new Version("1.1.1.9")) < 0)
                     {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.1.1"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'UseReprocessVal' column to TradedItems table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.1.8")) < 0)
-                {
-                    #region Add 'ForceDefaultSellPrice' and 'ForceDefaultBuyPrice' columns to TradedItems table
-                    commandText =
-                            "ALTER TABLE dbo.TradedItems\r\n" +
-                            "ADD ForceDefaultSellPrice bit NOT NULL DEFAULT 0\r\n" +
-                            "ALTER TABLE dbo.TradedItems\r\n" +
-                            "ADD ForceDefaultBuyPrice bit NOT NULL DEFAULT 0";
+                        #region Add 'APICharID' column to RptGroupCorps table
+                        commandText =
+                                "ALTER TABLE dbo.RptGroupCorps\r\n" +
+                                "ADD APICharID int NOT NULL DEFAULT 0";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.1.8"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'ForceDefaultSellPrice' and 'ForceDefaultBuyPrice' columns to TradedItems table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.1.9")) < 0)
-                {
-                    #region Add 'APICharID' column to RptGroupCorps table
-                    commandText =
-                            "ALTER TABLE dbo.RptGroupCorps\r\n" +
-                            "ADD APICharID int NOT NULL DEFAULT 0";
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-
-                        commandText = @"ALTER TABLE dbo.RptGroupCorps
+                            commandText = @"ALTER TABLE dbo.RptGroupCorps
 DROP CONSTRAINT PK_RptGroupCorps";
-                        adapter = new SqlDataAdapter(commandText, connection);
-                        adapter.SelectCommand.ExecuteNonQuery();
+                            adapter = new SqlDataAdapter(commandText, connection);
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        commandText = @"ALTER TABLE dbo.RptGroupCorps
+                            commandText = @"ALTER TABLE dbo.RptGroupCorps
 ADD CONSTRAINT PK_RptGroupCorps PRIMARY KEY (ReportGroupID, APICorpID, APICharID) ";
-                        adapter = new SqlDataAdapter(commandText, connection);
-                        adapter.SelectCommand.ExecuteNonQuery();
+                            adapter = new SqlDataAdapter(commandText, connection);
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.1.1.9"));
+                            SetDBVersion(connection, new Version("1.1.1.9"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'APICharID' column to RptGroupCorps table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.1.10")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'APICharID' column to RptGroupCorps table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.1.10")) < 0)
-                {
-                    #region Update RptGroupSetHasCorp stored procedure
-                    commandText = @"ALTER PROCEDURE dbo.RptGroupSetHasCorp 
+                        #region Update RptGroupSetHasCorp stored procedure
+                        commandText = @"ALTER PROCEDURE dbo.RptGroupSetHasCorp 
 	@rptGroupID		int,
 	@apiCorpID		int,
 	@included		bit,
@@ -1688,24 +1691,24 @@ AS
 	END
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.1.10"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.1.10"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'RptGroupSetHasCorp'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.1.11")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'RptGroupSetHasCorp'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.1.11")) < 0)
-                {
-                    #region Update RptGroupCorpSettings stored procedure
-                    commandText = @"ALTER PROCEDURE dbo.RptGroupCorpSettings 
+                        #region Update RptGroupCorpSettings stored procedure
+                        commandText = @"ALTER PROCEDURE dbo.RptGroupCorpSettings 
 	@groupID	int,
 	@corpID		int,
 	@charID		int
@@ -1716,90 +1719,95 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.1.11"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.1.11"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'RptGroupCorpSettings'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.1.1.12")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'RptGroupCorpSettings'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.1.1.12")) < 0)
-                {
-                    #region Correct spelling mistake in OrderStates table
-                    commandText =
-                        @"UPDATE [OrderStates] SET [Description] = 'Expired/Filled'
+                        #region Correct spelling mistake in OrderStates table
+                        commandText =
+                            @"UPDATE [OrderStates] SET [Description] = 'Expired/Filled'
                         WHERE [StateID] = 2";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.1.1.12"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to correct spelling mistake in 'OrderStates' table.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.2.0.0")) < 0)
-                {
-                    #region Add 'OwnerID' column to BankAccount table
-                    commandText =
-                            "ALTER TABLE dbo.BankAccount\r\n" +
-                            "ADD OwnerID int NOT NULL DEFAULT 0";
-
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-
-                        SetDBVersion(connection, new Version("1.2.0.0"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'OwnerID' column to BankAccount table", ex);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.1.1.12"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to correct spelling mistake in 'OrderStates' table.", ex);
+                        }
+                        #endregion
                     }
                     #endregion
                 }
-                if (dbVersion.CompareTo(new Version("1.2.0.1")) < 0)
+                if (dbVersion.CompareTo(new Version("1.3.2.9")) < 0)
                 {
-                    #region Add 'RiskRatingID' column to PublicCorps table
-                    commandText =
-                            "ALTER TABLE dbo.PublicCorps\r\n" +
-                            "ADD RiskRatingID smallint NOT NULL DEFAULT 1";
-
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
+                    #region 1.2.0.0 - 1.3.2.9
+                    if (dbVersion.CompareTo(new Version("1.2.0.0")) < 0)
                     {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        #region Add 'OwnerID' column to BankAccount table
+                        commandText =
+                                "ALTER TABLE dbo.BankAccount\r\n" +
+                                "ADD OwnerID int NOT NULL DEFAULT 0";
 
-                        SetDBVersion(connection, new Version("1.2.0.1"));
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.2.0.0"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'OwnerID' column to BankAccount table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.2.0.1")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'RiskRatingID' column to PublicCorps table", ex);
+                        #region Add 'RiskRatingID' column to PublicCorps table
+                        commandText =
+                                "ALTER TABLE dbo.PublicCorps\r\n" +
+                                "ADD RiskRatingID smallint NOT NULL DEFAULT 1";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.2.0.1"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'RiskRatingID' column to PublicCorps table", ex);
+                        }
+                        #endregion
                     }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.2.0.2")) < 0)
-                {
-                    #region Create and populate 'RiskRating' table
-                    commandText =
-                            @"CREATE TABLE dbo.RiskRating
+                    if (dbVersion.CompareTo(new Version("1.2.0.2")) < 0)
+                    {
+                        #region Create and populate 'RiskRating' table
+                        commandText =
+                                @"CREATE TABLE dbo.RiskRating
 (
     ID  [smallint]  NOT NULL,
     Description [varchar](50) NOT NULL,
@@ -1810,14 +1818,14 @@ AS
 )
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        commandText =
-                            @"INSERT INTO  dbo.RiskRating([ID], [Description])
+                            commandText =
+                                @"INSERT INTO  dbo.RiskRating([ID], [Description])
 VALUES (1, 'Not rated')
 INSERT INTO  dbo.RiskRating([ID], [Description])
 VALUES (2, 'Low Risk')
@@ -1829,35 +1837,35 @@ INSERT INTO  dbo.RiskRating([ID], [Description])
 VALUES (5, 'Scam')
 RETURN";
 
+                            adapter = new SqlDataAdapter(commandText, connection);
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.2.0.2"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating and populating 'RiskRating' table", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.2.0.3")) < 0)
+                    {
+                        #region Create RiskRatingGetDesc stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'RiskRatingGetDesc') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.RiskRatingGetDesc\r\n" +
+                                "END";
                         adapter = new SqlDataAdapter(commandText, connection);
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                        SetDBVersion(connection, new Version("1.2.0.2"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating and populating 'RiskRating' table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.2.0.3")) < 0)
-                {
-                    #region Create RiskRatingGetDesc stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'RiskRatingGetDesc') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.RiskRatingGetDesc\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
-
-                    commandText = @"CREATE PROCEDURE dbo.RiskRatingGetDesc 
+                        commandText = @"CREATE PROCEDURE dbo.RiskRatingGetDesc 
 	@ratingID		smallint,
     @description    varchar(50)     OUTPUT
 AS
@@ -1867,24 +1875,24 @@ AS
 
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.2.0.3"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.2.0.3"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'RiskRatingGetDesc'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.2.0.4")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'RiskRatingGetDesc'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.2.0.4")) < 0)
-                {
-                    #region Update BankAccountGetByID stored procedure
-                    commandText = @"ALTER PROCEDURE dbo.BankAccountGetByID 
+                        #region Update BankAccountGetByID stored procedure
+                        commandText = @"ALTER PROCEDURE dbo.BankAccountGetByID 
 	@publicCorpID	int,
 	@reportGroupID	int,
 	@ownerID		int
@@ -1894,59 +1902,59 @@ AS
 	WHERE PublicCorpID = @publicCorpID AND ReportGroupID = @reportGroupID AND (OwnerID = @ownerID OR @ownerID = 0)
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.2.0.4"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.2.0.4"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'BankAccountGetByID'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.2.1.0")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'BankAccountGetByID'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.2.1.0")) < 0)
-                {
-                    #region Add 'ReprocExclude' column to Assets table
-                    commandText =
-                            "ALTER TABLE dbo.Assets\r\n" +
-                            "ADD ReprocExclude bit NOT NULL DEFAULT 0";
+                        #region Add 'ReprocExclude' column to Assets table
+                        commandText =
+                                "ALTER TABLE dbo.Assets\r\n" +
+                                "ADD ReprocExclude bit NOT NULL DEFAULT 0";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.2.1.0"));
+                            SetDBVersion(connection, new Version("1.2.1.0"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'ReprocExclude' column to Assets table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.2.1.1")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'ReprocExclude' column to Assets table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.2.1.1")) < 0)
-                {
-                    #region Create AssetsSetReprocExclude stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'AssetsSetReprocExclude') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.AssetsSetReprocExclude\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Create AssetsSetReprocExclude stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'AssetsSetReprocExclude') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.AssetsSetReprocExclude\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.AssetsSetReprocExclude		
+                        commandText = @"CREATE PROCEDURE dbo.AssetsSetReprocExclude		
 	@assetID		bigint,
 	@ownerID		int,
 	@locationID		int,
@@ -1961,37 +1969,37 @@ AS
 	WHERE (ID = @assetID OR (@AssetID = 0 AND (OwnerID = @ownerID) AND (LocationID = @locationID OR @locationID = 0) AND (ItemID = @itemID OR @itemID = 0) AND (ContainerID = @containerID OR @containerID = 0) AND (CorpAsset = @corpAsset) AND (Status = @status)))
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.2.1.1"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.2.1.1"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'AssetsSetReprocExclude'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.2.1.2")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'AssetsSetReprocExclude'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.2.1.2")) < 0)
-                {
-                    #region Update AssetsUpdate stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'AssetsUpdate') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.AssetsUpdate\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update AssetsUpdate stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'AssetsUpdate') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.AssetsUpdate\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.AssetsUpdate
+                        commandText = @"CREATE PROCEDURE dbo.AssetsUpdate
 	@ID				bigint,
 	@OwnerID		int,
 	@CorpAsset		bit,
@@ -2017,37 +2025,37 @@ AS
 	
 	RETURN   ";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.2.1.2"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.2.1.2"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'AssetsUpdate'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.2.1.3")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'AssetsUpdate'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.2.1.3")) < 0)
-                {
-                    #region Update AssetsInsert stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'AssetsInsert') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.AssetsInsert\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update AssetsInsert stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'AssetsInsert') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.AssetsInsert\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.AssetsInsert
+                        commandText = @"CREATE PROCEDURE dbo.AssetsInsert
 	@OwnerID		int,
 	@CorpAsset		bit,
 	@LocationID		int,
@@ -2073,37 +2081,37 @@ AS
 	WHERE (ID = @newID)
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.2.1.3"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.2.1.3"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'AssetsInsert'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.2.1.4")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'AssetsInsert'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.2.1.4")) < 0)
-                {
-                    #region Create AssetsGetReproc stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'AssetsGetReproc') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.AssetsGetReproc\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Create AssetsGetReproc stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'AssetsGetReproc') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.AssetsGetReproc\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.AssetsGetReproc		
+                        commandText = @"CREATE PROCEDURE dbo.AssetsGetReproc		
 	@ownerID				int,
 	@corpAsset				bit,
     @stationID				int,
@@ -2116,38 +2124,38 @@ AS
 	WHERE (ReprocExclude = 0) AND (OwnerID = @ownerID) AND (CorpAsset = @corpAsset) AND (LocationID = @stationID) AND (Status = @status) AND (ContainerID = 0) AND ((@includeContainers = 1 AND @includeNonContainers = 1) OR (@includeContainers = 1 AND IsContainer = 1) OR (@includeNonContainers = 1 AND IsContainer = 0)) 
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.2.1.4"));
+                            SetDBVersion(connection, new Version("1.2.1.4"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'AssetsGetReproc'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.2.1.5")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'AssetsGetReproc'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.2.1.5")) < 0)
-                {
-                    #region Update AssetsGetAutoConByOwner stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'AssetsGetAutoConByOwner') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.AssetsGetAutoConByOwner\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update AssetsGetAutoConByOwner stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'AssetsGetAutoConByOwner') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.AssetsGetAutoConByOwner\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.AssetsGetAutoConByOwner
+                        commandText = @"CREATE PROCEDURE dbo.AssetsGetAutoConByOwner
 	@ownerID			int,
 	@corpAsset			bit,
 	@stationID			int,
@@ -2160,38 +2168,38 @@ AS
 	ORDER BY LocationID
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.2.1.5"));
+                            SetDBVersion(connection, new Version("1.2.1.5"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'AssetsGetAutoConByOwner'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.2.1.6")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'AssetsGetAutoConByOwner'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.2.1.6")) < 0)
-                {
-                    #region Update AssetsGetAutoConByAny stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'AssetsGetAutoConByAny') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.AssetsGetAutoConByAny\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update AssetsGetAutoConByAny stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'AssetsGetAutoConByAny') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.AssetsGetAutoConByAny\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.AssetsGetAutoConByAny
+                        commandText = @"CREATE PROCEDURE dbo.AssetsGetAutoConByAny
 	@ownerID			int,
 	@corpAsset			bit,
 	@stationIDs			varchar(max),
@@ -2208,38 +2216,38 @@ AS
 	ORDER BY LocationID
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.2.1.6"));
+                            SetDBVersion(connection, new Version("1.2.1.6"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'AssetsGetAutoConByAny'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.2.1.7")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'AssetsGetAutoConByAny'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.2.1.7")) < 0)
-                {
-                    #region Update FixDuplicatedOrders stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'FixDuplicatedOrders') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.FixDuplicatedOrders\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update FixDuplicatedOrders stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'FixDuplicatedOrders') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.FixDuplicatedOrders\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE FixDuplicatedOrders 
+                        commandText = @"CREATE PROCEDURE FixDuplicatedOrders 
 AS
 BEGIN
 	UPDATE Orders
@@ -2258,25 +2266,25 @@ BEGIN
 	WHERE Processed = 0
 END";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.2.1.7"));
+                            SetDBVersion(connection, new Version("1.2.1.7"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'FixDuplicatedOrders'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.2.1.8")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'FixDuplicatedOrders'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.2.1.8")) < 0)
-                {
-                    #region Update OrderExists stored procedure
-                    commandText = @"ALTER PROCEDURE dbo.OrderExists
+                        #region Update OrderExists stored procedure
+                        commandText = @"ALTER PROCEDURE dbo.OrderExists
 	@ownerID		int,
 	@forCorp		bit,
 	@walletID		smallint,
@@ -2348,65 +2356,65 @@ AS
 
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.2.1.8"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.2.1.8"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'OrderExists'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.2.1.9")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'OrderExists'.", ex);
+                        #region Run FixDuplicatedOrders stored procedure
+                        commandText = "FixDuplicatedOrders";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        adapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.2.1.9"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to run stored procedure 'FixDuplicatedOrders'.", ex);
+                        }
+                        #endregion
                     }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.2.1.9")) < 0)
-                {
-                    #region Run FixDuplicatedOrders stored procedure
-                    commandText = "FixDuplicatedOrders";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    adapter.SelectCommand.CommandType = CommandType.StoredProcedure;
-                    try
+                    if (dbVersion.CompareTo(new Version("1.3.0.0")) < 0)
                     {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.2.1.9"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to run stored procedure 'FixDuplicatedOrders'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.0")) < 0)
-                {
-                    #region Add 'Type' column to Contracts table
-                    commandText =
-                            "ALTER TABLE dbo.Contracts\r\n" +
-                            "ADD Type smallint NOT NULL DEFAULT 1";
+                        #region Add 'Type' column to Contracts table
+                        commandText =
+                                "ALTER TABLE dbo.Contracts\r\n" +
+                                "ADD Type smallint NOT NULL DEFAULT 1";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.0"));
+                            SetDBVersion(connection, new Version("1.3.0.0"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'Type' column to Contracts table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.1")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'Type' column to Contracts table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.1")) < 0)
-                {
-                    #region Create and populate 'ContractType' table
-                    commandText =
-                            @"CREATE TABLE dbo.ContractType
+                        #region Create and populate 'ContractType' table
+                        commandText =
+                                @"CREATE TABLE dbo.ContractType
 (
     ID  [smallint]  NOT NULL,
     Description [varchar](50) NOT NULL,
@@ -2417,35 +2425,35 @@ AS
 )
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        commandText =
-                            @"INSERT INTO  dbo.ContractType([ID], [Description])
+                            commandText =
+                                @"INSERT INTO  dbo.ContractType([ID], [Description])
 VALUES (1, 'Courier Contract')
 INSERT INTO  dbo.ContractType([ID], [Description])
 VALUES (2, 'Item Exchange/Auction')
 RETURN";
 
-                        adapter = new SqlDataAdapter(commandText, connection);
-                        adapter.SelectCommand.ExecuteNonQuery();
+                            adapter = new SqlDataAdapter(commandText, connection);
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.1"));
+                            SetDBVersion(connection, new Version("1.3.0.1"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating and populating 'ContractType' table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.3")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating and populating 'ContractType' table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.3")) < 0)
-                {
-                    #region Update ContractsNew stored procedure
-                    commandText = @"ALTER PROCEDURE dbo.ContractsNew 
+                        #region Update ContractsNew stored procedure
+                        commandText = @"ALTER PROCEDURE dbo.ContractsNew 
 	@ownerID	int,
 	@status		int,
 	@pickupID	int,
@@ -2472,37 +2480,37 @@ AS
 
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.3.0.3"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.3.0.3"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'ContractsNew'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.5")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'ContractsNew'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.5")) < 0)
-                {
-                    #region Create ContractTypeGetDesc stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'ContractTypeGetDesc') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.ContractTypeGetDesc\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Create ContractTypeGetDesc stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'ContractTypeGetDesc') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.ContractTypeGetDesc\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.ContractTypeGetDesc		
+                        commandText = @"CREATE PROCEDURE dbo.ContractTypeGetDesc		
 	@id             smallint,
     @description    varchar(50)     OUTPUT
 AS
@@ -2511,38 +2519,38 @@ AS
 	WHERE ID = @id
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.5"));
+                            SetDBVersion(connection, new Version("1.3.0.5"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'ContractTypeGetDesc'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.7")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'ContractTypeGetDesc'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.7")) < 0)
-                {
-                    #region Create TransGetResultsPage stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'TransGetResultsPage') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.TransGetResultsPage\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Create TransGetResultsPage stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'TransGetResultsPage') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.TransGetResultsPage\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE [dbo].[TransGetResultsPage]
+                        commandText = @"CREATE PROCEDURE [dbo].[TransGetResultsPage]
     @startRow           int,
     @pageSize           int
 AS
@@ -2556,27 +2564,27 @@ SET NOCOUNT ON
 	ORDER BY RowNumber
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.7"));
+                            SetDBVersion(connection, new Version("1.3.0.7"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'TransGetResultsPage'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.8")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'TransGetResultsPage'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.8")) < 0)
-                {
-                    #region Create new index for Transactions
-                    try
-                    {
-                        commandText = @"IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Transactions]') AND name = N'IX_Transactions_DT')
+                        #region Create new index for Transactions
+                        try
+                        {
+                            commandText = @"IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Transactions]') AND name = N'IX_Transactions_DT')
         DROP INDEX [IX_Transactions_DT] ON [dbo].[Transactions] WITH ( ONLINE = OFF )
 
         CREATE NONCLUSTERED INDEX [IX_Transactions_DateTime] ON [dbo].[Transactions] 
@@ -2597,35 +2605,35 @@ RETURN";
         [SellerForCorp],
         [BuyerWalletID],
         [SellerWalletID])";
+                            adapter = new SqlDataAdapter(commandText, connection);
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.3.0.8"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create new index for Transactions.", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.3.0.9")) < 0)
+                    {
+                        #region Create AssetsBuildResults stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'AssetsBuildResults') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.AssetsBuildResults\r\n" +
+                                "END";
                         adapter = new SqlDataAdapter(commandText, connection);
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                        SetDBVersion(connection, new Version("1.3.0.8"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create new index for Transactions.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.9")) < 0)
-                {
-                    #region Create AssetsBuildResults stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'AssetsBuildResults') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.AssetsBuildResults\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
-
-                    commandText = @"CREATE PROCEDURE [dbo].[AssetsBuildResults]
+                        commandText = @"CREATE PROCEDURE [dbo].[AssetsBuildResults]
 	@accessList			varchar(max),
 	@itemIDs			varchar(max),
 	@status				int,
@@ -2702,38 +2710,38 @@ CREATE CLUSTERED INDEX [PK_tmp_AssetResults] ON [dbo].[tmp_AssetResults]
  
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.9"));
+                            SetDBVersion(connection, new Version("1.3.0.9"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'AssetsBuildResults'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.10")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'AssetsBuildResults'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.10")) < 0)
-                {
-                    #region Create AssetsGetResultsPage stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'AssetsGetResultsPage') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.AssetsGetResultsPage\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Create AssetsGetResultsPage stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'AssetsGetResultsPage') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.AssetsGetResultsPage\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE [dbo].[AssetsGetResultsPage]
+                        commandText = @"CREATE PROCEDURE [dbo].[AssetsGetResultsPage]
     @startRow           int,
     @pageSize           int
     --@totalRows          int         OUTPUT
@@ -2746,38 +2754,38 @@ SET NOCOUNT ON
 	WHERE RowNumber BETWEEN (@startRow) AND (@startRow + @pageSize - 1)
 	ORDER BY RowNumber";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.10"));
+                            SetDBVersion(connection, new Version("1.3.0.10"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'AssetsGetResultsPage'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.11")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'AssetsGetResultsPage'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.11")) < 0)
-                {
-                    #region Update AssetsGetLimitedSystemIDs stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'AssetsGetLimitedSystemIDs') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.AssetsGetLimitedSystemIDs\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update AssetsGetLimitedSystemIDs stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'AssetsGetLimitedSystemIDs') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.AssetsGetLimitedSystemIDs\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.AssetsGetLimitedSystemIDs
+                        commandText = @"CREATE PROCEDURE dbo.AssetsGetLimitedSystemIDs
 	@ownerID			int,
 	@corpAsset			bit,
 	@regionIDs			varchar(MAX),
@@ -2794,38 +2802,38 @@ AS
 	GROUP BY SystemID
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.11"));
+                            SetDBVersion(connection, new Version("1.3.0.11"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'AssetsGetLimitedSystemIDs'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.12")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'AssetsGetLimitedSystemIDs'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.12")) < 0)
-                {
-                    #region Update TransGetBySingleAndWallets stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'TransGetBySingleAndWallets') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.TransGetBySingleAndWallets\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update TransGetBySingleAndWallets stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'TransGetBySingleAndWallets') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.TransGetBySingleAndWallets\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.TransGetBySingleAndWallets 
+                        commandText = @"CREATE PROCEDURE dbo.TransGetBySingleAndWallets 
 	@characterID		int,
 	@walletID1			smallint,
 	@walletID2			smallint,
@@ -2863,38 +2871,38 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.12"));
+                            SetDBVersion(connection, new Version("1.3.0.12"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'TransGetBySingleAndWallets'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.13")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'TransGetBySingleAndWallets'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.13")) < 0)
-                {
-                    #region Update TransGetBySingleAndID stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'TransGetBySingleAndID') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.TransGetBySingleAndID\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update TransGetBySingleAndID stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'TransGetBySingleAndID') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.TransGetBySingleAndID\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.TransGetBySingleAndID 
+                        commandText = @"CREATE PROCEDURE dbo.TransGetBySingleAndID 
 	@characterID		int,
 	@includeCorp		bit,
 	@itemID				int,
@@ -2922,38 +2930,38 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.13"));
+                            SetDBVersion(connection, new Version("1.3.0.13"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'TransGetBySingleAndID'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.14")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'TransGetBySingleAndID'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.14")) < 0)
-                {
-                    #region Update TransGetBySingle stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'TransGetBySingle') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.TransGetBySingle\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update TransGetBySingle stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'TransGetBySingle') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.TransGetBySingle\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.TransGetBySingle 
+                        commandText = @"CREATE PROCEDURE dbo.TransGetBySingle 
 	@characterID		int,
 	@includeCorp		bit,
 	@itemID				int,
@@ -2982,38 +2990,38 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.14"));
+                            SetDBVersion(connection, new Version("1.3.0.14"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'TransGetBySingle'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.15")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'TransGetBySingle'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.15")) < 0)
-                {
-                    #region Update TransGetByOwnersAndSingle stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'TransGetByOwnersAndSingle') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.TransGetByOwnersAndSingle\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update TransGetByOwnersAndSingle stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'TransGetByOwnersAndSingle') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.TransGetByOwnersAndSingle\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.TransGetByOwnersAndSingle 
+                        commandText = @"CREATE PROCEDURE dbo.TransGetByOwnersAndSingle 
 	@accessParams		varchar(max),
 	@itemID				int,
 	@stationID			int,
@@ -3033,38 +3041,38 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.15"));
+                            SetDBVersion(connection, new Version("1.3.0.15"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'TransGetByOwnersAndSingle'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.16")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'TransGetByOwnersAndSingle'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.16")) < 0)
-                {
-                    #region Update AssetsGetResultsPage stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'TransGetByAny') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.TransGetByAny\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update AssetsGetResultsPage stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'TransGetByAny') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.TransGetByAny\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.TransGetByAny
+                        commandText = @"CREATE PROCEDURE dbo.TransGetByAny
 	@accessParams		varchar(max),
 	@itemIDs			varchar(max),
 	@stationIDs			varchar(max),
@@ -3104,38 +3112,38 @@ END
 	
 	RETURN --Datediff(ms, @time, GETDATE())";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.16"));
+                            SetDBVersion(connection, new Version("1.3.0.16"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'TransGetByAny'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.17")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'TransGetByAny'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.17")) < 0)
-                {
-                    #region Update ContractsGetByPickupAndDest stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'ContractsGetByPickupAndDest') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.ContractsGetByPickupAndDest\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update ContractsGetByPickupAndDest stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'ContractsGetByPickupAndDest') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.ContractsGetByPickupAndDest\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.ContractsGetByPickupAndDest 
+                        commandText = @"CREATE PROCEDURE dbo.ContractsGetByPickupAndDest 
 	@ownerIDs	varchar(max),
 	@pickupID	int,
 	@destID		int,
@@ -3149,38 +3157,38 @@ AS
 		(Status = @status OR @status = 0) AND (Type = @type OR @type = 0)
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.17"));
+                            SetDBVersion(connection, new Version("1.3.0.17"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'ContractsGetByPickupAndDest'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.18")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'ContractsGetByPickupAndDest'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.18")) < 0)
-                {
-                    #region Update ContractsGetByItem stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'ContractsGetByItem') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.ContractsGetByItem\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update ContractsGetByItem stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'ContractsGetByItem') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.ContractsGetByItem\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.ContractsGetByItem 
+                        commandText = @"CREATE PROCEDURE dbo.ContractsGetByItem 
 	@itemID			int,
 	@destinationID	int,
 	@minDate		datetime,
@@ -3198,38 +3206,38 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.18"));
+                            SetDBVersion(connection, new Version("1.3.0.18"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'ContractsGetByItem'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.19")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'ContractsGetByItem'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.19")) < 0)
-                {
-                    #region Update ContractsGetByStatus stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'ContractsGetByStatus') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.ContractsGetByStatus\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Update ContractsGetByStatus stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'ContractsGetByStatus') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.ContractsGetByStatus\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.ContractsGetByStatus
+                        commandText = @"CREATE PROCEDURE dbo.ContractsGetByStatus
 	@ownerIDs	varchar(max),
 	@status		smallint,
 	@type		smallint
@@ -3241,59 +3249,59 @@ AS
 	WHERE Status = @status
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.19"));
+                            SetDBVersion(connection, new Version("1.3.0.19"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'ContractsGetByStatus'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.21")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'ContractsGetByStatus'.", ex);
+                        #region Clear AssetsHistory
+
+                        commandText = @"DELETE FROM AssetsHistory";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.3.0.21"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Clear 'AssetsHistory' table.", ex);
+                        }
+                        #endregion
                     }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.21")) < 0)
-                {
-                    #region Clear AssetsHistory
-
-                    commandText = @"DELETE FROM AssetsHistory";
-
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
+                    if (dbVersion.CompareTo(new Version("1.3.0.22")) < 0)
                     {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        #region Create TransBuildResults stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'TransBuildResults') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.TransBuildResults\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                        SetDBVersion(connection, new Version("1.3.0.21"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Clear 'AssetsHistory' table.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.22")) < 0)
-                {
-                    #region Create TransBuildResults stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'TransBuildResults') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.TransBuildResults\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
-
-                    commandText = @"CREATE PROCEDURE [dbo].[TransBuildResults]
+                        commandText = @"CREATE PROCEDURE [dbo].[TransBuildResults]
 	@accessParams		varchar(max),
 	@itemIDs			varchar(max),
 	@stationIDs			varchar(max),
@@ -3355,38 +3363,38 @@ CREATE CLUSTERED INDEX [PK_tmp_TransResults] ON [dbo].[tmp_TransResults]
  
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.22"));
+                            SetDBVersion(connection, new Version("1.3.0.22"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'TransBuildResults'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.23")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'TransBuildResults'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.23")) < 0)
-                {
-                    #region Create TransNew stored procedure
-                    commandText =
-                            "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
-                            "'TransNew') AND type LIKE 'P')\r\n" +
-                            "BEGIN\r\n" +
-                            "DROP PROCEDURE dbo.TransNew\r\n" +
-                            "END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception) { }
+                        #region Create TransNew stored procedure
+                        commandText =
+                                "IF EXISTS (SELECT * FROM dbo.SYSOBJECTS WHERE (name LIKE " +
+                                "'TransNew') AND type LIKE 'P')\r\n" +
+                                "BEGIN\r\n" +
+                                "DROP PROCEDURE dbo.TransNew\r\n" +
+                                "END";
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
 
-                    commandText = @"CREATE PROCEDURE dbo.TransNew
+                        commandText = @"CREATE PROCEDURE dbo.TransNew
 	@datetime		datetime,
 	@quantity		int,
 	@itemID			int,
@@ -3422,48 +3430,48 @@ AS
 
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.3.0.23"));
+                            SetDBVersion(connection, new Version("1.3.0.23"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to create stored procedure 'TransNew'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.0.24")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to create stored procedure 'TransNew'.", ex);
+                        #region Add 'ForcePrice' column to ContractItem table
+                        commandText =
+                                "ALTER TABLE dbo.ContractItem\r\n" +
+                                "ADD ForcePrice bit NOT NULL DEFAULT 0";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.3.0.24"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'ForcePrice' column to ContractItem table", ex);
+                        }
+                        #endregion
                     }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.24")) < 0)
-                {
-                    #region Add 'ForcePrice' column to ContractItem table
-                    commandText =
-                            "ALTER TABLE dbo.ContractItem\r\n" +
-                            "ADD ForcePrice bit NOT NULL DEFAULT 0";
-
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
+                    if (dbVersion.CompareTo(new Version("1.3.0.26")) < 0)
                     {
-                        adapter.SelectCommand.ExecuteNonQuery();
-
-                        SetDBVersion(connection, new Version("1.3.0.24"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'ForcePrice' column to ContractItem table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.26")) < 0)
-                {
-                    #region Add 'TransactionID' column to ContractItem table
-                    commandText =
-                            @"
+                        #region Add 'TransactionID' column to ContractItem table
+                        commandText =
+                                @"
     Declare @Qry1		Varchar(1000)
     Declare @DFName		Varchar(500)
 
@@ -3507,36 +3515,36 @@ AS
         ALTER TABLE ContractItem
         DROP COLUMN TransactionID
     END";
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception) { }
+
+                        commandText =
+                                "ALTER TABLE dbo.ContractItem\r\n" +
+                                "ADD TransactionID bigint NOT NULL DEFAULT 0";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.3.0.26"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'TransactionID' column to ContractItem table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception) { }
-
-                    commandText =
-                            "ALTER TABLE dbo.ContractItem\r\n" +
-                            "ADD TransactionID bigint NOT NULL DEFAULT 0";
-
-                    adapter = new SqlDataAdapter(commandText, connection);
-
-                    try
+                    if (dbVersion.CompareTo(new Version("1.3.0.27")) < 0)
                     {
-                        adapter.SelectCommand.ExecuteNonQuery();
-
-                        SetDBVersion(connection, new Version("1.3.0.26"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'TransactionID' column to ContractItem table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.0.27")) < 0)
-                {
-                    #region Update ContractItemsNew stored procedure
-                    commandText = @"ALTER PROCEDURE dbo.ContractItemsNew 
+                        #region Update ContractItemsNew stored procedure
+                        commandText = @"ALTER PROCEDURE dbo.ContractItemsNew 
 	@contractID		bigint,
 	@itemID			int,
 	@quantity		int,
@@ -3552,26 +3560,26 @@ AS
 
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.3.0.27"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.3.0.27"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'ContractItemsNew'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    // Note: 1.3.0.28 did exist and was the same 1.3.2.1 but missing the removal of constraints 
+                    // that is required for SQL 2008 databases. 
+                    if (dbVersion.CompareTo(new Version("1.3.2.1")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'ContractItemsNew'.", ex);
-                    }
-                    #endregion
-                }
-                // Note: 1.3.0.28 did exist and was the same 1.3.2.1 but missing the removal of constraints 
-                // that is required for SQL 2008 databases. 
-                if (dbVersion.CompareTo(new Version("1.3.2.1")) < 0)
-                {
-                    #region Change type various columns on APICharacters table from int to bigint
-                    commandText = @"alter table dbo.APICharacters 
+                        #region Change type various columns on APICharacters table from int to bigint
+                        commandText = @"alter table dbo.APICharacters 
 drop Constraint DF_APICharacters_HighestCharJournalID
 alter table dbo.APICharacters 
 drop Constraint DF_APICharacters_HighestCharTransID
@@ -3586,25 +3594,25 @@ drop Constraint DF_APICharacters_LastCorpTransUpdate
 alter table dbo.APICharacters 
 drop Constraint DF_APICharacters_LastCharJournalUpdate";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        // If the error contains the text "is not a constraint" then the constraints
-                        // we are trying to remove are not in the database anyway so just ignore it.
-                        if (!ex.Message.Contains("is not a constraint"))
+                        try
                         {
-                            throw new EMMADataException(ExceptionSeverity.Critical,
-                                "Problem removing contraints from 'APICharacters' table", ex);
+                            adapter.SelectCommand.ExecuteNonQuery();
                         }
-                    }
+                        catch (Exception ex)
+                        {
+                            // If the error contains the text "is not a constraint" then the constraints
+                            // we are trying to remove are not in the database anyway so just ignore it.
+                            if (!ex.Message.Contains("is not a constraint"))
+                            {
+                                throw new EMMADataException(ExceptionSeverity.Critical,
+                                    "Problem removing contraints from 'APICharacters' table", ex);
+                            }
+                        }
 
-                    commandText =
-                            @"ALTER TABLE dbo.APICharacters
+                        commandText =
+                                @"ALTER TABLE dbo.APICharacters
                     ALTER COLUMN HighestCharTransID bigint NOT NULL;
                     ALTER TABLE dbo.APICharacters
                     ALTER COLUMN HighestCorpTransID bigint NOT NULL;
@@ -3613,20 +3621,20 @@ drop Constraint DF_APICharacters_LastCharJournalUpdate";
                     ALTER TABLE dbo.APICharacters
                     ALTER COLUMN HighestCorpJournalID bigint NOT NULL;";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem changing type of APICharaters' columns to bigint.", ex);
-                    }
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem changing type of APICharaters' columns to bigint.", ex);
+                        }
 
-                    commandText =
-                            @"ALTER PROCEDURE dbo.APICharInsert 
+                        commandText =
+                                @"ALTER PROCEDURE dbo.APICharInsert 
 	@ID						int,
 	@LastCharSheetUpdate	datetime,
 	@CharSheet				xml,
@@ -3651,21 +3659,21 @@ AS
 	FROM APICharacters 
 	WHERE (ID = @ID) 
 	RETURN";
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'APICharInsert'.", ex);
-                    }
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'APICharInsert'.", ex);
+                        }
 
-                    commandText =
-        @"ALTER PROCEDURE dbo.APICharUpdate 
+                        commandText =
+            @"ALTER PROCEDURE dbo.APICharUpdate 
 	@ID						int,
 	@LastCharSheetUpdate	datetime,
 	@CharSheet				xml,
@@ -3694,24 +3702,24 @@ AS
 	FROM APICharacters 
 	WHERE (ID = @ID)
 	RETURN";
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.3.2.1"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.3.2.1"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Unable to update stored procedure 'APICharUpdate'.", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.2.2")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Unable to update stored procedure 'APICharUpdate'.", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.2.2")) < 0)
-                {
-                    #region Create 'ItemValues' table, move data from 'TradedItems' to 'ItemValues' then drop 'TradedItems'
-                    commandText = @"SET ANSI_NULLS ON
+                        #region Create 'ItemValues' table, move data from 'TradedItems' to 'ItemValues' then drop 'TradedItems'
+                        commandText = @"SET ANSI_NULLS ON
 
 SET QUOTED_IDENTIFIER ON
 
@@ -3753,26 +3761,26 @@ ALTER TABLE [dbo].[ItemValues] ADD  DEFAULT ((0)) FOR [ForceDefaultSellPrice]
 
 ALTER TABLE [dbo].[ItemValues] ADD  DEFAULT ((0)) FOR [ForceDefaultBuyPrice]";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.3.2.2"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.3.2.2"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'ItemValues' table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.2.3")) < 0)
                     {
-                         throw new EMMADataException(ExceptionSeverity.Critical,
-                             "Problem creating 'ItemValues' table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.2.3")) < 0)
-                {
-                    #region Move data from 'TradedItems' to 'ItemValues'
+                        #region Move data from 'TradedItems' to 'ItemValues'
 
-                    commandText =
-                            @"INSERT INTO [ItemValues]
+                        commandText =
+                                @"INSERT INTO [ItemValues]
            ([ReportGroupID]
            ,[ItemID]
            ,[RegionID]
@@ -3787,26 +3795,26 @@ ALTER TABLE [dbo].[ItemValues] ADD  DEFAULT ((0)) FOR [ForceDefaultBuyPrice]";
            ,[ForceDefaultBuyPrice])
 SELECT * FROM TradedItems";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.3.2.3"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.3.2.3"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem moving data from 'TradedItems' to 'ItemValues'", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.2.4")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem moving data from 'TradedItems' to 'ItemValues'", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.2.4")) < 0)
-                {
-                    #region Create ItemValueGetData stored procedure
+                        #region Create ItemValueGetData stored procedure
 
-                    commandText =
-                            @"CREATE PROCEDURE [dbo].[ItemValueGetData]
+                        commandText =
+                                @"CREATE PROCEDURE [dbo].[ItemValueGetData]
 	@reportGroupID	int, 
 	@regionID		int,
 	@itemID			int
@@ -3816,70 +3824,70 @@ AS
 	WHERE ReportGroupID = @reportGroupID AND (RegionID = @regionID OR @regionID = 0) AND (ItemID = @itemID OR @itemID = 0)
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.3.2.4"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.3.2.4"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'ItemValueGetData' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.2.5")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating 'ItemValueGetData' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.2.5")) < 0)
-                {
-                    #region Create ItemValuesClear stored procedure
+                        #region Create ItemValuesClear stored procedure
 
-                    commandText = @"CREATE PROCEDURE [dbo].[ItemValuesClear]
+                        commandText = @"CREATE PROCEDURE [dbo].[ItemValuesClear]
 	@reportGroupID	int
 AS
 	DELETE FROM ItemValues
 	WHERE ReportGroupID = @reportGroupID
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.3.2.2"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.3.2.2"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'ItemValuesClear' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.2.6")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating 'ItemValuesClear' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.2.6")) < 0)
-                {
-                    #region Drop TradedItems table
+                        #region Drop TradedItems table
 
-                    commandText =
-                            @"DROP TABLE TradedItems";
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        commandText =
+                                @"DROP TABLE TradedItems";
+                        adapter = new SqlDataAdapter(commandText, connection);
 
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.3.2.6"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.3.2.6"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem dropping table 'TradedItems'", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.2.7")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem dropping table 'TradedItems'", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.2.7")) < 0)
-                {
-                    #region Create new 'TradedItems' table
-                    commandText = @"SET ANSI_NULLS ON
+                        #region Create new 'TradedItems' table
+                        commandText = @"SET ANSI_NULLS ON
 
 SET QUOTED_IDENTIFIER ON
 
@@ -3893,25 +3901,25 @@ CREATE TABLE [dbo].[TradedItems](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.3.2.7"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.3.2.7"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'TradedItems' table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.2.8")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating 'TradedItems' table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.2.8")) < 0)
-                {
-                    #region Update 'TradedItemGet' stored proc
+                        #region Update 'TradedItemGet' stored proc
 
-                    commandText = @"ALTER PROCEDURE [dbo].[TradedItemGet]
+                        commandText = @"ALTER PROCEDURE [dbo].[TradedItemGet]
 	@reportGroupID	int,
 	@itemID			int
 AS
@@ -3920,24 +3928,24 @@ AS
 	WHERE ReportGroupID = @reportGroupID AND (ItemID = @itemID OR @itemID = 0)
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.3.2.8"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.3.2.8"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'TradedItemGet' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.3.2.9")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'TradedItemGet' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.3.2.9")) < 0)
-                {
-                    #region Create 'AssetsLost' table
-                    commandText = @"SET ANSI_NULLS ON
+                        #region Create 'AssetsLost' table
+                        commandText = @"SET ANSI_NULLS ON
 
 SET QUOTED_IDENTIFIER ON
 
@@ -3954,24 +3962,29 @@ CREATE TABLE [dbo].[AssetsLost](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.3.2.9"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating 'AssetsLost' table", ex);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.3.2.9"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'AssetsLost' table", ex);
+                        }
+                        #endregion
                     }
                     #endregion
                 }
-                if (dbVersion.CompareTo(new Version("1.4.1.0")) < 0)
+                if (dbVersion.CompareTo(new Version("1.4.2.11")) < 0)
                 {
-                    #region Create 'AssetsProduced' table
-                    commandText = @"SET ANSI_NULLS ON
+                    #region 1.4.1.0 - 1.4.2.11
+                    if (dbVersion.CompareTo(new Version("1.4.1.0")) < 0)
+                    {
+                        #region Create 'AssetsProduced' table
+                        commandText = @"SET ANSI_NULLS ON
 
 SET QUOTED_IDENTIFIER ON
 
@@ -3988,24 +4001,24 @@ CREATE TABLE [dbo].[AssetsProduced](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.4.1.0"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.4.1.0"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'AssetsProduced' table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.1.1")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating 'AssetsProduced' table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.1.1")) < 0)
-                {
-                    #region Update 'AssetsGetAutoConByAny' stored procedure
-                    commandText = @"ALTER PROCEDURE dbo.AssetsGetAutoConByAny
+                        #region Update 'AssetsGetAutoConByAny' stored procedure
+                        commandText = @"ALTER PROCEDURE dbo.AssetsGetAutoConByAny
 	@ownerID			int,
 	@corpAsset			bit,
 	@stationIDs			varchar(max),
@@ -4024,24 +4037,24 @@ AS
 	ORDER BY LocationID
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.4.1.1"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.4.1.1"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetAutoConByAny' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.1.2")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsGetAutoConByAny' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.1.2")) < 0)
-                {
-                    #region Update 'AssetsGetAutoConByOwner' stored procedure
-                    commandText = @"ALTER PROCEDURE dbo.AssetsGetAutoConByOwner
+                        #region Update 'AssetsGetAutoConByOwner' stored procedure
+                        commandText = @"ALTER PROCEDURE dbo.AssetsGetAutoConByOwner
 	@ownerID			int,
 	@corpAsset			bit,
 	@stationID			int,
@@ -4056,46 +4069,46 @@ AS
 	ORDER BY LocationID
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.4.1.2"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.4.1.2"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetAutoConByOwner' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.1.4")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsGetAutoConByOwner' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.1.4")) < 0)
-                {
-                    #region Add 'Quantity' column to AssetsProduced table
-                    commandText =
-                            "ALTER TABLE dbo.AssetsProduced\r\n" +
-                            "ADD Quantity bigint NOT NULL DEFAULT 0";
+                        #region Add 'Quantity' column to AssetsProduced table
+                        commandText =
+                                "ALTER TABLE dbo.AssetsProduced\r\n" +
+                                "ADD Quantity bigint NOT NULL DEFAULT 0";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.1.4"));
+                            SetDBVersion(connection, new Version("1.4.1.4"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'Quantity' column to AssetsProduced table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.1.7")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'Quantity' column to AssetsProduced table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.1.7")) < 0)
-                {
-                    #region Create 'AssetsLostNew' stored procedure
-                    commandText = @"CREATE PROCEDURE dbo.AssetsLostNew
+                        #region Create 'AssetsLostNew' stored procedure
+                        commandText = @"CREATE PROCEDURE dbo.AssetsLostNew
 	@OwnerID			int,
 	@CorpAsset			bit,
 	@ItemID				int,
@@ -4117,24 +4130,24 @@ AS
 
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.4.1.7"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.4.1.7"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'AssetsLostNew' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.1.10")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating 'AssetsLostNew' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.1.10")) < 0)
-                {
-                    #region Create 'AssetsProducedNew' stored procedure
-                    commandText = @"CREATE PROCEDURE dbo.AssetsProducedNew
+                        #region Create 'AssetsProducedNew' stored procedure
+                        commandText = @"CREATE PROCEDURE dbo.AssetsProducedNew
 	@OwnerID			int,
 	@CorpAsset			bit,
 	@ItemID				int,
@@ -4157,52 +4170,52 @@ AS
 
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
-                        SetDBVersion(connection, new Version("1.4.1.10"));
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+                            SetDBVersion(connection, new Version("1.4.1.10"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'AssetsProducedNew' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+
+
+                    if (dbVersion.CompareTo(new Version("1.4.1.12")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating 'AssetsProducedNew' stored procedure", ex);
-                    }
-                    #endregion
-                }
-
-
-                if (dbVersion.CompareTo(new Version("1.4.1.12")) < 0)
-                {
-                    #region Add 'Cost' column to Assets table
-                    commandText =
-                            @"ALTER TABLE dbo.Assets
+                        #region Add 'Cost' column to Assets table
+                        commandText =
+                                @"ALTER TABLE dbo.Assets
 ADD Cost decimal(18, 2) NOT NULL DEFAULT 0
 
 ALTER TABLE dbo.Assets
 ADD CostCalc bit NOT NULL DEFAULT 0";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.1.12"));
+                            SetDBVersion(connection, new Version("1.4.1.12"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'Cost' column to Assets table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.1.13")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'Cost' column to Assets table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.1.13")) < 0)
-                {
-                    #region Update 'AssetsAddQuantity' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.AssetsAddQuantity 
+                        #region Update 'AssetsAddQuantity' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.AssetsAddQuantity 
 	@ownerID		int,
 	@corpAsset		bit,
 	@itemID			int,
@@ -4271,26 +4284,26 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.1.13"));
+                            SetDBVersion(connection, new Version("1.4.1.13"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsAddQuantity' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.1.14")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsAddQuantity' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.1.14")) < 0)
-                {
-                    #region Update 'AssetsBuildResults' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE [dbo].[AssetsBuildResults]
+                        #region Update 'AssetsBuildResults' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE [dbo].[AssetsBuildResults]
 	@accessList			varchar(max),
 	@itemIDs			varchar(max),
 	@status				int,
@@ -4373,26 +4386,26 @@ CREATE CLUSTERED INDEX [PK_tmp_AssetResults] ON [dbo].[tmp_AssetResults]
  
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.1.14"));
+                            SetDBVersion(connection, new Version("1.4.1.14"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsBuildResults' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.1.15")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsBuildResults' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.1.15")) < 0)
-                {
-                    #region Update 'AssetsGetResultsPage' stored procedure
-                    commandText =
-                            @"IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tmp_AssetResults]') AND type in (N'U'))
+                        #region Update 'AssetsGetResultsPage' stored procedure
+                        commandText =
+                                @"IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tmp_AssetResults]') AND type in (N'U'))
 DROP TABLE [dbo].[tmp_AssetResults]
 
 
@@ -4415,14 +4428,14 @@ CREATE TABLE [dbo].[tmp_AssetResults](
     [CostCalc] [bit] NOT NULL,
 	[RowNumber] [bigint] NULL
 ) ON [PRIMARY]";
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        commandText =
-                                @"ALTER PROCEDURE [dbo].[AssetsGetResultsPage]
+                            commandText =
+                                    @"ALTER PROCEDURE [dbo].[AssetsGetResultsPage]
     @startRow           int,
     @pageSize           int
     --@totalRows          int         OUTPUT
@@ -4435,23 +4448,23 @@ SET NOCOUNT ON
 	WHERE RowNumber BETWEEN (@startRow) AND (@startRow + @pageSize - 1)
 	ORDER BY RowNumber";
 
-                        adapter = new SqlDataAdapter(commandText, connection);
-                        adapter.SelectCommand.ExecuteNonQuery();
+                            adapter = new SqlDataAdapter(commandText, connection);
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.1.15"));
+                            SetDBVersion(connection, new Version("1.4.1.15"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetResultsPage' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.1.16")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsGetResultsPage' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.1.16")) < 0)
-                {
-                    #region Update 'AssetsInsert' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.AssetsInsert
+                        #region Update 'AssetsInsert' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.AssetsInsert
 	@OwnerID		int,
 	@CorpAsset		bit,
 	@LocationID		int,
@@ -4479,26 +4492,26 @@ AS
 	WHERE (ID = @newID)
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.1.16"));
+                            SetDBVersion(connection, new Version("1.4.1.16"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsInsert' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.1.17")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsInsert' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.1.17")) < 0)
-                {
-                    #region Update 'AssetsUpdate' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.AssetsUpdate
+                        #region Update 'AssetsUpdate' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.AssetsUpdate
 	@ID				bigint,
 	@OwnerID		int,
 	@CorpAsset		bit,
@@ -4526,50 +4539,50 @@ AS
 	
 	RETURN   ";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.1.17"));
+                            SetDBVersion(connection, new Version("1.4.1.17"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsUpdate' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsUpdate' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                
 
-                if (dbVersion.CompareTo(new Version("1.4.1.30")) < 0)
-                {
-                    #region Add 'SellerUnitProfit' column to Transactions table
-                    commandText =
-                            @"ALTER TABLE dbo.Transactions
+
+                    if (dbVersion.CompareTo(new Version("1.4.1.30")) < 0)
+                    {
+                        #region Add 'SellerUnitProfit' column to Transactions table
+                        commandText =
+                                @"ALTER TABLE dbo.Transactions
 ADD SellerUnitProfit decimal(18, 2) NOT NULL DEFAULT 0";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.1.13"));
+                            SetDBVersion(connection, new Version("1.4.1.13"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'SellerUnitProfit' column to Transactions table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.1.31")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'SellerUnitProfit' column to Transactions table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.1.31")) < 0)
-                {
-                    #region Update 'TransGetResultsPage' stored procedure
-                    commandText =
-                            @"IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tmp_TransResults]') AND type in (N'U'))
+                        #region Update 'TransGetResultsPage' stored procedure
+                        commandText =
+                                @"IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tmp_TransResults]') AND type in (N'U'))
 DROP TABLE [dbo].[tmp_TransResults]
 
 
@@ -4593,13 +4606,13 @@ CREATE TABLE [dbo].[tmp_TransResults](
 	[RowNumber] [bigint] NULL
 ) ON [PRIMARY]";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        commandText =
-                                @"ALTER PROCEDURE [dbo].[TransGetResultsPage]
+                            commandText =
+                                    @"ALTER PROCEDURE [dbo].[TransGetResultsPage]
     @startRow           int,
     @pageSize           int
 AS
@@ -4613,23 +4626,23 @@ SET NOCOUNT ON
 	ORDER BY RowNumber
 RETURN";
 
-                        adapter = new SqlDataAdapter(commandText, connection);
-                        adapter.SelectCommand.ExecuteNonQuery();
+                            adapter = new SqlDataAdapter(commandText, connection);
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.1.31"));
+                            SetDBVersion(connection, new Version("1.4.1.31"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'TransGetResultsPage' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.1.32")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'TransGetResultsPage' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.1.32")) < 0)
-                {
-                    #region Update 'TransInsert' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.TransInsert 
+                        #region Update 'TransInsert' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.TransInsert 
 	@ID					bigint,
 	@DateTime			datetime,
 	@Quantity			int,
@@ -4655,26 +4668,26 @@ AS
 	WHERE (ID = @ID)
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.1.32"));
+                            SetDBVersion(connection, new Version("1.4.1.32"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'TransInsert' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.1.33")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'TransInsert' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.1.33")) < 0)
-                {
-                    #region Update 'TransNew' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.TransNew
+                        #region Update 'TransNew' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.TransNew
 	@datetime		datetime,
 	@quantity		int,
 	@itemID			int,
@@ -4711,26 +4724,26 @@ AS
 
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.1.33"));
+                            SetDBVersion(connection, new Version("1.4.1.33"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'TransNew' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.1.34")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'TransNew' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.1.34")) < 0)
-                {
-                    #region Update 'TransUpdate' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.TransUpdate 
+                        #region Update 'TransUpdate' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.TransUpdate 
 	@ID					bigint,
 	@DateTime			datetime,
 	@Quantity			int,
@@ -4759,50 +4772,50 @@ AS
 	RETURN
 ";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.1.34"));
+                            SetDBVersion(connection, new Version("1.4.1.34"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'TransUpdate' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+
+                    if (dbVersion.CompareTo(new Version("1.4.1.40")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'TransUpdate' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                
-                if (dbVersion.CompareTo(new Version("1.4.1.40")) < 0)
-                {
-                    #region Add 'For Sale Via Contract' state to AssetStatuses table
-                    commandText =
-                            @"INSERT INTO AssetStatuses ([StatusID], [Description])
+                        #region Add 'For Sale Via Contract' state to AssetStatuses table
+                        commandText =
+                                @"INSERT INTO AssetStatuses ([StatusID], [Description])
 VALUES (3, 'For Sale Via Contract                             ')";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.1.40"));
+                            SetDBVersion(connection, new Version("1.4.1.40"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'For Sale Via Contract' state to AssetStatuses table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'For Sale Via Contract' state to AssetStatuses table", ex);
-                    }
-                    #endregion
-                }
 
-                if (dbVersion.CompareTo(new Version("1.4.1.41")) < 0)
-                {
-                    #region Update 'JournalSumAmtByType' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.JournalSumAmtByType 
+                    if (dbVersion.CompareTo(new Version("1.4.1.41")) < 0)
+                    {
+                        #region Update 'JournalSumAmtByType' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.JournalSumAmtByType 
 	@accessParams	varchar(MAX),
 	@refType		int,
 	@startTime		DateTime,
@@ -4821,50 +4834,50 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.1.41"));
+                            SetDBVersion(connection, new Version("1.4.1.41"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'JournalSumAmtByType' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+
+
+                    if (dbVersion.CompareTo(new Version("1.4.2.0")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'JournalSumAmtByType' stored procedure", ex);
-                    }
-                    #endregion
-                }
-
-
-                if (dbVersion.CompareTo(new Version("1.4.2.0")) < 0)
-                {
-                    #region Add 'CalcProfitFromAssets' column to Transactions table
-                    commandText =
-                            @"ALTER TABLE dbo.Transactions
+                        #region Add 'CalcProfitFromAssets' column to Transactions table
+                        commandText =
+                                @"ALTER TABLE dbo.Transactions
 ADD CalcProfitFromAssets bit NOT NULL DEFAULT 0";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.2.0"));
+                            SetDBVersion(connection, new Version("1.4.2.0"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'CalcProfitFromAssets' column to Transactions table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.2.1")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'CalcProfitFromAssets' column to Transactions table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.2.1")) < 0)
-                {
-                    #region Update 'TransGetResultsPage' stored procedure
-                    commandText =
-                            @"IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tmp_TransResults]') AND type in (N'U'))
+                        #region Update 'TransGetResultsPage' stored procedure
+                        commandText =
+                                @"IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tmp_TransResults]') AND type in (N'U'))
 DROP TABLE [dbo].[tmp_TransResults]
 
 
@@ -4889,13 +4902,13 @@ CREATE TABLE [dbo].[tmp_TransResults](
 	[RowNumber] [bigint] NULL
 ) ON [PRIMARY]";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        commandText =
-                                @"ALTER PROCEDURE [dbo].[TransGetResultsPage]
+                            commandText =
+                                    @"ALTER PROCEDURE [dbo].[TransGetResultsPage]
     @startRow           int,
     @pageSize           int
 AS
@@ -4909,23 +4922,23 @@ SET NOCOUNT ON
 	ORDER BY RowNumber
 RETURN";
 
-                        adapter = new SqlDataAdapter(commandText, connection);
-                        adapter.SelectCommand.ExecuteNonQuery();
+                            adapter = new SqlDataAdapter(commandText, connection);
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.2.1"));
+                            SetDBVersion(connection, new Version("1.4.2.1"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'TransGetResultsPage' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.2.2")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'TransGetResultsPage' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.2.2")) < 0)
-                {
-                    #region Update 'TransInsert' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.TransInsert 
+                        #region Update 'TransInsert' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.TransInsert 
 	@ID					bigint,
 	@DateTime			datetime,
 	@Quantity			int,
@@ -4952,26 +4965,26 @@ AS
 	WHERE (ID = @ID)
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.2.2"));
+                            SetDBVersion(connection, new Version("1.4.2.2"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'TransInsert' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.2.3")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'TransInsert' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.2.3")) < 0)
-                {
-                    #region Update 'TransNew' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.TransNew
+                        #region Update 'TransNew' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.TransNew
 	@datetime		datetime,
 	@quantity		int,
 	@itemID			int,
@@ -5010,26 +5023,26 @@ AS
 
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.2.3"));
+                            SetDBVersion(connection, new Version("1.4.2.3"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'TransNew' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.4.2.4")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'TransNew' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.4.2.4")) < 0)
-                {
-                    #region Update 'TransUpdate' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.TransUpdate 
+                        #region Update 'TransUpdate' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.TransUpdate 
 	@ID					bigint,
 	@DateTime			datetime,
 	@Quantity			int,
@@ -5059,50 +5072,50 @@ AS
 	RETURN
 ";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.2.4"));
+                            SetDBVersion(connection, new Version("1.4.2.4"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'TransUpdate' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'TransUpdate' stored procedure", ex);
-                    }
-                    #endregion
-                }
 
-                if (dbVersion.CompareTo(new Version("1.4.2.5")) < 0)
-                {
-                    #region Add 'For Sale Via Market' state to AssetStatuses table
-                    commandText =
-                            @"INSERT INTO AssetStatuses ([StatusID], [Description])
+                    if (dbVersion.CompareTo(new Version("1.4.2.5")) < 0)
+                    {
+                        #region Add 'For Sale Via Market' state to AssetStatuses table
+                        commandText =
+                                @"INSERT INTO AssetStatuses ([StatusID], [Description])
 VALUES (4, 'For Sale Via Market                               ')";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.2.5"));
+                            SetDBVersion(connection, new Version("1.4.2.5"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'For Sale Via Market' state to AssetStatuses table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'For Sale Via Market' state to AssetStatuses table", ex);
-                    }
-                    #endregion
-                }
 
-                if (dbVersion.CompareTo(new Version("1.4.2.6")) < 0)
-                {
-                    #region Create 'AssetsGetByProcessed' stored procedure
-                    commandText =
-                            @"CREATE PROCEDURE dbo.AssetsGetByProcessed
+                    if (dbVersion.CompareTo(new Version("1.4.2.6")) < 0)
+                    {
+                        #region Create 'AssetsGetByProcessed' stored procedure
+                        commandText =
+                                @"CREATE PROCEDURE dbo.AssetsGetByProcessed
 	@accessList			varchar(max),
 	@systemID			int,
 	@locationID			int,
@@ -5117,27 +5130,27 @@ AS
 
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.2.6"));
+                            SetDBVersion(connection, new Version("1.4.2.6"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'AssetsGetByProcessed' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating 'AssetsGetByProcessed' stored procedure", ex);
-                    }
-                    #endregion
-                }
 
-                if (dbVersion.CompareTo(new Version("1.4.2.7")) < 0)
-                {
-                    #region Create 'OrdersSetProcessedByID' stored procedure
-                    commandText =
-                            @"CREATE PROCEDURE dbo.OrdersSetProcessedByID
+                    if (dbVersion.CompareTo(new Version("1.4.2.7")) < 0)
+                    {
+                        #region Create 'OrdersSetProcessedByID' stored procedure
+                        commandText =
+                                @"CREATE PROCEDURE dbo.OrdersSetProcessedByID
 	@orderID	int,
 	@processed	bit
 AS
@@ -5147,27 +5160,27 @@ AS
  
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.2.7"));
+                            SetDBVersion(connection, new Version("1.4.2.7"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'OrdersSetProcessedByID' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating 'OrdersSetProcessedByID' stored procedure", ex);
-                    }
-                    #endregion
-                }
 
-                if (dbVersion.CompareTo(new Version("1.4.2.8")) < 0)
-                {
-                    #region Create 'TransGetByCalcProfitFromAssets' stored procedure
-                    commandText =
-                            @"CREATE PROCEDURE dbo.TransGetByCalcProfitFromAssets
+                    if (dbVersion.CompareTo(new Version("1.4.2.8")) < 0)
+                    {
+                        #region Create 'TransGetByCalcProfitFromAssets' stored procedure
+                        commandText =
+                                @"CREATE PROCEDURE dbo.TransGetByCalcProfitFromAssets
 	@accessParams			varchar(max),
 	@itemID					int,
 	@calcProfitFromAssets	bit
@@ -5183,27 +5196,27 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.2.8"));
+                            SetDBVersion(connection, new Version("1.4.2.8"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'TransGetByCalcProfitFromAssets' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating 'TransGetByCalcProfitFromAssets' stored procedure", ex);
-                    }
-                    #endregion
-                }
 
-                if (dbVersion.CompareTo(new Version("1.4.2.9")) < 0)
-                {
-                    #region Create 'AssetsAddQuantity' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.AssetsAddQuantity 
+                    if (dbVersion.CompareTo(new Version("1.4.2.9")) < 0)
+                    {
+                        #region Create 'AssetsAddQuantity' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.AssetsAddQuantity 
 	@ownerID		int,
 	@corpAsset		bit,
 	@itemID			int,
@@ -5273,57 +5286,57 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.2.9"));
+                            SetDBVersion(connection, new Version("1.4.2.9"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'AssetsAddQuantity' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating 'AssetsAddQuantity' stored procedure", ex);
-                    }
-                    #endregion
-                }
 
-                if (dbVersion.CompareTo(new Version("1.4.2.10")) < 0)
-                {
-                    #region Set 'CostCalc' flag to false for any assets with a cost of 0
-                    // This was done because some previous database changes went live with a bug 
-                    // that caused the costcalc flag to be set to true when it should be false.
-                    // This was caught before the main release and at the time, there was no 
-                    // legitimate way for the costcalc flag to get set to true with out a value 
-                    // being calculated.
-                    // Thanks to this bit of luck, we can just reset the flag for any assets with
-                    // no cost set.
-                    commandText =
-                            @"UPDATE [Assets] SET [CostCalc] = 0
+                    if (dbVersion.CompareTo(new Version("1.4.2.10")) < 0)
+                    {
+                        #region Set 'CostCalc' flag to false for any assets with a cost of 0
+                        // This was done because some previous database changes went live with a bug 
+                        // that caused the costcalc flag to be set to true when it should be false.
+                        // This was caught before the main release and at the time, there was no 
+                        // legitimate way for the costcalc flag to get set to true with out a value 
+                        // being calculated.
+                        // Thanks to this bit of luck, we can just reset the flag for any assets with
+                        // no cost set.
+                        commandText =
+                                @"UPDATE [Assets] SET [CostCalc] = 0
                         WHERE [Cost] = 0";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.2.10"));
+                            SetDBVersion(connection, new Version("1.4.2.10"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem setting 'CostCalc' flag to false for any assets with a cost of 0", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem setting 'CostCalc' flag to false for any assets with a cost of 0", ex);
-                    }
-                    #endregion
-                }
 
-                if (dbVersion.CompareTo(new Version("1.4.2.11")) < 0)
-                {
-                    #region Update 'AssetsLostNew' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.AssetsLostNew
+                    if (dbVersion.CompareTo(new Version("1.4.2.11")) < 0)
+                    {
+                        #region Update 'AssetsLostNew' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.AssetsLostNew
 	@OwnerID			int,
 	@CorpAsset			bit,
 	@ItemID				int,
@@ -5345,49 +5358,53 @@ AS
 
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.4.2.11"));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsLostNew' stored procedure", ex);
+                            SetDBVersion(connection, new Version("1.4.2.11"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsLostNew' stored procedure", ex);
+                        }
+                        #endregion
                     }
                     #endregion
                 }
-
-                if (dbVersion.CompareTo(new Version("1.5.0.0")) < 0)
+                if (dbVersion.CompareTo(new Version("1.5.0.32")) < 0)
                 {
-                    #region Add 'EveItemID' column to Assets table
-                    commandText =
-                            @"ALTER TABLE dbo.Assets
+                    #region 1.5.0.0 - 1.5.0.32
+                    if (dbVersion.CompareTo(new Version("1.5.0.0")) < 0)
+                    {
+                        #region Add 'EveItemID' column to Assets table
+                        commandText =
+                                @"ALTER TABLE dbo.Assets
 ADD EveItemID bigint NOT NULL DEFAULT 0";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.0"));
+                            SetDBVersion(connection, new Version("1.5.0.0"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'EveItemID' column to Assets table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.1")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'EveItemID' column to Assets table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.1")) < 0)
-                {
-                    #region Update 'AssetsAddQuantity' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.AssetsAddQuantity 
+                        #region Update 'AssetsAddQuantity' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.AssetsAddQuantity 
 	@ownerID		int,
 	@corpAsset		bit,
 	@itemID			int,
@@ -5456,26 +5473,26 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.1"));
+                            SetDBVersion(connection, new Version("1.5.0.1"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsAddQuantity' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.2")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsAddQuantity' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.2")) < 0)
-                {
-                    #region Update 'AssetsBuildResults' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE [dbo].[AssetsBuildResults]
+                        #region Update 'AssetsBuildResults' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE [dbo].[AssetsBuildResults]
 	@accessList			varchar(max),
 	@itemIDs			varchar(max),
 	@status				int,
@@ -5561,26 +5578,26 @@ CREATE CLUSTERED INDEX [PK_tmp_AssetResults] ON [dbo].[tmp_AssetResults]
  
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.2"));
+                            SetDBVersion(connection, new Version("1.5.0.2"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsBuildResults' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.3")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsBuildResults' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.3")) < 0)
-                {
-                    #region Update 'AssetsGetResultsPage' stored procedure
-                    commandText =
-                            @"IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tmp_AssetResults]') AND type in (N'U'))
+                        #region Update 'AssetsGetResultsPage' stored procedure
+                        commandText =
+                                @"IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tmp_AssetResults]') AND type in (N'U'))
 DROP TABLE [dbo].[tmp_AssetResults]
 
 
@@ -5604,14 +5621,14 @@ CREATE TABLE [dbo].[tmp_AssetResults](
     [EveItemID] [bigint] NOT NULL,
 	[RowNumber] [bigint] NULL
 ) ON [PRIMARY]";
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        commandText =
-                                @"ALTER PROCEDURE [dbo].[AssetsGetResultsPage]
+                            commandText =
+                                    @"ALTER PROCEDURE [dbo].[AssetsGetResultsPage]
     @startRow           int,
     @pageSize           int
     --@totalRows          int         OUTPUT
@@ -5624,23 +5641,23 @@ SET NOCOUNT ON
 	WHERE RowNumber BETWEEN (@startRow) AND (@startRow + @pageSize - 1)
 	ORDER BY RowNumber";
 
-                        adapter = new SqlDataAdapter(commandText, connection);
-                        adapter.SelectCommand.ExecuteNonQuery();
+                            adapter = new SqlDataAdapter(commandText, connection);
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.3"));
+                            SetDBVersion(connection, new Version("1.5.0.3"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetResultsPage' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.4")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsGetResultsPage' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.4")) < 0)
-                {
-                    #region Update 'AssetsInsert' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.AssetsInsert
+                        #region Update 'AssetsInsert' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.AssetsInsert
 	@OwnerID		int,
 	@CorpAsset		bit,
 	@LocationID		int,
@@ -5669,26 +5686,26 @@ AS
 	WHERE (ID = @newID)
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.4"));
+                            SetDBVersion(connection, new Version("1.5.0.4"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsInsert' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.5")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsInsert' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.5")) < 0)
-                {
-                    #region Update 'AssetsUpdate' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.AssetsUpdate
+                        #region Update 'AssetsUpdate' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.AssetsUpdate
 	@ID				bigint,
 	@OwnerID		int,
 	@CorpAsset		bit,
@@ -5717,26 +5734,26 @@ AS
 	
 	RETURN   ";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.5"));
+                            SetDBVersion(connection, new Version("1.5.0.5"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsUpdate' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.6")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsUpdate' stored procedure", ex);
-                    }
-                    #endregion
-                }       
-                if (dbVersion.CompareTo(new Version("1.5.0.6")) < 0)
-                {
-                    #region Update 'AssetExists' stored procedure
-                     commandText =
-                            @"ALTER PROCEDURE dbo.AssetExists 
+                        #region Update 'AssetExists' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetExists 
 	@ownerID			int,
 	@corpAsset			bit,
 	@locationID			int,
@@ -5778,49 +5795,49 @@ AS
 
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.6"));
+                            SetDBVersion(connection, new Version("1.5.0.6"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetExists' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetExists' stored procedure", ex);
-                    }
-                    #endregion
-                }
 
-                if (dbVersion.CompareTo(new Version("1.5.0.7")) < 0)
-                {
-                    #region Add 'EveOrderID' column to Orders table
-                    commandText =
-                            @"ALTER TABLE dbo.Orders
+                    if (dbVersion.CompareTo(new Version("1.5.0.7")) < 0)
+                    {
+                        #region Add 'EveOrderID' column to Orders table
+                        commandText =
+                                @"ALTER TABLE dbo.Orders
 ADD EveOrderID bigint NOT NULL DEFAULT 0";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.7"));
+                            SetDBVersion(connection, new Version("1.5.0.7"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'EveOrderID' column to Orders table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.8")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'EveOrderID' column to Orders table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.8")) < 0)
-                {
-                    #region Update 'OrderExists' stored procedure
-                    commandText =
-                           @"ALTER PROCEDURE dbo.OrderExists
+                        #region Update 'OrderExists' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.OrderExists
 	@ownerID		int,
 	@forCorp		bit,
 	@walletID		smallint,
@@ -5906,26 +5923,26 @@ AS
 
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.8"));
+                            SetDBVersion(connection, new Version("1.5.0.8"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'OrderExists' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.9")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'OrderExists' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.9")) < 0)
-                {
-                    #region Update 'OrdersInsert' stored procedure
-                    commandText =
-                           @"ALTER PROCEDURE dbo.OrdersInsert 
+                        #region Update 'OrdersInsert' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.OrdersInsert 
 	@OwnerID		int,
 	@ForCorp		bit,
 	@StationID		int,
@@ -5953,26 +5970,26 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.9"));
+                            SetDBVersion(connection, new Version("1.5.0.9"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'OrdersInsert' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.10")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'OrdersInsert' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.10")) < 0)
-                {
-                    #region Update 'OrdersUpdate' stored procedure
-                    commandText =
-                           @"ALTER PROCEDURE dbo.OrdersUpdate 
+                        #region Update 'OrdersUpdate' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.OrdersUpdate 
 	@ID					int,
 	@OwnerID			int,
 	@ForCorp			bit,
@@ -6002,26 +6019,26 @@ AS
 	WHERE (ID = @ID)
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.10"));
+                            SetDBVersion(connection, new Version("1.5.0.10"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'OrdersUpdate' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.12")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'OrdersUpdate' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.12")) < 0)
-                {
-                    #region Update 'AssetsAddQuantity' stored procedure
-                    commandText =
-                           @"ALTER PROCEDURE dbo.AssetsAddQuantity 
+                        #region Update 'AssetsAddQuantity' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsAddQuantity 
 	@ownerID		int,
 	@corpAsset		bit,
 	@itemID			int,
@@ -6090,27 +6107,27 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.12"));
+                            SetDBVersion(connection, new Version("1.5.0.12"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsAddQuantity' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsAddQuantity' stored procedure", ex);
-                    }
-                    #endregion
-                }
 
-                if (dbVersion.CompareTo(new Version("1.5.0.13")) < 0)
-                {
-                    #region Create 'AssetsGetByItem' stored procedure
-                    commandText =
-                           @"CREATE PROCEDURE dbo.AssetsGetByItem
+                    if (dbVersion.CompareTo(new Version("1.5.0.13")) < 0)
+                    {
+                        #region Create 'AssetsGetByItem' stored procedure
+                        commandText =
+                               @"CREATE PROCEDURE dbo.AssetsGetByItem
 	@accessList			varchar(max),
 	@regionIDs			varchar(max),
 	@stationIDs			varchar(max),
@@ -6130,27 +6147,27 @@ END
 
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.13"));
+                            SetDBVersion(connection, new Version("1.5.0.13"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'AssetsGetByItem' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+
+                    if (dbVersion.CompareTo(new Version("1.5.0.14")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating 'AssetsGetByItem' stored procedure", ex);
-                    }
-                    #endregion
-                }
-               
-                if (dbVersion.CompareTo(new Version("1.5.0.14")) < 0)
-                {
-                    #region Update 'AssetsAddQuantity' stored procedure
-                    commandText =
-                           @"ALTER PROCEDURE dbo.AssetsAddQuantity 
+                        #region Update 'AssetsAddQuantity' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsAddQuantity 
 	@ownerID		int,
 	@corpAsset		bit,
 	@itemID			int,
@@ -6226,49 +6243,49 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.14"));
+                            SetDBVersion(connection, new Version("1.5.0.14"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsAddQuantity' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsAddQuantity' stored procedure", ex);
-                    }
-                    #endregion
-                }
 
-                if (dbVersion.CompareTo(new Version("1.5.0.16")) < 0)
-                {
-                    #region Add 'BoughtViaContract' flag to Assets table
-                    commandText =
-                           @"ALTER TABLE dbo.Assets
+                    if (dbVersion.CompareTo(new Version("1.5.0.16")) < 0)
+                    {
+                        #region Add 'BoughtViaContract' flag to Assets table
+                        commandText =
+                               @"ALTER TABLE dbo.Assets
 ADD BoughtViaContract bit NOT NULL DEFAULT 0";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.16"));
+                            SetDBVersion(connection, new Version("1.5.0.16"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'BoughtViaContract' flag to Assets table", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.17")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem adding 'BoughtViaContract' flag to Assets table", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.17")) < 0)
-                {
-                    #region Update 'AssetsAddQuantity' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.AssetsAddQuantity 
+                        #region Update 'AssetsAddQuantity' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.AssetsAddQuantity 
 	@ownerID		int,
 	@corpAsset		bit,
 	@itemID			int,
@@ -6337,26 +6354,26 @@ AS
 	
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.17"));
+                            SetDBVersion(connection, new Version("1.5.0.17"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsAddQuantity' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.18")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsAddQuantity' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.18")) < 0)
-                {
-                    #region Update 'AssetsBuildResults' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE [dbo].[AssetsBuildResults]
+                        #region Update 'AssetsBuildResults' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE [dbo].[AssetsBuildResults]
 	@accessList			varchar(max),
 	@itemIDs			varchar(max),
 	@status				int,
@@ -6451,26 +6468,26 @@ CREATE CLUSTERED INDEX [PK_tmp_AssetResults] ON [dbo].[tmp_AssetResults]
  
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.18"));
+                            SetDBVersion(connection, new Version("1.5.0.18"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsBuildResults' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.19")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsBuildResults' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.19")) < 0)
-                {
-                    #region Update 'AssetsGetResultsPage' stored procedure
-                    commandText =
-                            @"IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tmp_AssetResults]') AND type in (N'U'))
+                        #region Update 'AssetsGetResultsPage' stored procedure
+                        commandText =
+                                @"IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tmp_AssetResults]') AND type in (N'U'))
 DROP TABLE [dbo].[tmp_AssetResults]
 
 
@@ -6495,14 +6512,14 @@ CREATE TABLE [dbo].[tmp_AssetResults](
     [BoughtViaContract] [bit] NOT NULL,
 	[RowNumber] [bigint] NULL
 ) ON [PRIMARY]";
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        commandText =
-                                @"ALTER PROCEDURE [dbo].[AssetsGetResultsPage]
+                            commandText =
+                                    @"ALTER PROCEDURE [dbo].[AssetsGetResultsPage]
     @startRow           int,
     @pageSize           int
     --@totalRows          int         OUTPUT
@@ -6516,23 +6533,23 @@ SET NOCOUNT ON
 	WHERE RowNumber BETWEEN (@startRow) AND (@startRow + @pageSize - 1)
 	ORDER BY RowNumber";
 
-                        adapter = new SqlDataAdapter(commandText, connection);
-                        adapter.SelectCommand.ExecuteNonQuery();
+                            adapter = new SqlDataAdapter(commandText, connection);
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.19"));
+                            SetDBVersion(connection, new Version("1.5.0.19"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetResultsPage' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.20")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsGetResultsPage' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.20")) < 0)
-                {
-                    #region Update 'AssetsInsert' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.AssetsInsert
+                        #region Update 'AssetsInsert' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.AssetsInsert
 	@OwnerID		    int,
 	@CorpAsset		    bit,
 	@LocationID		    int,
@@ -6562,26 +6579,26 @@ AS
 	WHERE (ID = @newID)
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.20"));
+                            SetDBVersion(connection, new Version("1.5.0.20"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsInsert' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.21")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsInsert' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.21")) < 0)
-                {
-                    #region Update 'AssetsUpdate' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.AssetsUpdate
+                        #region Update 'AssetsUpdate' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.AssetsUpdate
 	@ID				    bigint,
 	@OwnerID		    int,
 	@CorpAsset		    bit,
@@ -6611,26 +6628,26 @@ AS
 	
 	RETURN   ";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.21"));
+                            SetDBVersion(connection, new Version("1.5.0.21"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsUpdate' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.22")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updating 'AssetsUpdate' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.22")) < 0)
-                {
-                    #region Create 'AssetsGetBoughtViaContract' stored procedure
-                    commandText =
-                            @"CREATE PROCEDURE dbo.AssetsGetBoughtViaContract
+                        #region Create 'AssetsGetBoughtViaContract' stored procedure
+                        commandText =
+                                @"CREATE PROCEDURE dbo.AssetsGetBoughtViaContract
 	@itemID				int
 AS
 	SELECT Assets.*
@@ -6638,26 +6655,26 @@ AS
 	WHERE (Assets.BoughtViaContract = 1) AND (Assets.ItemID = @itemID OR @itemID = 0)
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.22"));
+                            SetDBVersion(connection, new Version("1.5.0.22"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'AssetsGetBoughtViaContract' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.23")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating 'AssetsGetBoughtViaContract' stored procedure", ex);
-                    }
-                    #endregion
-                }
-                if (dbVersion.CompareTo(new Version("1.5.0.23")) < 0)
-                {
-                    #region Update 'AssetsGetBoughtViaContract' stored procedure
-                    commandText =
-                            @"ALTER PROCEDURE dbo.AssetsGetBoughtViaContract
+                        #region Update 'AssetsGetBoughtViaContract' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.AssetsGetBoughtViaContract
 	@accessList			varchar(max),
 	@itemID				int
 AS
@@ -6667,27 +6684,27 @@ AS
 	WHERE (Assets.BoughtViaContract = 1) AND (Assets.ItemID = @itemID OR @itemID = 0)
 RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.23"));
+                            SetDBVersion(connection, new Version("1.5.0.23"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updaing 'AssetsGetBoughtViaContract' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
-                    {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem updaing 'AssetsGetBoughtViaContract' stored procedure", ex);
-                    }
-                    #endregion
-                }
 
-                if (dbVersion.CompareTo(new Version("1.5.0.24")) < 0)
-                {
-                    #region Create 'TransGetItemIDsNoLimits' stored procedure
-                    commandText =
-                            @"CREATE PROCEDURE dbo.TransGetItemIDsNoLimits
+                    if (dbVersion.CompareTo(new Version("1.5.0.24")) < 0)
+                    {
+                        #region Create 'TransGetItemIDsNoLimits' stored procedure
+                        commandText =
+                                @"CREATE PROCEDURE dbo.TransGetItemIDsNoLimits
 	@accessParams		varchar(max)
 AS
 	SELECT ItemID AS [ID]
@@ -6698,23 +6715,403 @@ AS
 	GROUP BY ItemID
 	RETURN";
 
-                    adapter = new SqlDataAdapter(commandText, connection);
+                        adapter = new SqlDataAdapter(commandText, connection);
 
-                    try
-                    {
-                        adapter.SelectCommand.ExecuteNonQuery();
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
 
-                        SetDBVersion(connection, new Version("1.5.0.24"));
+                            SetDBVersion(connection, new Version("1.5.0.24"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'TransGetItemIDsNoLimits' stored procedure", ex);
+                        }
+                        #endregion
                     }
-                    catch (Exception ex)
+                    if (dbVersion.CompareTo(new Version("1.5.0.25")) < 0)
                     {
-                        throw new EMMADataException(ExceptionSeverity.Critical,
-                            "Problem creating 'TransGetItemIDsNoLimits' stored procedure", ex);
+                        #region Create 'AssetContains' function
+                        commandText =
+                                @"CREATE FUNCTION AssetContains(@containerID bigint, @itemID int)
+RETURNS bit
+AS
+BEGIN
+-- Note this is not perfect as it does not return true an item matching itemID is in a container within 
+-- the current container. However, that's not a common scenario and it's tricky to solve efficiently.
+        DECLARE @result bit
+        DECLARE @totalRows int
+        
+        SELECT @totalRows = count(*) FROM Assets WHERE ContainerID = @containerID AND ItemID = @itemID
+        IF(@totalRows > 0) 
+        BEGIN
+			SET @result = 1
+		END
+        
+        RETURN @result
+END ";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.25"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'AssetContains' function", ex);
+                        }
+                        #endregion
                     }
+                    if (dbVersion.CompareTo(new Version("1.5.0.26")) < 0)
+                    {
+                        #region Create 'AssetsGetItemAndContainersOfItem' stored procedure
+                        commandText =
+                                @"CREATE PROCEDURE dbo.AssetsGetItemAndContainersOfItem
+	@accessList			varchar(max),
+	@regionIDs			varchar(max),
+	@systemID			int,
+	@locationID			int,
+	@itemID				int,
+	@containersOnly		bit,
+	@getContained		bit,
+	@status				int
+AS
+IF(NOT @regionIDs LIKE '')
+BEGIN
+	SELECT Assets.*
+	FROM Assets 
+	JOIN CLR_accesslist_split(@accessList) a ON (Assets.OwnerID = a.ownerID AND ((a.includeCorporate = 1 AND Assets.CorpAsset = 1) OR (a.includePersonal = 1 AND Assets.CorpAsset = 0)))
+	JOIN CLR_intlist_split(@regionIDs) r ON Assets.RegionID = r.number 
+	WHERE (Assets.Status = @status OR @status = 0) AND (Assets.SystemID = @systemID OR @systemID = 0) AND (Assets.LocationID = @locationID OR @locationID = 0) AND (Assets.ItemID = @itemID OR @itemID = 0 OR (Assets.IsContainer = 1 AND dbo.AssetContains(Assets.ID, @itemID) = 1)) AND (Assets.IsContainer = 1 OR @containersOnly = 0) AND (Assets.ContainerID = 0 OR @getContained = 1)
+END
+ELSE
+BEGIN
+	SELECT Assets.*
+	FROM Assets 
+	JOIN CLR_accesslist_split(@accessList) a ON (Assets.OwnerID = a.ownerID AND ((a.includeCorporate = 1 AND Assets.CorpAsset = 1) OR (a.includePersonal = 1 AND Assets.CorpAsset = 0)))
+	WHERE (Assets.Status = @status OR @status = 0) AND (Assets.SystemID = @systemID OR @systemID = 0) AND (Assets.LocationID = @locationID OR @locationID = 0) AND (Assets.ItemID = @itemID OR @itemID = 0 OR (Assets.IsContainer = 1 AND dbo.AssetContains(Assets.ID, @itemID) = 1)) AND (Assets.IsContainer = 1 OR @containersOnly = 0) AND (Assets.ContainerID = 0 OR @getContained = 1)
+END
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.26"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'AssetsGetItemAndContainersOfItem' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+
+                    if (dbVersion.CompareTo(new Version("1.5.0.27")) < 0)
+                    {
+                        #region Update 'AssetsAddQuantity' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.AssetsAddQuantity 
+	@ownerID		int,
+	@corpAsset		bit,
+	@itemID			int,
+	@stationID		int,
+	@systemID		int,
+	@regionID		int,
+	@status			int,
+	@containerID	bigint,
+	@autoConExclude	bit,
+	@deltaQuantity	bigint,
+	@addedItemsCost	decimal(18,2),
+    @costCalc       bit
+AS
+	DECLARE @oldQuantity bigint, @newQuantity bigint
+	DECLARE	@assetID bigint
+	DECLARE @oldCost decimal(18, 2), @newCost decimal(18, 2)
+    DECLARE @oldCostCalc bit, @newCostCalc bit
+		
+	SET @assetID = 0
+	SELECT @oldQuantity = Quantity, @assetID = ID, @oldCost = Cost, @oldCostCalc = CostCalc
+	FROM Assets
+	WHERE OwnerID = @ownerID AND CorpAsset = @corpAsset AND LocationID = @stationID AND ItemID = @itemID AND Status = @status AND ContainerID = @containerID AND AutoConExclude = @autoConExclude AND IsContainer = 0
+	
+	IF(@assetID = 0)
+	BEGIN
+		INSERT INTO [Assets] ([OwnerID], [CorpAsset], [LocationID], [ItemID], [SystemID], [RegionID], [ContainerID], [Quantity], [Status], [AutoConExclude], [Processed], [IsContainer], [Cost], [CostCalc], [EveItemID], [BoughtViaContract]) 
+		VALUES (@ownerID, @corpAsset, @stationID, @itemID, @systemID, @regionID, 0, @deltaQuantity, @status, @autoConExclude, 0, 0, @addedItemsCost, @costCalc, 0, 0);
+	END 
+	ELSE
+	BEGIN
+		SET @newQuantity = @oldQuantity + @deltaQuantity
+		IF(@deltaQuantity > 0)
+		BEGIN
+            -- If new items are being added to the stack then calculate the average cost from the 
+            -- old and new values.
+            -- If the old cost had not been calculated then just use the new cost
+            SET @newCostCalc = 1
+            IF(@oldCostCalc = 0 AND @costCalc = 0)
+            BEGIN
+                SET @newCost = 0
+                SET @newCostCalc = 0
+            END
+            ELSE IF(@oldCostCalc = 1 AND @costCalc = 0)
+            BEGIN
+                SET @newCost = @oldCost
+            END
+            ELSE IF(@oldCostCalc = 0 AND @costCalc = 1)
+            BEGIN
+                SET @newCost = @addedItemsCost
+            END
+            ELSE IF(@oldCostCalc = 1 AND @costCalc = 1)
+            BEGIN
+			    SET @newCost = (@oldCost * @oldQuantity + @addedItemsCost * @deltaQuantity) / (@oldQuantity + @deltaQuantity)
+		    END
+        END
+		ELSE
+		BEGIN
+            -- If items are being removed from the stack then just use the old cost value
+			SET @newCost = @oldCost
+            SET @newCostCalc = @oldCostCalc
+		END		
+		
+		UPDATE [Assets] SET [Quantity] = @newQuantity, [Cost] = @newCost, [CostCalc] = @newCostCalc
+		WHERE [OwnerID] = @ownerID AND [CorpAsset] = @corpAsset AND [LocationID] = @stationID AND [ItemID] = @itemID AND [Status] = @status AND [ContainerID] = @containerID AND [AutoConExclude] = @autoConExclude AND [IsContainer] = 0
+	END
+	
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.27"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsAddQuantity' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+
+                    if (dbVersion.CompareTo(new Version("1.5.0.28")) < 0)
+                    {
+                        #region Update 'AssetsAddQuantity' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.AssetsAddQuantity 
+	@ownerID		int,
+	@corpAsset		bit,
+	@itemID			int,
+	@stationID		int,
+	@systemID		int,
+	@regionID		int,
+	@status			int,
+	@containerID	bigint,
+	@autoConExclude	bit,
+	@deltaQuantity	bigint,
+	@addedItemsCost	decimal(18,2),
+    @costCalc       bit
+AS
+	DECLARE @oldQuantity bigint, @newQuantity bigint
+	DECLARE	@assetID bigint
+	DECLARE @oldCost decimal(18, 2), @newCost decimal(18, 2)
+    DECLARE @oldCostCalc bit, @newCostCalc bit
+		
+	SET @assetID = 0
+	SELECT @oldQuantity = Quantity, @assetID = ID, @oldCost = Cost, @oldCostCalc = CostCalc
+	FROM Assets
+	WHERE OwnerID = @ownerID AND CorpAsset = @corpAsset AND LocationID = @stationID AND ItemID = @itemID AND Status = @status AND ContainerID = @containerID AND AutoConExclude = @autoConExclude AND IsContainer = 0
+	
+	IF(@assetID = 0)
+	BEGIN
+		INSERT INTO [Assets] ([OwnerID], [CorpAsset], [LocationID], [ItemID], [SystemID], [RegionID], [ContainerID], [Quantity], [Status], [AutoConExclude], [Processed], [IsContainer], [Cost], [CostCalc], [EveItemID], [BoughtViaContract]) 
+		VALUES (@ownerID, @corpAsset, @stationID, @itemID, @systemID, @regionID, 0, @deltaQuantity, @status, @autoConExclude, 0, 0, @addedItemsCost, @costCalc, 0, 0);
+	END 
+	ELSE
+	BEGIN
+		SET @newQuantity = @oldQuantity + @deltaQuantity
+		IF(@deltaQuantity > 0)
+		BEGIN
+            -- If new items are being added to the stack then calculate the average cost from the 
+            -- old and new values.
+            -- If the old cost had not been calculated then just use the new cost
+            SET @newCostCalc = 1
+            IF(@oldCostCalc = 0 AND @costCalc = 0)
+            BEGIN
+                SET @newCost = 0
+                SET @newCostCalc = 0
+            END
+            ELSE IF(@oldCostCalc = 1 AND @costCalc = 0)
+            BEGIN
+                SET @newCost = @oldCost
+            END
+            ELSE IF(@oldCostCalc = 0 AND @costCalc = 1)
+            BEGIN
+                SET @newCost = @addedItemsCost
+            END
+            ELSE IF(@oldCostCalc = 1 AND @costCalc = 1)
+            BEGIN
+			    SET @newCost = (@oldCost * @oldQuantity + @addedItemsCost * @deltaQuantity) / (@oldQuantity + @deltaQuantity)
+		    END
+        END
+		ELSE
+		BEGIN
+            -- If items are being removed from the stack then just use the old cost value
+			SET @newCost = @oldCost
+            SET @newCostCalc = @oldCostCalc
+		END		
+		
+		UPDATE [Assets] SET [Quantity] = @newQuantity, [Cost] = ISNULL(@newCost, 0), [CostCalc] = ISNULL(@newCostCalc, 0)
+		WHERE [OwnerID] = @ownerID AND [CorpAsset] = @corpAsset AND [LocationID] = @stationID AND [ItemID] = @itemID AND [Status] = @status AND [ContainerID] = @containerID AND [AutoConExclude] = @autoConExclude AND [IsContainer] = 0
+	END
+	
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.28"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsAddQuantity' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+
+                    if (dbVersion.CompareTo(new Version("1.5.0.29")) < 0)
+                    {
+                        #region Update 'AssetsGetContained' stored procedure
+                        commandText =
+                                @"ALTER PROCEDURE dbo.AssetsGetContained 
+	@containerID	bigint,
+	@itemID			int
+AS
+	SELECT * 
+	FROM Assets
+	WHERE ContainerID = @containerID AND (@itemID = 0 OR ItemID = @itemID)
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.29"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetContained' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.30")) < 0)
+                    {
+                        #region Add 'Cost' column to AssetsLost table
+                        commandText =
+                               @"ALTER TABLE dbo.AssetsLost
+ADD Cost decimal(18,2) NOT NULL DEFAULT 0";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.30"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'Cost' column to AssetsLost table", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.31")) < 0)
+                    {
+                        #region Add 'Value' column to AssetsLost table
+                        commandText =
+                               @"ALTER TABLE dbo.AssetsLost
+ADD Value decimal(18,2) NOT NULL DEFAULT 0";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.31"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'Value' column to AssetsLost table", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.32")) < 0)
+                    {
+                        #region Update 'AssetsLostNew' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsLostNew
+	@OwnerID			int,
+	@CorpAsset			bit,
+	@ItemID				int,
+	@LossDateTime	    datetime,
+	@Quantity			bigint,
+	@Cost				decimal(18,2),
+	@Value				decimal(18,2),
+	@newID				bigint		OUTPUT
+AS
+	SELECT @newID =
+	(SELECT MAX(ID) AS MaxID
+		FROM AssetsLost) + 1
+		
+	IF(@newID IS NULL)
+	BEGIN
+		SET @newID = 1
+	END
+	
+	INSERT INTO AssetsLost (ID, OwnerID, CorpAsset, ItemID, LossDateTime, Quantity, Cost, Value)
+	VALUES (@newID, @OwnerID, @CorpAsset, @ItemID, @LossDateTime, @Quantity, @Cost, @Value)
+
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.32"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsLostNew' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    
                     #endregion
                 }
-                
-                
+
+
             }
             catch (Exception ex)
             {

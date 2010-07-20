@@ -14,7 +14,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             long? lostAssetID = 0;
             _tableAdapter.New(lostAsset.OwnerID, lostAsset.CorpAsset, lostAsset.ItemID, DateTime.UtcNow,
-                Math.Abs(lostAsset.Quantity), ref lostAssetID);
+                Math.Abs(lostAsset.Quantity), lostAsset.UnitBuyPrice, lostAsset.UnitValue, ref lostAssetID);
         }
     }
 }

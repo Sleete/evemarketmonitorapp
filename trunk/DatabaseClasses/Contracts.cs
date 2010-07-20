@@ -389,7 +389,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     AssetList assets = Assets.LoadAssets(
                         UserAccount.CurrentGroup.GetAssetAccessParams(APIDataType.Assets),
                         new List<int>(), item.ItemID, 0, 0, false,
-                        (int)AssetStatus.States.ForSaleViaContract, true);
+                        (int)AssetStatus.States.ForSaleViaContract, true, true);
 
                     LookForAssetMatch(contract, updateAssets, ref qToFind, ref itemBuyPrice,
                         assets, false);
@@ -406,7 +406,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         assets = Assets.LoadAssets(
                             UserAccount.CurrentGroup.GetAssetAccessParams(APIDataType.Assets),
                             new List<int>(), item.ItemID, 0, 0, false,
-                            (int)AssetStatus.States.Normal, true);
+                            (int)AssetStatus.States.Normal, true, false);
 
                         LookForAssetMatch(contract, updateAssets, ref qToFind, ref itemBuyPrice,
                             assets, false);
@@ -481,7 +481,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                             AssetList assets = Assets.LoadAssets(
                                 UserAccount.CurrentGroup.GetAssetAccessParams(APIDataType.Assets),
                                 new List<int>(), item.ItemID, 0, 0, false,
-                                (int)AssetStatus.States.Normal, true);
+                                (int)AssetStatus.States.Normal, true, false);
                             foreach (Asset asset in assets)
                             {
                                 if (qToFind > 0 && contract.OwnerID == asset.OwnerID && 
