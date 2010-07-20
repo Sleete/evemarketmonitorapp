@@ -62,6 +62,9 @@ namespace EveMarketMonitorApp.GUIElements
             this.chkForceDefaultBuyPrice = new System.Windows.Forms.CheckBox();
             this.chkForceDefaultSellPrice = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtDaysBetweenUpdates = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -76,7 +79,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.lstItems.FormattingEnabled = true;
             this.lstItems.Location = new System.Drawing.Point(12, 132);
             this.lstItems.Name = "lstItems";
-            this.lstItems.Size = new System.Drawing.Size(504, 199);
+            this.lstItems.Size = new System.Drawing.Size(504, 186);
             this.lstItems.Sorted = true;
             this.lstItems.TabIndex = 1;
             this.lstItems.SelectedIndexChanged += new System.EventHandler(this.lstItems_SelectedIndexChanged);
@@ -130,7 +133,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(318, 688);
+            this.btnOk.Location = new System.Drawing.Point(318, 709);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(96, 29);
             this.btnOk.TabIndex = 2;
@@ -142,7 +145,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(420, 688);
+            this.btnCancel.Location = new System.Drawing.Point(420, 709);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(96, 29);
             this.btnCancel.TabIndex = 3;
@@ -153,7 +156,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnClear
             // 
             this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnClear.Location = new System.Drawing.Point(216, 688);
+            this.btnClear.Location = new System.Drawing.Point(216, 709);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(96, 29);
             this.btnClear.TabIndex = 8;
@@ -176,12 +179,15 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.label8);
+            this.groupBox3.Controls.Add(this.txtDaysBetweenUpdates);
+            this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.rdbMaxBuy);
             this.groupBox3.Controls.Add(this.rdbMedianBuy);
             this.groupBox3.Controls.Add(this.chkEveMarketPrices);
-            this.groupBox3.Location = new System.Drawing.Point(12, 520);
+            this.groupBox3.Location = new System.Drawing.Point(12, 507);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(504, 85);
+            this.groupBox3.Size = new System.Drawing.Size(504, 119);
             this.groupBox3.TabIndex = 14;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "General settings";
@@ -216,7 +222,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox4.Controls.Add(this.lnkEveCentral);
             this.groupBox4.Controls.Add(this.rdbEveMetrics);
             this.groupBox4.Controls.Add(this.rdbEveCentral);
-            this.groupBox4.Location = new System.Drawing.Point(12, 611);
+            this.groupBox4.Location = new System.Drawing.Point(12, 632);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(504, 71);
             this.groupBox4.TabIndex = 15;
@@ -431,19 +437,44 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.txtItemSellPrice);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(12, 337);
+            this.groupBox1.Location = new System.Drawing.Point(12, 324);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(504, 177);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Pricing details";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(5, 88);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(192, 13);
+            this.label7.TabIndex = 16;
+            this.label7.Text = "Update item value data from web every";
+            // 
+            // txtDaysBetweenUpdates
+            // 
+            this.txtDaysBetweenUpdates.Location = new System.Drawing.Point(203, 85);
+            this.txtDaysBetweenUpdates.Name = "txtDaysBetweenUpdates";
+            this.txtDaysBetweenUpdates.Size = new System.Drawing.Size(55, 20);
+            this.txtDaysBetweenUpdates.TabIndex = 17;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(265, 88);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(29, 13);
+            this.label8.TabIndex = 18;
+            this.label8.Text = "days";
+            // 
             // ItemValuesManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(528, 729);
+            this.ClientSize = new System.Drawing.Size(528, 750);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
@@ -507,5 +538,8 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.LinkLabel lnkEveMetrics;
         private System.Windows.Forms.LinkLabel lnkEveCentral;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtDaysBetweenUpdates;
+        private System.Windows.Forms.Label label7;
     }
 }

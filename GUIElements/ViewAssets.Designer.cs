@@ -33,7 +33,6 @@ namespace EveMarketMonitorApp.GUIElements
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewAssets));
-            this.AssetsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
             this.GridContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyCellDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyRowDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,6 +51,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnCSV = new System.Windows.Forms.Button();
             this.btnStore = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
+            this.chkCalcCost = new System.Windows.Forms.CheckBox();
+            this.AssetsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
             this.OwnerColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LocationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -60,7 +61,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.AutoConExcludeColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ReprocessorExcludeColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.CostColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.AssetsGrid)).BeginInit();
             this.GridContextMenu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -68,41 +68,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.splitContainer1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AssetsGrid)).BeginInit();
             this.SuspendLayout();
-            // 
-            // AssetsGrid
-            // 
-            this.AssetsGrid.AllowUserToAddRows = false;
-            this.AssetsGrid.AllowUserToDeleteRows = false;
-            this.AssetsGrid.AllowUserToResizeRows = false;
-            this.AssetsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.AssetsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.OwnerColumn,
-            this.ItemColumn,
-            this.LocationColumn,
-            this.QuantityColumn,
-            this.StatusColumn,
-            this.AutoConExcludeColumn,
-            this.ReprocessorExcludeColumn,
-            this.CostColumn});
-            this.AssetsGrid.ContextMenuStrip = this.GridContextMenu;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.AssetsGrid.DefaultCellStyle = dataGridViewCellStyle3;
-            this.AssetsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AssetsGrid.Location = new System.Drawing.Point(0, 0);
-            this.AssetsGrid.Name = "AssetsGrid";
-            this.AssetsGrid.Size = new System.Drawing.Size(846, 317);
-            this.AssetsGrid.TabIndex = 0;
-            this.AssetsGrid.VirtualMode = true;
-            this.AssetsGrid.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AssetsGrid_MouseDown);
-            this.AssetsGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.AssetsGrid_CellFormatting);
-            this.AssetsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.AssetsGrid_CellContentClick);
             // 
             // GridContextMenu
             // 
@@ -249,6 +216,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.chkCalcCost);
             this.panel1.Controls.Add(this.btnCSV);
             this.panel1.Controls.Add(this.btnStore);
             this.panel1.Controls.Add(this.btnClose);
@@ -260,7 +228,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnCSV
             // 
-            this.btnCSV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCSV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCSV.Location = new System.Drawing.Point(0, 0);
             this.btnCSV.Name = "btnCSV";
             this.btnCSV.Size = new System.Drawing.Size(93, 29);
@@ -290,6 +258,51 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // chkCalcCost
+            // 
+            this.chkCalcCost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkCalcCost.AutoSize = true;
+            this.chkCalcCost.Location = new System.Drawing.Point(761, 6);
+            this.chkCalcCost.Name = "chkCalcCost";
+            this.chkCalcCost.Size = new System.Drawing.Size(158, 17);
+            this.chkCalcCost.TabIndex = 3;
+            this.chkCalcCost.Text = "Calculate cost if unavailable";
+            this.chkCalcCost.UseVisualStyleBackColor = true;
+            // 
+            // AssetsGrid
+            // 
+            this.AssetsGrid.AllowUserToAddRows = false;
+            this.AssetsGrid.AllowUserToDeleteRows = false;
+            this.AssetsGrid.AllowUserToResizeRows = false;
+            this.AssetsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.AssetsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.OwnerColumn,
+            this.ItemColumn,
+            this.LocationColumn,
+            this.QuantityColumn,
+            this.StatusColumn,
+            this.AutoConExcludeColumn,
+            this.ReprocessorExcludeColumn,
+            this.CostColumn});
+            this.AssetsGrid.ContextMenuStrip = this.GridContextMenu;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.AssetsGrid.DefaultCellStyle = dataGridViewCellStyle3;
+            this.AssetsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AssetsGrid.Location = new System.Drawing.Point(0, 0);
+            this.AssetsGrid.Name = "AssetsGrid";
+            this.AssetsGrid.Size = new System.Drawing.Size(846, 317);
+            this.AssetsGrid.TabIndex = 0;
+            this.AssetsGrid.VirtualMode = true;
+            this.AssetsGrid.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AssetsGrid_MouseDown);
+            this.AssetsGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.AssetsGrid_CellFormatting);
+            this.AssetsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.AssetsGrid_CellContentClick);
             // 
             // OwnerColumn
             // 
@@ -359,7 +372,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Assets";
             this.Load += new System.EventHandler(this.ViewAssets_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.AssetsGrid)).EndInit();
             this.GridContextMenu.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -368,6 +380,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AssetsGrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -401,5 +415,6 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.DataGridViewCheckBoxColumn AutoConExcludeColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ReprocessorExcludeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn CostColumn;
+        private System.Windows.Forms.CheckBox chkCalcCost;
     }
 }

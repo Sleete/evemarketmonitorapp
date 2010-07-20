@@ -67,8 +67,6 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 _charList = new XmlDocument();
             }
             _charList.LoadXml(data.CharList);
-
-            PopulateChars();
         }
 
         public EVEAccount(int userID, string apiKey) 
@@ -106,7 +104,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         /// <returns></returns>
         public void UpdateCharList(bool forceUpdate)
         {
-            if (DateTime.UtcNow.AddHours(-1).CompareTo(_lastcharListUpdate) > 0 || forceUpdate)
+            if (DateTime.UtcNow.AddHours(-48).CompareTo(_lastcharListUpdate) > 0 || forceUpdate)
             {
                 XmlDocument xml = EveAPI.GetXml(EveAPI.URL_EveApiBase + EveAPI.URL_CharsApi,
                     "userid=" + _userID + "&apiKey=" + _apiKey);
@@ -136,7 +134,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         /// Populate the List of APICharacters with entries based upon the data in the _charList
         /// XML document.
         /// </summary>
-        private void PopulateChars()
+        public void PopulateChars()
         {
             if (_charList != null)
             {

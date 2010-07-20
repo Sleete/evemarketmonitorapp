@@ -157,6 +157,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             if (_currentGroup != null)
             {
+                _currentGroup.StoreEveAccounts();
                 _currentGroup.StoreSettings();
                 _currentGroup.StoreItemsTraded();
             }

@@ -76,6 +76,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.ManufacturingMode);
             GetValue(Setting.AssetsViewWarning);
             GetValue(Setting.APIIndividualUpdate);
+            GetValue(Setting.CalcCostInAssetView);
+            GetValue(Setting.CalcProfitInTransView);
         }
 
         /// <summary>
@@ -268,6 +270,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     retVal = "WARN"; // Can be 'WARN', 'FORCE YES', 'FORCE NO'
                     break;
                 case Setting.APIIndividualUpdate:
+                    retVal = bool.FalseString;
+                    break;
+                case Setting.CalcCostInAssetView:
+                    retVal = bool.FalseString;
+                    break;
+                case Setting.CalcProfitInTransView:
                     retVal = bool.FalseString;
                     break;
                 default:
@@ -486,6 +494,17 @@ namespace EveMarketMonitorApp.DatabaseClasses
             get { return bool.Parse(GetValue(Setting.APIIndividualUpdate)); }
             set { SetValue(Setting.APIIndividualUpdate, value.ToString()); }
         }
+
+        public bool CalcCostInAssetView
+        {
+            get { return bool.Parse(GetValue(Setting.CalcCostInAssetView)); }
+            set { SetValue(Setting.CalcCostInAssetView, value.ToString()); }
+        }
+        public bool CalcProfitInTransView
+        {
+            get { return bool.Parse(GetValue(Setting.CalcProfitInTransView)); }
+            set { SetValue(Setting.CalcProfitInTransView, value.ToString()); }
+        }
         #endregion
 
         #region Public methods
@@ -632,6 +651,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             ManufacturingMode,
             AssetsViewWarning,
             APIIndividualUpdate,
+            CalcCostInAssetView,
+            CalcProfitInTransView
        }
 
     }

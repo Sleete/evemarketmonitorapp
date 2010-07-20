@@ -72,6 +72,7 @@ namespace EveMarketMonitorApp.GUIElements
             }
             rdbEveCentral.Checked = UserAccount.CurrentGroup.Settings.UseEveCentral;
             rdbEveMetrics.Checked = UserAccount.CurrentGroup.Settings.UseEveMetrics;
+            txtDaysBetweenUpdates.Text = UserAccount.CurrentGroup.Settings.ItemValueWebExpiryDays.ToString();
             //RefreshList();
         }
 
@@ -135,6 +136,28 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 itemValues.ClearValueCache();
                 _resetCache = false;
+            }
+
+            int itemValueWebExpiryDays = int.MinValue;
+            try
+            {
+                itemValueWebExpiryDays = int.Parse(txtDaysBetweenUpdates.Text);
+            }
+            catch { }
+            if (itemValueWebExpiryDays > 0)
+            {
+                UserAccount.CurrentGroup.Settings.ItemValueWebExpiryDays = itemValueWebExpiryDays;
+            }
+            else if (itemValueWebExpiryDays == int.MinValue)
+            {
+                MessageBox.Show("Invalid value specified for number of days between item value web updates." +
+                    " Value not modified.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                MessageBox.Show("Value specified for number of days between item value web updates" +
+                    " cannot be negative. It has not been modified.", "Warning", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

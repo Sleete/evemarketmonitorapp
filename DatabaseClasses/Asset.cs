@@ -58,6 +58,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private bool _gotChangeType = false;
         private string _changeType = "";
         private bool _changeTypeLocked = false;
+
+        private bool _expanded = false;
         #endregion
 
         #region Constructors
@@ -617,6 +619,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             get { return _selected; }
             set { _selected = value; }
+        }
+
+        public bool Expanded
+        {
+            get { return _expanded; }
+            set { _expanded = value; }
         }
 
         public decimal ReprocessValue

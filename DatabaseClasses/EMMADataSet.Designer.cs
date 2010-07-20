@@ -109,8 +109,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         
         private TradedItemsDataTable tableTradedItems;
         
-        private AssetsLostDataTable tableAssetsLost;
-        
         private AssetsProducedDataTable tableAssetsProduced;
         
         private TransactionsDataTable tableTransactions;
@@ -118,6 +116,8 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         private OrdersDataTable tableOrders;
         
         private AssetsDataTable tableAssets;
+        
+        private AssetsLostDataTable tableAssetsLost;
         
         private WalletDivisionsDataTable tableWalletDivisions;
         
@@ -273,9 +273,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 if ((ds.Tables["TradedItems"] != null)) {
                     base.Tables.Add(new TradedItemsDataTable(ds.Tables["TradedItems"]));
                 }
-                if ((ds.Tables["AssetsLost"] != null)) {
-                    base.Tables.Add(new AssetsLostDataTable(ds.Tables["AssetsLost"]));
-                }
                 if ((ds.Tables["AssetsProduced"] != null)) {
                     base.Tables.Add(new AssetsProducedDataTable(ds.Tables["AssetsProduced"]));
                 }
@@ -287,6 +284,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 }
                 if ((ds.Tables["Assets"] != null)) {
                     base.Tables.Add(new AssetsDataTable(ds.Tables["Assets"]));
+                }
+                if ((ds.Tables["AssetsLost"] != null)) {
+                    base.Tables.Add(new AssetsLostDataTable(ds.Tables["AssetsLost"]));
                 }
                 if ((ds.Tables["WalletDivisions"] != null)) {
                     base.Tables.Add(new WalletDivisionsDataTable(ds.Tables["WalletDivisions"]));
@@ -690,15 +690,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public AssetsLostDataTable AssetsLost {
-            get {
-                return this.tableAssetsLost;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Browsable(false)]
-        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
         public AssetsProducedDataTable AssetsProduced {
             get {
                 return this.tableAssetsProduced;
@@ -729,6 +720,15 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         public AssetsDataTable Assets {
             get {
                 return this.tableAssets;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public AssetsLostDataTable AssetsLost {
+            get {
+                return this.tableAssetsLost;
             }
         }
         
@@ -926,9 +926,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 if ((ds.Tables["TradedItems"] != null)) {
                     base.Tables.Add(new TradedItemsDataTable(ds.Tables["TradedItems"]));
                 }
-                if ((ds.Tables["AssetsLost"] != null)) {
-                    base.Tables.Add(new AssetsLostDataTable(ds.Tables["AssetsLost"]));
-                }
                 if ((ds.Tables["AssetsProduced"] != null)) {
                     base.Tables.Add(new AssetsProducedDataTable(ds.Tables["AssetsProduced"]));
                 }
@@ -940,6 +937,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 }
                 if ((ds.Tables["Assets"] != null)) {
                     base.Tables.Add(new AssetsDataTable(ds.Tables["Assets"]));
+                }
+                if ((ds.Tables["AssetsLost"] != null)) {
+                    base.Tables.Add(new AssetsLostDataTable(ds.Tables["AssetsLost"]));
                 }
                 if ((ds.Tables["WalletDivisions"] != null)) {
                     base.Tables.Add(new WalletDivisionsDataTable(ds.Tables["WalletDivisions"]));
@@ -1226,12 +1226,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                     this.tableTradedItems.InitVars();
                 }
             }
-            this.tableAssetsLost = ((AssetsLostDataTable)(base.Tables["AssetsLost"]));
-            if ((initTable == true)) {
-                if ((this.tableAssetsLost != null)) {
-                    this.tableAssetsLost.InitVars();
-                }
-            }
             this.tableAssetsProduced = ((AssetsProducedDataTable)(base.Tables["AssetsProduced"]));
             if ((initTable == true)) {
                 if ((this.tableAssetsProduced != null)) {
@@ -1254,6 +1248,12 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             if ((initTable == true)) {
                 if ((this.tableAssets != null)) {
                     this.tableAssets.InitVars();
+                }
+            }
+            this.tableAssetsLost = ((AssetsLostDataTable)(base.Tables["AssetsLost"]));
+            if ((initTable == true)) {
+                if ((this.tableAssetsLost != null)) {
+                    this.tableAssetsLost.InitVars();
                 }
             }
             this.tableWalletDivisions = ((WalletDivisionsDataTable)(base.Tables["WalletDivisions"]));
@@ -1355,8 +1355,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             base.Tables.Add(this.tableItemValues);
             this.tableTradedItems = new TradedItemsDataTable();
             base.Tables.Add(this.tableTradedItems);
-            this.tableAssetsLost = new AssetsLostDataTable();
-            base.Tables.Add(this.tableAssetsLost);
             this.tableAssetsProduced = new AssetsProducedDataTable();
             base.Tables.Add(this.tableAssetsProduced);
             this.tableTransactions = new TransactionsDataTable();
@@ -1365,6 +1363,8 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             base.Tables.Add(this.tableOrders);
             this.tableAssets = new AssetsDataTable();
             base.Tables.Add(this.tableAssets);
+            this.tableAssetsLost = new AssetsLostDataTable();
+            base.Tables.Add(this.tableAssetsLost);
             this.tableWalletDivisions = new WalletDivisionsDataTable();
             base.Tables.Add(this.tableWalletDivisions);
         }
@@ -1580,11 +1580,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private bool ShouldSerializeAssetsLost() {
-            return false;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         private bool ShouldSerializeAssetsProduced() {
             return false;
         }
@@ -1601,6 +1596,11 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         private bool ShouldSerializeAssets() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private bool ShouldSerializeAssetsLost() {
             return false;
         }
         
@@ -1746,8 +1746,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         
         public delegate void TradedItemsRowChangeEventHandler(object sender, TradedItemsRowChangeEvent e);
         
-        public delegate void AssetsLostRowChangeEventHandler(object sender, AssetsLostRowChangeEvent e);
-        
         public delegate void AssetsProducedRowChangeEventHandler(object sender, AssetsProducedRowChangeEvent e);
         
         public delegate void TransactionsRowChangeEventHandler(object sender, TransactionsRowChangeEvent e);
@@ -1755,6 +1753,8 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         public delegate void OrdersRowChangeEventHandler(object sender, OrdersRowChangeEvent e);
         
         public delegate void AssetsRowChangeEventHandler(object sender, AssetsRowChangeEvent e);
+        
+        public delegate void AssetsLostRowChangeEventHandler(object sender, AssetsLostRowChangeEvent e);
         
         public delegate void WalletDivisionsRowChangeEventHandler(object sender, WalletDivisionsRowChangeEvent e);
         
@@ -13992,309 +13992,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class AssetsLostDataTable : global::System.Data.TypedTableBase<AssetsLostRow> {
-            
-            private global::System.Data.DataColumn columnID;
-            
-            private global::System.Data.DataColumn columnOwnerID;
-            
-            private global::System.Data.DataColumn columnCorpAsset;
-            
-            private global::System.Data.DataColumn columnItemID;
-            
-            private global::System.Data.DataColumn columnLossDatetime;
-            
-            private global::System.Data.DataColumn columnQuantity;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public AssetsLostDataTable() {
-                this.TableName = "AssetsLost";
-                this.BeginInit();
-                this.InitClass();
-                this.EndInit();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            internal AssetsLostDataTable(global::System.Data.DataTable table) {
-                this.TableName = table.TableName;
-                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
-                    this.CaseSensitive = table.CaseSensitive;
-                }
-                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
-                    this.Locale = table.Locale;
-                }
-                if ((table.Namespace != table.DataSet.Namespace)) {
-                    this.Namespace = table.Namespace;
-                }
-                this.Prefix = table.Prefix;
-                this.MinimumCapacity = table.MinimumCapacity;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected AssetsLostDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
-                    base(info, context) {
-                this.InitVars();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn IDColumn {
-                get {
-                    return this.columnID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn OwnerIDColumn {
-                get {
-                    return this.columnOwnerID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn CorpAssetColumn {
-                get {
-                    return this.columnCorpAsset;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn ItemIDColumn {
-                get {
-                    return this.columnItemID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn LossDatetimeColumn {
-                get {
-                    return this.columnLossDatetime;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn QuantityColumn {
-                get {
-                    return this.columnQuantity;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.ComponentModel.Browsable(false)]
-            public int Count {
-                get {
-                    return this.Rows.Count;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public AssetsLostRow this[int index] {
-                get {
-                    return ((AssetsLostRow)(this.Rows[index]));
-                }
-            }
-            
-            public event AssetsLostRowChangeEventHandler AssetsLostRowChanging;
-            
-            public event AssetsLostRowChangeEventHandler AssetsLostRowChanged;
-            
-            public event AssetsLostRowChangeEventHandler AssetsLostRowDeleting;
-            
-            public event AssetsLostRowChangeEventHandler AssetsLostRowDeleted;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public void AddAssetsLostRow(AssetsLostRow row) {
-                this.Rows.Add(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public AssetsLostRow AddAssetsLostRow(long ID, int OwnerID, bool CorpAsset, int ItemID, System.DateTime LossDatetime, long Quantity) {
-                AssetsLostRow rowAssetsLostRow = ((AssetsLostRow)(this.NewRow()));
-                object[] columnValuesArray = new object[] {
-                        ID,
-                        OwnerID,
-                        CorpAsset,
-                        ItemID,
-                        LossDatetime,
-                        Quantity};
-                rowAssetsLostRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowAssetsLostRow);
-                return rowAssetsLostRow;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public AssetsLostRow FindByID(long ID) {
-                return ((AssetsLostRow)(this.Rows.Find(new object[] {
-                            ID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public override global::System.Data.DataTable Clone() {
-                AssetsLostDataTable cln = ((AssetsLostDataTable)(base.Clone()));
-                cln.InitVars();
-                return cln;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override global::System.Data.DataTable CreateInstance() {
-                return new AssetsLostDataTable();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            internal void InitVars() {
-                this.columnID = base.Columns["ID"];
-                this.columnOwnerID = base.Columns["OwnerID"];
-                this.columnCorpAsset = base.Columns["CorpAsset"];
-                this.columnItemID = base.Columns["ItemID"];
-                this.columnLossDatetime = base.Columns["LossDatetime"];
-                this.columnQuantity = base.Columns["Quantity"];
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            private void InitClass() {
-                this.columnID = new global::System.Data.DataColumn("ID", typeof(long), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnID);
-                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnOwnerID);
-                this.columnCorpAsset = new global::System.Data.DataColumn("CorpAsset", typeof(bool), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnCorpAsset);
-                this.columnItemID = new global::System.Data.DataColumn("ItemID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnItemID);
-                this.columnLossDatetime = new global::System.Data.DataColumn("LossDatetime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnLossDatetime);
-                this.columnQuantity = new global::System.Data.DataColumn("Quantity", typeof(long), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnQuantity);
-                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnID}, true));
-                this.columnID.AllowDBNull = false;
-                this.columnID.Unique = true;
-                this.columnOwnerID.AllowDBNull = false;
-                this.columnCorpAsset.AllowDBNull = false;
-                this.columnItemID.AllowDBNull = false;
-                this.columnLossDatetime.AllowDBNull = false;
-                this.columnQuantity.AllowDBNull = false;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public AssetsLostRow NewAssetsLostRow() {
-                return ((AssetsLostRow)(this.NewRow()));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new AssetsLostRow(builder);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override global::System.Type GetRowType() {
-                return typeof(AssetsLostRow);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanged(e);
-                if ((this.AssetsLostRowChanged != null)) {
-                    this.AssetsLostRowChanged(this, new AssetsLostRowChangeEvent(((AssetsLostRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanging(e);
-                if ((this.AssetsLostRowChanging != null)) {
-                    this.AssetsLostRowChanging(this, new AssetsLostRowChangeEvent(((AssetsLostRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleted(e);
-                if ((this.AssetsLostRowDeleted != null)) {
-                    this.AssetsLostRowDeleted(this, new AssetsLostRowChangeEvent(((AssetsLostRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleting(e);
-                if ((this.AssetsLostRowDeleting != null)) {
-                    this.AssetsLostRowDeleting(this, new AssetsLostRowChangeEvent(((AssetsLostRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public void RemoveAssetsLostRow(AssetsLostRow row) {
-                this.Rows.Remove(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
-                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                EMMADataSet ds = new EMMADataSet();
-                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
-                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
-                any1.MinOccurs = new decimal(0);
-                any1.MaxOccurs = decimal.MaxValue;
-                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any1);
-                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
-                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
-                any2.MinOccurs = new decimal(1);
-                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any2);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute1.Name = "namespace";
-                attribute1.FixedValue = ds.Namespace;
-                type.Attributes.Add(attribute1);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "AssetsLostDataTable";
-                type.Attributes.Add(attribute2);
-                type.Particle = sequence;
-                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
-                if (xs.Contains(dsSchema.TargetNamespace)) {
-                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
-                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
-                    try {
-                        global::System.Xml.Schema.XmlSchema schema = null;
-                        dsSchema.Write(s1);
-                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
-                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
-                            s2.SetLength(0);
-                            schema.Write(s2);
-                            if ((s1.Length == s2.Length)) {
-                                s1.Position = 0;
-                                s2.Position = 0;
-                                for (; ((s1.Position != s1.Length) 
-                                            && (s1.ReadByte() == s2.ReadByte())); ) {
-                                    ;
-                                }
-                                if ((s1.Position == s1.Length)) {
-                                    return type;
-                                }
-                            }
-                        }
-                    }
-                    finally {
-                        if ((s1 != null)) {
-                            s1.Close();
-                        }
-                        if ((s2 != null)) {
-                            s2.Close();
-                        }
-                    }
-                }
-                xs.Add(dsSchema);
-                return type;
-            }
-        }
-        
-        /// <summary>
-        ///Represents the strongly named DataTable class.
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-        [global::System.Serializable()]
-        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class AssetsProducedDataTable : global::System.Data.TypedTableBase<AssetsProducedRow> {
             
             private global::System.Data.DataColumn columnID;
@@ -16023,6 +15720,337 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
                 attribute2.FixedValue = "AssetsDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class AssetsLostDataTable : global::System.Data.TypedTableBase<AssetsLostRow> {
+            
+            private global::System.Data.DataColumn columnID;
+            
+            private global::System.Data.DataColumn columnOwnerID;
+            
+            private global::System.Data.DataColumn columnCorpAsset;
+            
+            private global::System.Data.DataColumn columnItemID;
+            
+            private global::System.Data.DataColumn columnLossDatetime;
+            
+            private global::System.Data.DataColumn columnQuantity;
+            
+            private global::System.Data.DataColumn columnCost;
+            
+            private global::System.Data.DataColumn columnValue;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public AssetsLostDataTable() {
+                this.TableName = "AssetsLost";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            internal AssetsLostDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected AssetsLostDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn IDColumn {
+                get {
+                    return this.columnID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn OwnerIDColumn {
+                get {
+                    return this.columnOwnerID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn CorpAssetColumn {
+                get {
+                    return this.columnCorpAsset;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn ItemIDColumn {
+                get {
+                    return this.columnItemID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn LossDatetimeColumn {
+                get {
+                    return this.columnLossDatetime;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn QuantityColumn {
+                get {
+                    return this.columnQuantity;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn CostColumn {
+                get {
+                    return this.columnCost;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn ValueColumn {
+                get {
+                    return this.columnValue;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public AssetsLostRow this[int index] {
+                get {
+                    return ((AssetsLostRow)(this.Rows[index]));
+                }
+            }
+            
+            public event AssetsLostRowChangeEventHandler AssetsLostRowChanging;
+            
+            public event AssetsLostRowChangeEventHandler AssetsLostRowChanged;
+            
+            public event AssetsLostRowChangeEventHandler AssetsLostRowDeleting;
+            
+            public event AssetsLostRowChangeEventHandler AssetsLostRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public void AddAssetsLostRow(AssetsLostRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public AssetsLostRow AddAssetsLostRow(long ID, int OwnerID, bool CorpAsset, int ItemID, System.DateTime LossDatetime, long Quantity, decimal Cost, decimal Value) {
+                AssetsLostRow rowAssetsLostRow = ((AssetsLostRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        ID,
+                        OwnerID,
+                        CorpAsset,
+                        ItemID,
+                        LossDatetime,
+                        Quantity,
+                        Cost,
+                        Value};
+                rowAssetsLostRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowAssetsLostRow);
+                return rowAssetsLostRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public AssetsLostRow FindByID(long ID) {
+                return ((AssetsLostRow)(this.Rows.Find(new object[] {
+                            ID})));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public override global::System.Data.DataTable Clone() {
+                AssetsLostDataTable cln = ((AssetsLostDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new AssetsLostDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            internal void InitVars() {
+                this.columnID = base.Columns["ID"];
+                this.columnOwnerID = base.Columns["OwnerID"];
+                this.columnCorpAsset = base.Columns["CorpAsset"];
+                this.columnItemID = base.Columns["ItemID"];
+                this.columnLossDatetime = base.Columns["LossDatetime"];
+                this.columnQuantity = base.Columns["Quantity"];
+                this.columnCost = base.Columns["Cost"];
+                this.columnValue = base.Columns["Value"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            private void InitClass() {
+                this.columnID = new global::System.Data.DataColumn("ID", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnID);
+                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOwnerID);
+                this.columnCorpAsset = new global::System.Data.DataColumn("CorpAsset", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCorpAsset);
+                this.columnItemID = new global::System.Data.DataColumn("ItemID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnItemID);
+                this.columnLossDatetime = new global::System.Data.DataColumn("LossDatetime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLossDatetime);
+                this.columnQuantity = new global::System.Data.DataColumn("Quantity", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnQuantity);
+                this.columnCost = new global::System.Data.DataColumn("Cost", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCost);
+                this.columnValue = new global::System.Data.DataColumn("Value", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnValue);
+                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
+                                this.columnID}, true));
+                this.columnID.AllowDBNull = false;
+                this.columnID.Unique = true;
+                this.columnOwnerID.AllowDBNull = false;
+                this.columnCorpAsset.AllowDBNull = false;
+                this.columnItemID.AllowDBNull = false;
+                this.columnLossDatetime.AllowDBNull = false;
+                this.columnQuantity.AllowDBNull = false;
+                this.columnCost.AllowDBNull = false;
+                this.columnValue.AllowDBNull = false;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public AssetsLostRow NewAssetsLostRow() {
+                return ((AssetsLostRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new AssetsLostRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override global::System.Type GetRowType() {
+                return typeof(AssetsLostRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.AssetsLostRowChanged != null)) {
+                    this.AssetsLostRowChanged(this, new AssetsLostRowChangeEvent(((AssetsLostRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.AssetsLostRowChanging != null)) {
+                    this.AssetsLostRowChanging(this, new AssetsLostRowChangeEvent(((AssetsLostRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.AssetsLostRowDeleted != null)) {
+                    this.AssetsLostRowDeleted(this, new AssetsLostRowChangeEvent(((AssetsLostRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.AssetsLostRowDeleting != null)) {
+                    this.AssetsLostRowDeleting(this, new AssetsLostRowChangeEvent(((AssetsLostRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public void RemoveAssetsLostRow(AssetsLostRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                EMMADataSet ds = new EMMADataSet();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "AssetsLostDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -19057,81 +19085,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///Represents strongly named DataRow class.
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-        public partial class AssetsLostRow : global::System.Data.DataRow {
-            
-            private AssetsLostDataTable tableAssetsLost;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            internal AssetsLostRow(global::System.Data.DataRowBuilder rb) : 
-                    base(rb) {
-                this.tableAssetsLost = ((AssetsLostDataTable)(this.Table));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public long ID {
-                get {
-                    return ((long)(this[this.tableAssetsLost.IDColumn]));
-                }
-                set {
-                    this[this.tableAssetsLost.IDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int OwnerID {
-                get {
-                    return ((int)(this[this.tableAssetsLost.OwnerIDColumn]));
-                }
-                set {
-                    this[this.tableAssetsLost.OwnerIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public bool CorpAsset {
-                get {
-                    return ((bool)(this[this.tableAssetsLost.CorpAssetColumn]));
-                }
-                set {
-                    this[this.tableAssetsLost.CorpAssetColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int ItemID {
-                get {
-                    return ((int)(this[this.tableAssetsLost.ItemIDColumn]));
-                }
-                set {
-                    this[this.tableAssetsLost.ItemIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public System.DateTime LossDatetime {
-                get {
-                    return ((global::System.DateTime)(this[this.tableAssetsLost.LossDatetimeColumn]));
-                }
-                set {
-                    this[this.tableAssetsLost.LossDatetimeColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public long Quantity {
-                get {
-                    return ((long)(this[this.tableAssetsLost.QuantityColumn]));
-                }
-                set {
-                    this[this.tableAssetsLost.QuantityColumn] = value;
-                }
-            }
-        }
-        
-        /// <summary>
-        ///Represents strongly named DataRow class.
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
         public partial class AssetsProducedRow : global::System.Data.DataRow {
             
             private AssetsProducedDataTable tableAssetsProduced;
@@ -19784,6 +19737,101 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 }
                 set {
                     this[this.tableAssets.BoughtViaContractColumn] = value;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+        public partial class AssetsLostRow : global::System.Data.DataRow {
+            
+            private AssetsLostDataTable tableAssetsLost;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            internal AssetsLostRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableAssetsLost = ((AssetsLostDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public long ID {
+                get {
+                    return ((long)(this[this.tableAssetsLost.IDColumn]));
+                }
+                set {
+                    this[this.tableAssetsLost.IDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int OwnerID {
+                get {
+                    return ((int)(this[this.tableAssetsLost.OwnerIDColumn]));
+                }
+                set {
+                    this[this.tableAssetsLost.OwnerIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool CorpAsset {
+                get {
+                    return ((bool)(this[this.tableAssetsLost.CorpAssetColumn]));
+                }
+                set {
+                    this[this.tableAssetsLost.CorpAssetColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int ItemID {
+                get {
+                    return ((int)(this[this.tableAssetsLost.ItemIDColumn]));
+                }
+                set {
+                    this[this.tableAssetsLost.ItemIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public System.DateTime LossDatetime {
+                get {
+                    return ((global::System.DateTime)(this[this.tableAssetsLost.LossDatetimeColumn]));
+                }
+                set {
+                    this[this.tableAssetsLost.LossDatetimeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public long Quantity {
+                get {
+                    return ((long)(this[this.tableAssetsLost.QuantityColumn]));
+                }
+                set {
+                    this[this.tableAssetsLost.QuantityColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public decimal Cost {
+                get {
+                    return ((decimal)(this[this.tableAssetsLost.CostColumn]));
+                }
+                set {
+                    this[this.tableAssetsLost.CostColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public decimal Value {
+                get {
+                    return ((decimal)(this[this.tableAssetsLost.ValueColumn]));
+                }
+                set {
+                    this[this.tableAssetsLost.ValueColumn] = value;
                 }
             }
         }
@@ -21144,37 +21192,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-        public class AssetsLostRowChangeEvent : global::System.EventArgs {
-            
-            private AssetsLostRow eventRow;
-            
-            private global::System.Data.DataRowAction eventAction;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public AssetsLostRowChangeEvent(AssetsLostRow row, global::System.Data.DataRowAction action) {
-                this.eventRow = row;
-                this.eventAction = action;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public AssetsLostRow Row {
-                get {
-                    return this.eventRow;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataRowAction Action {
-                get {
-                    return this.eventAction;
-                }
-            }
-        }
-        
-        /// <summary>
-        ///Row event argument class
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
         public class AssetsProducedRowChangeEvent : global::System.EventArgs {
             
             private AssetsProducedRow eventRow;
@@ -21282,6 +21299,37 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             public AssetsRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+        public class AssetsLostRowChangeEvent : global::System.EventArgs {
+            
+            private AssetsLostRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public AssetsLostRowChangeEvent(AssetsLostRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public AssetsLostRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -38521,374 +38569,6 @@ SELECT ReportGroupID, ItemID FROM TradedItems WHERE (ItemID = @ItemID) AND (Repo
     [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
         ", Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class AssetsLostTableAdapter : global::System.ComponentModel.Component {
-        
-        private global::System.Data.SqlClient.SqlDataAdapter _adapter;
-        
-        private global::System.Data.SqlClient.SqlConnection _connection;
-        
-        private global::System.Data.SqlClient.SqlCommand[] _commandCollection;
-        
-        private bool _clearBeforeFill;
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public AssetsLostTableAdapter() {
-            this.ClearBeforeFill = true;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private global::System.Data.SqlClient.SqlDataAdapter Adapter {
-            get {
-                if ((this._adapter == null)) {
-                    this.InitAdapter();
-                }
-                return this._adapter;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        internal global::System.Data.SqlClient.SqlConnection Connection {
-            get {
-                if ((this._connection == null)) {
-                    this.InitConnection();
-                }
-                return this._connection;
-            }
-            set {
-                this._connection = value;
-                if ((this.Adapter.InsertCommand != null)) {
-                    this.Adapter.InsertCommand.Connection = value;
-                }
-                if ((this.Adapter.DeleteCommand != null)) {
-                    this.Adapter.DeleteCommand.Connection = value;
-                }
-                if ((this.Adapter.UpdateCommand != null)) {
-                    this.Adapter.UpdateCommand.Connection = value;
-                }
-                for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
-                    if ((this.CommandCollection[i] != null)) {
-                        ((global::System.Data.SqlClient.SqlCommand)(this.CommandCollection[i])).Connection = value;
-                    }
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        protected global::System.Data.SqlClient.SqlCommand[] CommandCollection {
-            get {
-                if ((this._commandCollection == null)) {
-                    this.InitCommandCollection();
-                }
-                return this._commandCollection;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public bool ClearBeforeFill {
-            get {
-                return this._clearBeforeFill;
-            }
-            set {
-                this._clearBeforeFill = value;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private void InitAdapter() {
-            this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
-            global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
-            tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "AssetsLost";
-            tableMapping.ColumnMappings.Add("ID", "ID");
-            tableMapping.ColumnMappings.Add("OwnerID", "OwnerID");
-            tableMapping.ColumnMappings.Add("CorpAsset", "CorpAsset");
-            tableMapping.ColumnMappings.Add("ItemID", "ItemID");
-            tableMapping.ColumnMappings.Add("LossDatetime", "LossDatetime");
-            tableMapping.ColumnMappings.Add("Quantity", "Quantity");
-            this._adapter.TableMappings.Add(tableMapping);
-            this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[AssetsLost] WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Ori" +
-                "ginal_OwnerID) AND ([CorpAsset] = @Original_CorpAsset) AND ([ItemID] = @Original" +
-                "_ItemID) AND ([LossDatetime] = @Original_LossDatetime) AND ([Quantity] = @Origin" +
-                "al_Quantity))";
-            this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LossDatetime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LossDatetime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Quantity", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Quantity", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[AssetsLost] ([ID], [OwnerID], [CorpAsset], [ItemID], [LossDatetime], [Quantity]) VALUES (@ID, @OwnerID, @CorpAsset, @ItemID, @LossDatetime, @Quantity);
-SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity FROM AssetsLost WHERE (ID = @ID)";
-            this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LossDatetime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LossDatetime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Quantity", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Quantity", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[AssetsLost] SET [ID] = @ID, [OwnerID] = @OwnerID, [CorpAsset] = @CorpAsset, [ItemID] = @ItemID, [LossDatetime] = @LossDatetime, [Quantity] = @Quantity WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([CorpAsset] = @Original_CorpAsset) AND ([ItemID] = @Original_ItemID) AND ([LossDatetime] = @Original_LossDatetime) AND ([Quantity] = @Original_Quantity));
-SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity FROM AssetsLost WHERE (ID = @ID)";
-            this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LossDatetime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LossDatetime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Quantity", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Quantity", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LossDatetime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LossDatetime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Quantity", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Quantity", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private void InitConnection() {
-            this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::EveMarketMonitorApp.Properties.Settings.Default.EMMA_DatabaseConnectionString;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
-            this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity FROM dbo.AssetsLost" +
-                "";
-            this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
-            this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.AssetsLostNew";
-            this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LossDateTime", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Quantity", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@newID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.InputOutput, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(EMMADataSet.AssetsLostDataTable dataTable) {
-            this.Adapter.SelectCommand = this.CommandCollection[0];
-            if ((this.ClearBeforeFill == true)) {
-                dataTable.Clear();
-            }
-            int returnValue = this.Adapter.Fill(dataTable);
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual EMMADataSet.AssetsLostDataTable GetData() {
-            this.Adapter.SelectCommand = this.CommandCollection[0];
-            EMMADataSet.AssetsLostDataTable dataTable = new EMMADataSet.AssetsLostDataTable();
-            this.Adapter.Fill(dataTable);
-            return dataTable;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(EMMADataSet.AssetsLostDataTable dataTable) {
-            return this.Adapter.Update(dataTable);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(EMMADataSet dataSet) {
-            return this.Adapter.Update(dataSet, "AssetsLost");
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(global::System.Data.DataRow dataRow) {
-            return this.Adapter.Update(new global::System.Data.DataRow[] {
-                        dataRow});
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(global::System.Data.DataRow[] dataRows) {
-            return this.Adapter.Update(dataRows);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(long Original_ID, int Original_OwnerID, bool Original_CorpAsset, int Original_ItemID, System.DateTime Original_LossDatetime, long Original_Quantity) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_ID));
-            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_OwnerID));
-            this.Adapter.DeleteCommand.Parameters[2].Value = ((bool)(Original_CorpAsset));
-            this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_ItemID));
-            this.Adapter.DeleteCommand.Parameters[4].Value = ((System.DateTime)(Original_LossDatetime));
-            this.Adapter.DeleteCommand.Parameters[5].Value = ((long)(Original_Quantity));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
-            if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.DeleteCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.DeleteCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.DeleteCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(long ID, int OwnerID, bool CorpAsset, int ItemID, System.DateTime LossDatetime, long Quantity) {
-            this.Adapter.InsertCommand.Parameters[0].Value = ((long)(ID));
-            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(OwnerID));
-            this.Adapter.InsertCommand.Parameters[2].Value = ((bool)(CorpAsset));
-            this.Adapter.InsertCommand.Parameters[3].Value = ((int)(ItemID));
-            this.Adapter.InsertCommand.Parameters[4].Value = ((System.DateTime)(LossDatetime));
-            this.Adapter.InsertCommand.Parameters[5].Value = ((long)(Quantity));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
-            if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.InsertCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.InsertCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.InsertCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(long ID, int OwnerID, bool CorpAsset, int ItemID, System.DateTime LossDatetime, long Quantity, long Original_ID, int Original_OwnerID, bool Original_CorpAsset, int Original_ItemID, System.DateTime Original_LossDatetime, long Original_Quantity) {
-            this.Adapter.UpdateCommand.Parameters[0].Value = ((long)(ID));
-            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(OwnerID));
-            this.Adapter.UpdateCommand.Parameters[2].Value = ((bool)(CorpAsset));
-            this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(ItemID));
-            this.Adapter.UpdateCommand.Parameters[4].Value = ((System.DateTime)(LossDatetime));
-            this.Adapter.UpdateCommand.Parameters[5].Value = ((long)(Quantity));
-            this.Adapter.UpdateCommand.Parameters[6].Value = ((long)(Original_ID));
-            this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(Original_OwnerID));
-            this.Adapter.UpdateCommand.Parameters[8].Value = ((bool)(Original_CorpAsset));
-            this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(Original_ItemID));
-            this.Adapter.UpdateCommand.Parameters[10].Value = ((System.DateTime)(Original_LossDatetime));
-            this.Adapter.UpdateCommand.Parameters[11].Value = ((long)(Original_Quantity));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
-            if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.UpdateCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.UpdateCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.UpdateCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int OwnerID, bool CorpAsset, int ItemID, System.DateTime LossDatetime, long Quantity, long Original_ID, int Original_OwnerID, bool Original_CorpAsset, int Original_ItemID, System.DateTime Original_LossDatetime, long Original_Quantity) {
-            return this.Update(Original_ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Original_ID, Original_OwnerID, Original_CorpAsset, Original_ItemID, Original_LossDatetime, Original_Quantity);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int New(global::System.Nullable<int> OwnerID, global::System.Nullable<bool> CorpAsset, global::System.Nullable<int> ItemID, global::System.Nullable<global::System.DateTime> LossDateTime, global::System.Nullable<long> Quantity, ref global::System.Nullable<long> newID) {
-            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[1];
-            if ((OwnerID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(OwnerID.Value));
-            }
-            else {
-                command.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((CorpAsset.HasValue == true)) {
-                command.Parameters[2].Value = ((bool)(CorpAsset.Value));
-            }
-            else {
-                command.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((ItemID.HasValue == true)) {
-                command.Parameters[3].Value = ((int)(ItemID.Value));
-            }
-            else {
-                command.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            if ((LossDateTime.HasValue == true)) {
-                command.Parameters[4].Value = ((System.DateTime)(LossDateTime.Value));
-            }
-            else {
-                command.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((Quantity.HasValue == true)) {
-                command.Parameters[5].Value = ((long)(Quantity.Value));
-            }
-            else {
-                command.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            if ((newID.HasValue == true)) {
-                command.Parameters[6].Value = ((long)(newID.Value));
-            }
-            else {
-                command.Parameters[6].Value = global::System.DBNull.Value;
-            }
-            global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
-            if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                command.Connection.Open();
-            }
-            int returnValue;
-            try {
-                returnValue = command.ExecuteNonQuery();
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    command.Connection.Close();
-                }
-            }
-            if (((command.Parameters[6].Value == null) 
-                        || (command.Parameters[6].Value.GetType() == typeof(global::System.DBNull)))) {
-                newID = new global::System.Nullable<long>();
-            }
-            else {
-                newID = new global::System.Nullable<long>(((long)(command.Parameters[6].Value)));
-            }
-            return returnValue;
-        }
-    }
-    
-    /// <summary>
-    ///Represents the connection and commands used to retrieve and save data.
-    ///</summary>
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-    [global::System.ComponentModel.DesignerCategoryAttribute("code")]
-    [global::System.ComponentModel.ToolboxItem(true)]
-    [global::System.ComponentModel.DataObjectAttribute(true)]
-    [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
-        ", Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-    [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
     public partial class AssetsProducedTableAdapter : global::System.ComponentModel.Component {
         
         private global::System.Data.SqlClient.SqlDataAdapter _adapter;
@@ -42542,7 +42222,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[19];
+            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[20];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT ID, OwnerID, CorpAsset, LocationID, ItemID, SystemID, RegionID, ContainerI" +
@@ -42651,6 +42331,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection[9].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@containerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[10] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[10].Connection = this.Connection;
             this._commandCollection[10].CommandText = "dbo.AssetsGetByID";
@@ -42670,81 +42351,94 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[12] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[12].Connection = this.Connection;
-            this._commandCollection[12].CommandText = "dbo.AssetsGetByProcessed";
+            this._commandCollection[12].CommandText = "dbo.AssetsGetItemAndContainersOfItem";
             this._commandCollection[12].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[12].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[12].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[12].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[12].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@systemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[12].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[12].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[12].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@containersOnly", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[12].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@getContained", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[12].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[12].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[13] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[13].Connection = this.Connection;
-            this._commandCollection[13].CommandText = "dbo.AssetsGetReproc";
+            this._commandCollection[13].CommandText = "dbo.AssetsGetByProcessed";
             this._commandCollection[13].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@systemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeNonContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[14] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[14].Connection = this.Connection;
-            this._commandCollection[14].CommandText = "dbo.AssetsGetResultsPage";
+            this._commandCollection[14].CommandText = "dbo.AssetsGetReproc";
             this._commandCollection[14].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@startRow", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@pageSize", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeNonContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[15] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[15].Connection = this.Connection;
-            this._commandCollection[15].CommandText = "dbo.AssetsSetExcludeFlag";
+            this._commandCollection[15].CommandText = "dbo.AssetsGetResultsPage";
             this._commandCollection[15].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@assetID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@containerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@exclude", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@startRow", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@pageSize", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[16] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[16].Connection = this.Connection;
-            this._commandCollection[16].CommandText = "dbo.AssetsSetProcFlag";
+            this._commandCollection[16].CommandText = "dbo.AssetsSetExcludeFlag";
             this._commandCollection[16].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[16].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[16].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@assetID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[16].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[16].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[16].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[16].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[16].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[16].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[16].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@containerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[16].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@exclude", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[16].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[17] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[17].Connection = this.Connection;
-            this._commandCollection[17].CommandText = "dbo.AssetsSetReprocExclude";
+            this._commandCollection[17].CommandText = "dbo.AssetsSetProcFlag";
             this._commandCollection[17].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@assetID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@containerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@exclude", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[18] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[18].Connection = this.Connection;
-            this._commandCollection[18].CommandText = "dbo.AssetsTotalQuantityByAny";
+            this._commandCollection[18].CommandText = "dbo.AssetsSetReprocExclude";
             this._commandCollection[18].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@assetID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeInTransit", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@totQuantity", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.InputOutput, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@containerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@exclude", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[19] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[19].Connection = this.Connection;
+            this._commandCollection[19].CommandText = "dbo.AssetsTotalQuantityByAny";
+            this._commandCollection[19].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeInTransit", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@totQuantity", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.InputOutput, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -43358,13 +43052,19 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByContainerID(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<long> containerID) {
+        public virtual int FillByContainerID(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<long> containerID, global::System.Nullable<int> itemID) {
             this.Adapter.SelectCommand = this.CommandCollection[9];
             if ((containerID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((long)(containerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((itemID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(itemID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -43376,13 +43076,19 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.AssetsDataTable GetDataByContainerID(global::System.Nullable<long> containerID) {
+        public virtual EMMADataSet.AssetsDataTable GetDataByContainerID(global::System.Nullable<long> containerID, global::System.Nullable<int> itemID) {
             this.Adapter.SelectCommand = this.CommandCollection[9];
             if ((containerID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((long)(containerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((itemID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(itemID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             EMMADataSet.AssetsDataTable dataTable = new EMMADataSet.AssetsDataTable();
             this.Adapter.Fill(dataTable);
@@ -43520,8 +43226,126 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByProcessed(EMMADataSet.AssetsDataTable dataTable, string accessList, global::System.Nullable<int> systemID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<bool> processed) {
+        public virtual int FillByItemAndContainersOfItem(EMMADataSet.AssetsDataTable dataTable, string accessList, string regionIDs, global::System.Nullable<int> systemID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<bool> containersOnly, global::System.Nullable<bool> getContained, global::System.Nullable<int> status) {
             this.Adapter.SelectCommand = this.CommandCollection[12];
+            if ((accessList == null)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((string)(accessList));
+            }
+            if ((regionIDs == null)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((string)(regionIDs));
+            }
+            if ((systemID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(systemID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((locationID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(locationID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((itemID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(itemID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            if ((containersOnly.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[6].Value = ((bool)(containersOnly.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((getContained.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[7].Value = ((bool)(getContained.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[7].Value = global::System.DBNull.Value;
+            }
+            if ((status.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[8].Value = ((int)(status.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[8].Value = global::System.DBNull.Value;
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual EMMADataSet.AssetsDataTable GetDataByItemAndContainersOfItem(string accessList, string regionIDs, global::System.Nullable<int> systemID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<bool> containersOnly, global::System.Nullable<bool> getContained, global::System.Nullable<int> status) {
+            this.Adapter.SelectCommand = this.CommandCollection[12];
+            if ((accessList == null)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((string)(accessList));
+            }
+            if ((regionIDs == null)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((string)(regionIDs));
+            }
+            if ((systemID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(systemID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((locationID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(locationID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((itemID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(itemID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            if ((containersOnly.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[6].Value = ((bool)(containersOnly.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((getContained.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[7].Value = ((bool)(getContained.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[7].Value = global::System.DBNull.Value;
+            }
+            if ((status.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[8].Value = ((int)(status.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[8].Value = global::System.DBNull.Value;
+            }
+            EMMADataSet.AssetsDataTable dataTable = new EMMADataSet.AssetsDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByProcessed(EMMADataSet.AssetsDataTable dataTable, string accessList, global::System.Nullable<int> systemID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<bool> processed) {
+            this.Adapter.SelectCommand = this.CommandCollection[13];
             if ((accessList == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
@@ -43569,7 +43393,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
         public virtual EMMADataSet.AssetsDataTable GetDataByProcessed(string accessList, global::System.Nullable<int> systemID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<bool> processed) {
-            this.Adapter.SelectCommand = this.CommandCollection[12];
+            this.Adapter.SelectCommand = this.CommandCollection[13];
             if ((accessList == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
@@ -43615,7 +43439,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
         public virtual int FillByReprocessables(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<bool> corpAsset, global::System.Nullable<int> stationID, global::System.Nullable<int> status, global::System.Nullable<bool> includeContainers, global::System.Nullable<bool> includeNonContainers) {
-            this.Adapter.SelectCommand = this.CommandCollection[13];
+            this.Adapter.SelectCommand = this.CommandCollection[14];
             if ((ownerID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
             }
@@ -43663,7 +43487,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
         public virtual EMMADataSet.AssetsDataTable GetDataByReprocessables(global::System.Nullable<int> ownerID, global::System.Nullable<bool> corpAsset, global::System.Nullable<int> stationID, global::System.Nullable<int> status, global::System.Nullable<bool> includeContainers, global::System.Nullable<bool> includeNonContainers) {
-            this.Adapter.SelectCommand = this.CommandCollection[13];
+            this.Adapter.SelectCommand = this.CommandCollection[14];
             if ((ownerID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
             }
@@ -43709,7 +43533,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
         public virtual int FillByResultsPage(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<int> startRow, global::System.Nullable<int> pageSize) {
-            this.Adapter.SelectCommand = this.CommandCollection[14];
+            this.Adapter.SelectCommand = this.CommandCollection[15];
             if ((startRow.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(startRow.Value));
             }
@@ -43733,7 +43557,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
         public virtual EMMADataSet.AssetsDataTable GetDataByResultsPage(global::System.Nullable<int> startRow, global::System.Nullable<int> pageSize) {
-            this.Adapter.SelectCommand = this.CommandCollection[14];
+            this.Adapter.SelectCommand = this.CommandCollection[15];
             if ((startRow.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(startRow.Value));
             }
@@ -44343,7 +44167,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         public virtual int SetExcludeFlag(global::System.Nullable<long> assetID, global::System.Nullable<int> ownerID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<long> containerID, global::System.Nullable<bool> exclude, global::System.Nullable<bool> corpAsset) {
-            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[15];
+            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[16];
             if ((assetID.HasValue == true)) {
                 command.Parameters[1].Value = ((long)(assetID.Value));
             }
@@ -44412,7 +44236,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         public virtual int SetProcFlag(global::System.Nullable<long> assetID, global::System.Nullable<int> ownerID, global::System.Nullable<bool> corpAsset, global::System.Nullable<int> status, global::System.Nullable<bool> processed) {
-            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[16];
+            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[17];
             if ((assetID.HasValue == true)) {
                 command.Parameters[1].Value = ((long)(assetID.Value));
             }
@@ -44463,7 +44287,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         public virtual int SetReprocExclude(global::System.Nullable<long> assetID, global::System.Nullable<int> ownerID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<long> containerID, global::System.Nullable<bool> exclude, global::System.Nullable<bool> corpAsset) {
-            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[17];
+            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[18];
             if ((assetID.HasValue == true)) {
                 command.Parameters[1].Value = ((long)(assetID.Value));
             }
@@ -44532,7 +44356,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         public virtual int TotalQuantity(string accessList, global::System.Nullable<int> itemID, string stationIDs, string regionIDs, global::System.Nullable<bool> includeInTransit, global::System.Nullable<bool> includeContainers, ref global::System.Nullable<long> totQuantity) {
-            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[18];
+            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[19];
             if ((accessList == null)) {
                 command.Parameters[1].Value = global::System.DBNull.Value;
             }
@@ -44595,6 +44419,419 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             }
             else {
                 totQuantity = new global::System.Nullable<long>(((long)(command.Parameters[7].Value)));
+            }
+            return returnValue;
+        }
+    }
+    
+    /// <summary>
+    ///Represents the connection and commands used to retrieve and save data.
+    ///</summary>
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+    [global::System.ComponentModel.DesignerCategoryAttribute("code")]
+    [global::System.ComponentModel.ToolboxItem(true)]
+    [global::System.ComponentModel.DataObjectAttribute(true)]
+    [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
+        ", Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
+    [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+    public partial class AssetsLostTableAdapter : global::System.ComponentModel.Component {
+        
+        private global::System.Data.SqlClient.SqlDataAdapter _adapter;
+        
+        private global::System.Data.SqlClient.SqlConnection _connection;
+        
+        private global::System.Data.SqlClient.SqlCommand[] _commandCollection;
+        
+        private bool _clearBeforeFill;
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public AssetsLostTableAdapter() {
+            this.ClearBeforeFill = true;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private global::System.Data.SqlClient.SqlDataAdapter Adapter {
+            get {
+                if ((this._adapter == null)) {
+                    this.InitAdapter();
+                }
+                return this._adapter;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        internal global::System.Data.SqlClient.SqlConnection Connection {
+            get {
+                if ((this._connection == null)) {
+                    this.InitConnection();
+                }
+                return this._connection;
+            }
+            set {
+                this._connection = value;
+                if ((this.Adapter.InsertCommand != null)) {
+                    this.Adapter.InsertCommand.Connection = value;
+                }
+                if ((this.Adapter.DeleteCommand != null)) {
+                    this.Adapter.DeleteCommand.Connection = value;
+                }
+                if ((this.Adapter.UpdateCommand != null)) {
+                    this.Adapter.UpdateCommand.Connection = value;
+                }
+                for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
+                    if ((this.CommandCollection[i] != null)) {
+                        ((global::System.Data.SqlClient.SqlCommand)(this.CommandCollection[i])).Connection = value;
+                    }
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        protected global::System.Data.SqlClient.SqlCommand[] CommandCollection {
+            get {
+                if ((this._commandCollection == null)) {
+                    this.InitCommandCollection();
+                }
+                return this._commandCollection;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public bool ClearBeforeFill {
+            get {
+                return this._clearBeforeFill;
+            }
+            set {
+                this._clearBeforeFill = value;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private void InitAdapter() {
+            this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
+            global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
+            tableMapping.SourceTable = "Table";
+            tableMapping.DataSetTable = "AssetsLost";
+            tableMapping.ColumnMappings.Add("ID", "ID");
+            tableMapping.ColumnMappings.Add("OwnerID", "OwnerID");
+            tableMapping.ColumnMappings.Add("CorpAsset", "CorpAsset");
+            tableMapping.ColumnMappings.Add("ItemID", "ItemID");
+            tableMapping.ColumnMappings.Add("LossDatetime", "LossDatetime");
+            tableMapping.ColumnMappings.Add("Quantity", "Quantity");
+            tableMapping.ColumnMappings.Add("Cost", "Cost");
+            tableMapping.ColumnMappings.Add("Value", "Value");
+            this._adapter.TableMappings.Add(tableMapping);
+            this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.DeleteCommand.Connection = this.Connection;
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[AssetsLost] WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([CorpAsset] = @Original_CorpAsset) AND ([ItemID] = @Original_ItemID) AND ([LossDatetime] = @Original_LossDatetime) AND ([Quantity] = @Original_Quantity) AND ([Cost] = @Original_Cost) AND ([Value] = @Original_Value))";
+            this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LossDatetime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LossDatetime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Quantity", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Quantity", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Cost", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Cost", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Value", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Value", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.InsertCommand.Connection = this.Connection;
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[AssetsLost] ([ID], [OwnerID], [CorpAsset], [ItemID], [LossDatetime], [Quantity], [Cost], [Value]) VALUES (@ID, @OwnerID, @CorpAsset, @ItemID, @LossDatetime, @Quantity, @Cost, @Value);
+SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM AssetsLost WHERE (ID = @ID)";
+            this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LossDatetime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LossDatetime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Quantity", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Quantity", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Cost", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Cost", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Value", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Value", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.UpdateCommand.Connection = this.Connection;
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[AssetsLost] SET [ID] = @ID, [OwnerID] = @OwnerID, [CorpAsset] = @CorpAsset, [ItemID] = @ItemID, [LossDatetime] = @LossDatetime, [Quantity] = @Quantity, [Cost] = @Cost, [Value] = @Value WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([CorpAsset] = @Original_CorpAsset) AND ([ItemID] = @Original_ItemID) AND ([LossDatetime] = @Original_LossDatetime) AND ([Quantity] = @Original_Quantity) AND ([Cost] = @Original_Cost) AND ([Value] = @Original_Value));
+SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM AssetsLost WHERE (ID = @ID)";
+            this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LossDatetime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LossDatetime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Quantity", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Quantity", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Cost", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Cost", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Value", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Value", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LossDatetime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LossDatetime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Quantity", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Quantity", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Cost", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Cost", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Value", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Value", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private void InitConnection() {
+            this._connection = new global::System.Data.SqlClient.SqlConnection();
+            this._connection.ConnectionString = global::EveMarketMonitorApp.Properties.Settings.Default.EMMA_DatabaseConnectionString;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private void InitCommandCollection() {
+            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
+            this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[0].Connection = this.Connection;
+            this._commandCollection[0].CommandText = "SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM d" +
+                "bo.AssetsLost";
+            this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[1].Connection = this.Connection;
+            this._commandCollection[1].CommandText = "dbo.AssetsLostNew";
+            this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LossDateTime", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Quantity", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Cost", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Value", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@newID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.InputOutput, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
+        public virtual int Fill(EMMADataSet.AssetsLostDataTable dataTable) {
+            this.Adapter.SelectCommand = this.CommandCollection[0];
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
+        public virtual EMMADataSet.AssetsLostDataTable GetData() {
+            this.Adapter.SelectCommand = this.CommandCollection[0];
+            EMMADataSet.AssetsLostDataTable dataTable = new EMMADataSet.AssetsLostDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(EMMADataSet.AssetsLostDataTable dataTable) {
+            return this.Adapter.Update(dataTable);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(EMMADataSet dataSet) {
+            return this.Adapter.Update(dataSet, "AssetsLost");
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(global::System.Data.DataRow dataRow) {
+            return this.Adapter.Update(new global::System.Data.DataRow[] {
+                        dataRow});
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(global::System.Data.DataRow[] dataRows) {
+            return this.Adapter.Update(dataRows);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
+        public virtual int Delete(long Original_ID, int Original_OwnerID, bool Original_CorpAsset, int Original_ItemID, System.DateTime Original_LossDatetime, long Original_Quantity, decimal Original_Cost, decimal Original_Value) {
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_ID));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_OwnerID));
+            this.Adapter.DeleteCommand.Parameters[2].Value = ((bool)(Original_CorpAsset));
+            this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_ItemID));
+            this.Adapter.DeleteCommand.Parameters[4].Value = ((System.DateTime)(Original_LossDatetime));
+            this.Adapter.DeleteCommand.Parameters[5].Value = ((long)(Original_Quantity));
+            this.Adapter.DeleteCommand.Parameters[6].Value = ((decimal)(Original_Cost));
+            this.Adapter.DeleteCommand.Parameters[7].Value = ((decimal)(Original_Value));
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
+            if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.DeleteCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.DeleteCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.DeleteCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
+        public virtual int Insert(long ID, int OwnerID, bool CorpAsset, int ItemID, System.DateTime LossDatetime, long Quantity, decimal Cost, decimal Value) {
+            this.Adapter.InsertCommand.Parameters[0].Value = ((long)(ID));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(OwnerID));
+            this.Adapter.InsertCommand.Parameters[2].Value = ((bool)(CorpAsset));
+            this.Adapter.InsertCommand.Parameters[3].Value = ((int)(ItemID));
+            this.Adapter.InsertCommand.Parameters[4].Value = ((System.DateTime)(LossDatetime));
+            this.Adapter.InsertCommand.Parameters[5].Value = ((long)(Quantity));
+            this.Adapter.InsertCommand.Parameters[6].Value = ((decimal)(Cost));
+            this.Adapter.InsertCommand.Parameters[7].Value = ((decimal)(Value));
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
+            if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.InsertCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.InsertCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.InsertCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
+        public virtual int Update(
+                    long ID, 
+                    int OwnerID, 
+                    bool CorpAsset, 
+                    int ItemID, 
+                    System.DateTime LossDatetime, 
+                    long Quantity, 
+                    decimal Cost, 
+                    decimal Value, 
+                    long Original_ID, 
+                    int Original_OwnerID, 
+                    bool Original_CorpAsset, 
+                    int Original_ItemID, 
+                    System.DateTime Original_LossDatetime, 
+                    long Original_Quantity, 
+                    decimal Original_Cost, 
+                    decimal Original_Value) {
+            this.Adapter.UpdateCommand.Parameters[0].Value = ((long)(ID));
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(OwnerID));
+            this.Adapter.UpdateCommand.Parameters[2].Value = ((bool)(CorpAsset));
+            this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(ItemID));
+            this.Adapter.UpdateCommand.Parameters[4].Value = ((System.DateTime)(LossDatetime));
+            this.Adapter.UpdateCommand.Parameters[5].Value = ((long)(Quantity));
+            this.Adapter.UpdateCommand.Parameters[6].Value = ((decimal)(Cost));
+            this.Adapter.UpdateCommand.Parameters[7].Value = ((decimal)(Value));
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((long)(Original_ID));
+            this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(Original_OwnerID));
+            this.Adapter.UpdateCommand.Parameters[10].Value = ((bool)(Original_CorpAsset));
+            this.Adapter.UpdateCommand.Parameters[11].Value = ((int)(Original_ItemID));
+            this.Adapter.UpdateCommand.Parameters[12].Value = ((System.DateTime)(Original_LossDatetime));
+            this.Adapter.UpdateCommand.Parameters[13].Value = ((long)(Original_Quantity));
+            this.Adapter.UpdateCommand.Parameters[14].Value = ((decimal)(Original_Cost));
+            this.Adapter.UpdateCommand.Parameters[15].Value = ((decimal)(Original_Value));
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
+            if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.UpdateCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.UpdateCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.UpdateCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
+        public virtual int Update(int OwnerID, bool CorpAsset, int ItemID, System.DateTime LossDatetime, long Quantity, decimal Cost, decimal Value, long Original_ID, int Original_OwnerID, bool Original_CorpAsset, int Original_ItemID, System.DateTime Original_LossDatetime, long Original_Quantity, decimal Original_Cost, decimal Original_Value) {
+            return this.Update(Original_ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value, Original_ID, Original_OwnerID, Original_CorpAsset, Original_ItemID, Original_LossDatetime, Original_Quantity, Original_Cost, Original_Value);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int New(global::System.Nullable<int> OwnerID, global::System.Nullable<bool> CorpAsset, global::System.Nullable<int> ItemID, global::System.Nullable<global::System.DateTime> LossDateTime, global::System.Nullable<long> Quantity, global::System.Nullable<decimal> Cost, global::System.Nullable<decimal> Value, ref global::System.Nullable<long> newID) {
+            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[1];
+            if ((OwnerID.HasValue == true)) {
+                command.Parameters[1].Value = ((int)(OwnerID.Value));
+            }
+            else {
+                command.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((CorpAsset.HasValue == true)) {
+                command.Parameters[2].Value = ((bool)(CorpAsset.Value));
+            }
+            else {
+                command.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((ItemID.HasValue == true)) {
+                command.Parameters[3].Value = ((int)(ItemID.Value));
+            }
+            else {
+                command.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((LossDateTime.HasValue == true)) {
+                command.Parameters[4].Value = ((System.DateTime)(LossDateTime.Value));
+            }
+            else {
+                command.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((Quantity.HasValue == true)) {
+                command.Parameters[5].Value = ((long)(Quantity.Value));
+            }
+            else {
+                command.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            if ((Cost.HasValue == true)) {
+                command.Parameters[6].Value = ((decimal)(Cost.Value));
+            }
+            else {
+                command.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((Value.HasValue == true)) {
+                command.Parameters[7].Value = ((decimal)(Value.Value));
+            }
+            else {
+                command.Parameters[7].Value = global::System.DBNull.Value;
+            }
+            if ((newID.HasValue == true)) {
+                command.Parameters[8].Value = ((long)(newID.Value));
+            }
+            else {
+                command.Parameters[8].Value = global::System.DBNull.Value;
+            }
+            global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
+            if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                command.Connection.Open();
+            }
+            int returnValue;
+            try {
+                returnValue = command.ExecuteNonQuery();
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    command.Connection.Close();
+                }
+            }
+            if (((command.Parameters[8].Value == null) 
+                        || (command.Parameters[8].Value.GetType() == typeof(global::System.DBNull)))) {
+                newID = new global::System.Nullable<long>();
+            }
+            else {
+                newID = new global::System.Nullable<long>(((long)(command.Parameters[8].Value)));
             }
             return returnValue;
         }
