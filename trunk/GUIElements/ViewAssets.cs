@@ -97,7 +97,7 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     if (chop.Corp)
                     {
-                        _corporateOwners.Add(chop.CharacterObj.CharID);
+                        _corporateOwners.Add(chop.CharacterObj.CorpID);
                     }
                     else
                     {
@@ -459,23 +459,18 @@ namespace EveMarketMonitorApp.GUIElements
             _accessParams = new List<AssetAccessParams>();
             if (ownerID == 0)
             {
-                List<int> ignore = new List<int>();
                 foreach (int id in _personalOwners)
                 {
-                    _accessParams.Add(new AssetAccessParams(id, true, _corporateOwners.Contains(id)));
-                    ignore.Add(id);
+                    _accessParams.Add(new AssetAccessParams(id));
                 }
                 foreach (int id in _corporateOwners)
                 {
-                    if (!ignore.Contains(id))
-                    {
-                        _accessParams.Add(new AssetAccessParams(id, false, true));
-                    }
+                    _accessParams.Add(new AssetAccessParams(id));
                 }
             }
             else
             {
-                _accessParams.Add(new AssetAccessParams(ownerID, !corpAssets, corpAssets));
+                _accessParams.Add(new AssetAccessParams(ownerID));
             }
         }
 

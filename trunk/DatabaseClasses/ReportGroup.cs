@@ -87,8 +87,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 foreach (APICharacter character in account.Chars)
                 {
-                    accessList.Add(new AssetAccessParams(character.CharID, character.CharIncWithRptGroup,
-                        character.CorpIncWithRptGroup && character.CharHasCorporateAccess(type)));
+                    if (character.CharIncWithRptGroup)
+                    {
+                        accessList.Add(new AssetAccessParams(character.CharID));
+                    }
+                    if (character.CorpIncWithRptGroup && character.CharHasCorporateAccess(type))
+                    {
+                        accessList.Add(new AssetAccessParams(character.CorpID));
+                    }
                 }
             }
             return accessList;

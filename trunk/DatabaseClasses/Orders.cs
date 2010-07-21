@@ -13,13 +13,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
             new EveMarketMonitorApp.DatabaseClasses.EMMADataSetTableAdapters.OrdersTableAdapter();
 
         private static int _lastBuyerID;
-        private static bool _lastBuyerForCorp;
         private static EMMADataSet.OrdersDataTable _lastBuyerOrders;
         private static int _lastSellerID;
-        private static bool _lastSellerForCorp;
         private static EMMADataSet.OrdersDataTable _lastSellerOrders;
         private static int _lastItemID;
 
+
+        public static void MigrateOrdersToCorpID(int charID, int corpID)
+        {
+            lock (tableAdapter)
+            {
+                tableAdapter.OrdersMigrateToCorpID(charID, corpID);
+            }
+        }
 
         public static void Store(Order orderData)
         {
@@ -73,11 +79,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public static void SetProcessed(int charID, bool forCorp, bool processed)
+        public static void SetProcessed(int ownerID, bool processed)
         {
             lock (tableAdapter)
             {
-                tableAdapter.SetProcessed(charID, forCorp, processed);
+                tableAdapter.SetProcessed(ownerID, processed);
             }
         }
         
@@ -89,20 +95,20 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        public static void FinishUnProcessed(int charID, bool forCorp)
+        public static void FinishUnProcessed(int ownerID)
         {
             lock (tableAdapter)
             {
                 bool notify = UserAccount.CurrentGroup.Settings.OrdersNotifyEnabled;
                 bool notifyBuy = UserAccount.CurrentGroup.Settings.OrdersNotifyBuy;
                 bool notifySell = UserAccount.CurrentGroup.Settings.OrdersNotifySell;
-                tableAdapter.FinishUnProcessed(charID, notify, notifyBuy, notifySell, forCorp);
+                tableAdapter.FinishUnProcessed(ownerID, notify, notifyBuy, notifySell);
             }
         }
 
 
 
-        public static EMMADataSet.OrdersDataTable GetOrdersByIssueDate(int ownerID, bool forCorp, short walletID,
+        public static EMMADataSet.OrdersDataTable GetOrdersByIssueDate(int ownerID, short walletID,
             DateTime earliestIsssueDate, DateTime latestIssueDate)
         {
             EMMADataSet.OrdersDataTable retVal = new EMMADataSet.OrdersDataTable();
@@ -110,21 +116,26 @@ namespace EveMarketMonitorApp.DatabaseClasses
             latestIssueDate = latestIssueDate.ToUniversalTime();
             lock (tableAdapter)
             {
-                tableAdapter.FillByIssueDate(retVal, ownerID, forCorp, walletID, earliestIsssueDate, latestIssueDate);
+                tableAdapter.FillByIssueDate(retVal, ownerID, walletID, earliestIsssueDate, latestIssueDate);
             }
 
             return retVal;
         }
 
 
-        public static decimal GetSellOrderValue(int ownerID, bool forCorp, short walletID)
+        public static decimal GetSellOrderValue(int ownerID)
+        {
+            return GetSellOrderValue(ownerID, 0);
+        }
+        public static decimal GetSellOrderValue(int ownerID, short walletID)
         {
             decimal retVal = 0;
             EMMADataSet.OrdersDataTable table = new EMMADataSet.OrdersDataTable();
 
+
             lock (tableAdapter)
             {
-                tableAdapter.FillByAnySingle(table, ownerID, forCorp, walletID, 0, 0, 
+                tableAdapter.FillByAnySingle(table, ownerID, walletID, 0, 0, 
                     (int)OrderState.Active, "Sell");
             }
             foreach (EMMADataSet.OrdersRow order in table)
@@ -135,7 +146,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             table.Clear();
             lock (tableAdapter)
             {
-                tableAdapter.FillByAnySingle(table, ownerID, forCorp, walletID, 0, 0, 
+                tableAdapter.FillByAnySingle(table, ownerID, walletID, 0, 0, 
                     (int)OrderState.OverbidAndUnacknowledged, "Sell");
             }
             foreach (EMMADataSet.OrdersRow order in table)
@@ -153,7 +164,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             lock (tableAdapter)
             {
-                tableAdapter.FillByAnySingle(table, ownerID, forCorp, walletID, 0, 0, (int)OrderState.Active, "buy");
+                tableAdapter.FillByAnySingle(table, ownerID, walletID, 0, 0, (int)OrderState.Active, "buy");
             }
 
             foreach (EMMADataSet.OrdersRow order in table)
@@ -209,7 +220,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="orderRow"></param>
         /// <param name="ID">The ID of the order that matches the supplied one</param>
         /// <returns></returns>
-        public static bool Exists(EMMADataSet.OrdersDataTable ordersTable, EMMADataSet.OrdersRow orderRow, 
+        public static bool Exists(EMMADataSet.OrdersDataTable ordersTable, EMMADataSet.OrdersRow orderRow,
             ref int ID)
         {
             bool? exists = false;
@@ -218,8 +229,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             lock (tableAdapter)
             {
-                tableAdapter.FillOrderExists(ordersTable, orderRow.OwnerID, orderRow.ForCorp, orderRow.WalletID,
-                    orderRow.StationID, orderRow.ItemID, orderRow.TotalVol, orderRow.RemainingVol, 
+                tableAdapter.FillOrderExists(ordersTable, orderRow.OwnerID, orderRow.WalletID,
+                    orderRow.StationID, orderRow.ItemID, orderRow.TotalVol, orderRow.RemainingVol,
                     orderRow.Range, orderRow.OrderState, orderRow.BuyOrder, orderRow.Price, orderRow.EveOrderID,
                     ref exists, ref orderID);
             }
@@ -252,7 +263,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             EMMADataSet.OrdersDataTable table = new EMMADataSet.OrdersDataTable();
             if (buyChar != null)
             {
-                if (buyerID == _lastBuyerID && buyerForCorp == _lastBuyerForCorp && trans.ItemID == _lastItemID)
+                if (buyerID == _lastBuyerID && trans.ItemID == _lastItemID)
                 {
                     table = _lastBuyerOrders;
                 }
@@ -260,9 +271,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 {
                     lock (tableAdapter)
                     {
-                        tableAdapter.FillByAnySingle(table, buyerID, buyerForCorp, 0, trans.ItemID, 0, 0, "Any");
+                        tableAdapter.FillByAnySingle(table, trans.BuyerID, 0, trans.ItemID, 0, 0, "Any");
                         _lastBuyerID = buyerID;
-                        _lastBuyerForCorp = buyerForCorp;
                         _lastItemID = trans.ItemID;
                         _lastBuyerOrders = table;
                     }
@@ -272,7 +282,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             if (sellChar != null)
             {
                 table.Clear();
-                if (sellerID == _lastSellerID && sellerForCorp == _lastSellerForCorp && trans.ItemID == _lastItemID)
+                if (sellerID == _lastSellerID && trans.ItemID == _lastItemID)
                 {
                     table = _lastSellerOrders;
                 }
@@ -280,9 +290,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 {
                     lock (tableAdapter)
                     {
-                        tableAdapter.FillByAnySingle(table, sellerID, sellerForCorp, 0, trans.ItemID, 0, 0, "Any");
+                        tableAdapter.FillByAnySingle(table, sellerID, 0, trans.ItemID, 0, 0, "Any");
                         _lastSellerID = sellerID;
-                        _lastSellerForCorp = sellerForCorp;
                         _lastItemID = trans.ItemID;
                         _lastSellerOrders = table;
                     }

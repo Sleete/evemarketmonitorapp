@@ -653,7 +653,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             APIIndividualUpdate,
             CalcCostInAssetView,
             CalcProfitInTransView
-       }
+        }
 
     }
 

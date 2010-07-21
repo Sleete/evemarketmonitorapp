@@ -28,14 +28,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="transData"></param>
         /// <param name="newRow"></param>
         /// <returns></returns>
-        public static decimal CalcProfit(int charID, bool corp, EMMADataSet.TransactionsDataTable transData,
+        public static decimal CalcProfit(int ownerID, EMMADataSet.TransactionsDataTable transData,
             EMMADataSet.TransactionsRow newRow, DateTime assetsEffectiveDate)
         {
             decimal retVal = 0;
             EMMADataSet.AssetsDataTable existingAssets = new EMMADataSet.AssetsDataTable();
             int stationID = newRow.StationID;
 
-            int ownerID = corp ? UserAccount.CurrentGroup.GetCharacter(charID).CorpID : charID;
+            //int ownerID = corp ? UserAccount.CurrentGroup.GetCharacter(charID).CorpID : charID;
 
             try
             {
@@ -53,7 +53,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     // If there are matching assets for the specified character or corp at the 
                     // transaction location then use the cost of those assets to calculate profit. 
                     List<AssetAccessParams> assetAccessParams = new List<AssetAccessParams>();
-                    assetAccessParams.Add(new AssetAccessParams(charID, !corp, corp));
+                    assetAccessParams.Add(new AssetAccessParams(ownerID));
                     Assets.GetAssets(existingAssets, assetAccessParams, stationID,
                         Stations.GetStation(stationID).solarSystemID, newRow.ItemID);
                     if (existingAssets != null)
@@ -75,7 +75,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                 long deltaQuantity = -1 * q;
                                 // Note, since we're removing assets, the cost and costcalc parameters
                                 // will be ignored.
-                                Assets.ChangeAssets(ownerID, corp, newRow.StationID, newRow.ItemID,
+                                Assets.ChangeAssets(ownerID, newRow.StationID, newRow.ItemID,
                                     existingAsset.ContainerID, existingAsset.Status, existingAsset.AutoConExclude,
                                     deltaQuantity, 0, false);
                             }
@@ -102,7 +102,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                     long deltaQuantity = -1 * q;
                                     // Note, since we're removing assets, the cost and costcalc parameters
                                     // will be ignored.
-                                    Assets.ChangeAssets(ownerID, corp, newRow.StationID, newRow.ItemID,
+                                    Assets.ChangeAssets(ownerID, newRow.StationID, newRow.ItemID,
                                         existingAsset.ContainerID, existingAsset.Status, existingAsset.AutoConExclude,
                                         deltaQuantity, 0, false);
                                 }
@@ -117,7 +117,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         {
                             // If any of the transaction quantity could not be accounted for then simply send
                             // the 'normal' asset stack at this location to a negative quantity.
-                            Assets.ChangeAssets(ownerID, corp, newRow.StationID, newRow.ItemID,
+                            Assets.ChangeAssets(ownerID, newRow.StationID, newRow.ItemID,
                                  0, (int)AssetStatus.States.Normal, false, qToFind * -1, 0, false);
                         }
                     }
@@ -129,7 +129,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         // Also, set the quantity of assets at this location negative.
                         newRow.CalcProfitFromAssets = true;
 
-                        Assets.ChangeAssets(ownerID, corp, newRow.StationID, newRow.ItemID, 0,
+                        Assets.ChangeAssets(ownerID, newRow.StationID, newRow.ItemID, 0,
                             (int)AssetStatus.States.Normal, false, newRow.Quantity * -1, 0, false);
                     }
                 }

@@ -224,8 +224,9 @@ namespace EveMarketMonitorApp.GUIElements
 
             if (ownerID != 0 && location != null)
             {
-                EMMADataSet.IDTableDataTable systemIDs = Assets.GetInvolvedSystemIDs(ownerID, corp,
-                    location.Regions, location.Stations, !chkExcludeContainers.Checked, !chkExcludeContainers.Checked);
+                EMMADataSet.IDTableDataTable systemIDs = Assets.GetInvolvedSystemIDs(ownerID, 
+                    location.Regions, location.Stations, !chkExcludeContainers.Checked, 
+                    !chkExcludeContainers.Checked);
                 lstWaypoints.BeginUpdate();
                 foreach (EMMADataSet.IDTableRow idRow in systemIDs)
                 {

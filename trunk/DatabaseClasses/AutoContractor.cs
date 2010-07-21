@@ -20,13 +20,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
             try
             {
                 Diagnostics.ResetAllTimers();
-                bool corp = false;
-                APICharacter character = UserAccount.CurrentGroup.GetCharacter(assetOwnerID, ref corp);
+                //bool corp = false;
+                //APICharacter character = UserAccount.CurrentGroup.GetCharacter(assetOwnerID, ref corp);
 
                 // Get a list of assets for this char/corp that are enabled for auto contracting.
                 // the list is sorted by locationID
                 bool exclude = UserAccount.CurrentGroup.Settings.AutoCon_ExcludeContainers;
-                EMMADataSet.AssetsDataTable assets = Assets.GetAutoConAssets(character.CharID, corp,
+                EMMADataSet.AssetsDataTable assets = Assets.GetAutoConAssets(assetOwnerID,
                     UserAccount.CurrentGroup.Settings.AutoCon_PickupLocations, exclude);
                 int stationID = 0;
                 decimal collateralTotal = 0;
@@ -178,12 +178,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
             bool corp = false;
             bool complete = true;
             bool relax = false;
-            APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);
+            //APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);
             // Get the list of assets available for auto-contracting at this station.
             Diagnostics.StartTimer("GenerateContract");
             Diagnostics.StartTimer("GenerateContract.Part1");
             EMMADataSet.AssetsDataTable assets = Assets.GetAutoConAssets(
-                character.CharID, corp, pickupStation, true);
+                ownerID, pickupStation, true);
             Diagnostics.StopTimer("GenerateContract.Part1");
             int lastAssetCount = -1;
 
@@ -489,9 +489,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             // First try and get an asset stack at this location and use it's cost.
             EMMADataSet.AssetsDataTable assets = new EMMADataSet.AssetsDataTable();
             List<AssetAccessParams> accessParams = new List<AssetAccessParams>();
-            bool corp = false;
-            APICharacter charObj = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);
-            accessParams.Add(new AssetAccessParams(charObj.CharID, !corp, corp));
+            //bool corp = false;
+            //APICharacter charObj = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);
+            accessParams.Add(new AssetAccessParams(ownerID));
             Assets.GetAssets(assets, accessParams, stationID, 0, itemID);
             foreach (EMMADataSet.AssetsRow asset in assets)
             {

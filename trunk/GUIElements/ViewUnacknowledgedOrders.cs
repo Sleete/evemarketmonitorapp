@@ -17,7 +17,7 @@ namespace EveMarketMonitorApp.GUIElements
     {
         private OrdersList _orders;
         private BindingSource _ordersBindingSource;
-        private List<int> _personalOwners;
+        private List<int> _owners;
         private List<int> _corporateOwners;
         private List<AssetAccessParams> _accessParams;
         private int _lastNumberOfOrders = 0;
@@ -26,18 +26,18 @@ namespace EveMarketMonitorApp.GUIElements
         {
             InitializeComponent();
 
-            _personalOwners = new List<int>();
+            _owners = new List<int>();
             _corporateOwners = new List<int>();
             List<CharCorpOption> charcorps = UserAccount.CurrentGroup.GetCharCorpOptions(APIDataType.Orders);
             foreach (CharCorpOption chop in charcorps)
             {
                 if (chop.Corp)
                 {
-                    _corporateOwners.Add(chop.CharacterObj.CharID);
+                    _corporateOwners.Add(chop.CharacterObj.CorpID);
                 }
                 else
                 {
-                    _personalOwners.Add(chop.CharacterObj.CharID);
+                    _owners.Add(chop.CharacterObj.CharID);
                 }
             }
 
@@ -142,18 +142,20 @@ namespace EveMarketMonitorApp.GUIElements
 
                 _accessParams = new List<AssetAccessParams>();
 
-                List<int> ignore = new List<int>();
-                foreach (int id in _personalOwners)
+                //List<int> ignore = new List<int>();
+                foreach (int id in _owners)
                 {
-                    _accessParams.Add(new AssetAccessParams(id, true, _corporateOwners.Contains(id)));
-                    ignore.Add(id);
+                    _accessParams.Add(new AssetAccessParams(id));
+                    //_accessParams.Add(new AssetAccessParams(id, true, _corporateOwners.Contains(id)));
+                    //ignore.Add(id);
                 }
                 foreach (int id in _corporateOwners)
                 {
-                    if (!ignore.Contains(id))
-                    {
-                        _accessParams.Add(new AssetAccessParams(id, false, true));
-                    }
+                    _accessParams.Add(new AssetAccessParams(id));
+                //    if (!ignore.Contains(id))
+                //    {
+                //        _accessParams.Add(new AssetAccessParams(id, false, true));
+                //    }
                 }
 
                 //ListSortDirection sortDirection = ListSortDirection.Descending;

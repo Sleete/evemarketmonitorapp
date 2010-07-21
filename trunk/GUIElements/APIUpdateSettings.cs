@@ -22,11 +22,11 @@ namespace EveMarketMonitorApp.GUIElements
         {
             txtAssetsHours.Text = UserAccount.Settings.APIAssetUpdatePeriod.Hours.ToString();
             txtAssetsMins.Text = UserAccount.Settings.APIAssetUpdatePeriod.Minutes.ToString();
-            if (UserAccount.Settings.APIAssetUpdatePeriod.Hours < 1 ||
-                (UserAccount.Settings.APIAssetUpdatePeriod.Hours == 1 &&
+            if (UserAccount.Settings.APIAssetUpdatePeriod.Hours < 23 ||
+                (UserAccount.Settings.APIAssetUpdatePeriod.Hours == 23 &&
                 UserAccount.Settings.APIAssetUpdatePeriod.Minutes <= 0))
             {
-                txtAssetsHours.Text = "1";
+                txtAssetsHours.Text = "23";
                 txtAssetsMins.Text = "1";
             }
             txtJournHours.Text = UserAccount.Settings.APIJournUpdatePeriod.Hours.ToString();

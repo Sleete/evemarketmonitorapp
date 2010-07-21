@@ -168,17 +168,15 @@ namespace EveMarketMonitorApp.GUIElements
 
                         foreach (AssetAccessParams character in assetParams)
                         {
-                            if (character.CharID == owner.CharacterObj.CharID)
+                            if (character.OwnerID == owner.Data.ID)
                             {
-                                if (owner.Corp) { character.IncludeCorporate = true; }
-                                else { character.IncludePersonal = true; }
                                 done = true;
                             }
                         }
 
                         if (!done)
                         {
-                            assetParams.Add(new AssetAccessParams(owner.CharacterObj.CharID, !owner.Corp, owner.Corp));
+                            assetParams.Add(new AssetAccessParams(owner.Data.ID));
                         }
                     }
                     parameters.Add("AssetAccessParams", assetParams);
