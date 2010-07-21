@@ -5375,9 +5375,9 @@ AS
                     }
                     #endregion
                 }
-                if (dbVersion.CompareTo(new Version("1.5.0.32")) < 0)
+                if (dbVersion.CompareTo(new Version("1.5.1.0")) < 0)
                 {
-                    #region 1.5.0.0 - 1.5.0.32
+                    #region 1.5.0.0 - 1.5.0.64
                     if (dbVersion.CompareTo(new Version("1.5.0.0")) < 0)
                     {
                         #region Add 'EveItemID' column to Assets table
@@ -7107,7 +7107,1351 @@ AS
                         }
                         #endregion
                     }
-                    
+                    if (dbVersion.CompareTo(new Version("1.5.0.33")) < 0)
+                    {
+                        #region Create 'AssetsMigrateToCorpID' stored procedure
+                        commandText =
+                             @"CREATE PROCEDURE dbo.AssetsMigrateToCorpID
+	@charID		int,
+	@corpID		int
+AS
+	UPDATE Assets 
+	SET [OwnerID] = @corpID
+	WHERE [OwnerID] = @charID AND [CorpAsset] = 1
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.33"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'AssetsMigrateToCorpID' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.34")) < 0)
+                    {
+                        #region Create 'OrdersMigrateToCorpID' stored procedure
+                        commandText =
+                             @"CREATE PROCEDURE dbo.OrdersMigrateToCorpID
+	@charID		int,
+	@corpID		int
+AS
+	UPDATE Orders 
+	SET [OwnerID] = @corpID
+	WHERE [OwnerID] = @charID AND [ForCorp] = 1
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.34"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'OrdersMigrateToCorpID' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+
+                    if (dbVersion.CompareTo(new Version("1.5.0.35")) < 0)
+                    {
+                        #region Update 'AssetsBuildResults' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE [dbo].[AssetsBuildResults]
+	@accessList			varchar(max),
+	@itemIDs			varchar(max),
+	@status				int,
+	@groupBy			varchar(50)
+    --@totalRows          int         OUTPUT
+AS
+SET NOCOUNT ON
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tmp_AssetResults]') AND type in (N'U'))
+DROP TABLE [dbo].[tmp_AssetResults]
+
+IF(@groupBy LIKE 'Owner')
+BEGIN
+	SELECT MIN(Assets.ID) AS ID, Assets.OwnerID, Assets.CorpAsset, 
+		0 AS LocationID, Assets.ItemID, 0 AS SystemID, 
+		0 AS RegionID, 0 AS ContainerID, 
+		SUM(Assets.Quantity) AS Quantity, 0 AS Status, 
+		CAST(0 AS bit) AS AutoConExclude, CAST(0 AS bit) AS Processed, 
+		CAST(0 AS bit) AS ISContainer, CAST(0 AS bit) AS ReprocExclude, 
+		-- This causes div by 0 errors. Just drop the inclusing of the CostCalc flag and 
+		-- include quantity > 0 in the WHERE clause. Not ideal but best simple solution I can think of.
+		--SUM(Assets.Cost * Assets.Quantity * Assets.CostCalc) / SUM(Assets.Quantity * Assets.CostCalc) AS Cost,
+		SUM(Assets.Cost * Assets.Quantity) / SUM(Assets.Quantity) AS Cost,
+		MAX(CAST(Assets.CostCalc as int)) AS CostCalc,
+        0 AS EveItemID, CAST(0 AS bit) AS BoughtViaContract,
+        row_number() OVER(ORDER BY Assets.OwnerID) as RowNumber
+	INTO tmp_AssetResults
+	FROM Assets 
+		JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+		JOIN CLR_intlist_split(@itemIDs) i ON (i.number = 0 OR Assets.ItemID = i.number)
+	WHERE (Assets.Status = @status OR @status = 0) AND Assets.Quantity > 0
+	GROUP BY Assets.ItemID, Assets.OwnerID, Assets.CorpAsset
+END
+ELSE IF(@groupBy LIKE 'Region')
+BEGIN
+	SELECT MIN(Assets.ID) AS ID, Assets.OwnerID, Assets.CorpAsset, 
+		0 AS LocationID, Assets.ItemID, 0 AS SystemID, 
+		Assets.RegionID, 0 AS ContainerID, 
+		SUM(Assets.Quantity) AS Quantity, 0 AS Status, 
+		CAST(0 AS bit) AS AutoConExclude, CAST(0 AS bit) AS Processed, 
+		CAST(0 AS bit) AS ISContainer, CAST(0 AS bit) AS ReprocExclude, 
+		-- This causes div by 0 errors. Just drop the inclusing of the CostCalc flag and 
+		-- include quantity > 0 in the WHERE clause. Not ideal but best simple solution I can think of.
+		--SUM(Assets.Cost * Assets.Quantity * Assets.CostCalc) / SUM(Assets.Quantity * Assets.CostCalc) AS Cost,
+		SUM(Assets.Cost * Assets.Quantity) / SUM(Assets.Quantity) AS Cost,		
+		MAX(CAST(Assets.CostCalc as int)) AS CostCalc,
+        0 AS EveItemID, CAST(0 AS bit) AS BoughtViaContract,
+		row_number() OVER(ORDER BY Assets.OwnerID) as RowNumber
+	INTO tmp_AssetResults
+	FROM Assets 
+		JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+		JOIN CLR_intlist_split(@itemIDs) i ON (i.number = 0 OR Assets.ItemID = i.number)
+	WHERE (Assets.Status = @status OR @status = 0) AND Assets.Quantity > 0
+	GROUP BY Assets.ItemID, Assets.RegionID, Assets.OwnerID, Assets.CorpAsset
+END
+ELSE IF(@groupBy LIKE 'System')
+BEGIN
+	SELECT MIN(Assets.ID) AS ID, Assets.OwnerID, Assets.CorpAsset, 
+		0 AS LocationID, Assets.ItemID, Assets.SystemID, 
+		MAX(Assets.RegionID) AS RegionID, 0 AS ContainerID, 
+		SUM(Assets.Quantity) AS Quantity, 0 AS Status, 
+		CAST(0 AS bit) AS AutoConExclude, CAST(0 AS bit) AS Processed, 
+		CAST(0 AS bit) AS ISContainer, CAST(0 AS bit) AS ReprocExclude, 
+		-- This causes div by 0 errors. Just drop the inclusing of the CostCalc flag and 
+		-- include quantity > 0 in the WHERE clause. Not ideal but best simple solution I can think of.
+		--SUM(Assets.Cost * Assets.Quantity * Assets.CostCalc) / SUM(Assets.Quantity * Assets.CostCalc) AS Cost,
+		SUM(Assets.Cost * Assets.Quantity) / SUM(Assets.Quantity) AS Cost,
+		MAX(CAST(Assets.CostCalc as int)) AS CostCalc,
+        0 AS EveItemID, CAST(0 AS bit) AS BoughtViaContract,
+		row_number() OVER(ORDER BY Assets.OwnerID) as RowNumber
+	INTO tmp_AssetResults
+	FROM Assets 
+		JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+		JOIN CLR_intlist_split(@itemIDs) i ON (i.number = 0 OR Assets.ItemID = i.number)
+	WHERE (Assets.Status = @status OR @status = 0) AND Assets.Quantity > 0
+	GROUP BY Assets.ItemID, Assets.SystemID, Assets.OwnerID, Assets.CorpAsset
+END
+ELSE
+BEGIN
+	SELECT Assets.*, row_number() OVER(ORDER BY Assets.OwnerID) as RowNumber
+	INTO tmp_AssetResults
+	FROM Assets 
+		JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+		JOIN CLR_intlist_split(@itemIDs) i ON (i.number = 0 OR Assets.ItemID = i.number)
+	WHERE (Assets.Status = @status OR @status = 0) 
+END
+
+CREATE CLUSTERED INDEX [PK_tmp_AssetResults] ON [dbo].[tmp_AssetResults] 
+(
+	[RowNumber]
+)WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) ON [PRIMARY]	
+ 
+RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.35"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsBuildResults' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.36")) < 0)
+                    {
+                        #region Update 'AssetsClearUnProc' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsClearUnProc
+	@ownerID			int,
+	@onlyContainers		bit
+AS
+	DECLARE	@nextID	int
+	
+	SELECT @nextID = MIN(ID) FROM Assets
+	WHERE (IsContainer = 1) AND (OwnerID = @ownerID) AND (Processed = 0)
+	
+	WHILE @nextID IS NOT NULL
+	BEGIN
+		EXEC dbo.AssetsClearByID @nextID
+		SELECT @nextID = MIN(ID) FROM Assets
+		WHERE (ID > @nextID) AND (IsContainer = 1) AND (OwnerID = @ownerID) AND (Processed = 0)
+	END
+
+	IF(@onlyContainers = 0)
+	BEGIN
+		DELETE FROM Assets
+		WHERE (OwnerID = @ownerID) AND (Processed = 0)
+	END
+RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.36"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsClearUnProc' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.37")) < 0)
+                    {
+                        #region Update 'AssetsGetAutoConByAny' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsGetAutoConByAny
+	@ownerID			int,
+	@stationIDs			varchar(max),
+	@regionIDs			varchar(max),
+	@itemIDs			varchar(max),
+	@excludeContainers	bit
+AS
+
+	SELECT Assets.*
+	FROM Assets
+	JOIN CLR_intlist_split(@stationIDs) s ON (Assets.LocationID = s.number OR s.number = 0)
+	JOIN CLR_intlist_split(@regionIDs) r ON (Assets.RegionID = r.number OR r.number = 0)
+	JOIN CLR_intlist_split(@itemIDs) i ON (Assets.ItemID = i.number OR i.number = 0)
+	WHERE (OwnerID = @ownerID AND (AutoConExclude = 0) AND (Status = 1) AND 
+		(@excludeContainers = 0 OR (ContainerID = 0 AND IsContainer = 0)) AND Quantity > 0)
+	ORDER BY LocationID
+RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.37"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetAutoConByAny' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.38")) < 0)
+                    {
+                        #region Update 'AssetsGetAutoConByOwner' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsGetAutoConByOwner
+	@ownerID			int,
+	@stationID			int,
+	@itemIDs			varchar(max),
+	@excludeContainers	bit
+AS
+
+	SELECT Assets.*
+	FROM Assets
+	JOIN CLR_intlist_split(@itemIDs) i ON (Assets.ItemID = i.number OR i.number = 0)
+	WHERE (OwnerID = @ownerID AND (LocationID = @stationID OR @stationID = 0) AND (AutoConExclude = 0) AND (Status = 1) AND (@excludeContainers = 0 OR (ContainerID = 0 AND IsContainer = 0)) AND (Quantity > 0))
+	ORDER BY LocationID
+RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.38"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetAutoConByOwner' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.39")) < 0)
+                    {
+                        #region Update 'AssetsGetBoughtViaContract' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsGetBoughtViaContract
+	@accessList			varchar(max),
+	@itemID				int
+AS
+	SELECT Assets.*
+	FROM Assets 
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	WHERE (Assets.BoughtViaContract = 1) AND (Assets.ItemID = @itemID OR @itemID = 0)
+RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.39"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetBoughtViaContract' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.40")) < 0)
+                    {
+                        #region Update 'AssetsGetByItem' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsGetByItem
+	@accessList			varchar(max),
+	@regionIDs			varchar(max),
+	@stationIDs			varchar(max),
+	@itemID				int,
+	@includeInTransit	bit,
+	@includeContainers	bit
+AS
+IF(NOT @regionIDs LIKE '')
+BEGIN
+	SELECT Assets.*
+	FROM Assets 
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	JOIN CLR_intlist_split(@regionIDs) r ON (Assets.RegionID = r.number OR r.number = 0)
+	JOIN CLR_intlist_split(@stationIDs) s ON (Assets.LocationID = s.number OR s.number = 0)
+	WHERE (Assets.ItemID = @itemID OR @itemID = 0) AND (@includeInTransit = 1 OR NOT Assets.Status = 2) AND (@includeContainers = 1 OR (Assets.IsContainer = 0 AND Assets.ContainerID = 0))
+END
+
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.40"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetByItem' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.41")) < 0)
+                    {
+                        #region Update 'AssetsGetByLocationAndItem' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsGetByLocationAndItem 
+	@accessList			varchar(max),
+	@regionIDs			varchar(max),
+	@systemID			int,
+	@locationID			int,
+	@itemID				int,
+	@containersOnly		bit,
+	@getContained		bit,
+	@status				int
+AS
+IF(NOT @regionIDs LIKE '')
+BEGIN
+	SELECT Assets.*
+	FROM Assets 
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	JOIN CLR_intlist_split(@regionIDs) r ON Assets.RegionID = r.number 
+	WHERE (Assets.Status = @status OR @status = 0) AND (Assets.SystemID = @systemID OR @systemID = 0) AND (Assets.LocationID = @locationID OR @locationID = 0) AND (Assets.ItemID = @itemID OR @itemID = 0) AND (Assets.IsContainer = 1 OR @containersOnly = 0) AND (Assets.ContainerID = 0 OR @getContained = 1)
+END
+ELSE
+BEGIN
+	SELECT Assets.*
+	FROM Assets 
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	WHERE (Assets.Status = @status OR @status = 0) AND (Assets.SystemID = @systemID OR @systemID = 0) AND (Assets.LocationID = @locationID OR @locationID = 0) AND (Assets.ItemID = @itemID OR @itemID = 0) AND (Assets.IsContainer = 1 OR @containersOnly = 0) AND (Assets.ContainerID = 0 OR @getContained = 1)
+END
+
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.41"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetByLocationAndItem' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.42")) < 0)
+                    {
+                        #region Update 'AssetsGetByProcessed' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsGetByProcessed
+	@accessList			varchar(max),
+	@systemID			int,
+	@locationID			int,
+	@itemID				int,
+	@status				int,
+	@processed			bit
+AS
+	SELECT Assets.*
+	FROM Assets 
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	WHERE (Assets.Status = @status OR @status = 0) AND (Assets.SystemID = @systemID OR @systemID = 0) AND (Assets.LocationID = @locationID OR @locationID = 0) AND (Assets.ItemID = @itemID OR @itemID = 0) AND (Assets.Processed = @processed)
+
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.42"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetByProcessed' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.43")) < 0)
+                    {
+                        #region Update 'AssetsGetItemAndContainersOfItem' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsGetItemAndContainersOfItem
+	@accessList			varchar(max),
+	@regionIDs			varchar(max),
+	@systemID			int,
+	@locationID			int,
+	@itemID				int,
+	@containersOnly		bit,
+	@getContained		bit,
+	@status				int
+AS
+IF(NOT @regionIDs LIKE '')
+BEGIN
+	SELECT Assets.*
+	FROM Assets 
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	JOIN CLR_intlist_split(@regionIDs) r ON Assets.RegionID = r.number 
+	WHERE (Assets.Status = @status OR @status = 0) AND (Assets.SystemID = @systemID OR @systemID = 0) AND (Assets.LocationID = @locationID OR @locationID = 0) AND (Assets.ItemID = @itemID OR @itemID = 0 OR (Assets.IsContainer = 1 AND dbo.AssetContains(Assets.ID, @itemID) = 1)) AND (Assets.IsContainer = 1 OR @containersOnly = 0) AND (Assets.ContainerID = 0 OR @getContained = 1)
+END
+ELSE
+BEGIN
+	SELECT Assets.*
+	FROM Assets 
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	WHERE (Assets.Status = @status OR @status = 0) AND (Assets.SystemID = @systemID OR @systemID = 0) AND (Assets.LocationID = @locationID OR @locationID = 0) AND (Assets.ItemID = @itemID OR @itemID = 0 OR (Assets.IsContainer = 1 AND dbo.AssetContains(Assets.ID, @itemID) = 1)) AND (Assets.IsContainer = 1 OR @containersOnly = 0) AND (Assets.ContainerID = 0 OR @getContained = 1)
+END
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.43"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetItemAndContainersOfItem' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.44")) < 0)
+                    {
+                        #region Update 'AssetsGetItemIDs' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsGetItemIDs
+	@accessList		varchar(max),
+	@locationID		int
+AS
+	SELECT ItemID AS [ID]
+	FROM Assets
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	WHERE Assets.Quantity > 0 AND (LocationID = @locationID OR @locationID = 0)
+	GROUP BY ItemID
+		
+	RETURN
+";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.44"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetItemIDs' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.45")) < 0)
+                    {
+                        #region Update 'AssetsGetLimitedSystemIDs' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsGetLimitedSystemIDs
+	@ownerID			int,
+	@regionIDs			varchar(MAX),
+	@stationIDs			varchar(MAX),
+	@includeContainers	bit,
+	@includeContents	bit
+AS
+	SELECT SystemID AS [ID]
+	FROM Assets
+		JOIN CLR_intlist_split(@regionIDs) r ON (Assets.RegionID = r.number OR r.number = 0)
+		JOIN CLR_intlist_split(@stationIDs) s ON (Assets.LocationID = s.number OR s.number = 0)
+	WHERE (OwnerID = @ownerID) AND (Assets.ContainerID = 0 OR @includeContents = 1) AND
+		(Assets.IsContainer = 0 OR @includeContainers = 1)
+	GROUP BY SystemID
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.45"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetLimitedSystemIDs' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.46")) < 0)
+                    {
+                        #region Update 'AssetsGetRegionIDs' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsGetRegionIDs
+	@accessList		varchar(MAX),
+	@itemID			int
+AS
+	SELECT RegionID AS [ID]
+	FROM Assets
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	WHERE (ItemID = @itemID OR @itemID = 0)
+	GROUP BY RegionID
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.46"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetRegionIDs' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.47")) < 0)
+                    {
+                        #region Update 'AssetsGetReproc' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsGetReproc		
+	@ownerID				int,
+    @stationID				int,
+    @status					int,
+    @includeContainers		bit,
+    @includeNonContainers   bit
+AS
+	SELECT *
+    FROM Assets
+	WHERE (ReprocExclude = 0) AND (OwnerID = @ownerID) AND (LocationID = @stationID) AND (Status = @status) AND (ContainerID = 0) AND ((@includeContainers = 1 AND @includeNonContainers = 1) OR (@includeContainers = 1 AND IsContainer = 1) OR (@includeNonContainers = 1 AND IsContainer = 0)) 
+RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.47"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetReproc' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.48")) < 0)
+                    {
+                        #region Update 'AssetsGetStationIDs' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsGetStationIDs
+	@accessList		varchar(MAX),
+	@itemID			int,
+	@systemID		int
+AS
+	SELECT LocationID AS [ID]
+	FROM Assets
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	WHERE (ItemID = @itemID OR @itemID = 0) AND (SystemID = @systemID OR @systemID = 0) AND (SystemID != LocationID)
+	GROUP BY LocationID
+	
+	RETURN
+";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.48"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetStationIDs' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.49")) < 0)
+                    {
+                        #region Update 'AssetsGetSystemIDs' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsGetSystemIDs
+	@accessList		varchar(MAX),
+	@itemID			int,
+	@regionID		int
+AS
+	SELECT SystemID AS [ID]
+	FROM Assets
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	WHERE (ItemID = @itemID OR @itemID = 0) AND (RegionID = @regionID OR @regionID = 0) 
+	GROUP BY SystemID
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.49"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetSystemIDs' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.50")) < 0)
+                    {
+                        #region Update 'AssetsHistoryGetClosest' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsHistoryGetClosest
+	@ownerID		int,
+	@datetime		datetime
+AS
+	SELECT AssetsHistory.*
+	FROM AssetsHistory
+	WHERE (OwnerID = @ownerID) AND
+		(ABS(DATEDIFF(hh, @datetime, Date)) = 
+		(
+			SELECT MIN(ABS(DATEDIFF(hh, @datetime, Date)))
+			FROM AssetsHistory
+			WHERE (OwnerID = @ownerID)
+		))
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.50"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsHistoryGetClosest' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.51")) < 0)
+                    {
+                        #region Update 'AssetsSetExcludeFlag' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsSetExcludeFlag		
+	@assetID		bigint,
+	@ownerID		int,
+	@locationID		int,
+	@itemID			int,
+	@status			int,
+	@containerID	bigint,
+	@exclude		bit
+AS
+	UPDATE Assets
+	SET AutoConExclude = @exclude
+	WHERE (ID = @assetID OR (@AssetID = 0 AND (OwnerID = @ownerID) AND (LocationID = @locationID OR @locationID = 0) AND (ItemID = @itemID OR @itemID = 0) AND (ContainerID = @containerID OR @containerID = 0) AND (Status = @status)))
+RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.51"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsSetExcludeFlag' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.52")) < 0)
+                    {
+                        #region Update 'AssetsSetProcFlag' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsSetProcFlag
+	@assetID	bigint,
+	@ownerID	int,
+	@status		int,
+	@processed	bit
+AS
+	UPDATE Assets
+	SET Processed = @processed
+	WHERE (ID = @assetID OR (@assetID = 0 AND (OwnerID = @ownerID) AND (Status = @status OR @status = 0)))
+RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.52"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsSetProcFlag' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.53")) < 0)
+                    {
+                        #region Update 'AssetsSetReprocExclude' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsSetReprocExclude		
+	@assetID		bigint,
+	@ownerID		int,
+	@locationID		int,
+	@itemID			int,
+	@status			int,
+	@containerID	bigint,
+	@exclude		bit
+AS
+	UPDATE Assets
+	SET ReprocExclude = @exclude
+	WHERE (ID = @assetID OR (@AssetID = 0 AND (OwnerID = @ownerID) AND (LocationID = @locationID OR @locationID = 0) AND (ItemID = @itemID OR @itemID = 0) AND (ContainerID = @containerID OR @containerID = 0) AND (Status = @status)))
+RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.53"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsSetReprocExclude' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.54")) < 0)
+                    {
+                        #region Update 'AssetsTotalQuantityByAny' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsTotalQuantityByAny 
+	@accessList			varchar(MAX),
+	@itemID				int,
+	@stationIDs			varchar(MAX),
+	@regionIDs			varchar(MAX),
+	@includeInTransit	bit,	
+	@includeContainers	bit,
+	@totQuantity		bigint OUTPUT
+AS
+IF(@stationIDs LIKE '0' AND @regionIDs LIKE '0')
+BEGIN
+	SELECT @totQuantity = SUM(Quantity)
+	FROM Assets
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	WHERE ItemID = @itemID AND (@includeInTransit = 1 OR Status = 1) AND (@includeContainers = 1 OR (ContainerID = 0 AND IsContainer = 0))
+END
+ELSE IF(@regionIDs LIKE '0')
+BEGIN
+	SELECT @totQuantity = SUM(Quantity)
+	FROM Assets
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	JOIN CLR_intlist_split(@stationIDs) s ON (Assets.LocationID = s.number)
+	WHERE ItemID = @itemID AND (@includeInTransit = 1 OR Status = 1)AND (@includeContainers = 1 OR (ContainerID = 0 AND IsContainer = 0))
+END
+ELSE IF(@stationIDs LIKE '0')
+BEGIN
+	SELECT @totQuantity = SUM(Quantity)
+	FROM Assets
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	JOIN CLR_intlist_split(@regionIDs) r ON (Assets.RegionID = r.number)
+	WHERE ItemID = @itemID AND (@includeInTransit = 1 OR Status = 1)AND (@includeContainers = 1 OR (ContainerID = 0 AND IsContainer = 0))
+END
+ELSE
+BEGIN
+	SELECT @totQuantity = SUM(Quantity)
+	FROM Assets
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	JOIN CLR_intlist_split(@regionIDs) r ON (Assets.RegionID = r.number)
+	JOIN CLR_intlist_split(@stationIDs) s ON (Assets.LocationID = s.number)
+	WHERE ItemID = @itemID AND (@includeInTransit = 1 OR Status = 1)AND (@includeContainers = 1 OR (ContainerID = 0 AND IsContainer = 0))
+END
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.54"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsTotalQuantityByAny' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.55")) < 0)
+                    {
+                        #region Update 'AssetsTotalsTable' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsTotalsTable 
+	@accessList		varchar(MAX),
+	@autoConOnly	bit
+AS
+
+	SELECT LocationID, ItemID, Sum(Quantity) 
+	FROM Assets
+	JOIN CLR_intlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	WHERE Status = 1 AND (AutoConExclude != @autoConOnly OR @autoConOnly = 0)
+	GROUP BY LocationID, ItemID 
+	
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.55"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsTotalsTable' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.56")) < 0)
+                    {
+                        #region Update 'OrderExists' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.OrderExists
+	@ownerID		int,
+	@walletID		smallint,
+	@stationID		int,
+	@itemID			int,
+	@totalVol		int,
+	@remainingVol	int,
+	@range			smallint,
+	@orderState		smallint,
+	@buyOrder		bit,
+	@price			decimal(18,2),
+	@eveOrderID		bigint,
+	@exists			bit		OUT,
+	@orderID		int		OUT
+AS
+	SET @exists = 0
+	SET	@orderID = 0
+
+	SELECT @orderID = ID
+	FROM Orders
+	WHERE (OwnerID = @ownerID) AND (WalletID = @walletID) AND 
+		(StationID = @stationID) AND (ItemID = @itemID) AND (Range = @range) AND (BuyOrder = @buyOrder) AND
+		(TotalVol = @totalVol) AND (RemainingVol >= @remainingVol) AND ((OrderState = @orderState) OR 
+		(@orderState = 2 AND (OrderState = 2 OR OrderState = 1000 OR OrderState = 2000))) AND
+		(Processed = 0) AND (Price = @price) AND (EveOrderID = @eveOrderID)
+	IF(@orderID = 0 AND @orderState = 2) 
+	BEGIN
+		-- If we are trying to find a filled/expired order but failed first time around then try
+		-- looking for an active order (i.e. one that was active and is now competed/expired)
+		SELECT @orderID = ID
+		FROM Orders
+		WHERE (OwnerID = @ownerID) AND (WalletID = @walletID) AND 
+			(StationID = @stationID) AND (ItemID = @itemID) AND (Range = @range) AND (BuyOrder = @buyOrder) AND
+			(TotalVol = @totalVol) AND (RemainingVol >= @remainingVol) AND (Processed = 0) AND
+			(OrderState = 0 OR OrderState = 999) AND (Price = @price) AND (EveOrderID = @eveOrderID)
+	END
+	IF(@orderID = 0) 
+	BEGIN
+		-- Try matching to an order in the database that matches all other parameters but has a blank eve ID.
+		-- This can happen if the user has recently installed the update that adds EveOrderID to the Orders table.
+		SELECT @orderID = ID
+		FROM Orders
+		WHERE (OwnerID = @ownerID) AND (WalletID = @walletID) AND 
+			(StationID = @stationID) AND (ItemID = @itemID) AND (Range = @range) AND (BuyOrder = @buyOrder) AND
+			(TotalVol = @totalVol) AND (RemainingVol >= @remainingVol) AND ((OrderState = @orderState) OR 
+			(@orderState = 2 AND (OrderState = 2 OR OrderState = 1000 OR OrderState = 2000))) AND
+			(Processed = 0) AND (Price = @price) AND (EveOrderID = 0)
+	    IF(@orderID = 0) 
+	    BEGIN
+		    -- Still couldn't match an order so try finding one that matches all parameters except price and 
+		    -- eve order id (changing the price changes the ID).
+		    SELECT @orderID = ID
+		    FROM Orders
+		    WHERE (OwnerID = @ownerID) AND (WalletID = @walletID) AND 
+			    (StationID = @stationID) AND (ItemID = @itemID) AND (Range = @range) AND (BuyOrder = @buyOrder) AND
+			    (TotalVol = @totalVol) AND (RemainingVol >= @remainingVol) AND (Processed = 0) AND 
+			    ((OrderState = @orderState) OR (@orderState = 2 AND 
+			    (OrderState = 2 OR OrderState = 1000 OR OrderState = 2000)))
+	        IF(@orderID = 0) 
+	        BEGIN
+		        -- Still couldn't match an order so try finding one that matches all parameters except state and price.
+		        SELECT @orderID = ID
+		        FROM Orders
+		        WHERE (OwnerID = @ownerID) AND (WalletID = @walletID) AND 
+			        (StationID = @stationID) AND (ItemID = @itemID) AND (Range = @range) AND (BuyOrder = @buyOrder) AND
+			        (TotalVol = @totalVol) AND (RemainingVol >= @remainingVol) AND (Processed = 0)
+	        END
+	    END
+	END
+	
+	UPDATE Orders
+	SET Processed = 1
+	WHERE (ID = @orderID)
+		
+	SELECT Orders.*
+	FROM Orders
+	WHERE (ID = @orderID)
+
+	IF(@@ROWCOUNT = 1)
+	BEGIN
+		SET @exists = 1
+	END
+
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.56"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'OrderExists' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.57")) < 0)
+                    {
+                        #region Update 'OrderGetAny' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.OrderGetAny
+@accessList			varchar(max),
+@itemIDs			varchar(max),
+@stationIDs			varchar(max),
+@state				int,
+@type				varchar(4)
+AS
+SET NOCOUNT ON
+SELECT Orders.*
+FROM Orders
+JOIN CLR_intlist_split(@accessList) a ON (Orders.OwnerID = a.number)
+JOIN CLR_intlist_split(@itemIDs) i ON (Orders.ItemID = i.number OR i.number = 0)
+JOIN CLR_intlist_split(@stationIDs) s ON (Orders.StationID = s.number OR s.number = 0)
+WHERE (Orders.OrderState = @state OR @state = 0) AND ((@type LIKE 'Sell' AND Orders.BuyOrder = 0) OR (@type LIKE 'Buy' AND Orders.BuyOrder = 1) OR (@type NOT LIKE 'Buy' AND @type NOT LIKE 'Sell'))
+RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.57"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'OrderGetAny' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.58")) < 0)
+                    {
+                        #region Update 'OrderGetByAnySingle' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.OrderGetByAnySingle
+@ownerID			int,
+@walletID			smallint,
+@itemID			int,
+@stationID			int,
+@state             int,
+@type              varchar(4)
+AS
+SET NOCOUNT ON
+SELECT Orders.*
+FROM Orders
+WHERE (Orders.OwnerID = @ownerID) AND (@walletID = 0 OR WalletID = @walletID)
+   AND (@state = 0 OR Orders.OrderState = @state) AND (@itemID = 0 OR Orders.ItemID = @itemID)
+   AND (@stationID = 0 OR Orders.StationID = @stationID)
+   AND ((@type LIKE 'Sell' AND Orders.BuyOrder = 0) OR (@type LIKE 'Buy' AND Orders.BuyOrder = 1) OR (@type NOT LIKE 'Buy' AND @type NOT LIKE 'Sell'))
+RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.58"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'OrderGetByAnySingle' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.59")) < 0)
+                    {
+                        #region Update 'OrdersFinishUnProcessed' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.OrdersFinishUnProcessed 
+	@ownerID		int,
+	@notify			bit,
+	@notifyBuy		bit,
+	@notifySell		bit
+AS
+	UPDATE Orders
+	SET OrderState = 1000, Escrow = 0
+	WHERE (OwnerID = @ownerID) AND (Processed = 0) AND (OrderState = 999 OR OrderState = 2) AND
+		(@notify = 1 AND ((@notifyBuy = 1 AND BuyOrder = 1) OR (@notifySell = 1 AND BuyOrder = 0)))
+		
+	UPDATE Orders
+	SET OrderState = 2000, Escrow = 0
+	WHERE (OwnerID = @ownerID) AND (Processed = 0) AND (OrderState = 999 OR OrderState = 2) AND
+		(@notify = 0 OR ((@notifyBuy = 0 AND BuyOrder = 1) OR (@notifySell = 0 AND BuyOrder = 0)))
+	
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.59"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'OrdersFinishUnProcessed' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.60")) < 0)
+                    {
+                        #region Update 'OrdersGetByDate' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.OrdersGetByDate
+	@ownerID				int,
+	@walletID				smallint,
+	@earliestIssueDate		datetime,
+	@latestIssueDate		datetime
+AS
+	SELECT Orders.*
+	FROM Orders 
+	WHERE (OwnerID = @ownerID) AND (WalletID = @walletID) AND 
+		(Issued BETWEEN @earliestIssueDate AND @latestIssueDate)
+	RETURN
+";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.60"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'OrdersGetByDate' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.61")) < 0)
+                    {
+                        #region Update 'OrdersSetProcessed' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.OrdersSetProcessed 
+	@ownerID	int,
+	@processed	bit
+AS
+	UPDATE Orders
+	SET Processed = @processed
+	WHERE (OwnerID = @ownerID)
+ 
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.61"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'OrdersSetProcessed' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.62")) < 0)
+                    {
+                        #region Update 'AssetsAddQuantity' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetsAddQuantity 
+	@ownerID		int,
+	@itemID			int,
+	@stationID		int,
+	@systemID		int,
+	@regionID		int,
+	@status			int,
+	@containerID	bigint,
+	@autoConExclude	bit,
+	@deltaQuantity	bigint,
+	@addedItemsCost	decimal(18,2),
+    @costCalc       bit
+AS
+	DECLARE @oldQuantity bigint, @newQuantity bigint
+	DECLARE	@assetID bigint
+	DECLARE @oldCost decimal(18, 2), @newCost decimal(18, 2)
+    DECLARE @oldCostCalc bit, @newCostCalc bit
+		
+	SET @assetID = 0
+	SELECT @oldQuantity = Quantity, @assetID = ID, @oldCost = Cost, @oldCostCalc = CostCalc
+	FROM Assets
+	WHERE OwnerID = @ownerID AND LocationID = @stationID AND ItemID = @itemID AND Status = @status AND ContainerID = @containerID AND AutoConExclude = @autoConExclude AND IsContainer = 0
+	
+	IF(@assetID = 0)
+	BEGIN
+		INSERT INTO [Assets] ([OwnerID], [CorpAsset], [LocationID], [ItemID], [SystemID], [RegionID], [ContainerID], [Quantity], [Status], [AutoConExclude], [Processed], [IsContainer], [Cost], [CostCalc], [EveItemID], [BoughtViaContract]) 
+		VALUES (@ownerID, 0, @stationID, @itemID, @systemID, @regionID, 0, @deltaQuantity, @status, @autoConExclude, 0, 0, @addedItemsCost, @costCalc, 0, 0);
+	END 
+	ELSE
+	BEGIN
+		SET @newQuantity = @oldQuantity + @deltaQuantity
+		IF(@deltaQuantity > 0)
+		BEGIN
+            -- If new items are being added to the stack then calculate the average cost from the 
+            -- old and new values.
+            -- If the old cost had not been calculated then just use the new cost
+            SET @newCostCalc = 1
+            IF(@oldCostCalc = 0 AND @costCalc = 0)
+            BEGIN
+                SET @newCost = 0
+                SET @newCostCalc = 0
+            END
+            ELSE IF(@oldCostCalc = 1 AND @costCalc = 0)
+            BEGIN
+                SET @newCost = @oldCost
+            END
+            ELSE IF(@oldCostCalc = 0 AND @costCalc = 1)
+            BEGIN
+                SET @newCost = @addedItemsCost
+            END
+            ELSE IF(@oldCostCalc = 1 AND @costCalc = 1)
+            BEGIN
+				IF(@oldQuantity > 0)
+				BEGIN
+					SET @newCost = (@oldCost * @oldQuantity + @addedItemsCost * @deltaQuantity) / (@oldQuantity + @deltaQuantity)
+				END
+				ELSE
+				BEGIN
+					SET @newCost = @addedItemsCost
+				END
+		    END
+        END
+		ELSE
+		BEGIN
+            -- If items are being removed from the stack then just use the old cost value
+			SET @newCost = @oldCost
+            SET @newCostCalc = @oldCostCalc
+		END		
+		
+		UPDATE [Assets] SET [Quantity] = @newQuantity, [Cost] = ISNULL(@newCost, 0), [CostCalc] = ISNULL(@newCostCalc, 0)
+		WHERE [OwnerID] = @ownerID AND [LocationID] = @stationID AND [ItemID] = @itemID AND [Status] = @status AND [ContainerID] = @containerID AND [AutoConExclude] = @autoConExclude AND [IsContainer] = 0
+	END
+	
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.62"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsAddQuantity' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.63")) < 0)
+                    {
+                        #region Update 'AssetExists' stored procedure
+                        commandText =
+                               @"ALTER PROCEDURE dbo.AssetExists 
+	@ownerID			int,
+	@locationID			int,
+	@itemID				int,
+	@status				int,
+	@isContained		bit,
+	@containerID		bigint,
+	@isContainer		bit,
+	@processed			bit,			
+	@ignoreProcessed	bit,
+	@autoConExclude		bit,
+	@ignoreAutoConEx	bit,
+	@eveItemID			bigint,
+	@exists				bit			OUT,
+	@assetID			bigint		OUT
+AS
+	SET @exists = 0
+	SET	@assetID = 0
+
+	SELECT @assetID = ID
+	FROM Assets
+	WHERE (OwnerID = @ownerID) AND (LocationID = @locationID) AND (ItemID = @itemID) AND (Status = @status) AND (ContainerID = @containerID OR (@isContained = 1 AND @containerID = 0 AND ContainerID != 0)) AND (IsContainer = @isContainer) AND (Processed = @processed OR @ignoreProcessed = 1) AND (AutoConExclude = @autoConExclude OR @ignoreAutoConEx = 1) AND (EveItemID = @eveItemID OR @eveItemID = 0)
+	IF(@eveItemID > 0 AND @assetID = 0)
+	BEGIN
+		-- If eve ID is set and we didn't find a match with it then
+		-- just try without it.
+		SELECT @assetID = ID
+		FROM Assets
+		WHERE (OwnerID = @ownerID) AND (LocationID = @locationID) AND (ItemID = @itemID) AND (Status = @status) AND (ContainerID = @containerID OR (@isContained = 1 AND @containerID = 0 AND ContainerID != 0)) AND (IsContainer = @isContainer) AND (Processed = @processed OR @ignoreProcessed = 1) AND (AutoConExclude = @autoConExclude OR @ignoreAutoConEx = 1)
+	END
+	SELECT *
+	FROM Assets
+	WHERE (ID = @assetID)
+
+	IF(@@ROWCOUNT >= 1)
+	BEGIN
+		SET @exists = 1
+	END
+
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.63"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetExists' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.0.64")) < 0)
+                    {
+                        #region Delete assets 'ItTransit' and 'ForSaleViaContract'
+                        commandText =
+                               @"DELETE FROM Assets
+	WHERE Status = 2 OR Status = 3";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.0.64"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem deleting assets 'ItTransit' and 'ForSaleViaContract'", ex);
+                        }
+                        #endregion
+                    }
+
+
                     #endregion
                 }
 

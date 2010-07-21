@@ -13,45 +13,45 @@ namespace EveMarketMonitorApp.DatabaseClasses
     /// </summary>
     public class AssetAccessParams
     {
-        private int _charID;
-        private bool _includePersonal;
-        private bool _includeCorporate;
+        private int _ownerID;
+        //private bool _includePersonal;
+        //private bool _includeCorporate;
 
-        public AssetAccessParams(int charID, bool includePersonal, bool includeCorporate)
+        public AssetAccessParams(int ownerID)//, bool includePersonal, bool includeCorporate)
         {
-            _charID = charID;
-            _includePersonal = includePersonal;
-            _includeCorporate = includeCorporate;
+            _ownerID = ownerID;
+            //_includePersonal = includePersonal;
+            //_includeCorporate = includeCorporate;
         }
 
-        public int CharID
+        public int OwnerID
         {
-            get { return _charID; }
-            set { _charID = value; }
+            get { return _ownerID; }
+            set { _ownerID = value; }
         }
 
-        public bool IncludePersonal
-        {
-            get { return _includePersonal; }
-            set { _includePersonal = value; }
-        }
+        //public bool IncludePersonal
+        //{
+        //    get { return _includePersonal; }
+        //    set { _includePersonal = value; }
+        //}
 
-        public bool IncludeCorporate
-        {
-            get { return _includeCorporate; }
-            set { _includeCorporate = value; }
-        }
+        //public bool IncludeCorporate
+        //{
+        //    get { return _includeCorporate; }
+        //    set { _includeCorporate = value; }
+        //}
 
         public static string BuildAccessList(List<AssetAccessParams> accessParams)
         {
             StringBuilder accessList = new StringBuilder("");
             foreach (AssetAccessParams entry in accessParams)
             {
-                accessList.Append(entry.CharID);
-                accessList.Append(",");
-                accessList.Append(entry.IncludePersonal);
-                accessList.Append(",");
-                accessList.Append(entry.IncludeCorporate);
+                accessList.Append(entry.OwnerID);
+                //accessList.Append(",");
+                //accessList.Append(entry.IncludePersonal);
+                //accessList.Append(",");
+                //accessList.Append(entry.IncludeCorporate);
                 if (accessList.Length != 0)
                 {
                     accessList.Append("|");

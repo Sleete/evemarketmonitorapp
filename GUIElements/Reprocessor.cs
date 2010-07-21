@@ -216,8 +216,7 @@ namespace EveMarketMonitorApp.GUIElements
                     CharCorp charcorp = (CharCorp)cmbDefaultReprocessor.SelectedValue;
                     int station = (int)txtStation.Tag;
 
-                    AssetList containers = Assets.LoadReprocessableAssets(charcorp.characterObj.CharID, 
-                        charcorp.corp, station, 1, true, false);
+                    AssetList containers = Assets.LoadReprocessableAssets(charcorp.ID, station, 1, true, false);
 
                     if (containers.Count > 0 && cmbContainers.Items.Count == 1)
                     {
@@ -270,8 +269,7 @@ namespace EveMarketMonitorApp.GUIElements
 
                     if (container == null)
                     {
-                        _assets = Assets.LoadReprocessableAssets(charcorp.characterObj.CharID, charcorp.corp,
-                            station, 1, false, true);
+                        _assets = Assets.LoadReprocessableAssets(charcorp.ID, station, 1, false, true);
                     }
                     else
                     {

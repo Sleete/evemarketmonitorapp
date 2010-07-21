@@ -242,7 +242,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public int OwnerID
         {
             get { return _ownerID; }
-            set { _ownerID = value; _gotOwner = false; }
+            set 
+            { 
+                _ownerID = value;
+                bool corp = false;
+                UserAccount.CurrentGroup.GetCharacter(_ownerID, ref corp);
+                _corpAsset = corp;
+                _gotOwner = false; 
+            }
         }
 
         public bool CorpAsset

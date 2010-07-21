@@ -391,7 +391,8 @@ namespace EveMarketMonitorApp.GUIElements
                         if (qRemaining < gainedAsset.Quantity)
                         {
                             long assetID = 0;
-                            Assets.AssetExists(assetChanges, gainedAsset.OwnerID, gainedAsset.CorpAsset,
+                            APICharacter character = UserAccount.CurrentGroup.GetCharacter(gainedAsset.OwnerID);
+                            Assets.AssetExists(assetChanges, gainedAsset.OwnerID,
                                 gainedAsset.LocationID, gainedAsset.ItemID, gainedAsset.StatusID,
                                 gainedAsset.ContainerID != 0, gainedAsset.ContainerID, gainedAsset.IsContainer,
                                 false, true, gainedAsset.AutoConExclude, false, gainedAsset.EveItemInstanceID,
@@ -483,7 +484,8 @@ namespace EveMarketMonitorApp.GUIElements
                 foreach (Asset gainedAsset in _gainedAssets)
                 {
                     long assetID = 0;
-                    Assets.AssetExists(assetChanges, gainedAsset.OwnerID, gainedAsset.CorpAsset,
+                    APICharacter character = UserAccount.CurrentGroup.GetCharacter(gainedAsset.OwnerID);
+                    Assets.AssetExists(assetChanges, gainedAsset.OwnerID,
                         gainedAsset.LocationID, gainedAsset.ItemID, gainedAsset.StatusID,
                         gainedAsset.ContainerID != 0, gainedAsset.ContainerID, gainedAsset.IsContainer,
                         false, true, gainedAsset.AutoConExclude, false, gainedAsset.EveItemInstanceID, ref assetID);
@@ -519,7 +521,7 @@ namespace EveMarketMonitorApp.GUIElements
                             case AssetChangeTypes.ChangeType.CancelledContract:
                                 List<AssetAccessParams> access = new List<AssetAccessParams>();
                                 bool corporate = false;
-                                access.Add(new AssetAccessParams(assetRow.OwnerID, !assetRow.CorpAsset, assetRow.CorpAsset));
+                                access.Add(new AssetAccessParams(assetRow.OwnerID));
                                 AssetList assets = Assets.LoadAssets(access, new List<int>(), assetRow.ItemID, 0, 0, 
                                     false, (int)AssetStatus.States.ForSaleViaContract, true, true);
                                 if (assets.Count > 0)

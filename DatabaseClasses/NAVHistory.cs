@@ -80,8 +80,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public static decimal GetNextEscrowCash(int ownerID, short walletID, DateTime date)
         {
             decimal retVal = _lastCashInEscrow;
-            bool corp = false;
-            APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);
+            APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID);
             if (character != null)
             {
                 date = date.ToUniversalTime();
@@ -108,7 +107,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     new List<int>(), new List<int>(), new List<int>(), startDate, endDate, "Buy");
 
                 // Get orders that were created between the last date and the desired date.
-                EMMADataSet.OrdersDataTable orders = Orders.GetOrdersByIssueDate(character.CharID, corp, walletID,
+                EMMADataSet.OrdersDataTable orders = Orders.GetOrdersByIssueDate(ownerID, walletID,
                     startDate, endDate);
 
                 marginTradingLevel = character.MarginTradingLvl;
@@ -165,18 +164,18 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             decimal retVal = 0;
 
-            bool corp = false;
-            APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);
+            //bool corp = false;
+            //APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);
             date = date.ToUniversalTime();
 
             if (date.CompareTo(DateTime.UtcNow.AddHours(-2)) >= 0)
             {
-                retVal = Orders.GetSellOrderValue(character.CharID, corp, 0);
+                retVal = Orders.GetSellOrderValue(ownerID);
             }
             else
             {
                 // 1. ----- Get the value of sell orders now -----
-                retVal = Orders.GetSellOrderValue(character.CharID, corp, 0);
+                retVal = Orders.GetSellOrderValue(ownerID);
 
                 // 2. ----- Then increase the value by using sell transactions -----
                 List<FinanceAccessParams> accessParams = new List<FinanceAccessParams>();
@@ -197,7 +196,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 // 3. ----- Finally reduce the value by taking off the value of sell orders that were 
                 // created between the current date and the date we are getting the value for -----
                 List<AssetAccessParams> accessParams2 = new List<AssetAccessParams>();
-                accessParams2.Add(new AssetAccessParams(ownerID, !corp, corp));
+                accessParams2.Add(new AssetAccessParams(ownerID));
 
                 OrdersList orders = Orders.LoadOrders(accessParams2, new List<int>(), new List<int>(), 0, "sell");
                 foreach (Order order in orders)
@@ -218,13 +217,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
             decimal retVal = 0;
             bool storeValue = true;
 
-            bool corp = false;
-            APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);
+            //bool corp = false;
+            //APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);
             date = date.ToUniversalTime();
 
             if (date.CompareTo(DateTime.UtcNow.AddHours(-2)) >= 0)
             {
-                retVal = Assets.GetAssetsValue(character.CharID, corp);
+                retVal = Assets.GetAssetsValue(ownerID);
                 //retVal += Orders.GetSellOrderValue(character.CharID, corp, 0);
             }
             else
@@ -245,7 +244,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 //{
                     // If there is no data in the database then get the current value of all assets and use
                     // it to work from.
-                    retVal = Assets.GetAssetsValue(character.CharID, corp);
+                    retVal = Assets.GetAssetsValue(ownerID);
                     startDate = date;
                     endDate = DateTime.UtcNow;
                 /*}
@@ -284,7 +283,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 {
                     // Get sell orders that have been created between the dates we are looking at.
                     List<AssetAccessParams> accessParams = new List<AssetAccessParams>();
-                    accessParams.Add(new AssetAccessParams(ownerID, !corp, corp));
+                    accessParams.Add(new AssetAccessParams(ownerID));
                     Dictionary<int, long> deltaQuantaties = new Dictionary<int, long>();
 
                     OrdersList orders = Orders.LoadOrders(accessParams, new List<int>(), new List<int>(), 0, "sell");
@@ -371,7 +370,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             EMMADataSet.AssetsHistoryRow data = null;
             lock (tableAdapter)
             {
-                tableAdapter.FillByClosest(assetsHistory, character.CharID, corp, date);
+                tableAdapter.FillByClosest(assetsHistory, character.CharID, date);
             }
 
             if (assetsHistory.Count > 0)
@@ -388,7 +387,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             if (data == null)
             {
                 data = assetsHistory.NewAssetsHistoryRow();
-                data.OwnerID = character.CharID;
+                data.OwnerID = ownerID;
                 data.Corp = corp;
                 data.Date = date;
                 data.Value = 0;

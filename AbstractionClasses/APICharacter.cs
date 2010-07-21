@@ -260,6 +260,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
             SetHighestID(CharOrCorp.Corp, APIDataType.Transactions, data.HighestCorpTransID);
             SetHighestID(CharOrCorp.Char, APIDataType.Journal, data.HighestCharJournalID);
             SetHighestID(CharOrCorp.Corp, APIDataType.Journal, data.HighestCorpJournalID);
+
+            if (!Settings.UpdatedOwnerIDToCorpID)
+            {
+                UpdateOwnerIDToCorpID();
+            }
         }
 
         public APICharacter(int userID, string apiKey, int charID)
@@ -279,7 +284,41 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 RefreshCorpXMLFromAPI();
             }
             catch { }
+
+            if (!Settings.UpdatedOwnerIDToCorpID)
+            {
+                UpdateOwnerIDToCorpID();
+            }
         }
+
+
+        /// <summary>
+        /// This is called to migrate legacy corporate market orders and assets that were stored against
+        /// the character ID rather than the corporate ID.
+        /// </summary>
+        private void UpdateOwnerIDToCorpID() 
+        {
+            if (!Settings.UpdatedOwnerIDToCorpID)
+            {
+                try
+                {
+                    Assets.MigrateAssetsToCorpID(_charID, _corpID);
+                    Orders.MigrateOrdersToCorpID(_charID, _corpID);
+
+                    Settings.UpdatedOwnerIDToCorpID = true;
+                }
+                catch (Exception ex) 
+                {
+                    EMMAException emmaEx = ex as EMMAException;
+                    if (emmaEx == null)
+                    {
+                        throw new EMMAException(ExceptionSeverity.Critical,
+                            "Problem when migrating data to new format", ex);
+                    }
+                }
+            }
+        }
+
 
         public void ResetIncludedVars()
         {
@@ -665,10 +704,10 @@ namespace EveMarketMonitorApp.AbstractionClasses
             try
             {
                 // Set the 'processed' flag to false for all of this char/corp's assets.
-                Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, (int)AssetStatus.States.Normal, false);
-                Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, (int)AssetStatus.States.ForSaleViaMarket, false);
-                Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, (int)AssetStatus.States.ForSaleViaContract, false);
-                Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, (int)AssetStatus.States.InTransit, false);
+                Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, (int)AssetStatus.States.Normal, false);
+                Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, (int)AssetStatus.States.ForSaleViaMarket, false);
+                Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, (int)AssetStatus.States.ForSaleViaContract, false);
+                Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, (int)AssetStatus.States.InTransit, false);
                 // Remove containers and all thier contents
                 //Assets.ClearUnProcessed(_charID, corc == CharOrCorp.Char, corc == CharOrCorp.Corp, true);
 
@@ -791,7 +830,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     // Use the currently active sell order to account for assets that appear to be
                     // missing.
                     if (fromFile) { UpdateStatus(0, 0, "Processing active sell orders", "", false); }
-                    Assets.ProcessSellOrders(assetData, changes, _charID, _corpID, corc == CharOrCorp.Corp);
+                    Assets.ProcessSellOrders(assetData, changes, corc == CharOrCorp.Corp ? _corpID : _charID);
                     if (fromFile) { UpdateStatus(0, 0, "", "Complete", false); }
                     // Use transactions that occured after the effective date of the asset data file
                     // to ensure that the asset list is as up-to-date as possible.
@@ -809,8 +848,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         (corc == CharOrCorp.Corp && Settings.FirstUpdateDoneAssetsCorp))
                     {
                         if (fromFile) { UpdateStatus(0, 0, "Analysing changes to assets", "", false);}
-                        Assets.AnalyseChanges(assetData, _charID, corc == CharOrCorp.Corp, changes, 
-                            out gained, out lost);
+                        Assets.AnalyseChanges(assetData, corc == CharOrCorp.Corp ? _corpID : _charID, 
+                            changes, out gained, out lost);
                         if (fromFile) { UpdateStatus(0, 0, "", "Complete", false); }
                     }
 
@@ -839,13 +878,13 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     // i.e. either 'for sale via contract' or 'in transit'.
                     // We set them to processed to prevent them from being removed along with other
                     // unprocessed assets.
-                    Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, 
+                    Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, 
                         (int)AssetStatus.States.ForSaleViaContract, true);
-                    Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, 
+                    Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, 
                         (int)AssetStatus.States.InTransit, true);                    
                     // Clear any remaining assets that have not been processed.
-                    Assets.ClearUnProcessed(_charID, corc == CharOrCorp.Char, corc == CharOrCorp.Corp, false);
-                    Assets.SetProcessedFlag(_charID, corc == CharOrCorp.Corp, 0, false);
+                    Assets.ClearUnProcessed(corc == CharOrCorp.Corp ? _corpID : _charID, false);
+                    Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, 0, false);
 
                     if (fromFile)
                     {
@@ -993,7 +1032,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                 // Note that if a match is not found for the specific eve instance ID we pass in then
                 // EMMA will automatically search for an asset matching all the other parameters.
-                if (Assets.AssetExists(assetData, _charID, corc == CharOrCorp.Corp, locationID,
+                if (Assets.AssetExists(assetData, corc == CharOrCorp.Corp ? _corpID : _charID, locationID,
                     itemID, (int)AssetStatus.States.Normal, containerID != 0, containerID, isContainer,
                     false, !isContainer, false, true, eveInstanceID, ref assetID))
                 {
@@ -1107,7 +1146,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 {
                     // The row does not currently exist in the database so we need to create it. 
                     assetRow = assetData.NewAssetsRow();
-                    assetRow.OwnerID = _charID;
+                    //assetRow.OwnerID = _charID;
+                    assetRow.OwnerID = corc == CharOrCorp.Corp ? _corpID : _charID;
                     assetRow.CorpAsset = corc == CharOrCorp.Corp;
                     assetRow.ItemID = itemID;
                     assetRow.EveItemID = eveInstanceID;
@@ -2387,8 +2427,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 // Update asset quantities.
                 if (!rowInDatabase)
                 {
-                    Assets.BuyAssets(forCorp ? _corpID : _charID, _charID, forCorp, newRow.StationID, 
-                        newRow.ItemID, newRow.Quantity, newRow.Price, 
+                    Assets.BuyAssets(forCorp ? _corpID : _charID, newRow.StationID, newRow.ItemID, 
+                        newRow.Quantity, newRow.Price, 
                         forCorp ? Settings.CorpAssetsEffectiveDate : Settings.CharAssetsEffectiveDate,
                         newRow.DateTime);
                 }
@@ -2406,7 +2446,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 // Calculate transaction profit and update asset quantities.
                 if (!rowInDatabase)
                 {
-                    newRow.SellerUnitProfit = Transactions.CalcProfit(_charID, forCorp, transData, newRow, 
+                    newRow.SellerUnitProfit = Transactions.CalcProfit(forCorp ? _corpID : _charID, 
+                        transData, newRow, 
                         forCorp ? Settings.CorpAssetsEffectiveDate : Settings.CharAssetsEffectiveDate);
                 }
             }
@@ -2610,7 +2651,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                         if (orderEntries != null && orderEntries.Count > 0)
                         {
-                            Orders.SetProcessed(charID, corc == CharOrCorp.Corp, false);
+                            Orders.SetProcessed(corc == CharOrCorp.Corp ? _corpID : _charID, false);
 
                             if (fromFile)
                             {
@@ -2733,7 +2774,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                         if (!errorOccured)
                         {
-                            Orders.FinishUnProcessed(charID, corc == CharOrCorp.Corp);
+                            Orders.FinishUnProcessed(corc == CharOrCorp.Corp ? _corpID : _charID);
                         }
                     }
                 }
@@ -2777,8 +2818,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
             newRow.EveOrderID = int.Parse(orderEntry.SelectSingleNode("@orderID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-            newRow.OwnerID = int.Parse(orderEntry.SelectSingleNode("@charID").Value,
-                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            //newRow.OwnerID = int.Parse(orderEntry.SelectSingleNode("@charID").Value,
+            //    System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            newRow.OwnerID = corc == CharOrCorp.Corp ? _corpID : _charID;
             newRow.ForCorp = corc == CharOrCorp.Corp;
             newRow.StationID = int.Parse(orderEntry.SelectSingleNode("@stationID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);

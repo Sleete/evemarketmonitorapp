@@ -39,6 +39,9 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnClear = new System.Windows.Forms.Button();
             this.chkEveMarketPrices = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtDaysBetweenUpdates = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.rdbMaxBuy = new System.Windows.Forms.RadioButton();
             this.rdbMedianBuy = new System.Windows.Forms.RadioButton();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -62,9 +65,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.chkForceDefaultBuyPrice = new System.Windows.Forms.CheckBox();
             this.chkForceDefaultSellPrice = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtDaysBetweenUpdates = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -192,6 +192,31 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "General settings";
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(265, 88);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(29, 13);
+            this.label8.TabIndex = 18;
+            this.label8.Text = "days";
+            // 
+            // txtDaysBetweenUpdates
+            // 
+            this.txtDaysBetweenUpdates.Location = new System.Drawing.Point(203, 85);
+            this.txtDaysBetweenUpdates.Name = "txtDaysBetweenUpdates";
+            this.txtDaysBetweenUpdates.Size = new System.Drawing.Size(55, 20);
+            this.txtDaysBetweenUpdates.TabIndex = 17;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(5, 88);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(192, 13);
+            this.label7.TabIndex = 16;
+            this.label7.Text = "Update item value data from web every";
+            // 
             // rdbMaxBuy
             // 
             this.rdbMaxBuy.AutoSize = true;
@@ -308,6 +333,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.cmbStation.Location = new System.Drawing.Point(123, 46);
             this.cmbStation.Name = "cmbStation";
             this.cmbStation.Size = new System.Drawing.Size(374, 21);
+            this.cmbStation.Sorted = true;
             this.cmbStation.TabIndex = 12;
             this.cmbStation.SelectedIndexChanged += new System.EventHandler(this.cmbStation_SelectedIndexChanged);
             // 
@@ -443,31 +469,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Pricing details";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(5, 88);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(192, 13);
-            this.label7.TabIndex = 16;
-            this.label7.Text = "Update item value data from web every";
-            // 
-            // txtDaysBetweenUpdates
-            // 
-            this.txtDaysBetweenUpdates.Location = new System.Drawing.Point(203, 85);
-            this.txtDaysBetweenUpdates.Name = "txtDaysBetweenUpdates";
-            this.txtDaysBetweenUpdates.Size = new System.Drawing.Size(55, 20);
-            this.txtDaysBetweenUpdates.TabIndex = 17;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(265, 88);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(29, 13);
-            this.label8.TabIndex = 18;
-            this.label8.Text = "days";
             // 
             // ItemValuesManager
             // 

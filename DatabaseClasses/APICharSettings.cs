@@ -72,6 +72,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.corpAssetsAPIAccess);
             GetValue(Setting.firstUpdateDoneAssetsChar);
             GetValue(Setting.firstUpdateDoneAssetsCorp);
+            GetValue(Setting.updatedOwnerIDToCorpID);
         }
 
         /// <summary>
@@ -206,6 +207,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     //else { retVal = bool.TrueString; }
                     retVal = bool.FalseString;
                     break;
+                case Setting.updatedOwnerIDToCorpID:
+                    retVal = bool.FalseString;
+                    break;
                 default:
                     break;
             }
@@ -276,6 +280,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
             get { return bool.Parse(GetValue(Setting.firstUpdateDoneAssetsCorp)); }
             set { SetValue(Setting.firstUpdateDoneAssetsCorp, value.ToString()); }
         }
+        public bool UpdatedOwnerIDToCorpID
+        {
+            get { return bool.Parse(GetValue(Setting.updatedOwnerIDToCorpID)); }
+            set { SetValue(Setting.updatedOwnerIDToCorpID, value.ToString()); }
+        }
         #endregion
 
         private enum Setting
@@ -290,7 +299,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             corpTransactionsAPIAccess,
             corpAssetsAPIAccess,
             firstUpdateDoneAssetsChar,
-            firstUpdateDoneAssetsCorp
+            firstUpdateDoneAssetsCorp,
+            updatedOwnerIDToCorpID
         }
 
     }
