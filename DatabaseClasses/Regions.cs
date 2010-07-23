@@ -41,6 +41,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 regionsTableAdapter.FillByIDs(retVal, regionIDs.ToString());
             }
+            Regions.SetWormholeRegionNames(ref retVal);
             return retVal;
         }
 
@@ -48,7 +49,20 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             EveDataSet.mapRegionsDataTable retVal = new EveDataSet.mapRegionsDataTable();
             regionsTableAdapter.Fill(retVal);
+            Regions.SetWormholeRegionNames(ref retVal);
             return retVal;
+        }
+
+        static private void SetWormholeRegionNames(ref EveDataSet.mapRegionsDataTable table)
+        {
+            foreach (EveDataSet.mapRegionsRow region in table)
+            {
+                // Add region ID to wormhole regions
+                if (region.regionName.Trim().ToUpper().Equals("UNKNOWN"))
+                {
+                    region.regionName = "Unknown (" + region.regionID + ")";
+                }
+            }
         }
 
         #region Private Methods
@@ -87,6 +101,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
             if (name.Equals(""))
             {
                 name = "Unknown Region (" + args.Key + ")";
+            }
+            // Add region ID to wormhole regions
+            if (name.Trim().ToUpper().Equals("UNKNOWN"))
+            {
+                name = "Unknown (" + args.Key + ")";
             }
 
             args.Data = name;

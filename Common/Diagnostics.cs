@@ -64,16 +64,18 @@ namespace EveMarketMonitorApp.Common
         [Conditional("DIAGNOSTICS")]
         public static void ResetTimer(int timerIndex)
         {
-            if (_timers.ContainsKey(timerIndex))
+            MiniTimer timer;
+            if (!_timers.ContainsKey(timerIndex))
             {
-                MiniTimer timer = _timers[timerIndex];
-                timer.RunningTime = new TimeSpan();
-                _timers[timerIndex] = timer;
+                timer = new MiniTimer();
+                _timers.Add(timerIndex, timer);
             }
             else
             {
-                //throw new EMMAException(ExceptionSeverity.Error, "Timer index not valid");
+                timer = _timers[timerIndex];
             }
+            timer.RunningTime = new TimeSpan();
+            _timers[timerIndex] = timer;
         }
         [Conditional("DIAGNOSTICS")]
         public static void ResetTimer(string timerName)

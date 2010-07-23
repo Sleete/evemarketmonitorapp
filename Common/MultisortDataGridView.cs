@@ -101,13 +101,16 @@ namespace EveMarketMonitorApp.Common
             int counter = 1;
             foreach (SortInfo index in _sortIndex)
             {
-                DataGridViewColumn column = this.Columns[index.ColumnIndex];
-                column.HeaderCell.SortGlyphDirection = index.Direction == ListSortDirection.Ascending ?
-                    SortOrder.Ascending : SortOrder.Descending;
-                if (_sortIndex.Count > 1)
+                if (index.ColumnIndex >= 0 && this.Columns.Count > index.ColumnIndex)
                 {
-                    column.HeaderText = column.HeaderText + " (" + counter + ")";
-                    counter++;
+                    DataGridViewColumn column = this.Columns[index.ColumnIndex];
+                    column.HeaderCell.SortGlyphDirection = index.Direction == ListSortDirection.Ascending ?
+                        SortOrder.Ascending : SortOrder.Descending;
+                    if (_sortIndex.Count > 1)
+                    {
+                        column.HeaderText = column.HeaderText + " (" + counter + ")";
+                        counter++;
+                    }
                 }
             }
         }

@@ -16,34 +16,34 @@ namespace EveMarketMonitorApp.GUIElements
     public partial class ViewUnacknowledgedOrders : Form
     {
         private OrdersList _orders;
-        private BindingSource _ordersBindingSource;
+        //private BindingSource _ordersBindingSource;
         private List<int> _owners;
-        private List<int> _corporateOwners;
-        private List<AssetAccessParams> _accessParams;
+        //private List<int> _corporateOwners;
+        //private List<AssetAccessParams> _accessParams;
         private int _lastNumberOfOrders = 0;
 
         public ViewUnacknowledgedOrders()
         {
             InitializeComponent();
 
-            _owners = new List<int>();
-            _corporateOwners = new List<int>();
-            List<CharCorpOption> charcorps = UserAccount.CurrentGroup.GetCharCorpOptions(APIDataType.Orders);
-            foreach (CharCorpOption chop in charcorps)
-            {
-                if (chop.Corp)
-                {
-                    _corporateOwners.Add(chop.CharacterObj.CorpID);
-                }
-                else
-                {
-                    _owners.Add(chop.CharacterObj.CharID);
-                }
-            }
+            //_owners = new List<int>();
+            //_corporateOwners = new List<int>();
+            //List<CharCorpOption> charcorps = UserAccount.CurrentGroup.GetCharCorpOptions(APIDataType.Orders);
+            //foreach (CharCorpOption chop in charcorps)
+            //{
+            //    if (chop.Corp)
+            //    {
+            //        _corporateOwners.Add(chop.CharacterObj.CorpID);
+            //    }
+            //    else
+            //    {
+            //        _owners.Add(chop.CharacterObj.CharID);
+            //    }
+            //}
 
             _orders = new OrdersList();
-            _ordersBindingSource = new BindingSource();
-            _ordersBindingSource.DataSource = _orders;
+            //_ordersBindingSource = new BindingSource();
+            //_ordersBindingSource.DataSource = _orders;
             UserAccount.Settings.GetFormSizeLoc(this);
 
             ordersGrid.Tag = "Unacknowledged Orders Data";
@@ -58,8 +58,8 @@ namespace EveMarketMonitorApp.GUIElements
             try
             {
                 _orders = new OrdersList();
-                _ordersBindingSource = new BindingSource();
-                _ordersBindingSource.DataSource = _orders;
+                //_ordersBindingSource = new BindingSource();
+                //_ordersBindingSource.DataSource = _orders;
 
                 DataGridViewCellStyle iskStyle = new DataGridViewCellStyle(PriceColumn.DefaultCellStyle);
                 iskStyle.Format = IskAmount.FormatString();
@@ -72,7 +72,7 @@ namespace EveMarketMonitorApp.GUIElements
                 ordersGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
                 ordersGrid.AutoGenerateColumns = false;
 
-                ordersGrid.DataSource = _ordersBindingSource;
+                //ordersGrid.DataSource = _ordersBindingSource;
                 DateTimeColmun.DataPropertyName = "Date";
                 OwnerColumn.DataPropertyName = "Owner";
                 ItemColumn.DataPropertyName = "Item";
@@ -135,37 +135,39 @@ namespace EveMarketMonitorApp.GUIElements
             if (unack.Count != _lastNumberOfOrders)
             {
 
-                List<int> items = new List<int>();
-                items.Add(0);
-                List<int> stations = new List<int>();
-                stations.Add(0);
+                //List<int> items = new List<int>();
+                //items.Add(0);
+                //List<int> stations = new List<int>();
+                //stations.Add(0);
 
-                _accessParams = new List<AssetAccessParams>();
+                //_accessParams = new List<AssetAccessParams>();
 
-                //List<int> ignore = new List<int>();
-                foreach (int id in _owners)
-                {
-                    _accessParams.Add(new AssetAccessParams(id));
-                    //_accessParams.Add(new AssetAccessParams(id, true, _corporateOwners.Contains(id)));
-                    //ignore.Add(id);
-                }
-                foreach (int id in _corporateOwners)
-                {
-                    _accessParams.Add(new AssetAccessParams(id));
-                //    if (!ignore.Contains(id))
-                //    {
-                //        _accessParams.Add(new AssetAccessParams(id, false, true));
-                //    }
-                }
+                ////List<int> ignore = new List<int>();
+                //foreach (int id in _owners)
+                //{
+                //    _accessParams.Add(new AssetAccessParams(id));
+                //    //_accessParams.Add(new AssetAccessParams(id, true, _corporateOwners.Contains(id)));
+                //    //ignore.Add(id);
+                //}
+                //foreach (int id in _corporateOwners)
+                //{
+                //    _accessParams.Add(new AssetAccessParams(id));
+                ////    if (!ignore.Contains(id))
+                ////    {
+                ////        _accessParams.Add(new AssetAccessParams(id, false, true));
+                ////    }
+                //}
 
                 //ListSortDirection sortDirection = ListSortDirection.Descending;
                 //DataGridViewColumn sortColumn = ordersGrid.SortedColumn;
                 //if (ordersGrid.SortOrder == SortOrder.Ascending) sortDirection = ListSortDirection.Ascending;
                 List<SortInfo> sortinfo = ordersGrid.GridSortInfo;
 
-                _orders = Orders.LoadOrders(_accessParams, items, stations,
-                    (int)OrderState.ExpiredOrFilledAndUnacknowledged, "Any");
-                _ordersBindingSource.DataSource = _orders;
+                //_orders = Orders.LoadOrders(_accessParams, items, stations,
+                //    (int)OrderState.ExpiredOrFilledAndUnacknowledged, "Any");
+                _orders = unack;
+                //_ordersBindingSource.DataSource = _orders;
+                ordersGrid.DataSource = _orders;
 
                 //ordersGrid.AutoResizeColumns();
                 //ordersGrid.AutoResizeRows();
@@ -176,7 +178,7 @@ namespace EveMarketMonitorApp.GUIElements
                 //}
                 ordersGrid.GridSortInfo = sortinfo;
 
-                _lastNumberOfOrders = _ordersBindingSource.Count;
+                _lastNumberOfOrders = _orders.Count;
                 Text = _lastNumberOfOrders + " unacknowledged orders";
             }
         }
@@ -227,6 +229,18 @@ namespace EveMarketMonitorApp.GUIElements
                 Orders.Store(order);
             }
             DisplayOrders();
+        }
+
+        private void btnAckSelected_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow orderRow in ordersGrid.SelectedRows)
+            {
+                Order order = (Order)orderRow.DataBoundItem;
+                order.StateID = (short)OrderState.ExpiredOrFilledAndAcknowledged;
+                Orders.Store(order);
+            }
+            DisplayOrders();
+
         }
 
 

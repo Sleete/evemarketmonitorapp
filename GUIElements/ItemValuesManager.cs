@@ -47,6 +47,8 @@ namespace EveMarketMonitorApp.GUIElements
             cmbStation.DisplayMember = "regionName";
             cmbStation.DataSource = regions;
             cmbStation.SelectedValue = -1;
+            cmbStation.AutoCompleteSource = AutoCompleteSource.ListItems;
+            cmbStation.AutoCompleteMode = AutoCompleteMode.Suggest;
 
             itemValues = UserAccount.CurrentGroup.ItemValues;
             itemsList = itemValues.GetAllItems();
@@ -306,12 +308,12 @@ namespace EveMarketMonitorApp.GUIElements
                 bool oldVal2 = itemValues.ForceDefaultSellPriceGet(currentItem.ItemID);
                 if (oldVal2 != chkForceDefaultSellPrice.Checked) { _resetCache = true; }
                 itemValues.ForceDefaultSellPriceSet(currentItem.ItemID, chkForceDefaultSellPrice.Checked);
-                decimal oldVal3 = itemValues.DefaultPriceGet(currentItem.ItemID, currentItem.RegionID);
+                decimal oldVal3 = itemValues.DefaultPriceGet(currentItem.ItemID);
                 if (oldVal3 != currentItem.DefaultSellPrice) { _resetCache = true; }
-                itemValues.DefaultPriceSet(currentItem.ItemID, currentItem.RegionID, currentItem.DefaultSellPrice);
-                decimal oldVal4 = itemValues.DefaultBuyPriceGet(currentItem.ItemID, currentItem.RegionID);
+                itemValues.DefaultPriceSet(currentItem.ItemID, currentItem.DefaultSellPrice);
+                decimal oldVal4 = itemValues.DefaultBuyPriceGet(currentItem.ItemID);
                 if (oldVal4 != currentItem.DefaultBuyPrice) { _resetCache = true; }
-                itemValues.DefaultBuyPriceSet(currentItem.ItemID, currentItem.RegionID, currentItem.DefaultBuyPrice);
+                itemValues.DefaultBuyPriceSet(currentItem.ItemID, currentItem.DefaultBuyPrice);
             }
         }
 
