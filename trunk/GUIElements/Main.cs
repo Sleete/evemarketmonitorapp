@@ -754,7 +754,7 @@ namespace EveMarketMonitorApp.GUIElements
         public void TryShowUnackOrders()
         {
             RefreshUnackOrders(true);
-            if (_unackOrders == null)
+            if (_unackOrders == null || !_unackOrders.Visible)
             {
                 MessageBox.Show("There are currently no unacknowledged orders to be dispalyed.",
                     "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -793,8 +793,13 @@ namespace EveMarketMonitorApp.GUIElements
                     else if (_unackOrders != null && !_unackOrders.Visible &&
                         ((_unackOrders.LastNumberOfOrders() != unack.Count) || forceDisplay))
                     {
+                        // For some reason, calling 'Show' on the form after it's been closed will
+                        // no longer work.
+                        // Instead, we just have to create a new instance.
+                        _unackOrders = new ViewUnacknowledgedOrders();
+                        _unackOrders.MdiParent = this;
                         showForm = true;
-                        updateForm = true;
+                        //updateForm = true;
                     }
                 }
                 else { updateForm = true; }

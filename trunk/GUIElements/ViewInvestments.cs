@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using EveMarketMonitorApp.DatabaseClasses;
 using EveMarketMonitorApp.Common;
 using EveMarketMonitorApp.Reporting;
+using System.Threading;
 
 namespace EveMarketMonitorApp.GUIElements
 {
@@ -91,7 +92,14 @@ namespace EveMarketMonitorApp.GUIElements
                     sortDirection = ListSortDirection.Descending;
                 }
 
-                sharesGrid.DataSource = _investments;
+                if (_investments.ItemFilter.Length > 0)
+                {
+                    sharesGrid.DataSource = _investments.FiltredItems;
+                }
+                else
+                {
+                    sharesGrid.DataSource = _investments;
+                }
 
                 //if (oldSelection != null)
                 //{
@@ -181,15 +189,31 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void sharesGrid_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
-            RowSelected(e.RowIndex);
+            if (e.RowIndex >= 0)
+            {
+                RowSelected(e.RowIndex);
+            }
         }
         private void RowSelected(int rowIndex)
         {
-            selectedCorp = (PublicCorp)sharesGrid.Rows[rowIndex].DataBoundItem;
-            btnCorpDetail.Enabled = true;
-            btnBuySell.Enabled = (selectedCorp.Bank ? selectedCorp.BankAccountID > 0 : true);
-            btnDeleteCorp.Enabled = (selectedCorp.Bank ? 
-                selectedCorp.BankAccountID > 0 : PublicCorps.AllowDelete(selectedCorp.ID));
+            bool done = false;
+            while (!done)
+            {
+                try
+                {
+                    selectedCorp = (PublicCorp)sharesGrid.Rows[rowIndex].DataBoundItem;
+                    btnCorpDetail.Enabled = true;
+                    btnBuySell.Enabled = (selectedCorp.Bank ? selectedCorp.BankAccountID > 0 : true);
+                    btnDeleteCorp.Enabled = (selectedCorp.Bank ?
+                        selectedCorp.BankAccountID > 0 : PublicCorps.AllowDelete(selectedCorp.ID));
+                    done = true;
+                }
+                catch (InvalidOperationException) 
+                { 
+                    // This can happen when deleting corps. Just wait a little and try again 
+                    Thread.Sleep(100);
+                }
+            }
         }
 
         private void btnHistory_Click(object sender, EventArgs e)

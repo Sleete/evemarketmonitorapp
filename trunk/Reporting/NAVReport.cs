@@ -126,9 +126,13 @@ namespace EveMarketMonitorApp.Reporting
             int maxProgress = 4 * _columns.Length * _financeAccessParams.Count;
             UpdateStatus(0, maxProgress, "", "Getting Report Data...", false);
 
+            Diagnostics.ResetAllTimers();
+            Diagnostics.StartTimer("NAVReport");
+
             foreach (FinanceAccessParams accessParams in _financeAccessParams)
             {
                 int ownerID = accessParams.OwnerID;
+                Diagnostics.StartTimer("NAVReport." + ownerID.ToString());
                 bool corp = false;
                 APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);
                 List<short> walletIDs = new List<short>();
@@ -155,6 +159,7 @@ namespace EveMarketMonitorApp.Reporting
 
                 EMMADataSet.WalletDivisionsDataTable walletNames = character.WalletDivisions;
 
+                Diagnostics.ResetTimer("NAVReport.GetWalletCash");
                 foreach (short walletID in walletIDs)
                 {
                     string walletName = "";
@@ -181,12 +186,15 @@ namespace EveMarketMonitorApp.Reporting
 
                         decimal cashInWallet;
 
+                        Diagnostics.StartTimer("NAVReport.GetWalletCash");
                         cashInWallet = NAVHistory.GetWalletCash(ownerID, walletID,
                             _columns[columnNo].EndDate);
+                        Diagnostics.StopTimer("NAVReport.GetWalletCash");
                         SetValue(_columns[columnNo].Name, "W" + ownerID.ToString() + walletID.ToString(), cashInWallet);
                     }
                 }
 
+                Diagnostics.ResetTimer("NAVReport.GetEscrowCash");
                 foreach (short walletID in walletIDs)
                 {
                     string walletName = "";
@@ -212,6 +220,7 @@ namespace EveMarketMonitorApp.Reporting
 
                         decimal cashInEscrow;
 
+                        Diagnostics.StartTimer("NAVReport.GetEscrowCash");
                         if (columnNo == 0)
                         {
                             cashInEscrow = NAVHistory.GetEscrowCash(ownerID, walletID);
@@ -220,6 +229,7 @@ namespace EveMarketMonitorApp.Reporting
                         {
                             cashInEscrow = NAVHistory.GetNextEscrowCash(ownerID, walletID, _columns[columnNo].EndDate);
                         }
+                        Diagnostics.StopTimer("NAVReport.GetEscrowCash");
 
                         SetValue(_columns[columnNo].Name, "E" + ownerID.ToString() + walletID.ToString(), cashInEscrow);
                     }
@@ -231,6 +241,7 @@ namespace EveMarketMonitorApp.Reporting
                     (corp ? character.CorpName : character.CharName));
 
 
+                Diagnostics.ResetTimer("NAVReport.GetAssetsValue");
                 for (int columnNo = 0; columnNo < _columns.Length; columnNo++)
                 {
                     progressCounter++;
@@ -238,10 +249,11 @@ namespace EveMarketMonitorApp.Reporting
                         (corp ? character.CorpName : character.CharName),
                         "Assets value", false);
 
+                    Diagnostics.StartTimer("NAVReport.GetAssetsValue");
                     /// Get Assets value and add to report.
                     decimal assetsValue = NAVHistory.GetAssetsValue(ownerID, _columns[columnNo].EndDate);
+                    Diagnostics.StopTimer("NAVReport.GetAssetsValue");
                     SetValue(_columns[columnNo].Name, "A" + ownerID.ToString(), assetsValue);
-
                 }
 
                 _sections.GetSection("S").AddRow(
@@ -250,6 +262,7 @@ namespace EveMarketMonitorApp.Reporting
                     (corp ? character.CorpName : character.CharName));
 
 
+                Diagnostics.ResetTimer("NAVReport.GetSellOrderValue");
                 for (int columnNo = 0; columnNo < _columns.Length; columnNo++)
                 {
                     progressCounter++;
@@ -258,12 +271,30 @@ namespace EveMarketMonitorApp.Reporting
                         "Value of sell orders", false);
 
                     /// Get sell orders value and add to report.
+                    Diagnostics.StartTimer("NAVReport.GetSellOrderValue");
                     decimal sellOrdersValue = NAVHistory.GetSellOrdersValue(ownerID, _columns[columnNo].EndDate);
+                    Diagnostics.StopTimer("NAVReport.GetSellOrderValue");
                     SetValue(_columns[columnNo].Name, "S" + ownerID.ToString(), sellOrdersValue);
                 }
+                Diagnostics.StopTimer("NAVReport." + ownerID.ToString());
+
+                DiagnosticUpdate("", "--------------------------------------------");
+                DiagnosticUpdate("", "------------ Timing diagnostics ------------");
+                DiagnosticUpdate("", "Total time for " + (corp ? character.CorpName : character.CharName) + ": " +
+                    Diagnostics.GetRunningTime("NAVReport." + ownerID.ToString()));
+                DiagnosticUpdate("", "\tGet wallet cash " +
+                    Diagnostics.GetRunningTime("NAVReport.GetWalletCash"));
+                DiagnosticUpdate("", "\tGet escrow cash " +
+                    Diagnostics.GetRunningTime("NAVReport.GetEscrowCash"));
+                DiagnosticUpdate("", "\tGet assets value " +
+                    Diagnostics.GetRunningTime("NAVReport.GetAssetsValue"));
+                DiagnosticUpdate("", "\tGet sell order value " +
+                    Diagnostics.GetRunningTime("NAVReport.GetSellOrderValue"));
+
             }
 
             _sections.GetSection("NAV").AddRow(_columns.Length, "I", "Investments");
+            Diagnostics.StartTimer("NAVReport.Investments");
 
             for (int columnNo = 0; columnNo < _columns.Length; columnNo++)
             {
@@ -293,6 +324,23 @@ namespace EveMarketMonitorApp.Reporting
 
                 SetValue(_columns[columnNo].Name, "I", investmentsValue);
             }
+            Diagnostics.StopTimer("NAVReport.Investments");
+
+            Diagnostics.StopTimer("NAVReport");
+
+            DiagnosticUpdate("", "--------------------------------------------");
+            DiagnosticUpdate("", "------------ Timing diagnostics ------------");
+            DiagnosticUpdate("", "Total time building report: " + Diagnostics.GetRunningTime("NAVReport"));
+            foreach (FinanceAccessParams accessParams in _financeAccessParams)
+            {
+                int ownerID = accessParams.OwnerID;
+                bool corp = false;
+                APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);
+                DiagnosticUpdate("", "\t" + (corp ? character.CorpName : character.CharName) + ": " +
+                    Diagnostics.GetRunningTime("NAVReport." + ownerID.ToString()));
+            }
+            DiagnosticUpdate("", "\tInvestments: " + Diagnostics.GetRunningTime("NAVReport.Investments"));
+
 
         }
         

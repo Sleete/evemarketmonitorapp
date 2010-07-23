@@ -307,7 +307,7 @@ namespace EveMarketMonitorApp.Reporting
                 if (totBuyVolume > 0 || totSellVolume > 0)
                 {
                     DiagnosticUpdate("", "--------------------------------------------");
-                    DiagnosticUpdate("", "** Timing diagnostics**");
+                    DiagnosticUpdate("", "------------ Timing diagnostics ------------");
                     DiagnosticUpdate("", "\tTime getting data: " + Diagnostics.GetRunningTime("ItemReport.Part1"));
                     DiagnosticUpdate("", "\t\tGet buy transactions: " + Diagnostics.GetRunningTime("Transactions.GetBuyTrans"));
                     DiagnosticUpdate("", "\t\tProcess buy transactions: " + Diagnostics.GetRunningTime("Transactions.ProcessBuyTrans"));
@@ -385,8 +385,7 @@ namespace EveMarketMonitorApp.Reporting
                     }
                     if (UserAccount.CurrentGroup.ItemValues.ForceDefaultSellPriceGet(itemID))
                     {
-                        avgSellPrice = UserAccount.CurrentGroup.ItemValues.DefaultPriceGet(itemID,
-                            _regionIDs.Count == 1 ? _regionIDs[0] : -1);
+                        avgSellPrice = UserAccount.CurrentGroup.ItemValues.DefaultPriceGet(itemID);
                     }
 
                     Diagnostics.StartTimer("ItemReport.Part3");

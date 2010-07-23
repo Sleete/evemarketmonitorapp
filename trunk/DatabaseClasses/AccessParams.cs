@@ -45,16 +45,21 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public static string BuildAccessList(List<AssetAccessParams> accessParams)
         {
             StringBuilder accessList = new StringBuilder("");
+            List<int> done = new List<int>();
             foreach (AssetAccessParams entry in accessParams)
             {
-                accessList.Append(entry.OwnerID);
-                //accessList.Append(",");
-                //accessList.Append(entry.IncludePersonal);
-                //accessList.Append(",");
-                //accessList.Append(entry.IncludeCorporate);
-                if (accessList.Length != 0)
+                if (!done.Contains(entry.OwnerID))
                 {
-                    accessList.Append("|");
+                    accessList.Append(entry.OwnerID);
+                    done.Add(entry.OwnerID);
+                    //accessList.Append(",");
+                    //accessList.Append(entry.IncludePersonal);
+                    //accessList.Append(",");
+                    //accessList.Append(entry.IncludeCorporate);
+                    if (accessList.Length != 0)
+                    {
+                        accessList.Append("|");
+                    }
                 }
             }
             return accessList.ToString();

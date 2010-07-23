@@ -75,34 +75,18 @@ namespace EveMarketMonitorApp.DatabaseClasses
             // If the price is being forced to default then just return that value.
             if (buyPrice && ForceDefaultBuyPriceGet(itemID))
             {
-                value = DefaultBuyPriceGet(itemID, regionID);
+                value = DefaultBuyPriceGet(itemID);
                 if (this.ValueCalculationEvent != null)
                 {
                     ValueCalculationEvent(this, new ValueCalcEventArgs("Value forced to default: " + value.ToString()));
-                }
-                if (value.Value == 0 && regionID != -1)
-                {
-                    value = DefaultBuyPriceGet(itemID, -1);
-                    if (this.ValueCalculationEvent != null)
-                    {
-                        ValueCalculationEvent(this, new ValueCalcEventArgs("No default found for " + Regions.GetRegionName(regionID) + ", value for 'All regions' used instead: " + value.ToString()));
-                    }
                 }
             }
             if (!buyPrice && ForceDefaultSellPriceGet(itemID))
             {
-                value = DefaultPriceGet(itemID, regionID);
+                value = DefaultPriceGet(itemID);
                 if (this.ValueCalculationEvent != null)
                 {
                     ValueCalculationEvent(this, new ValueCalcEventArgs("Value forced to default: " + value.ToString()));
-                }
-                if (value.Value == 0 && regionID != -1)
-                {
-                    value = DefaultPriceGet(itemID, -1);
-                    if (this.ValueCalculationEvent != null)
-                    {
-                        ValueCalculationEvent(this, new ValueCalcEventArgs("No default found for " + Regions.GetRegionName(regionID) + ", value for 'All regions' used instead: " + value.ToString()));
-                    }
                 }
             }
 
@@ -886,17 +870,18 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        public decimal DefaultPriceGet(int itemID, int regionID)
+        public decimal DefaultPriceGet(int itemID)
         {
             decimal retVal = 0;
+            int regionID = -1;
             EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem != null) { retVal = tradedItem.DefaultSellPrice; }
             return retVal;
         }
-        public void DefaultPriceSet(int itemID, int regionID, decimal newPrice)
+        public void DefaultPriceSet(int itemID, decimal newPrice)
         {
-            if (regionID == 0) { regionID = -1; }
+            int regionID = -1; 
             EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem == null)
@@ -909,18 +894,18 @@ namespace EveMarketMonitorApp.DatabaseClasses
             tradedItem.DefaultSellPrice = newPrice;
         }
 
-        public decimal DefaultBuyPriceGet(int itemID, int regionID)
+        public decimal DefaultBuyPriceGet(int itemID)
         {
             decimal retVal = 0;
-            if (regionID == 0) { regionID = -1; }
+            int regionID = -1;
             EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem != null) { retVal = tradedItem.DefaultBuyPrice; }
             return retVal;
         }
-        public void DefaultBuyPriceSet(int itemID, int regionID, decimal newPrice)
+        public void DefaultBuyPriceSet(int itemID, decimal newPrice)
         {
-            if (regionID == 0) { regionID = -1; }
+            int regionID = -1;
             EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
                 _reportGroupID, itemID, regionID);
             if (tradedItem == null)
@@ -1089,7 +1074,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             tradedItem.ForceDefaultBuyPrice = setting;
         }
-        
+       
         private class PriceCacheKey
         {
             private int _itemID;

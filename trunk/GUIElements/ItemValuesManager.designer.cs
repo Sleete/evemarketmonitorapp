@@ -333,7 +333,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.cmbStation.Location = new System.Drawing.Point(123, 46);
             this.cmbStation.Name = "cmbStation";
             this.cmbStation.Size = new System.Drawing.Size(374, 21);
-            this.cmbStation.Sorted = true;
             this.cmbStation.TabIndex = 12;
             this.cmbStation.SelectedIndexChanged += new System.EventHandler(this.cmbStation_SelectedIndexChanged);
             // 

@@ -5377,7 +5377,7 @@ AS
                 }
                 if (dbVersion.CompareTo(new Version("1.5.1.0")) < 0)
                 {
-                    #region 1.5.0.0 - 1.5.0.64
+                    #region 1.5.0.0 - 1.5.1.0
                     if (dbVersion.CompareTo(new Version("1.5.0.0")) < 0)
                     {
                         #region Add 'EveItemID' column to Assets table
@@ -8450,8 +8450,10 @@ AS
                         }
                         #endregion
                     }
-
-
+                    if (dbVersion.CompareTo(new Version("1.5.1.0")) < 0)
+                    {
+                        SetDBVersion(connection, new Version("1.5.1.0"));
+                    }
                     #endregion
                 }
 
