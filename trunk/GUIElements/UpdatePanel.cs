@@ -180,7 +180,7 @@ namespace EveMarketMonitorApp.GUIElements
             if (!_showingTT[type])
             {
                 string tipText = _character.GetLastAPIUpdateError(_type, type);
-                if (metaData.UpdateType == APIDataType.Orders && _type == CharOrCorp.Corp)
+                /*if (metaData.UpdateType == APIDataType.Orders && _type == CharOrCorp.Corp)
                 {
                     tipText = "";
                     List<APICharacter> chars = _character.OtherCorpChars;
@@ -192,8 +192,8 @@ namespace EveMarketMonitorApp.GUIElements
                         if (detail.Trim().Length == 0) { detail = "Success"; }
                         tipText = tipText + character.CharName + ": " + detail;
                     }
-                }
-                else if (tipText.Equals("BLOCKED"))
+                }*/
+                if (tipText.Equals("BLOCKED"))
                 {
                     int minutes = UserAccount.Settings.AssetsUpdateMaxMinutes;
                     tipText = "This update is currently blocked because transaction and order updates " +
@@ -307,7 +307,9 @@ namespace EveMarketMonitorApp.GUIElements
             //    }
             //}
 
-            if (errorText.Equals(""))
+            if (errorText.Equals("") || (_type == CharOrCorp.Corp && (
+                errorText.ToUpper().Contains("CHARACTER MUST BE A") ||
+                errorText.ToUpper().Contains("CHARACTER MUST HAVE"))))
             {
                 if (_type == CharOrCorp.Corp && !_character.CharHasCorporateAccess(dataType))
                 {
@@ -513,26 +515,26 @@ namespace EveMarketMonitorApp.GUIElements
                     }
                     _lastUpdateAttempt.Add(dataType, DateTime.UtcNow);
                     _character.UpdateDataFromAPI(corc, dataType);
-                    if (corc == CharOrCorp.Corp && dataType == APIDataType.Orders)
-                    {
-                        // If we're dealing with corporate orders then we need to grab corporate orders for 
-                        // all characters in this report group that are part of the corp.
-                        // This is because orders will only be returned that were actually created by
-                        // the character we are retrieving data for.
-                        foreach (EVEAccount account in UserAccount.CurrentGroup.Accounts)
-                        {
-                            foreach (APICharacter character in account.Chars)
-                            {
-                                if (character.CorpID == _character.CorpID && character.CharID != _character.CharID)
-                                {
-                                    if (character.CharHasCorporateAccess(APIDataType.Orders))
-                                    {
-                                        character.UpdateDataFromAPI(corc, dataType);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    //if (corc == CharOrCorp.Corp && dataType == APIDataType.Orders)
+                    //{
+                    //    // If we're dealing with corporate orders then we need to grab corporate orders for 
+                    //    // all characters in this report group that are part of the corp.
+                    //    // This is because orders will only be returned that were actually created by
+                    //    // the character we are retrieving data for.
+                    //    foreach (EVEAccount account in UserAccount.CurrentGroup.Accounts)
+                    //    {
+                    //        foreach (APICharacter character in account.Chars)
+                    //        {
+                    //            if (character.CorpID == _character.CorpID && character.CharID != _character.CharID)
+                    //            {
+                    //                if (character.CharHasCorporateAccess(APIDataType.Orders))
+                    //                {
+                    //                    character.UpdateDataFromAPI(corc, dataType);
+                    //                }
+                    //            }
+                    //        }
+                    //    }
+                    //}
                 }
             }
 

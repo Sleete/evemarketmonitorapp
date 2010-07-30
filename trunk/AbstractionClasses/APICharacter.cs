@@ -2539,32 +2539,33 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     int charID = _charID;
                     otherChars = false;
 
-                    if (corc == CharOrCorp.Corp && !fromFile)
-                    {
-                        if (thisCharDone)
-                        {
-                            List<APICharacter> otherCorpChars = OtherCorpChars;
-                            if (otherCorpChars.Count > 0)
-                            {
-                                character = otherCorpChars[charIndex];
+                    //if (corc == CharOrCorp.Corp && !fromFile)
+                    //{
+                    //    if (thisCharDone)
+                    //    {
+                    //        List<APICharacter> otherCorpChars = OtherCorpChars;
+                    //        if (otherCorpChars.Count > 0)
+                    //        {
+                    //            character = otherCorpChars[charIndex];
 
-                                userID = character.UserID;
-                                apiKey = character.APIKey;
-                                charID = character.CharID;
-                                charIndex++;
-                                if (otherCorpChars.Count > charIndex) { otherChars = true; }
-                            }
-                        }
-                        else
-                        {
-                            thisCharDone = true;
-                            otherChars = OtherCorpChars.Count > 0;
-                        }
-                    }
+                    //            userID = character.UserID;
+                    //            apiKey = character.APIKey;
+                    //            charID = character.CharID;
+                    //            charIndex++;
+                    //            if (otherCorpChars.Count > charIndex) { otherChars = true; }
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        thisCharDone = true;
+                    //        otherChars = OtherCorpChars.Count > 0;
+                    //    }
+                    //}
 
                     if (!charsDone.Contains(charID))
                     {
                         charsDone.Add(charID);
+                        Orders.SetProcessed(corc == CharOrCorp.Corp ? _corpID : _charID, false);
 
                         XmlNodeList orderEntries = null;
                         XmlDocument xml = new XmlDocument();
@@ -2600,9 +2601,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         }
                         catch (EMMAEveAPIException emmaApiEx)
                         {
-                            errorOccured = true;
                             if (emmaApiEx.EveCode == 117)
                             {
+                                errorOccured = true;
                                 try
                                 {
                                     // If there is a cachedUntil tag, dont try and get data again until
@@ -2623,6 +2624,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             }
                             else if (emmaApiEx.EveCode == 200)
                             {
+                                errorOccured = true;
                                 // Security level not high enough
                                 character.SetLastAPIUpdateError(corc, APIDataType.Orders,
                                     "You must enter your FULL api key to retrieve financial data.\r\n" +
@@ -2638,6 +2640,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             }
                             else
                             {
+                                errorOccured = true;
                                 if (!fromFile)
                                 {
                                     character.SetLastAPIUpdateError(corc, APIDataType.Orders, emmaApiEx.Message);
@@ -2651,8 +2654,6 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                         if (orderEntries != null && orderEntries.Count > 0)
                         {
-                            Orders.SetProcessed(corc == CharOrCorp.Corp ? _corpID : _charID, false);
-
                             if (fromFile)
                             {
                                 UpdateStatus(0, orderEntries.Count, "Processing orders", "", false);
@@ -2665,7 +2666,23 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                                 if (!Orders.Exists(orderData, orderRow, ref id))
                                 {
+                                    // Order does not exist in the database so add it.
                                     orderData.AddOrdersRow(orderRow);
+                                    if (orderRow.OrderState == (short)OrderState.ExpiredOrFilled)
+                                    {
+                                        bool notify = false;
+                                        notify = UserAccount.CurrentGroup.Settings.OrdersNotifyEnabled &&
+                                            ((UserAccount.CurrentGroup.Settings.OrdersNotifyBuy && orderRow.BuyOrder) ||
+                                            (UserAccount.CurrentGroup.Settings.OrdersNotifySell && !orderRow.BuyOrder));
+                                        if (notify)
+                                        {
+                                            orderRow.OrderState = (short)OrderState.ExpiredOrFilledAndUnacknowledged;
+                                        }
+                                        else
+                                        {
+                                            orderRow.OrderState = (short)OrderState.ExpiredOrFilledAndAcknowledged;
+                                        }
+                                    }
                                     added++;
                                 }
                                 else
@@ -2682,7 +2699,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                         // If the order from the XML exactly matches what we have in the database
                                         // then just set the processed flag and remove it from the orderData table
                                         // without setting it to be removed from the database.
-                                        Orders.SetProcessedByID(oldRow.ID, true);
+                                        //Orders.SetProcessedByID(oldRow.ID, true);
                                         orderData.RemoveOrdersRow(oldRow);
                                     }
                                     else
@@ -2697,7 +2714,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                         // would get if we only updated the processed flag on the database
                                         // side.
                                         oldRow.AcceptChanges();
-                                        Orders.SetProcessedByID(oldRow.ID, true);
+                                        //Orders.SetProcessedByID(oldRow.ID, true);
 
                                         // If the order was active and is now completed/expired then flag it for
                                         // the unacknowledged orders viewer to display.
@@ -2778,6 +2795,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         }
                     }
                 }
+
             }
             catch (Exception ex)
             {

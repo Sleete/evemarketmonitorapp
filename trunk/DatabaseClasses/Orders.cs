@@ -225,14 +225,25 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             bool? exists = false;
             int? orderID = 0;
+            EMMADataSet.OrdersDataTable tempTable = new EMMADataSet.OrdersDataTable();
             tableAdapter.ClearBeforeFill = false;
 
             lock (tableAdapter)
             {
-                tableAdapter.FillOrderExists(ordersTable, orderRow.OwnerID, orderRow.WalletID,
+                tableAdapter.FillOrderExists(tempTable, orderRow.OwnerID, orderRow.WalletID,
                     orderRow.StationID, orderRow.ItemID, orderRow.TotalVol, orderRow.RemainingVol,
                     orderRow.Range, orderRow.OrderState, orderRow.BuyOrder, orderRow.Price, orderRow.EveOrderID,
                     ref exists, ref orderID);
+            }
+            if (orderID.HasValue && ordersTable.FindByID(orderID.Value) == null)
+            {
+                ordersTable.ImportRow(tempTable.FindByID(orderID.Value));
+            }
+            else
+            {
+                new EMMAException(ExceptionSeverity.Warning, "market order retreived in 'Exists' is not " +
+                    "unique. diagnostics follow:\r\n" +
+                    "\t", true); 
             }
 
             ID = orderID.HasValue ? orderID.Value : 0;

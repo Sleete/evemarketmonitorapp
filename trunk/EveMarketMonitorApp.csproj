@@ -311,6 +311,12 @@
     <Compile Include="GUIElements\MaintBankTrans.Designer.cs">
       <DependentUpon>MaintBankTrans.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUIElements\NewDocumentationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUIElements\NewDocumentationForm.Designer.cs">
+      <DependentUpon>NewDocumentationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUIElements\OrderNotificationSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -698,6 +704,9 @@
     <EmbeddedResource Include="GUIElements\MaintBankTrans.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MaintBankTrans.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUIElements\NewDocumentationForm.resx">
+      <DependentUpon>NewDocumentationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUIElements\OrderNotificationSettings.resx">
       <SubType>Designer</SubType>
