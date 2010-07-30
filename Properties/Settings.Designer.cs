@@ -200,5 +200,29 @@ namespace EveMarketMonitorApp.Properties {
                 this["LastEMMAUpdateCheck"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DocumentationVersion {
+            get {
+                return ((int)(this["DocumentationVersion"]));
+            }
+            set {
+                this["DocumentationVersion"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DoDocCheck {
+            get {
+                return ((bool)(this["DoDocCheck"]));
+            }
+            set {
+                this["DoDocCheck"] = value;
+            }
+        }
     }
 }

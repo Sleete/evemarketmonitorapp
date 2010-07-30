@@ -23,6 +23,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.DialogResult = DialogResult.Cancel;
             _main = mainForm;
             chkAutoUpdate.Checked = Properties.Settings.Default.AutoUpdate;
+            chkDocUpdates.Checked = Properties.Settings.Default.DoDocCheck;
             chkBeta.Checked = Properties.Settings.Default.BetaUpdates;
             foreach (string server in Properties.Settings.Default.UpdateServers)
             {
@@ -39,6 +40,7 @@ namespace EveMarketMonitorApp.GUIElements
             }
             chkGridCalcEnabled.Checked = UserAccount.Settings.GridCalcEnabled;
             cmbAssetsViewWarning.Text = UserAccount.Settings.AssetsViewWarning;
+
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -49,6 +51,7 @@ namespace EveMarketMonitorApp.GUIElements
         private void btnOk_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.AutoUpdate = chkAutoUpdate.Checked;
+            Properties.Settings.Default.DoDocCheck = chkDocUpdates.Checked;
             Properties.Settings.Default.BetaUpdates = chkBeta.Checked;
             StringCollection updateServers = new StringCollection();
             foreach (object item in lstServers.Items)
@@ -130,5 +133,20 @@ namespace EveMarketMonitorApp.GUIElements
                 lstServers.Items.Remove(lstServers.SelectedItem);
             }
         }
+
+        private void btnDocUpdates_Click(object sender, EventArgs e)
+        {
+            if (NewDocumentationForm.DocUpdateAvailable())
+            {
+                NewDocumentationForm form = new NewDocumentationForm();
+                form.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("No documentation updates currently available");
+            }
+        }
+
+
     }
 }

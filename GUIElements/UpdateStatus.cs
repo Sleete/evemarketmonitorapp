@@ -67,6 +67,7 @@ namespace EveMarketMonitorApp.GUIElements
             }
             mainPanel.Controls.Clear();
             panels.Clear();
+            
 
             if (UserAccount.CurrentGroup != null)
             {
@@ -84,7 +85,8 @@ namespace EveMarketMonitorApp.GUIElements
                             if (!ids.Contains(character.CharID))
                             {
                                 UpdatePanel panel = new UpdatePanel(CharOrCorp.Char, character);
-                                panel.Size = new Size(this.Width - 12 - (position >= this.Height ? 
+                                panel.Size = new Size(this.Width - 12 - (position >= this.Height - 
+                                    System.Windows.Forms.SystemInformation.CaptionHeight ? 
                                     System.Windows.Forms.SystemInformation.VerticalScrollBarWidth : 0), 
                                     panel.Size.Height);
                                 panel.Location = new Point(4, position);

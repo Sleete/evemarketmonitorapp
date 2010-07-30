@@ -95,6 +95,7 @@ namespace EveMarketMonitorApp.GUIElements
                     PingServers();
                     Diagnostics.StopTimer("PingChecks");
                     Diagnostics.StartTimer("Updates");
+                    CheckForDocumentation();
                     // Update settings and user database if needed.
                     UpdateStatus(0, 0, "Initalising database", "", false);
                     //try
@@ -453,6 +454,19 @@ namespace EveMarketMonitorApp.GUIElements
                         "become available.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }*/
+        }
+
+        private void CheckForDocumentation()
+        {
+            if (EveMarketMonitorApp.Properties.Settings.Default.DoDocCheck)
+            {
+                if (NewDocumentationForm.DocUpdateAvailable())
+                {
+                    NewDocumentationForm form = new NewDocumentationForm();
+                    form.TopMost = true;
+                    form.ShowDialog();
+                }
+            }
         }
         #endregion
 
@@ -871,19 +885,19 @@ namespace EveMarketMonitorApp.GUIElements
                     {
                         idsUpdating.Add(args.OwnerID);
                     }
-                    isCorp = false;
-                    UserAccount.CurrentGroup.GetCharacter(args.OwnerID, ref isCorp);
-                    if (args.UpdateType == APIDataType.Orders && isCorp)
-                    {
-                        if (_corpOrderUpdates.ContainsKey(args.OwnerID))
-                        {
-                            _corpOrderUpdates[args.OwnerID] = (short)(_corpOrderUpdates[args.OwnerID] + 1);
-                        }
-                        else
-                        {
-                            _corpOrderUpdates.Add(args.OwnerID, (short)1);
-                        }
-                    }
+                    //isCorp = false;
+                    //UserAccount.CurrentGroup.GetCharacter(args.OwnerID, ref isCorp);
+                    //if (args.UpdateType == APIDataType.Orders && isCorp)
+                    //{
+                    //    if (_corpOrderUpdates.ContainsKey(args.OwnerID))
+                    //    {
+                    //        _corpOrderUpdates[args.OwnerID] = (short)(_corpOrderUpdates[args.OwnerID] + 1);
+                    //    }
+                    //    else
+                    //    {
+                    //        _corpOrderUpdates.Add(args.OwnerID, (short)1);
+                    //    }
+                    //}
                     RefreshDisplay();
                     break;
                 case APIUpdateEventType.UpdateCompleted:
@@ -891,22 +905,22 @@ namespace EveMarketMonitorApp.GUIElements
                     // there can be multiple updates running for the same corp.
                     // Make sure they are all finished before removing the corp
                     // ID from the list of those being updated.
-                    isCorp = false;
+                    //isCorp = false;
                     bool removeIDFromList = true;
-                    UserAccount.CurrentGroup.GetCharacter(args.OwnerID, ref isCorp);
-                    if (args.UpdateType == APIDataType.Orders && isCorp)
-                    {
-                        removeIDFromList = false;
-                        if (_corpOrderUpdates.ContainsKey(args.OwnerID))
-                        {
-                            _corpOrderUpdates[args.OwnerID] = (short)(_corpOrderUpdates[args.OwnerID] - 1);
-                            if (_corpOrderUpdates[args.OwnerID] <= 0)
-                            {
-                                _corpOrderUpdates[args.OwnerID] = 0;
-                                removeIDFromList = true;
-                            }
-                        }
-                    }
+                    //UserAccount.CurrentGroup.GetCharacter(args.OwnerID, ref isCorp);
+                    //if (args.UpdateType == APIDataType.Orders && isCorp)
+                    //{
+                    //    removeIDFromList = false;
+                    //    if (_corpOrderUpdates.ContainsKey(args.OwnerID))
+                    //    {
+                    //        _corpOrderUpdates[args.OwnerID] = (short)(_corpOrderUpdates[args.OwnerID] - 1);
+                    //        if (_corpOrderUpdates[args.OwnerID] <= 0)
+                    //        {
+                    //            _corpOrderUpdates[args.OwnerID] = 0;
+                    //            removeIDFromList = true;
+                    //        }
+                    //    }
+                    //}
                     if (removeIDFromList)
                     {
                         idsUpdating = _updatesRunning[args.UpdateType];
