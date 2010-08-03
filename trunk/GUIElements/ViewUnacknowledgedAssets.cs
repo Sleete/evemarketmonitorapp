@@ -623,6 +623,28 @@ namespace EveMarketMonitorApp.GUIElements
                             AssetsLost.Add(lostAsset);
                             assetsToRemove.Add(lostAsset);
                             break;
+                        case AssetChangeTypes.ChangeType.NotLost:
+                            EMMADataSet.AssetsRow assetRow2 = assetChanges.NewAssetsRow();
+                            assetRow2.AutoConExclude = lostAsset.AutoConExclude;
+                            assetRow2.ContainerID = lostAsset.ContainerID;
+                            assetRow2.CorpAsset = lostAsset.CorpAsset;
+                            assetRow2.Cost = lostAsset.UnitBuyPricePrecalculated ? lostAsset.UnitBuyPrice : 0;
+                            assetRow2.CostCalc = lostAsset.UnitBuyPricePrecalculated;
+                            assetRow2.IsContainer = lostAsset.IsContainer;
+                            assetRow2.ItemID = lostAsset.ItemID;
+                            assetRow2.EveItemID = lostAsset.EveItemInstanceID;
+                            assetRow2.LocationID = lostAsset.LocationID;
+                            assetRow2.OwnerID = lostAsset.OwnerID;
+                            assetRow2.Processed = false;
+                            assetRow2.Quantity = lostAsset.Quantity * -1;
+                            assetRow2.RegionID = lostAsset.RegionID;
+                            assetRow2.ReprocExclude = lostAsset.ReprocessorExclude;
+                            assetRow2.Status = (int)AssetStatus.States.Normal;
+                            assetRow2.SystemID = lostAsset.SystemID;
+                            assetRow2.BoughtViaContract = false;
+                            assetChanges.AddAssetsRow(assetRow2);
+                            assetsToRemove.Add(lostAsset);
+                            break;
                         case AssetChangeTypes.ChangeType.Unknown:
                             // Can only be 'unknown' if we're in manufacturing mode.
                             // let the cross check sort it out...

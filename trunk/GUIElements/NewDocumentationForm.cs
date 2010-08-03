@@ -6,18 +6,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using EveMarketMonitorApp.Common;
 
 namespace EveMarketMonitorApp.GUIElements
 {
     public partial class NewDocumentationForm : Form
     {
-        // We just use a hardcoded 'version' number.
-        // On the one hand, this means that a code change is required for EMMA to recognise that
-        // documentation has been updated.
-        // ON the other, this avoids slow calls to the web and doc changes are only likely after
-        // a code update anyway.
-        private static int CURRENTDOCVERSION = 2;
-
         public NewDocumentationForm()
         {
             InitializeComponent();
@@ -26,8 +20,13 @@ namespace EveMarketMonitorApp.GUIElements
         public static bool DocUpdateAvailable()
         {
             bool retVal = false;
+            // We just use a hardcoded 'version' number.
+            // On the one hand, this means that a code change is required for EMMA to recognise that
+            // documentation has been updated.
+            // ON the other, this avoids slow calls to the web and doc changes are only likely after
+            // a code update anyway.
             if (EveMarketMonitorApp.Properties.Settings.Default.DocumentationVersion <
-                NewDocumentationForm.CURRENTDOCVERSION)
+                Globals.CurrentDocVersion)
             {
                 retVal = true;
             }
@@ -55,8 +54,8 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void NewDocumentationForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            EveMarketMonitorApp.Properties.Settings.Default.DocumentationVersion = 
-                NewDocumentationForm.CURRENTDOCVERSION;
+            EveMarketMonitorApp.Properties.Settings.Default.DocumentationVersion =
+                Globals.CurrentDocVersion;
             EveMarketMonitorApp.Properties.Settings.Default.DoDocCheck = !chkDontShow.Checked;
             EveMarketMonitorApp.Properties.Settings.Default.Save();
         }

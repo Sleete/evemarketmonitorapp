@@ -34,6 +34,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 case ChangeType.CancelledContract:
                     retVal = "Sell contract cancelled";
                     break;
+                case ChangeType.NotLost:
+                    retVal = "Not lost";
+                    break;
                 case ChangeType.Unknown:
                     retVal = "Unknown";
                     break;
@@ -62,6 +65,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         break;
                     case ChangeMetaType.Loss:
                         if (i == (int)ChangeType.DestroyedOrUsed || i == (int)ChangeType.ForSaleViaContract ||
+                            i == (int)ChangeType.NotLost ||
                             (UserAccount.Settings.ManufacturingMode && i == (int)ChangeType.Unknown))
                         {
                             addit = true;
@@ -94,6 +98,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             BoughtViaContract,
             WasNeverMissing,
             CancelledContract,
+            NotLost,
             Unknown
         }
 

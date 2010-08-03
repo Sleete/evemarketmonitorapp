@@ -82,6 +82,7 @@
             this.Controls.Add(this.btnOk);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "NewDocumentationForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "New Documentation Available";
             this.Load += new System.EventHandler(this.NewDocumentationForm_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NewDocumentationForm_FormClosing);
