@@ -624,7 +624,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
             bool updateAllowed = false;
             DateTime startTryUpdate = DateTime.Now;
-            bool askUser = false;
+            //bool askUser = false;
             while (!updateAllowed)
             {
                 // This time limit approach is rather confusing for the user. Instead, we change EMMA
@@ -2516,8 +2516,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
             int updated = 0;
             bool errorOccured = false;
             bool otherChars = true;
-            bool thisCharDone = false;
-            int charIndex = 0;
+            //bool thisCharDone = false;
+            //int charIndex = 0;
             List<int> charsDone = new List<int>();
 
             try

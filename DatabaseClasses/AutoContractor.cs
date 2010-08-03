@@ -175,7 +175,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             int diag_contracts = 0;
 
-            bool corp = false;
+            //bool corp = false;
             bool complete = true;
             bool relax = false;
             //APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);

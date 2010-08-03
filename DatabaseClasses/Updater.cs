@@ -8980,6 +8980,33 @@ AS
                         defaults.Add("www.starfreeze.com");
                         Properties.Settings.Default.UpdateServers = defaults;
                     }
+                    try
+                    {
+                        Properties.Settings.Default.LastEMMAUpdateCheck =
+                            (DateTime)Properties.Settings.Default.GetPreviousVersion("LastEMMAUpdateCheck");
+                    }
+                    catch
+                    {
+                        Properties.Settings.Default.LastEMMAUpdateCheck = new DateTime(2000, 1, 1);
+                    }
+                    try
+                    {
+                        Properties.Settings.Default.DoDocCheck =
+                            (bool)Properties.Settings.Default.GetPreviousVersion("DoDocCheck");
+                    }
+                    catch
+                    {
+                        Properties.Settings.Default.DoDocCheck = true;
+                    }
+                    try
+                    {
+                        Properties.Settings.Default.DocumentationVersion =
+                            (int)Properties.Settings.Default.GetPreviousVersion("DocumentationVersion");
+                    }
+                    catch
+                    {
+                        Properties.Settings.Default.DocumentationVersion = Globals.CurrentDocVersion - 1;
+                    }
                     #endregion
                     #region Connection check settings
                     try

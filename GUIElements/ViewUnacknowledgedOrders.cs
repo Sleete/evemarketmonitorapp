@@ -17,7 +17,7 @@ namespace EveMarketMonitorApp.GUIElements
     {
         private OrdersList _orders;
         //private BindingSource _ordersBindingSource;
-        private List<int> _owners;
+        //private List<int> _owners;
         //private List<int> _corporateOwners;
         //private List<AssetAccessParams> _accessParams;
         private int _lastNumberOfOrders = 0;

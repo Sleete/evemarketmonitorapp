@@ -65,7 +65,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             bool webPrice = false;
             bool done = false;
             bool storeValue = true;
-            int wrongDateDaysOut = 0;
+            //int wrongDateDaysOut = 0;
 
             if (this.ValueCalculationEvent != null)
             {

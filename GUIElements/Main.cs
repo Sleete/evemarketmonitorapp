@@ -30,7 +30,7 @@ namespace EveMarketMonitorApp.GUIElements
         private static Dictionary<APIDataType, List<int>> _updatesRunning;
         private static List<int> _assetUpdatesAwaitingAcknowledgement = new List<int>();
         private static Dictionary<int, short> _corpOrderUpdates = new Dictionary<int, short>();
-        private static bool _unackAssetsWaiting = false;
+        //private static bool _unackAssetsWaiting = false;
         private static SplashScreen splash;
         private static ViewUnacknowledgedOrders _unackOrders = null;
         private static ViewUnacknowledgedAssets _unackAssets = null;
@@ -876,7 +876,7 @@ namespace EveMarketMonitorApp.GUIElements
         void UpdateStatus_UpdateEvent(object myObject, APIUpdateEventArgs args)
         {
             List<int> idsUpdating;
-            bool isCorp = false;
+            //bool isCorp = false;
             switch (args.EventType)
             {
                 case APIUpdateEventType.UpdateStarted:
