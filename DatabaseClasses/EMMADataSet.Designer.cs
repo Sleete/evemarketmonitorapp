@@ -119,6 +119,8 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         
         private AssetsLostDataTable tableAssetsLost;
         
+        private IndustryJobsDataTable tableIndustryJobs;
+        
         private WalletDivisionsDataTable tableWalletDivisions;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
@@ -287,6 +289,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 }
                 if ((ds.Tables["AssetsLost"] != null)) {
                     base.Tables.Add(new AssetsLostDataTable(ds.Tables["AssetsLost"]));
+                }
+                if ((ds.Tables["IndustryJobs"] != null)) {
+                    base.Tables.Add(new IndustryJobsDataTable(ds.Tables["IndustryJobs"]));
                 }
                 if ((ds.Tables["WalletDivisions"] != null)) {
                     base.Tables.Add(new WalletDivisionsDataTable(ds.Tables["WalletDivisions"]));
@@ -735,6 +740,15 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public IndustryJobsDataTable IndustryJobs {
+            get {
+                return this.tableIndustryJobs;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
         public WalletDivisionsDataTable WalletDivisions {
             get {
                 return this.tableWalletDivisions;
@@ -940,6 +954,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 }
                 if ((ds.Tables["AssetsLost"] != null)) {
                     base.Tables.Add(new AssetsLostDataTable(ds.Tables["AssetsLost"]));
+                }
+                if ((ds.Tables["IndustryJobs"] != null)) {
+                    base.Tables.Add(new IndustryJobsDataTable(ds.Tables["IndustryJobs"]));
                 }
                 if ((ds.Tables["WalletDivisions"] != null)) {
                     base.Tables.Add(new WalletDivisionsDataTable(ds.Tables["WalletDivisions"]));
@@ -1256,6 +1273,12 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                     this.tableAssetsLost.InitVars();
                 }
             }
+            this.tableIndustryJobs = ((IndustryJobsDataTable)(base.Tables["IndustryJobs"]));
+            if ((initTable == true)) {
+                if ((this.tableIndustryJobs != null)) {
+                    this.tableIndustryJobs.InitVars();
+                }
+            }
             this.tableWalletDivisions = ((WalletDivisionsDataTable)(base.Tables["WalletDivisions"]));
             if ((initTable == true)) {
                 if ((this.tableWalletDivisions != null)) {
@@ -1365,6 +1388,8 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             base.Tables.Add(this.tableAssets);
             this.tableAssetsLost = new AssetsLostDataTable();
             base.Tables.Add(this.tableAssetsLost);
+            this.tableIndustryJobs = new IndustryJobsDataTable();
+            base.Tables.Add(this.tableIndustryJobs);
             this.tableWalletDivisions = new WalletDivisionsDataTable();
             base.Tables.Add(this.tableWalletDivisions);
         }
@@ -1605,6 +1630,11 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private bool ShouldSerializeIndustryJobs() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         private bool ShouldSerializeWalletDivisions() {
             return false;
         }
@@ -1755,6 +1785,8 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         public delegate void AssetsRowChangeEventHandler(object sender, AssetsRowChangeEvent e);
         
         public delegate void AssetsLostRowChangeEventHandler(object sender, AssetsLostRowChangeEvent e);
+        
+        public delegate void IndustryJobsRowChangeEventHandler(object sender, IndustryJobsRowChangeEvent e);
         
         public delegate void WalletDivisionsRowChangeEventHandler(object sender, WalletDivisionsRowChangeEvent e);
         
@@ -16096,6 +16128,690 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class IndustryJobsDataTable : global::System.Data.TypedTableBase<IndustryJobsRow> {
+            
+            private global::System.Data.DataColumn columnID;
+            
+            private global::System.Data.DataColumn columnAssemblyLineID;
+            
+            private global::System.Data.DataColumn columnContainerID;
+            
+            private global::System.Data.DataColumn columnInstalledItemID;
+            
+            private global::System.Data.DataColumn columnInstalledItemLocationID;
+            
+            private global::System.Data.DataColumn columnInstalledItemQuantity;
+            
+            private global::System.Data.DataColumn columnInstalledItemPL;
+            
+            private global::System.Data.DataColumn columnInstalledItemME;
+            
+            private global::System.Data.DataColumn columnInstalledItemRunsRemaining;
+            
+            private global::System.Data.DataColumn columnOutputLcoationID;
+            
+            private global::System.Data.DataColumn columnInstallerID;
+            
+            private global::System.Data.DataColumn columnJobRuns;
+            
+            private global::System.Data.DataColumn columnOutputRuns;
+            
+            private global::System.Data.DataColumn columnMaterialModifier;
+            
+            private global::System.Data.DataColumn columnCharMaterialModifier;
+            
+            private global::System.Data.DataColumn columnTimeMultiplier;
+            
+            private global::System.Data.DataColumn columnCharTimeMultiplier;
+            
+            private global::System.Data.DataColumn columnInstalledItemTypeID;
+            
+            private global::System.Data.DataColumn columnOutputTypeID;
+            
+            private global::System.Data.DataColumn columnContainerTypeID;
+            
+            private global::System.Data.DataColumn columnInstalledItemCopy;
+            
+            private global::System.Data.DataColumn columnCompleted;
+            
+            private global::System.Data.DataColumn columnCompletedSuccessfully;
+            
+            private global::System.Data.DataColumn columnInstalledItemFlag;
+            
+            private global::System.Data.DataColumn columnOutputFlag;
+            
+            private global::System.Data.DataColumn columnActivityID;
+            
+            private global::System.Data.DataColumn columnCompletedStatus;
+            
+            private global::System.Data.DataColumn columnInstallTime;
+            
+            private global::System.Data.DataColumn columnBeginProductionTime;
+            
+            private global::System.Data.DataColumn columnEndProductionTime;
+            
+            private global::System.Data.DataColumn columnPauseProductionTime;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public IndustryJobsDataTable() {
+                this.TableName = "IndustryJobs";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            internal IndustryJobsDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected IndustryJobsDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn IDColumn {
+                get {
+                    return this.columnID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn AssemblyLineIDColumn {
+                get {
+                    return this.columnAssemblyLineID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn ContainerIDColumn {
+                get {
+                    return this.columnContainerID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn InstalledItemIDColumn {
+                get {
+                    return this.columnInstalledItemID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn InstalledItemLocationIDColumn {
+                get {
+                    return this.columnInstalledItemLocationID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn InstalledItemQuantityColumn {
+                get {
+                    return this.columnInstalledItemQuantity;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn InstalledItemPLColumn {
+                get {
+                    return this.columnInstalledItemPL;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn InstalledItemMEColumn {
+                get {
+                    return this.columnInstalledItemME;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn InstalledItemRunsRemainingColumn {
+                get {
+                    return this.columnInstalledItemRunsRemaining;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn OutputLcoationIDColumn {
+                get {
+                    return this.columnOutputLcoationID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn InstallerIDColumn {
+                get {
+                    return this.columnInstallerID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn JobRunsColumn {
+                get {
+                    return this.columnJobRuns;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn OutputRunsColumn {
+                get {
+                    return this.columnOutputRuns;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn MaterialModifierColumn {
+                get {
+                    return this.columnMaterialModifier;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn CharMaterialModifierColumn {
+                get {
+                    return this.columnCharMaterialModifier;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn TimeMultiplierColumn {
+                get {
+                    return this.columnTimeMultiplier;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn CharTimeMultiplierColumn {
+                get {
+                    return this.columnCharTimeMultiplier;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn InstalledItemTypeIDColumn {
+                get {
+                    return this.columnInstalledItemTypeID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn OutputTypeIDColumn {
+                get {
+                    return this.columnOutputTypeID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn ContainerTypeIDColumn {
+                get {
+                    return this.columnContainerTypeID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn InstalledItemCopyColumn {
+                get {
+                    return this.columnInstalledItemCopy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn CompletedColumn {
+                get {
+                    return this.columnCompleted;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn CompletedSuccessfullyColumn {
+                get {
+                    return this.columnCompletedSuccessfully;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn InstalledItemFlagColumn {
+                get {
+                    return this.columnInstalledItemFlag;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn OutputFlagColumn {
+                get {
+                    return this.columnOutputFlag;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn ActivityIDColumn {
+                get {
+                    return this.columnActivityID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn CompletedStatusColumn {
+                get {
+                    return this.columnCompletedStatus;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn InstallTimeColumn {
+                get {
+                    return this.columnInstallTime;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn BeginProductionTimeColumn {
+                get {
+                    return this.columnBeginProductionTime;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn EndProductionTimeColumn {
+                get {
+                    return this.columnEndProductionTime;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn PauseProductionTimeColumn {
+                get {
+                    return this.columnPauseProductionTime;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public IndustryJobsRow this[int index] {
+                get {
+                    return ((IndustryJobsRow)(this.Rows[index]));
+                }
+            }
+            
+            public event IndustryJobsRowChangeEventHandler IndustryJobsRowChanging;
+            
+            public event IndustryJobsRowChangeEventHandler IndustryJobsRowChanged;
+            
+            public event IndustryJobsRowChangeEventHandler IndustryJobsRowDeleting;
+            
+            public event IndustryJobsRowChangeEventHandler IndustryJobsRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public void AddIndustryJobsRow(IndustryJobsRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public IndustryJobsRow AddIndustryJobsRow(
+                        long ID, 
+                        int AssemblyLineID, 
+                        int ContainerID, 
+                        int InstalledItemID, 
+                        int InstalledItemLocationID, 
+                        int InstalledItemQuantity, 
+                        int InstalledItemPL, 
+                        int InstalledItemME, 
+                        int InstalledItemRunsRemaining, 
+                        int OutputLcoationID, 
+                        int InstallerID, 
+                        int JobRuns, 
+                        int OutputRuns, 
+                        double MaterialModifier, 
+                        double CharMaterialModifier, 
+                        double TimeMultiplier, 
+                        double CharTimeMultiplier, 
+                        int InstalledItemTypeID, 
+                        int OutputTypeID, 
+                        int ContainerTypeID, 
+                        bool InstalledItemCopy, 
+                        bool Completed, 
+                        bool CompletedSuccessfully, 
+                        int InstalledItemFlag, 
+                        int OutputFlag, 
+                        int ActivityID, 
+                        int CompletedStatus, 
+                        System.DateTime InstallTime, 
+                        System.DateTime BeginProductionTime, 
+                        System.DateTime EndProductionTime, 
+                        System.DateTime PauseProductionTime) {
+                IndustryJobsRow rowIndustryJobsRow = ((IndustryJobsRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        ID,
+                        AssemblyLineID,
+                        ContainerID,
+                        InstalledItemID,
+                        InstalledItemLocationID,
+                        InstalledItemQuantity,
+                        InstalledItemPL,
+                        InstalledItemME,
+                        InstalledItemRunsRemaining,
+                        OutputLcoationID,
+                        InstallerID,
+                        JobRuns,
+                        OutputRuns,
+                        MaterialModifier,
+                        CharMaterialModifier,
+                        TimeMultiplier,
+                        CharTimeMultiplier,
+                        InstalledItemTypeID,
+                        OutputTypeID,
+                        ContainerTypeID,
+                        InstalledItemCopy,
+                        Completed,
+                        CompletedSuccessfully,
+                        InstalledItemFlag,
+                        OutputFlag,
+                        ActivityID,
+                        CompletedStatus,
+                        InstallTime,
+                        BeginProductionTime,
+                        EndProductionTime,
+                        PauseProductionTime};
+                rowIndustryJobsRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowIndustryJobsRow);
+                return rowIndustryJobsRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public IndustryJobsRow FindByID(long ID) {
+                return ((IndustryJobsRow)(this.Rows.Find(new object[] {
+                            ID})));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public override global::System.Data.DataTable Clone() {
+                IndustryJobsDataTable cln = ((IndustryJobsDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new IndustryJobsDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            internal void InitVars() {
+                this.columnID = base.Columns["ID"];
+                this.columnAssemblyLineID = base.Columns["AssemblyLineID"];
+                this.columnContainerID = base.Columns["ContainerID"];
+                this.columnInstalledItemID = base.Columns["InstalledItemID"];
+                this.columnInstalledItemLocationID = base.Columns["InstalledItemLocationID"];
+                this.columnInstalledItemQuantity = base.Columns["InstalledItemQuantity"];
+                this.columnInstalledItemPL = base.Columns["InstalledItemPL"];
+                this.columnInstalledItemME = base.Columns["InstalledItemME"];
+                this.columnInstalledItemRunsRemaining = base.Columns["InstalledItemRunsRemaining"];
+                this.columnOutputLcoationID = base.Columns["OutputLcoationID"];
+                this.columnInstallerID = base.Columns["InstallerID"];
+                this.columnJobRuns = base.Columns["JobRuns"];
+                this.columnOutputRuns = base.Columns["OutputRuns"];
+                this.columnMaterialModifier = base.Columns["MaterialModifier"];
+                this.columnCharMaterialModifier = base.Columns["CharMaterialModifier"];
+                this.columnTimeMultiplier = base.Columns["TimeMultiplier"];
+                this.columnCharTimeMultiplier = base.Columns["CharTimeMultiplier"];
+                this.columnInstalledItemTypeID = base.Columns["InstalledItemTypeID"];
+                this.columnOutputTypeID = base.Columns["OutputTypeID"];
+                this.columnContainerTypeID = base.Columns["ContainerTypeID"];
+                this.columnInstalledItemCopy = base.Columns["InstalledItemCopy"];
+                this.columnCompleted = base.Columns["Completed"];
+                this.columnCompletedSuccessfully = base.Columns["CompletedSuccessfully"];
+                this.columnInstalledItemFlag = base.Columns["InstalledItemFlag"];
+                this.columnOutputFlag = base.Columns["OutputFlag"];
+                this.columnActivityID = base.Columns["ActivityID"];
+                this.columnCompletedStatus = base.Columns["CompletedStatus"];
+                this.columnInstallTime = base.Columns["InstallTime"];
+                this.columnBeginProductionTime = base.Columns["BeginProductionTime"];
+                this.columnEndProductionTime = base.Columns["EndProductionTime"];
+                this.columnPauseProductionTime = base.Columns["PauseProductionTime"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            private void InitClass() {
+                this.columnID = new global::System.Data.DataColumn("ID", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnID);
+                this.columnAssemblyLineID = new global::System.Data.DataColumn("AssemblyLineID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAssemblyLineID);
+                this.columnContainerID = new global::System.Data.DataColumn("ContainerID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnContainerID);
+                this.columnInstalledItemID = new global::System.Data.DataColumn("InstalledItemID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInstalledItemID);
+                this.columnInstalledItemLocationID = new global::System.Data.DataColumn("InstalledItemLocationID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInstalledItemLocationID);
+                this.columnInstalledItemQuantity = new global::System.Data.DataColumn("InstalledItemQuantity", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInstalledItemQuantity);
+                this.columnInstalledItemPL = new global::System.Data.DataColumn("InstalledItemPL", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInstalledItemPL);
+                this.columnInstalledItemME = new global::System.Data.DataColumn("InstalledItemME", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInstalledItemME);
+                this.columnInstalledItemRunsRemaining = new global::System.Data.DataColumn("InstalledItemRunsRemaining", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInstalledItemRunsRemaining);
+                this.columnOutputLcoationID = new global::System.Data.DataColumn("OutputLcoationID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOutputLcoationID);
+                this.columnInstallerID = new global::System.Data.DataColumn("InstallerID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInstallerID);
+                this.columnJobRuns = new global::System.Data.DataColumn("JobRuns", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnJobRuns);
+                this.columnOutputRuns = new global::System.Data.DataColumn("OutputRuns", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOutputRuns);
+                this.columnMaterialModifier = new global::System.Data.DataColumn("MaterialModifier", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMaterialModifier);
+                this.columnCharMaterialModifier = new global::System.Data.DataColumn("CharMaterialModifier", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCharMaterialModifier);
+                this.columnTimeMultiplier = new global::System.Data.DataColumn("TimeMultiplier", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTimeMultiplier);
+                this.columnCharTimeMultiplier = new global::System.Data.DataColumn("CharTimeMultiplier", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCharTimeMultiplier);
+                this.columnInstalledItemTypeID = new global::System.Data.DataColumn("InstalledItemTypeID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInstalledItemTypeID);
+                this.columnOutputTypeID = new global::System.Data.DataColumn("OutputTypeID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOutputTypeID);
+                this.columnContainerTypeID = new global::System.Data.DataColumn("ContainerTypeID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnContainerTypeID);
+                this.columnInstalledItemCopy = new global::System.Data.DataColumn("InstalledItemCopy", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInstalledItemCopy);
+                this.columnCompleted = new global::System.Data.DataColumn("Completed", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCompleted);
+                this.columnCompletedSuccessfully = new global::System.Data.DataColumn("CompletedSuccessfully", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCompletedSuccessfully);
+                this.columnInstalledItemFlag = new global::System.Data.DataColumn("InstalledItemFlag", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInstalledItemFlag);
+                this.columnOutputFlag = new global::System.Data.DataColumn("OutputFlag", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOutputFlag);
+                this.columnActivityID = new global::System.Data.DataColumn("ActivityID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnActivityID);
+                this.columnCompletedStatus = new global::System.Data.DataColumn("CompletedStatus", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCompletedStatus);
+                this.columnInstallTime = new global::System.Data.DataColumn("InstallTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInstallTime);
+                this.columnBeginProductionTime = new global::System.Data.DataColumn("BeginProductionTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBeginProductionTime);
+                this.columnEndProductionTime = new global::System.Data.DataColumn("EndProductionTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEndProductionTime);
+                this.columnPauseProductionTime = new global::System.Data.DataColumn("PauseProductionTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPauseProductionTime);
+                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
+                                this.columnID}, true));
+                this.columnID.AllowDBNull = false;
+                this.columnID.Unique = true;
+                this.columnAssemblyLineID.AllowDBNull = false;
+                this.columnContainerID.AllowDBNull = false;
+                this.columnInstalledItemID.AllowDBNull = false;
+                this.columnInstalledItemLocationID.AllowDBNull = false;
+                this.columnInstalledItemQuantity.AllowDBNull = false;
+                this.columnInstalledItemPL.AllowDBNull = false;
+                this.columnInstalledItemME.AllowDBNull = false;
+                this.columnInstalledItemRunsRemaining.AllowDBNull = false;
+                this.columnOutputLcoationID.AllowDBNull = false;
+                this.columnInstallerID.AllowDBNull = false;
+                this.columnJobRuns.AllowDBNull = false;
+                this.columnOutputRuns.AllowDBNull = false;
+                this.columnMaterialModifier.AllowDBNull = false;
+                this.columnCharMaterialModifier.AllowDBNull = false;
+                this.columnTimeMultiplier.AllowDBNull = false;
+                this.columnCharTimeMultiplier.AllowDBNull = false;
+                this.columnInstalledItemTypeID.AllowDBNull = false;
+                this.columnOutputTypeID.AllowDBNull = false;
+                this.columnContainerTypeID.AllowDBNull = false;
+                this.columnInstalledItemCopy.AllowDBNull = false;
+                this.columnCompleted.AllowDBNull = false;
+                this.columnCompletedSuccessfully.AllowDBNull = false;
+                this.columnInstalledItemFlag.AllowDBNull = false;
+                this.columnOutputFlag.AllowDBNull = false;
+                this.columnActivityID.AllowDBNull = false;
+                this.columnCompletedStatus.AllowDBNull = false;
+                this.columnInstallTime.AllowDBNull = false;
+                this.columnBeginProductionTime.AllowDBNull = false;
+                this.columnEndProductionTime.AllowDBNull = false;
+                this.columnPauseProductionTime.AllowDBNull = false;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public IndustryJobsRow NewIndustryJobsRow() {
+                return ((IndustryJobsRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new IndustryJobsRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override global::System.Type GetRowType() {
+                return typeof(IndustryJobsRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.IndustryJobsRowChanged != null)) {
+                    this.IndustryJobsRowChanged(this, new IndustryJobsRowChangeEvent(((IndustryJobsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.IndustryJobsRowChanging != null)) {
+                    this.IndustryJobsRowChanging(this, new IndustryJobsRowChangeEvent(((IndustryJobsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.IndustryJobsRowDeleted != null)) {
+                    this.IndustryJobsRowDeleted(this, new IndustryJobsRowChangeEvent(((IndustryJobsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.IndustryJobsRowDeleting != null)) {
+                    this.IndustryJobsRowDeleting(this, new IndustryJobsRowChangeEvent(((IndustryJobsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public void RemoveIndustryJobsRow(IndustryJobsRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                EMMADataSet ds = new EMMADataSet();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "IndustryJobsDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class WalletDivisionsDataTable : global::System.Data.TypedTableBase<WalletDivisionsRow> {
             
             private global::System.Data.DataColumn columnID;
@@ -19839,6 +20555,331 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///Represents strongly named DataRow class.
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+        public partial class IndustryJobsRow : global::System.Data.DataRow {
+            
+            private IndustryJobsDataTable tableIndustryJobs;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            internal IndustryJobsRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableIndustryJobs = ((IndustryJobsDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public long ID {
+                get {
+                    return ((long)(this[this.tableIndustryJobs.IDColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.IDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int AssemblyLineID {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.AssemblyLineIDColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.AssemblyLineIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int ContainerID {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.ContainerIDColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.ContainerIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int InstalledItemID {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.InstalledItemIDColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.InstalledItemIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int InstalledItemLocationID {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.InstalledItemLocationIDColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.InstalledItemLocationIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int InstalledItemQuantity {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.InstalledItemQuantityColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.InstalledItemQuantityColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int InstalledItemPL {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.InstalledItemPLColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.InstalledItemPLColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int InstalledItemME {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.InstalledItemMEColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.InstalledItemMEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int InstalledItemRunsRemaining {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.InstalledItemRunsRemainingColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.InstalledItemRunsRemainingColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int OutputLcoationID {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.OutputLcoationIDColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.OutputLcoationIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int InstallerID {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.InstallerIDColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.InstallerIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int JobRuns {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.JobRunsColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.JobRunsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int OutputRuns {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.OutputRunsColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.OutputRunsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public double MaterialModifier {
+                get {
+                    return ((double)(this[this.tableIndustryJobs.MaterialModifierColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.MaterialModifierColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public double CharMaterialModifier {
+                get {
+                    return ((double)(this[this.tableIndustryJobs.CharMaterialModifierColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.CharMaterialModifierColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public double TimeMultiplier {
+                get {
+                    return ((double)(this[this.tableIndustryJobs.TimeMultiplierColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.TimeMultiplierColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public double CharTimeMultiplier {
+                get {
+                    return ((double)(this[this.tableIndustryJobs.CharTimeMultiplierColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.CharTimeMultiplierColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int InstalledItemTypeID {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.InstalledItemTypeIDColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.InstalledItemTypeIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int OutputTypeID {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.OutputTypeIDColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.OutputTypeIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int ContainerTypeID {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.ContainerTypeIDColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.ContainerTypeIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool InstalledItemCopy {
+                get {
+                    return ((bool)(this[this.tableIndustryJobs.InstalledItemCopyColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.InstalledItemCopyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool Completed {
+                get {
+                    return ((bool)(this[this.tableIndustryJobs.CompletedColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.CompletedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool CompletedSuccessfully {
+                get {
+                    return ((bool)(this[this.tableIndustryJobs.CompletedSuccessfullyColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.CompletedSuccessfullyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int InstalledItemFlag {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.InstalledItemFlagColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.InstalledItemFlagColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int OutputFlag {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.OutputFlagColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.OutputFlagColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int ActivityID {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.ActivityIDColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.ActivityIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int CompletedStatus {
+                get {
+                    return ((int)(this[this.tableIndustryJobs.CompletedStatusColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.CompletedStatusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public System.DateTime InstallTime {
+                get {
+                    return ((global::System.DateTime)(this[this.tableIndustryJobs.InstallTimeColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.InstallTimeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public System.DateTime BeginProductionTime {
+                get {
+                    return ((global::System.DateTime)(this[this.tableIndustryJobs.BeginProductionTimeColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.BeginProductionTimeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public System.DateTime EndProductionTime {
+                get {
+                    return ((global::System.DateTime)(this[this.tableIndustryJobs.EndProductionTimeColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.EndProductionTimeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public System.DateTime PauseProductionTime {
+                get {
+                    return ((global::System.DateTime)(this[this.tableIndustryJobs.PauseProductionTimeColumn]));
+                }
+                set {
+                    this[this.tableIndustryJobs.PauseProductionTimeColumn] = value;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
         public partial class WalletDivisionsRow : global::System.Data.DataRow {
             
             private WalletDivisionsDataTable tableWalletDivisions;
@@ -21329,6 +22370,37 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             public AssetsLostRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+        public class IndustryJobsRowChangeEvent : global::System.EventArgs {
+            
+            private IndustryJobsRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public IndustryJobsRowChangeEvent(IndustryJobsRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public IndustryJobsRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -44738,6 +45810,944 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
                 newID = new global::System.Nullable<long>(((long)(command.Parameters[8].Value)));
             }
             return returnValue;
+        }
+    }
+    
+    /// <summary>
+    ///Represents the connection and commands used to retrieve and save data.
+    ///</summary>
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+    [global::System.ComponentModel.DesignerCategoryAttribute("code")]
+    [global::System.ComponentModel.ToolboxItem(true)]
+    [global::System.ComponentModel.DataObjectAttribute(true)]
+    [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
+        ", Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
+    [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+    public partial class IndustryJobsTableAdapter : global::System.ComponentModel.Component {
+        
+        private global::System.Data.SqlClient.SqlDataAdapter _adapter;
+        
+        private global::System.Data.SqlClient.SqlConnection _connection;
+        
+        private global::System.Data.SqlClient.SqlCommand[] _commandCollection;
+        
+        private bool _clearBeforeFill;
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public IndustryJobsTableAdapter() {
+            this.ClearBeforeFill = true;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private global::System.Data.SqlClient.SqlDataAdapter Adapter {
+            get {
+                if ((this._adapter == null)) {
+                    this.InitAdapter();
+                }
+                return this._adapter;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        internal global::System.Data.SqlClient.SqlConnection Connection {
+            get {
+                if ((this._connection == null)) {
+                    this.InitConnection();
+                }
+                return this._connection;
+            }
+            set {
+                this._connection = value;
+                if ((this.Adapter.InsertCommand != null)) {
+                    this.Adapter.InsertCommand.Connection = value;
+                }
+                if ((this.Adapter.DeleteCommand != null)) {
+                    this.Adapter.DeleteCommand.Connection = value;
+                }
+                if ((this.Adapter.UpdateCommand != null)) {
+                    this.Adapter.UpdateCommand.Connection = value;
+                }
+                for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
+                    if ((this.CommandCollection[i] != null)) {
+                        ((global::System.Data.SqlClient.SqlCommand)(this.CommandCollection[i])).Connection = value;
+                    }
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        protected global::System.Data.SqlClient.SqlCommand[] CommandCollection {
+            get {
+                if ((this._commandCollection == null)) {
+                    this.InitCommandCollection();
+                }
+                return this._commandCollection;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public bool ClearBeforeFill {
+            get {
+                return this._clearBeforeFill;
+            }
+            set {
+                this._clearBeforeFill = value;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private void InitAdapter() {
+            this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
+            global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
+            tableMapping.SourceTable = "Table";
+            tableMapping.DataSetTable = "IndustryJobs";
+            tableMapping.ColumnMappings.Add("ID", "ID");
+            tableMapping.ColumnMappings.Add("AssemblyLineID", "AssemblyLineID");
+            tableMapping.ColumnMappings.Add("ContainerID", "ContainerID");
+            tableMapping.ColumnMappings.Add("InstalledItemID", "InstalledItemID");
+            tableMapping.ColumnMappings.Add("InstalledItemLocationID", "InstalledItemLocationID");
+            tableMapping.ColumnMappings.Add("InstalledItemQuantity", "InstalledItemQuantity");
+            tableMapping.ColumnMappings.Add("InstalledItemPL", "InstalledItemPL");
+            tableMapping.ColumnMappings.Add("InstalledItemME", "InstalledItemME");
+            tableMapping.ColumnMappings.Add("InstalledItemRunsRemaining", "InstalledItemRunsRemaining");
+            tableMapping.ColumnMappings.Add("OutputLcoationID", "OutputLcoationID");
+            tableMapping.ColumnMappings.Add("InstallerID", "InstallerID");
+            tableMapping.ColumnMappings.Add("JobRuns", "JobRuns");
+            tableMapping.ColumnMappings.Add("OutputRuns", "OutputRuns");
+            tableMapping.ColumnMappings.Add("MaterialModifier", "MaterialModifier");
+            tableMapping.ColumnMappings.Add("CharMaterialModifier", "CharMaterialModifier");
+            tableMapping.ColumnMappings.Add("TimeMultiplier", "TimeMultiplier");
+            tableMapping.ColumnMappings.Add("CharTimeMultiplier", "CharTimeMultiplier");
+            tableMapping.ColumnMappings.Add("InstalledItemTypeID", "InstalledItemTypeID");
+            tableMapping.ColumnMappings.Add("OutputTypeID", "OutputTypeID");
+            tableMapping.ColumnMappings.Add("ContainerTypeID", "ContainerTypeID");
+            tableMapping.ColumnMappings.Add("InstalledItemCopy", "InstalledItemCopy");
+            tableMapping.ColumnMappings.Add("Completed", "Completed");
+            tableMapping.ColumnMappings.Add("CompletedSuccessfully", "CompletedSuccessfully");
+            tableMapping.ColumnMappings.Add("InstalledItemFlag", "InstalledItemFlag");
+            tableMapping.ColumnMappings.Add("OutputFlag", "OutputFlag");
+            tableMapping.ColumnMappings.Add("ActivityID", "ActivityID");
+            tableMapping.ColumnMappings.Add("CompletedStatus", "CompletedStatus");
+            tableMapping.ColumnMappings.Add("InstallTime", "InstallTime");
+            tableMapping.ColumnMappings.Add("BeginProductionTime", "BeginProductionTime");
+            tableMapping.ColumnMappings.Add("EndProductionTime", "EndProductionTime");
+            tableMapping.ColumnMappings.Add("PauseProductionTime", "PauseProductionTime");
+            this._adapter.TableMappings.Add(tableMapping);
+            this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.DeleteCommand.Connection = this.Connection;
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[IndustryJobs] WHERE (([ID] = @Original_ID) AND ([AssemblyLineI" +
+                "D] = @Original_AssemblyLineID) AND ([ContainerID] = @Original_ContainerID) AND (" +
+                "[InstalledItemID] = @Original_InstalledItemID) AND ([InstalledItemLocationID] = " +
+                "@Original_InstalledItemLocationID) AND ([InstalledItemQuantity] = @Original_Inst" +
+                "alledItemQuantity) AND ([InstalledItemPL] = @Original_InstalledItemPL) AND ([Ins" +
+                "talledItemME] = @Original_InstalledItemME) AND ([InstalledItemRunsRemaining] = @" +
+                "Original_InstalledItemRunsRemaining) AND ([OutputLcoationID] = @Original_OutputL" +
+                "coationID) AND ([InstallerID] = @Original_InstallerID) AND ([JobRuns] = @Origina" +
+                "l_JobRuns) AND ([OutputRuns] = @Original_OutputRuns) AND ([MaterialModifier] = @" +
+                "Original_MaterialModifier) AND ([CharMaterialModifier] = @Original_CharMaterialM" +
+                "odifier) AND ([TimeMultiplier] = @Original_TimeMultiplier) AND ([CharTimeMultipl" +
+                "ier] = @Original_CharTimeMultiplier) AND ([InstalledItemTypeID] = @Original_Inst" +
+                "alledItemTypeID) AND ([OutputTypeID] = @Original_OutputTypeID) AND ([ContainerTy" +
+                "peID] = @Original_ContainerTypeID) AND ([InstalledItemCopy] = @Original_Installe" +
+                "dItemCopy) AND ([Completed] = @Original_Completed) AND ([CompletedSuccessfully] " +
+                "= @Original_CompletedSuccessfully) AND ([InstalledItemFlag] = @Original_Installe" +
+                "dItemFlag) AND ([OutputFlag] = @Original_OutputFlag) AND ([ActivityID] = @Origin" +
+                "al_ActivityID) AND ([CompletedStatus] = @Original_CompletedStatus) AND ([Install" +
+                "Time] = @Original_InstallTime) AND ([BeginProductionTime] = @Original_BeginProdu" +
+                "ctionTime) AND ([EndProductionTime] = @Original_EndProductionTime) AND ([PausePr" +
+                "oductionTime] = @Original_PauseProductionTime))";
+            this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AssemblyLineID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AssemblyLineID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ContainerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemLocationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemLocationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemQuantity", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemQuantity", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemPL", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemPL", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemME", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemME", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemRunsRemaining", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemRunsRemaining", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OutputLcoationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputLcoationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstallerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_JobRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "JobRuns", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OutputRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputRuns", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_MaterialModifier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "MaterialModifier", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CharMaterialModifier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharMaterialModifier", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_TimeMultiplier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TimeMultiplier", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CharTimeMultiplier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharTimeMultiplier", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemTypeID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemTypeID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OutputTypeID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputTypeID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ContainerTypeID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerTypeID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemCopy", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemCopy", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Completed", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Completed", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CompletedSuccessfully", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CompletedSuccessfully", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemFlag", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemFlag", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OutputFlag", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputFlag", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ActivityID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ActivityID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CompletedStatus", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CompletedStatus", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstallTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_BeginProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "BeginProductionTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_EndProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "EndProductionTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_PauseProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PauseProductionTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.InsertCommand.Connection = this.Connection;
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[IndustryJobs] ([ID], [AssemblyLineID], [ContainerID], [Install" +
+                "edItemID], [InstalledItemLocationID], [InstalledItemQuantity], [InstalledItemPL]" +
+                ", [InstalledItemME], [InstalledItemRunsRemaining], [OutputLcoationID], [Installe" +
+                "rID], [JobRuns], [OutputRuns], [MaterialModifier], [CharMaterialModifier], [Time" +
+                "Multiplier], [CharTimeMultiplier], [InstalledItemTypeID], [OutputTypeID], [Conta" +
+                "inerTypeID], [InstalledItemCopy], [Completed], [CompletedSuccessfully], [Install" +
+                "edItemFlag], [OutputFlag], [ActivityID], [CompletedStatus], [InstallTime], [Begi" +
+                "nProductionTime], [EndProductionTime], [PauseProductionTime]) VALUES (@ID, @Asse" +
+                "mblyLineID, @ContainerID, @InstalledItemID, @InstalledItemLocationID, @Installed" +
+                "ItemQuantity, @InstalledItemPL, @InstalledItemME, @InstalledItemRunsRemaining, @" +
+                "OutputLcoationID, @InstallerID, @JobRuns, @OutputRuns, @MaterialModifier, @CharM" +
+                "aterialModifier, @TimeMultiplier, @CharTimeMultiplier, @InstalledItemTypeID, @Ou" +
+                "tputTypeID, @ContainerTypeID, @InstalledItemCopy, @Completed, @CompletedSuccessf" +
+                "ully, @InstalledItemFlag, @OutputFlag, @ActivityID, @CompletedStatus, @InstallTi" +
+                "me, @BeginProductionTime, @EndProductionTime, @PauseProductionTime);\r\nSELECT ID," +
+                " AssemblyLineID, ContainerID, InstalledItemID, InstalledItemLocationID, Installe" +
+                "dItemQuantity, InstalledItemPL, InstalledItemME, InstalledItemRunsRemaining, Out" +
+                "putLcoationID, InstallerID, JobRuns, OutputRuns, MaterialModifier, CharMaterialM" +
+                "odifier, TimeMultiplier, CharTimeMultiplier, InstalledItemTypeID, OutputTypeID, " +
+                "ContainerTypeID, InstalledItemCopy, Completed, CompletedSuccessfully, InstalledI" +
+                "temFlag, OutputFlag, ActivityID, CompletedStatus, InstallTime, BeginProductionTi" +
+                "me, EndProductionTime, PauseProductionTime FROM IndustryJobs WHERE (ID = @ID)";
+            this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AssemblyLineID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AssemblyLineID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ContainerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemLocationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemLocationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemQuantity", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemQuantity", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemPL", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemPL", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemME", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemME", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemRunsRemaining", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemRunsRemaining", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OutputLcoationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputLcoationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstallerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@JobRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "JobRuns", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OutputRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputRuns", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@MaterialModifier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "MaterialModifier", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CharMaterialModifier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharMaterialModifier", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TimeMultiplier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TimeMultiplier", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CharTimeMultiplier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharTimeMultiplier", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemTypeID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemTypeID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OutputTypeID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputTypeID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ContainerTypeID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerTypeID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemCopy", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemCopy", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Completed", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Completed", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CompletedSuccessfully", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CompletedSuccessfully", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemFlag", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemFlag", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OutputFlag", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputFlag", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ActivityID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ActivityID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CompletedStatus", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CompletedStatus", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstallTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BeginProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "BeginProductionTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@EndProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "EndProductionTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PauseProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PauseProductionTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.UpdateCommand.Connection = this.Connection;
+            this._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[IndustryJobs] SET [ID] = @ID, [AssemblyLineID] = @AssemblyLineID, [" +
+                "ContainerID] = @ContainerID, [InstalledItemID] = @InstalledItemID, [InstalledIte" +
+                "mLocationID] = @InstalledItemLocationID, [InstalledItemQuantity] = @InstalledIte" +
+                "mQuantity, [InstalledItemPL] = @InstalledItemPL, [InstalledItemME] = @InstalledI" +
+                "temME, [InstalledItemRunsRemaining] = @InstalledItemRunsRemaining, [OutputLcoati" +
+                "onID] = @OutputLcoationID, [InstallerID] = @InstallerID, [JobRuns] = @JobRuns, [" +
+                "OutputRuns] = @OutputRuns, [MaterialModifier] = @MaterialModifier, [CharMaterial" +
+                "Modifier] = @CharMaterialModifier, [TimeMultiplier] = @TimeMultiplier, [CharTime" +
+                "Multiplier] = @CharTimeMultiplier, [InstalledItemTypeID] = @InstalledItemTypeID," +
+                " [OutputTypeID] = @OutputTypeID, [ContainerTypeID] = @ContainerTypeID, [Installe" +
+                "dItemCopy] = @InstalledItemCopy, [Completed] = @Completed, [CompletedSuccessfull" +
+                "y] = @CompletedSuccessfully, [InstalledItemFlag] = @InstalledItemFlag, [OutputFl" +
+                "ag] = @OutputFlag, [ActivityID] = @ActivityID, [CompletedStatus] = @CompletedSta" +
+                "tus, [InstallTime] = @InstallTime, [BeginProductionTime] = @BeginProductionTime," +
+                " [EndProductionTime] = @EndProductionTime, [PauseProductionTime] = @PauseProduct" +
+                "ionTime WHERE (([ID] = @Original_ID) AND ([AssemblyLineID] = @Original_AssemblyL" +
+                "ineID) AND ([ContainerID] = @Original_ContainerID) AND ([InstalledItemID] = @Ori" +
+                "ginal_InstalledItemID) AND ([InstalledItemLocationID] = @Original_InstalledItemL" +
+                "ocationID) AND ([InstalledItemQuantity] = @Original_InstalledItemQuantity) AND (" +
+                "[InstalledItemPL] = @Original_InstalledItemPL) AND ([InstalledItemME] = @Origina" +
+                "l_InstalledItemME) AND ([InstalledItemRunsRemaining] = @Original_InstalledItemRu" +
+                "nsRemaining) AND ([OutputLcoationID] = @Original_OutputLcoationID) AND ([Install" +
+                "erID] = @Original_InstallerID) AND ([JobRuns] = @Original_JobRuns) AND ([OutputR" +
+                "uns] = @Original_OutputRuns) AND ([MaterialModifier] = @Original_MaterialModifie" +
+                "r) AND ([CharMaterialModifier] = @Original_CharMaterialModifier) AND ([TimeMulti" +
+                "plier] = @Original_TimeMultiplier) AND ([CharTimeMultiplier] = @Original_CharTim" +
+                "eMultiplier) AND ([InstalledItemTypeID] = @Original_InstalledItemTypeID) AND ([O" +
+                "utputTypeID] = @Original_OutputTypeID) AND ([ContainerTypeID] = @Original_Contai" +
+                "nerTypeID) AND ([InstalledItemCopy] = @Original_InstalledItemCopy) AND ([Complet" +
+                "ed] = @Original_Completed) AND ([CompletedSuccessfully] = @Original_CompletedSuc" +
+                "cessfully) AND ([InstalledItemFlag] = @Original_InstalledItemFlag) AND ([OutputF" +
+                "lag] = @Original_OutputFlag) AND ([ActivityID] = @Original_ActivityID) AND ([Com" +
+                "pletedStatus] = @Original_CompletedStatus) AND ([InstallTime] = @Original_Instal" +
+                "lTime) AND ([BeginProductionTime] = @Original_BeginProductionTime) AND ([EndProd" +
+                "uctionTime] = @Original_EndProductionTime) AND ([PauseProductionTime] = @Origina" +
+                "l_PauseProductionTime));\r\nSELECT ID, AssemblyLineID, ContainerID, InstalledItemI" +
+                "D, InstalledItemLocationID, InstalledItemQuantity, InstalledItemPL, InstalledIte" +
+                "mME, InstalledItemRunsRemaining, OutputLcoationID, InstallerID, JobRuns, OutputR" +
+                "uns, MaterialModifier, CharMaterialModifier, TimeMultiplier, CharTimeMultiplier," +
+                " InstalledItemTypeID, OutputTypeID, ContainerTypeID, InstalledItemCopy, Complete" +
+                "d, CompletedSuccessfully, InstalledItemFlag, OutputFlag, ActivityID, CompletedSt" +
+                "atus, InstallTime, BeginProductionTime, EndProductionTime, PauseProductionTime F" +
+                "ROM IndustryJobs WHERE (ID = @ID)";
+            this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AssemblyLineID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AssemblyLineID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ContainerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemLocationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemLocationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemQuantity", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemQuantity", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemPL", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemPL", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemME", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemME", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemRunsRemaining", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemRunsRemaining", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OutputLcoationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputLcoationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstallerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@JobRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "JobRuns", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OutputRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputRuns", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@MaterialModifier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "MaterialModifier", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CharMaterialModifier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharMaterialModifier", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TimeMultiplier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TimeMultiplier", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CharTimeMultiplier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharTimeMultiplier", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemTypeID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemTypeID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OutputTypeID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputTypeID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ContainerTypeID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerTypeID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemCopy", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemCopy", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Completed", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Completed", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CompletedSuccessfully", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CompletedSuccessfully", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemFlag", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemFlag", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OutputFlag", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputFlag", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ActivityID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ActivityID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CompletedStatus", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CompletedStatus", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstallTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BeginProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "BeginProductionTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@EndProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "EndProductionTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PauseProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PauseProductionTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AssemblyLineID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AssemblyLineID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ContainerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemLocationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemLocationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemQuantity", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemQuantity", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemPL", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemPL", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemME", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemME", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemRunsRemaining", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemRunsRemaining", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OutputLcoationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputLcoationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstallerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_JobRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "JobRuns", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OutputRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputRuns", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_MaterialModifier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "MaterialModifier", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CharMaterialModifier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharMaterialModifier", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_TimeMultiplier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TimeMultiplier", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CharTimeMultiplier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharTimeMultiplier", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemTypeID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemTypeID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OutputTypeID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputTypeID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ContainerTypeID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerTypeID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemCopy", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemCopy", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Completed", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Completed", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CompletedSuccessfully", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CompletedSuccessfully", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemFlag", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemFlag", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OutputFlag", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputFlag", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ActivityID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ActivityID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CompletedStatus", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CompletedStatus", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstallTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_BeginProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "BeginProductionTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_EndProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "EndProductionTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_PauseProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PauseProductionTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private void InitConnection() {
+            this._connection = new global::System.Data.SqlClient.SqlConnection();
+            this._connection.ConnectionString = global::EveMarketMonitorApp.Properties.Settings.Default.EMMA_DatabaseConnectionString;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private void InitCommandCollection() {
+            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[3];
+            this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[0].Connection = this.Connection;
+            this._commandCollection[0].CommandText = @"SELECT ID, AssemblyLineID, ContainerID, InstalledItemID, InstalledItemLocationID, InstalledItemQuantity, InstalledItemPL, InstalledItemME, InstalledItemRunsRemaining, OutputLcoationID, InstallerID, JobRuns, OutputRuns, MaterialModifier, CharMaterialModifier, TimeMultiplier, CharTimeMultiplier, InstalledItemTypeID, OutputTypeID, ContainerTypeID, InstalledItemCopy, Completed, CompletedSuccessfully, InstalledItemFlag, OutputFlag, ActivityID, CompletedStatus, InstallTime, BeginProductionTime, EndProductionTime, PauseProductionTime FROM dbo.IndustryJobs";
+            this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[1].Connection = this.Connection;
+            this._commandCollection[1].CommandText = "dbo.IndustryJobsGetByBlueprint";
+            this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@installerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@blueprintTypeID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@blueprintEveAssetID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@jobStartDateAfter", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@jobEndDateBefore", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[2].Connection = this.Connection;
+            this._commandCollection[2].CommandText = "dbo.IndustryJobsGetByProduct";
+            this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@installerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@productTypeID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@jobCompletedAfter", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
+        public virtual int Fill(EMMADataSet.IndustryJobsDataTable dataTable) {
+            this.Adapter.SelectCommand = this.CommandCollection[0];
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
+        public virtual EMMADataSet.IndustryJobsDataTable GetData() {
+            this.Adapter.SelectCommand = this.CommandCollection[0];
+            EMMADataSet.IndustryJobsDataTable dataTable = new EMMADataSet.IndustryJobsDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByBlueprint(EMMADataSet.IndustryJobsDataTable dataTable, global::System.Nullable<int> installerID, global::System.Nullable<int> blueprintTypeID, global::System.Nullable<int> blueprintEveAssetID, global::System.Nullable<global::System.DateTime> jobStartDateAfter, global::System.Nullable<global::System.DateTime> jobEndDateBefore) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((installerID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(installerID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((blueprintTypeID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(blueprintTypeID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((blueprintEveAssetID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(blueprintEveAssetID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((jobStartDateAfter.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = ((System.DateTime)(jobStartDateAfter.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((jobEndDateBefore.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((System.DateTime)(jobEndDateBefore.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual EMMADataSet.IndustryJobsDataTable GetDataByBlueprint(global::System.Nullable<int> installerID, global::System.Nullable<int> blueprintTypeID, global::System.Nullable<int> blueprintEveAssetID, global::System.Nullable<global::System.DateTime> jobStartDateAfter, global::System.Nullable<global::System.DateTime> jobEndDateBefore) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((installerID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(installerID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((blueprintTypeID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(blueprintTypeID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((blueprintEveAssetID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(blueprintEveAssetID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((jobStartDateAfter.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = ((System.DateTime)(jobStartDateAfter.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((jobEndDateBefore.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((System.DateTime)(jobEndDateBefore.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            EMMADataSet.IndustryJobsDataTable dataTable = new EMMADataSet.IndustryJobsDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByProduct(EMMADataSet.IndustryJobsDataTable dataTable, global::System.Nullable<int> installerID, global::System.Nullable<int> productTypeID, global::System.Nullable<global::System.DateTime> jobCompletedAfter) {
+            this.Adapter.SelectCommand = this.CommandCollection[2];
+            if ((installerID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(installerID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((productTypeID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(productTypeID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((jobCompletedAfter.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((System.DateTime)(jobCompletedAfter.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual EMMADataSet.IndustryJobsDataTable GetDataByProduct(global::System.Nullable<int> installerID, global::System.Nullable<int> productTypeID, global::System.Nullable<global::System.DateTime> jobCompletedAfter) {
+            this.Adapter.SelectCommand = this.CommandCollection[2];
+            if ((installerID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(installerID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((productTypeID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(productTypeID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((jobCompletedAfter.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((System.DateTime)(jobCompletedAfter.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            EMMADataSet.IndustryJobsDataTable dataTable = new EMMADataSet.IndustryJobsDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(EMMADataSet.IndustryJobsDataTable dataTable) {
+            return this.Adapter.Update(dataTable);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(EMMADataSet dataSet) {
+            return this.Adapter.Update(dataSet, "IndustryJobs");
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(global::System.Data.DataRow dataRow) {
+            return this.Adapter.Update(new global::System.Data.DataRow[] {
+                        dataRow});
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(global::System.Data.DataRow[] dataRows) {
+            return this.Adapter.Update(dataRows);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
+        public virtual int Delete(
+                    long Original_ID, 
+                    int Original_AssemblyLineID, 
+                    int Original_ContainerID, 
+                    int Original_InstalledItemID, 
+                    int Original_InstalledItemLocationID, 
+                    int Original_InstalledItemQuantity, 
+                    int Original_InstalledItemPL, 
+                    int Original_InstalledItemME, 
+                    int Original_InstalledItemRunsRemaining, 
+                    int Original_OutputLcoationID, 
+                    int Original_InstallerID, 
+                    int Original_JobRuns, 
+                    int Original_OutputRuns, 
+                    double Original_MaterialModifier, 
+                    double Original_CharMaterialModifier, 
+                    double Original_TimeMultiplier, 
+                    double Original_CharTimeMultiplier, 
+                    int Original_InstalledItemTypeID, 
+                    int Original_OutputTypeID, 
+                    int Original_ContainerTypeID, 
+                    bool Original_InstalledItemCopy, 
+                    bool Original_Completed, 
+                    bool Original_CompletedSuccessfully, 
+                    int Original_InstalledItemFlag, 
+                    int Original_OutputFlag, 
+                    int Original_ActivityID, 
+                    int Original_CompletedStatus, 
+                    System.DateTime Original_InstallTime, 
+                    System.DateTime Original_BeginProductionTime, 
+                    System.DateTime Original_EndProductionTime, 
+                    System.DateTime Original_PauseProductionTime) {
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_ID));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_AssemblyLineID));
+            this.Adapter.DeleteCommand.Parameters[2].Value = ((int)(Original_ContainerID));
+            this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_InstalledItemID));
+            this.Adapter.DeleteCommand.Parameters[4].Value = ((int)(Original_InstalledItemLocationID));
+            this.Adapter.DeleteCommand.Parameters[5].Value = ((int)(Original_InstalledItemQuantity));
+            this.Adapter.DeleteCommand.Parameters[6].Value = ((int)(Original_InstalledItemPL));
+            this.Adapter.DeleteCommand.Parameters[7].Value = ((int)(Original_InstalledItemME));
+            this.Adapter.DeleteCommand.Parameters[8].Value = ((int)(Original_InstalledItemRunsRemaining));
+            this.Adapter.DeleteCommand.Parameters[9].Value = ((int)(Original_OutputLcoationID));
+            this.Adapter.DeleteCommand.Parameters[10].Value = ((int)(Original_InstallerID));
+            this.Adapter.DeleteCommand.Parameters[11].Value = ((int)(Original_JobRuns));
+            this.Adapter.DeleteCommand.Parameters[12].Value = ((int)(Original_OutputRuns));
+            this.Adapter.DeleteCommand.Parameters[13].Value = ((double)(Original_MaterialModifier));
+            this.Adapter.DeleteCommand.Parameters[14].Value = ((double)(Original_CharMaterialModifier));
+            this.Adapter.DeleteCommand.Parameters[15].Value = ((double)(Original_TimeMultiplier));
+            this.Adapter.DeleteCommand.Parameters[16].Value = ((double)(Original_CharTimeMultiplier));
+            this.Adapter.DeleteCommand.Parameters[17].Value = ((int)(Original_InstalledItemTypeID));
+            this.Adapter.DeleteCommand.Parameters[18].Value = ((int)(Original_OutputTypeID));
+            this.Adapter.DeleteCommand.Parameters[19].Value = ((int)(Original_ContainerTypeID));
+            this.Adapter.DeleteCommand.Parameters[20].Value = ((bool)(Original_InstalledItemCopy));
+            this.Adapter.DeleteCommand.Parameters[21].Value = ((bool)(Original_Completed));
+            this.Adapter.DeleteCommand.Parameters[22].Value = ((bool)(Original_CompletedSuccessfully));
+            this.Adapter.DeleteCommand.Parameters[23].Value = ((int)(Original_InstalledItemFlag));
+            this.Adapter.DeleteCommand.Parameters[24].Value = ((int)(Original_OutputFlag));
+            this.Adapter.DeleteCommand.Parameters[25].Value = ((int)(Original_ActivityID));
+            this.Adapter.DeleteCommand.Parameters[26].Value = ((int)(Original_CompletedStatus));
+            this.Adapter.DeleteCommand.Parameters[27].Value = ((System.DateTime)(Original_InstallTime));
+            this.Adapter.DeleteCommand.Parameters[28].Value = ((System.DateTime)(Original_BeginProductionTime));
+            this.Adapter.DeleteCommand.Parameters[29].Value = ((System.DateTime)(Original_EndProductionTime));
+            this.Adapter.DeleteCommand.Parameters[30].Value = ((System.DateTime)(Original_PauseProductionTime));
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
+            if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.DeleteCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.DeleteCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.DeleteCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
+        public virtual int Insert(
+                    long ID, 
+                    int AssemblyLineID, 
+                    int ContainerID, 
+                    int InstalledItemID, 
+                    int InstalledItemLocationID, 
+                    int InstalledItemQuantity, 
+                    int InstalledItemPL, 
+                    int InstalledItemME, 
+                    int InstalledItemRunsRemaining, 
+                    int OutputLcoationID, 
+                    int InstallerID, 
+                    int JobRuns, 
+                    int OutputRuns, 
+                    double MaterialModifier, 
+                    double CharMaterialModifier, 
+                    double TimeMultiplier, 
+                    double CharTimeMultiplier, 
+                    int InstalledItemTypeID, 
+                    int OutputTypeID, 
+                    int ContainerTypeID, 
+                    bool InstalledItemCopy, 
+                    bool Completed, 
+                    bool CompletedSuccessfully, 
+                    int InstalledItemFlag, 
+                    int OutputFlag, 
+                    int ActivityID, 
+                    int CompletedStatus, 
+                    System.DateTime InstallTime, 
+                    System.DateTime BeginProductionTime, 
+                    System.DateTime EndProductionTime, 
+                    System.DateTime PauseProductionTime) {
+            this.Adapter.InsertCommand.Parameters[0].Value = ((long)(ID));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(AssemblyLineID));
+            this.Adapter.InsertCommand.Parameters[2].Value = ((int)(ContainerID));
+            this.Adapter.InsertCommand.Parameters[3].Value = ((int)(InstalledItemID));
+            this.Adapter.InsertCommand.Parameters[4].Value = ((int)(InstalledItemLocationID));
+            this.Adapter.InsertCommand.Parameters[5].Value = ((int)(InstalledItemQuantity));
+            this.Adapter.InsertCommand.Parameters[6].Value = ((int)(InstalledItemPL));
+            this.Adapter.InsertCommand.Parameters[7].Value = ((int)(InstalledItemME));
+            this.Adapter.InsertCommand.Parameters[8].Value = ((int)(InstalledItemRunsRemaining));
+            this.Adapter.InsertCommand.Parameters[9].Value = ((int)(OutputLcoationID));
+            this.Adapter.InsertCommand.Parameters[10].Value = ((int)(InstallerID));
+            this.Adapter.InsertCommand.Parameters[11].Value = ((int)(JobRuns));
+            this.Adapter.InsertCommand.Parameters[12].Value = ((int)(OutputRuns));
+            this.Adapter.InsertCommand.Parameters[13].Value = ((double)(MaterialModifier));
+            this.Adapter.InsertCommand.Parameters[14].Value = ((double)(CharMaterialModifier));
+            this.Adapter.InsertCommand.Parameters[15].Value = ((double)(TimeMultiplier));
+            this.Adapter.InsertCommand.Parameters[16].Value = ((double)(CharTimeMultiplier));
+            this.Adapter.InsertCommand.Parameters[17].Value = ((int)(InstalledItemTypeID));
+            this.Adapter.InsertCommand.Parameters[18].Value = ((int)(OutputTypeID));
+            this.Adapter.InsertCommand.Parameters[19].Value = ((int)(ContainerTypeID));
+            this.Adapter.InsertCommand.Parameters[20].Value = ((bool)(InstalledItemCopy));
+            this.Adapter.InsertCommand.Parameters[21].Value = ((bool)(Completed));
+            this.Adapter.InsertCommand.Parameters[22].Value = ((bool)(CompletedSuccessfully));
+            this.Adapter.InsertCommand.Parameters[23].Value = ((int)(InstalledItemFlag));
+            this.Adapter.InsertCommand.Parameters[24].Value = ((int)(OutputFlag));
+            this.Adapter.InsertCommand.Parameters[25].Value = ((int)(ActivityID));
+            this.Adapter.InsertCommand.Parameters[26].Value = ((int)(CompletedStatus));
+            this.Adapter.InsertCommand.Parameters[27].Value = ((System.DateTime)(InstallTime));
+            this.Adapter.InsertCommand.Parameters[28].Value = ((System.DateTime)(BeginProductionTime));
+            this.Adapter.InsertCommand.Parameters[29].Value = ((System.DateTime)(EndProductionTime));
+            this.Adapter.InsertCommand.Parameters[30].Value = ((System.DateTime)(PauseProductionTime));
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
+            if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.InsertCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.InsertCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.InsertCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
+        public virtual int Update(
+                    long ID, 
+                    int AssemblyLineID, 
+                    int ContainerID, 
+                    int InstalledItemID, 
+                    int InstalledItemLocationID, 
+                    int InstalledItemQuantity, 
+                    int InstalledItemPL, 
+                    int InstalledItemME, 
+                    int InstalledItemRunsRemaining, 
+                    int OutputLcoationID, 
+                    int InstallerID, 
+                    int JobRuns, 
+                    int OutputRuns, 
+                    double MaterialModifier, 
+                    double CharMaterialModifier, 
+                    double TimeMultiplier, 
+                    double CharTimeMultiplier, 
+                    int InstalledItemTypeID, 
+                    int OutputTypeID, 
+                    int ContainerTypeID, 
+                    bool InstalledItemCopy, 
+                    bool Completed, 
+                    bool CompletedSuccessfully, 
+                    int InstalledItemFlag, 
+                    int OutputFlag, 
+                    int ActivityID, 
+                    int CompletedStatus, 
+                    System.DateTime InstallTime, 
+                    System.DateTime BeginProductionTime, 
+                    System.DateTime EndProductionTime, 
+                    System.DateTime PauseProductionTime, 
+                    long Original_ID, 
+                    int Original_AssemblyLineID, 
+                    int Original_ContainerID, 
+                    int Original_InstalledItemID, 
+                    int Original_InstalledItemLocationID, 
+                    int Original_InstalledItemQuantity, 
+                    int Original_InstalledItemPL, 
+                    int Original_InstalledItemME, 
+                    int Original_InstalledItemRunsRemaining, 
+                    int Original_OutputLcoationID, 
+                    int Original_InstallerID, 
+                    int Original_JobRuns, 
+                    int Original_OutputRuns, 
+                    double Original_MaterialModifier, 
+                    double Original_CharMaterialModifier, 
+                    double Original_TimeMultiplier, 
+                    double Original_CharTimeMultiplier, 
+                    int Original_InstalledItemTypeID, 
+                    int Original_OutputTypeID, 
+                    int Original_ContainerTypeID, 
+                    bool Original_InstalledItemCopy, 
+                    bool Original_Completed, 
+                    bool Original_CompletedSuccessfully, 
+                    int Original_InstalledItemFlag, 
+                    int Original_OutputFlag, 
+                    int Original_ActivityID, 
+                    int Original_CompletedStatus, 
+                    System.DateTime Original_InstallTime, 
+                    System.DateTime Original_BeginProductionTime, 
+                    System.DateTime Original_EndProductionTime, 
+                    System.DateTime Original_PauseProductionTime) {
+            this.Adapter.UpdateCommand.Parameters[0].Value = ((long)(ID));
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(AssemblyLineID));
+            this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(ContainerID));
+            this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(InstalledItemID));
+            this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(InstalledItemLocationID));
+            this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(InstalledItemQuantity));
+            this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(InstalledItemPL));
+            this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(InstalledItemME));
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(InstalledItemRunsRemaining));
+            this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(OutputLcoationID));
+            this.Adapter.UpdateCommand.Parameters[10].Value = ((int)(InstallerID));
+            this.Adapter.UpdateCommand.Parameters[11].Value = ((int)(JobRuns));
+            this.Adapter.UpdateCommand.Parameters[12].Value = ((int)(OutputRuns));
+            this.Adapter.UpdateCommand.Parameters[13].Value = ((double)(MaterialModifier));
+            this.Adapter.UpdateCommand.Parameters[14].Value = ((double)(CharMaterialModifier));
+            this.Adapter.UpdateCommand.Parameters[15].Value = ((double)(TimeMultiplier));
+            this.Adapter.UpdateCommand.Parameters[16].Value = ((double)(CharTimeMultiplier));
+            this.Adapter.UpdateCommand.Parameters[17].Value = ((int)(InstalledItemTypeID));
+            this.Adapter.UpdateCommand.Parameters[18].Value = ((int)(OutputTypeID));
+            this.Adapter.UpdateCommand.Parameters[19].Value = ((int)(ContainerTypeID));
+            this.Adapter.UpdateCommand.Parameters[20].Value = ((bool)(InstalledItemCopy));
+            this.Adapter.UpdateCommand.Parameters[21].Value = ((bool)(Completed));
+            this.Adapter.UpdateCommand.Parameters[22].Value = ((bool)(CompletedSuccessfully));
+            this.Adapter.UpdateCommand.Parameters[23].Value = ((int)(InstalledItemFlag));
+            this.Adapter.UpdateCommand.Parameters[24].Value = ((int)(OutputFlag));
+            this.Adapter.UpdateCommand.Parameters[25].Value = ((int)(ActivityID));
+            this.Adapter.UpdateCommand.Parameters[26].Value = ((int)(CompletedStatus));
+            this.Adapter.UpdateCommand.Parameters[27].Value = ((System.DateTime)(InstallTime));
+            this.Adapter.UpdateCommand.Parameters[28].Value = ((System.DateTime)(BeginProductionTime));
+            this.Adapter.UpdateCommand.Parameters[29].Value = ((System.DateTime)(EndProductionTime));
+            this.Adapter.UpdateCommand.Parameters[30].Value = ((System.DateTime)(PauseProductionTime));
+            this.Adapter.UpdateCommand.Parameters[31].Value = ((long)(Original_ID));
+            this.Adapter.UpdateCommand.Parameters[32].Value = ((int)(Original_AssemblyLineID));
+            this.Adapter.UpdateCommand.Parameters[33].Value = ((int)(Original_ContainerID));
+            this.Adapter.UpdateCommand.Parameters[34].Value = ((int)(Original_InstalledItemID));
+            this.Adapter.UpdateCommand.Parameters[35].Value = ((int)(Original_InstalledItemLocationID));
+            this.Adapter.UpdateCommand.Parameters[36].Value = ((int)(Original_InstalledItemQuantity));
+            this.Adapter.UpdateCommand.Parameters[37].Value = ((int)(Original_InstalledItemPL));
+            this.Adapter.UpdateCommand.Parameters[38].Value = ((int)(Original_InstalledItemME));
+            this.Adapter.UpdateCommand.Parameters[39].Value = ((int)(Original_InstalledItemRunsRemaining));
+            this.Adapter.UpdateCommand.Parameters[40].Value = ((int)(Original_OutputLcoationID));
+            this.Adapter.UpdateCommand.Parameters[41].Value = ((int)(Original_InstallerID));
+            this.Adapter.UpdateCommand.Parameters[42].Value = ((int)(Original_JobRuns));
+            this.Adapter.UpdateCommand.Parameters[43].Value = ((int)(Original_OutputRuns));
+            this.Adapter.UpdateCommand.Parameters[44].Value = ((double)(Original_MaterialModifier));
+            this.Adapter.UpdateCommand.Parameters[45].Value = ((double)(Original_CharMaterialModifier));
+            this.Adapter.UpdateCommand.Parameters[46].Value = ((double)(Original_TimeMultiplier));
+            this.Adapter.UpdateCommand.Parameters[47].Value = ((double)(Original_CharTimeMultiplier));
+            this.Adapter.UpdateCommand.Parameters[48].Value = ((int)(Original_InstalledItemTypeID));
+            this.Adapter.UpdateCommand.Parameters[49].Value = ((int)(Original_OutputTypeID));
+            this.Adapter.UpdateCommand.Parameters[50].Value = ((int)(Original_ContainerTypeID));
+            this.Adapter.UpdateCommand.Parameters[51].Value = ((bool)(Original_InstalledItemCopy));
+            this.Adapter.UpdateCommand.Parameters[52].Value = ((bool)(Original_Completed));
+            this.Adapter.UpdateCommand.Parameters[53].Value = ((bool)(Original_CompletedSuccessfully));
+            this.Adapter.UpdateCommand.Parameters[54].Value = ((int)(Original_InstalledItemFlag));
+            this.Adapter.UpdateCommand.Parameters[55].Value = ((int)(Original_OutputFlag));
+            this.Adapter.UpdateCommand.Parameters[56].Value = ((int)(Original_ActivityID));
+            this.Adapter.UpdateCommand.Parameters[57].Value = ((int)(Original_CompletedStatus));
+            this.Adapter.UpdateCommand.Parameters[58].Value = ((System.DateTime)(Original_InstallTime));
+            this.Adapter.UpdateCommand.Parameters[59].Value = ((System.DateTime)(Original_BeginProductionTime));
+            this.Adapter.UpdateCommand.Parameters[60].Value = ((System.DateTime)(Original_EndProductionTime));
+            this.Adapter.UpdateCommand.Parameters[61].Value = ((System.DateTime)(Original_PauseProductionTime));
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
+            if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.UpdateCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.UpdateCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.UpdateCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
+        public virtual int Update(
+                    int AssemblyLineID, 
+                    int ContainerID, 
+                    int InstalledItemID, 
+                    int InstalledItemLocationID, 
+                    int InstalledItemQuantity, 
+                    int InstalledItemPL, 
+                    int InstalledItemME, 
+                    int InstalledItemRunsRemaining, 
+                    int OutputLcoationID, 
+                    int InstallerID, 
+                    int JobRuns, 
+                    int OutputRuns, 
+                    double MaterialModifier, 
+                    double CharMaterialModifier, 
+                    double TimeMultiplier, 
+                    double CharTimeMultiplier, 
+                    int InstalledItemTypeID, 
+                    int OutputTypeID, 
+                    int ContainerTypeID, 
+                    bool InstalledItemCopy, 
+                    bool Completed, 
+                    bool CompletedSuccessfully, 
+                    int InstalledItemFlag, 
+                    int OutputFlag, 
+                    int ActivityID, 
+                    int CompletedStatus, 
+                    System.DateTime InstallTime, 
+                    System.DateTime BeginProductionTime, 
+                    System.DateTime EndProductionTime, 
+                    System.DateTime PauseProductionTime, 
+                    long Original_ID, 
+                    int Original_AssemblyLineID, 
+                    int Original_ContainerID, 
+                    int Original_InstalledItemID, 
+                    int Original_InstalledItemLocationID, 
+                    int Original_InstalledItemQuantity, 
+                    int Original_InstalledItemPL, 
+                    int Original_InstalledItemME, 
+                    int Original_InstalledItemRunsRemaining, 
+                    int Original_OutputLcoationID, 
+                    int Original_InstallerID, 
+                    int Original_JobRuns, 
+                    int Original_OutputRuns, 
+                    double Original_MaterialModifier, 
+                    double Original_CharMaterialModifier, 
+                    double Original_TimeMultiplier, 
+                    double Original_CharTimeMultiplier, 
+                    int Original_InstalledItemTypeID, 
+                    int Original_OutputTypeID, 
+                    int Original_ContainerTypeID, 
+                    bool Original_InstalledItemCopy, 
+                    bool Original_Completed, 
+                    bool Original_CompletedSuccessfully, 
+                    int Original_InstalledItemFlag, 
+                    int Original_OutputFlag, 
+                    int Original_ActivityID, 
+                    int Original_CompletedStatus, 
+                    System.DateTime Original_InstallTime, 
+                    System.DateTime Original_BeginProductionTime, 
+                    System.DateTime Original_EndProductionTime, 
+                    System.DateTime Original_PauseProductionTime) {
+            return this.Update(Original_ID, AssemblyLineID, ContainerID, InstalledItemID, InstalledItemLocationID, InstalledItemQuantity, InstalledItemPL, InstalledItemME, InstalledItemRunsRemaining, OutputLcoationID, InstallerID, JobRuns, OutputRuns, MaterialModifier, CharMaterialModifier, TimeMultiplier, CharTimeMultiplier, InstalledItemTypeID, OutputTypeID, ContainerTypeID, InstalledItemCopy, Completed, CompletedSuccessfully, InstalledItemFlag, OutputFlag, ActivityID, CompletedStatus, InstallTime, BeginProductionTime, EndProductionTime, PauseProductionTime, Original_ID, Original_AssemblyLineID, Original_ContainerID, Original_InstalledItemID, Original_InstalledItemLocationID, Original_InstalledItemQuantity, Original_InstalledItemPL, Original_InstalledItemME, Original_InstalledItemRunsRemaining, Original_OutputLcoationID, Original_InstallerID, Original_JobRuns, Original_OutputRuns, Original_MaterialModifier, Original_CharMaterialModifier, Original_TimeMultiplier, Original_CharTimeMultiplier, Original_InstalledItemTypeID, Original_OutputTypeID, Original_ContainerTypeID, Original_InstalledItemCopy, Original_Completed, Original_CompletedSuccessfully, Original_InstalledItemFlag, Original_OutputFlag, Original_ActivityID, Original_CompletedStatus, Original_InstallTime, Original_BeginProductionTime, Original_EndProductionTime, Original_PauseProductionTime);
         }
     }
 }

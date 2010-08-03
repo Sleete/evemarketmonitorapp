@@ -8456,7 +8456,103 @@ AS
                     }
                     #endregion
                 }
+                if (dbVersion.CompareTo(new Version("2.0.0.0")) < 0)
+                {
+                    if (dbVersion.CompareTo(new Version("1.5.1.1")) < 0)
+                    {
+                        #region Create IndustryJobs table
+                        commandText =
+                               @"CREATE TABLE [dbo].[IndustryJobs](
+	[ID] [bigint] NOT NULL,
+	[AssemblyLineID] [int] NOT NULL,
+	[ContainerID] [int] NOT NULL,
+	[InstalledItemID] [int] NOT NULL,
+	[InstalledItemLocationID] [int] NOT NULL,
+	[InstalledItemQuantity] [int] NOT NULL,
+	[InstalledItemPL] [int] NOT NULL,
+	[InstalledItemME] [int] NOT NULL,
+	[InstalledItemRunsRemaining] [int] NOT NULL,
+	[OutputLcoationID] [int] NOT NULL,
+	[InstallerID] [int] NOT NULL,
+	[JobRuns] [int] NOT NULL,
+	[OutputRuns] [int] NOT NULL,
+	[MaterialModifier] [float] NOT NULL,
+	[CharMaterialModifier] [float] NOT NULL,
+	[TimeMultiplier] [float] NOT NULL,
+	[CharTimeMultiplier] [float] NOT NULL,
+	[InstalledItemTypeID] [int] NOT NULL,
+	[OutputTypeID] [int] NOT NULL,
+	[ContainerTypeID] [int] NOT NULL,
+	[InstalledItemCopy] [bit] NOT NULL,
+	[Completed] [bit] NOT NULL,
+	[CompletedSuccessfully] [bit] NOT NULL,
+	[InstalledItemFlag] [int] NOT NULL,
+	[OutputFlag] [int] NOT NULL,
+	[ActivityID] [int] NOT NULL,
+	[CompletedStatus] [int] NOT NULL,
+	[InstallTime] [datetime] NOT NULL,
+	[BeginProductionTime] [datetime] NOT NULL,
+	[EndProductionTime] [datetime] NOT NULL,
+	[PauseProductionTime] [datetime] NOT NULL,
+ CONSTRAINT [PK_IndustryJobs] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]";
 
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.1"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'Industry Jobs' table", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.1.2")) < 0)
+                    {
+                        #region Create indexes for IndustryJobs table
+                        commandText =
+                               @"CREATE NONCLUSTERED INDEX [IX_IndustryJobs_InstallerOutput] ON [dbo].[IndustryJobs] 
+(
+	[InstallerID] ASC,
+	[OutputTypeID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+
+CREATE NONCLUSTERED INDEX [IX_IndustryJobs_InstallerID] ON [dbo].[IndustryJobs] 
+(
+	[InstallerID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+
+CREATE NONCLUSTERED INDEX [IX_IndustryJobs_InstallerBlueprint] ON [dbo].[IndustryJobs] 
+(
+	[InstallerID] ASC,
+	[InstalledItemTypeID] ASC,
+	[InstalledItemID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.2"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating indexes for 'Industry Jobs' table", ex);
+                        }
+                        #endregion
+                    }
+                }
 
             }
             catch (Exception ex)
