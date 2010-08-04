@@ -8552,6 +8552,68 @@ CREATE NONCLUSTERED INDEX [IX_IndustryJobs_InstallerBlueprint] ON [dbo].[Industr
                         }
                         #endregion
                     }
+                    if (dbVersion.CompareTo(new Version("1.5.1.3")) < 0)
+                    {
+                        #region Create IndustryJobsGetByBlueprint stored proc
+                        commandText =
+                               @"CREATE PROCEDURE dbo.IndustryJobsGetByBlueprint
+	@installerID			int,
+	@blueprintTypeID		int,
+	@blueprintEveAssetID	int,
+	@jobStartDateAfter		datetime,
+	@jobEndDateBefore		datetime
+AS
+	SELECT *
+	FROM IndustryJobs
+	WHERE InstallerID = @installerID AND InstalledItemTypeID = @blueprintTypeID AND (InstalledItemID = @blueprintEveAssetID OR @blueprintEveAssetID = 0) AND InstallTime > @jobStartDateAfter AND EndProductionTime < @jobEndDateBefore
+	
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.3"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'IndustryJobsGetByBlueprint' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.1.4")) < 0)
+                    {
+                        #region Create IndustryJobsGetByProduct stored proc
+                        commandText =
+                               @"CREATE PROCEDURE dbo.IndustryJobsGetByProduct
+	@installerID			int,
+	@productTypeID			int,
+	@jobCompletedAfter		datetime
+AS
+	SELECT *
+	FROM IndustryJobs
+	WHERE InstallerID = @installerID AND OutputTypeID = @productTypeID AND EndProductionTime > @jobCompletedAfter
+	
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.4"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'IndustryJobsGetByProduct' stored procedure", ex);
+                        }
+                        #endregion
+                    }
                 }
 
             }
