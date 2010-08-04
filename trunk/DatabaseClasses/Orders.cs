@@ -221,7 +221,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="ID">The ID of the order that matches the supplied one</param>
         /// <returns></returns>
         public static bool Exists(EMMADataSet.OrdersDataTable ordersTable, EMMADataSet.OrdersRow orderRow,
-            ref int ID)
+            ref int ID, int corpID, int charID)
         {
             bool? exists = false;
             int? orderID = 0;
@@ -235,15 +235,41 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     orderRow.Range, orderRow.OrderState, orderRow.BuyOrder, orderRow.Price, orderRow.EveOrderID,
                     ref exists, ref orderID);
             }
-            if (orderID.HasValue && ordersTable.FindByID(orderID.Value) == null)
+            if (orderID.HasValue)
             {
-                ordersTable.ImportRow(tempTable.FindByID(orderID.Value));
-            }
-            else
-            {
-                new EMMAException(ExceptionSeverity.Warning, "market order retreived in 'Exists' is not " +
-                    "unique. diagnostics follow:\r\n" +
-                    "\t", true); 
+                if (ordersTable.FindByID(orderID.Value) == null)
+                {
+                    ordersTable.ImportRow(tempTable.FindByID(orderID.Value));
+                }
+                else
+                {
+                    EMMADataSet.OrdersRow existingRow = ordersTable.FindByID(orderID.Value);
+                    new EMMAException(ExceptionSeverity.Warning, "market order retreived in 'Exists' is not " +
+                        "unique. diagnostics follow:" +
+                        "\r\n\tCharacter: " + Names.GetName(charID) +
+                        "\r\n\tCorporation: " + Names.GetName(corpID) +
+                        "\r\n\tOrder ID: " + orderID.Value +
+                        "\r\n\tLooking for this order:" +
+                        "\r\n\t\tEve order ID: " + orderRow.EveOrderID +
+                        "\r\n\t\tCorp order: " + orderRow.ForCorp.ToString() +
+                        "\r\n\t\tStation: " + Stations.GetStationName(orderRow.StationID) +
+                        "\r\n\t\tItem: " + Items.GetItemName(orderRow.ItemID) +
+                        "\r\n\t\tType: " + (orderRow.BuyOrder ? "Buy" : "Sell") +
+                        "\r\n\t\tTotal volume: " + orderRow.TotalVol +
+                        "\r\n\t\tRemaining volume: " + orderRow.RemainingVol +
+                        "\r\n\t\tPrice: " + orderRow.Price +
+                        "\r\n\t\tStatus: " + OrderStates.GetStateDescription(orderRow.OrderState) +
+                        "\r\n\tAlready have this order loaded:" +
+                        "\r\n\t\tEve order ID: " + existingRow.EveOrderID +
+                        "\r\n\t\tCorp order: " + existingRow.ForCorp.ToString() +
+                        "\r\n\t\tStation: " + Stations.GetStationName(existingRow.StationID) +
+                        "\r\n\t\tItem: " + Items.GetItemName(existingRow.ItemID) +
+                        "\r\n\t\tType: " + (existingRow.BuyOrder ? "Buy" : "Sell") +
+                        "\r\n\t\tTotal volume: " + existingRow.TotalVol +
+                        "\r\n\t\tRemaining volume: " + existingRow.RemainingVol +
+                        "\r\n\t\tPrice: " + existingRow.Price +
+                        "\r\n\t\tStatus: " + OrderStates.GetStateDescription(existingRow.OrderState), true);
+                }
             }
 
             ID = orderID.HasValue ? orderID.Value : 0;

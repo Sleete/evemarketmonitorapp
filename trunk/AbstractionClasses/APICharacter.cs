@@ -2664,7 +2664,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                 EMMADataSet.OrdersRow orderRow = BuildOrdersRow(orderData, orderEntry, corc);
                                 int id = 0;
 
-                                if (!Orders.Exists(orderData, orderRow, ref id))
+                                if (!Orders.Exists(orderData, orderRow, ref id, _corpID, _charID))
                                 {
                                     // Order does not exist in the database so add it.
                                     orderData.AddOrdersRow(orderRow);
