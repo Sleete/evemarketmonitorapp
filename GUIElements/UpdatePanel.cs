@@ -10,12 +10,11 @@ using System.Reflection;
 using EveMarketMonitorApp.DatabaseClasses;
 using EveMarketMonitorApp.AbstractionClasses;
 using EveMarketMonitorApp.Common;
+using EveMarketMonitorApp.GUIElements.Interfaces;
 
 namespace EveMarketMonitorApp.GUIElements
 {
-    public delegate void APIUpdateEvent(object myObject, APIUpdateEventArgs args);
-
-    public partial class UpdatePanel : UserControl
+    public partial class UpdatePanel : UserControl, IUpdatePanel
     {
         private APICharacter _character;
         private CharOrCorp _type;
@@ -58,6 +57,8 @@ namespace EveMarketMonitorApp.GUIElements
             lblOrdersStatus.BackColor = _upToDateColour;
             lblAssets.BackColor = _upToDateColour;
             lblAssetsStatus.BackColor = _upToDateColour;
+            lblIndustryJobs.BackColor = _upToDateColour;
+            lblIndustryJobsStatus.BackColor = _upToDateColour;
 
             _showingTT.Add(APIDataType.Assets, false);
             _showingTT.Add(APIDataType.Journal, false);
@@ -108,10 +109,16 @@ namespace EveMarketMonitorApp.GUIElements
             chkAutoOrders.Enabled = !Globals.EveAPIDown;
             chkAutoTrans.Enabled = !Globals.EveAPIDown;
 
-            chkAutoAssets.CheckedChanged += new EventHandler(chkAutoAssets_CheckedChanged);
-            chkAutoJournal.CheckedChanged += new EventHandler(chkAutoJournal_CheckedChanged);
-            chkAutoOrders.CheckedChanged += new EventHandler(chkAutoOrders_CheckedChanged);
-            chkAutoTrans.CheckedChanged += new EventHandler(chkAutoTrans_CheckedChanged);
+            chkAutoAssets.Tag = APIDataType.Assets;
+            chkAutoIndustryJobs.Tag = APIDataType.IndustryJobs;
+            chkAutoJournal.Tag = APIDataType.Journal;
+            chkAutoOrders.Tag = APIDataType.Orders;
+            chkAutoTrans.Tag = APIDataType.Transactions;
+            chkAutoAssets.CheckedChanged += new EventHandler(chk_CheckedChanged);
+            chkAutoJournal.CheckedChanged += new EventHandler(chk_CheckedChanged);
+            chkAutoOrders.CheckedChanged += new EventHandler(chk_CheckedChanged);
+            chkAutoTrans.CheckedChanged += new EventHandler(chk_CheckedChanged);
+            chkAutoIndustryJobs.CheckedChanged += new EventHandler(chk_CheckedChanged);
 
             lblAssets.Tag = new LabelMetaData(APIDataType.Assets);
             lblAssetsStatus.Tag = new LabelMetaData(APIDataType.Assets);
@@ -121,6 +128,8 @@ namespace EveMarketMonitorApp.GUIElements
             lblOrdersStatus.Tag = new LabelMetaData(APIDataType.Orders);
             lblTransactions.Tag = new LabelMetaData(APIDataType.Transactions);
             lblTransStatus.Tag =new LabelMetaData( APIDataType.Transactions);
+            lblIndustryJobs.Tag = new LabelMetaData(APIDataType.IndustryJobs);
+            lblIndustryJobsStatus.Tag = new LabelMetaData(APIDataType.IndustryJobs);
 
             lblAssets.MouseHover += new EventHandler(Label_MouseHover);
             lblAssetsStatus.MouseHover += new EventHandler(Label_MouseHover);
@@ -130,6 +139,8 @@ namespace EveMarketMonitorApp.GUIElements
             lblOrdersStatus.MouseHover += new EventHandler(Label_MouseHover);
             lblTransactions.MouseHover += new EventHandler(Label_MouseHover);
             lblTransStatus.MouseHover += new EventHandler(Label_MouseHover);
+            lblIndustryJobs.MouseHover += new EventHandler(Label_MouseHover);
+            lblIndustryJobsStatus.MouseHover += new EventHandler(Label_MouseHover);
 
             lblAssets.MouseLeave += new EventHandler(Label_MouseLeave);
             lblAssetsStatus.MouseLeave += new EventHandler(Label_MouseLeave);
@@ -139,6 +150,8 @@ namespace EveMarketMonitorApp.GUIElements
             lblOrdersStatus.MouseLeave += new EventHandler(Label_MouseLeave);
             lblTransactions.MouseLeave += new EventHandler(Label_MouseLeave);
             lblTransStatus.MouseLeave += new EventHandler(Label_MouseLeave);
+            lblIndustryJobs.MouseLeave += new EventHandler(Label_MouseLeave);
+            lblIndustryJobsStatus.MouseLeave += new EventHandler(Label_MouseLeave);
 
             // Removed this because it causes the update to run before the creating
             // proceedure has had a chance to attach it's event listeners..
@@ -148,12 +161,12 @@ namespace EveMarketMonitorApp.GUIElements
         private void SetOverallUpdateState()
         {
             if (chkAutoTrans.Checked && chkAutoOrders.Checked &&
-                chkAutoJournal.Checked && chkAutoAssets.Checked)
+                chkAutoJournal.Checked && chkAutoAssets.Checked && chkAutoIndustryJobs.Checked)
             {
                 chkUpdate.CheckState = CheckState.Checked;
             }
             else if (!chkAutoTrans.Checked && !chkAutoOrders.Checked &&
-                !chkAutoJournal.Checked && !chkAutoAssets.Checked)
+                !chkAutoJournal.Checked && !chkAutoAssets.Checked && !chkAutoIndustryJobs.Checked)
             {
                 chkUpdate.CheckState = CheckState.Unchecked;
             }
@@ -231,6 +244,8 @@ namespace EveMarketMonitorApp.GUIElements
                     UserAccount.Settings.APIOrderUpdatePeriod);
                 UpdateLabel(lblAssetsStatus, lblAssets, _type, APIDataType.Assets,
                     UserAccount.Settings.APIAssetUpdatePeriod);
+                UpdateLabel(lblIndustryJobsStatus, lblIndustryJobs, _type, APIDataType.IndustryJobs,
+                    UserAccount.Settings.APIIndustryJobsUpdatePeriod);
 
                 _updating = false;
             }
@@ -250,14 +265,17 @@ namespace EveMarketMonitorApp.GUIElements
                 chkAutoJournal.Visible = true;
                 chkAutoOrders.Visible = true;
                 chkAutoTrans.Visible = true;
+                chkAutoIndustryJobs.Visible = true;
                 lblAssetsStatus.Width -= chkAutoAssets.Width;
                 lblJournalStatus.Width -= chkAutoAssets.Width;
                 lblOrdersStatus.Width -= chkAutoAssets.Width;
                 lblTransStatus.Width -= chkAutoAssets.Width;
+                lblIndustryJobsStatus.Width -= chkAutoIndustryJobs.Width;
                 chkAutoAssets.Checked = !Globals.EveAPIDown && _character.GetAPIAutoUpdate(_type, APIDataType.Assets);
                 chkAutoJournal.Checked = !Globals.EveAPIDown && _character.GetAPIAutoUpdate(_type, APIDataType.Journal);
                 chkAutoOrders.Checked = !Globals.EveAPIDown && _character.GetAPIAutoUpdate(_type, APIDataType.Orders);
                 chkAutoTrans.Checked = !Globals.EveAPIDown && _character.GetAPIAutoUpdate(_type, APIDataType.Transactions);
+                chkAutoIndustryJobs.Checked = !Globals.EveAPIDown && _character.GetAPIAutoUpdate(_type, APIDataType.IndustryJobs);
                 SetOverallUpdateState();
             }
             else
@@ -269,17 +287,20 @@ namespace EveMarketMonitorApp.GUIElements
                     lblJournalStatus.Width += chkAutoAssets.Width;
                     lblOrdersStatus.Width += chkAutoAssets.Width;
                     lblTransStatus.Width += chkAutoAssets.Width;
+                    lblIndustryJobsStatus.Width += chkAutoIndustryJobs.Width;
                 }
                 _individualUpdate = false;
                 chkAutoAssets.Visible = false;
                 chkAutoJournal.Visible = false;
                 chkAutoOrders.Visible = false;
                 chkAutoTrans.Visible = false;
+                chkAutoIndustryJobs.Visible = false;
                 chkUpdate.Checked = !Globals.EveAPIDown &&
                     _character.GetAPIAutoUpdate(_type, APIDataType.Assets) &&
                     _character.GetAPIAutoUpdate(_type, APIDataType.Journal) &&
                     _character.GetAPIAutoUpdate(_type, APIDataType.Transactions) &&
-                    _character.GetAPIAutoUpdate(_type, APIDataType.Orders);
+                    _character.GetAPIAutoUpdate(_type, APIDataType.Orders) &&
+                    _character.GetAPIAutoUpdate(_type, APIDataType.IndustryJobs);
             }
         }
 
@@ -514,7 +535,7 @@ namespace EveMarketMonitorApp.GUIElements
                         _lastUpdateAttempt.Remove(dataType);
                     }
                     _lastUpdateAttempt.Add(dataType, DateTime.UtcNow);
-                    _character.UpdateDataFromAPI(corc, dataType);
+                    _character.DownloadXMLFromAPI(corc, dataType);
                     //if (corc == CharOrCorp.Corp && dataType == APIDataType.Orders)
                     //{
                     //    // If we're dealing with corporate orders then we need to grab corporate orders for 
@@ -544,78 +565,82 @@ namespace EveMarketMonitorApp.GUIElements
             // data access.
             if (corc == CharOrCorp.Corp)
             {
-                if (!UserAccount.Settings.APIIndividualUpdate)
+                switch (dataType)
                 {
-                    bool enabled = false;
-                    enabled = _character.GetAPIAutoUpdate(corc, dataType) ||
-                        _character.GetAPIAutoUpdate(corc, dataType) || _character.GetAPIAutoUpdate(corc, dataType) ||
-                        _character.GetAPIAutoUpdate(corc, dataType);
-                    chkUpdate.Checked = enabled;
+                    case APIDataType.Transactions:
+                        chkAutoTrans.Checked = _character.GetAPIAutoUpdate(corc, dataType);
+                        break;
+                    case APIDataType.Journal:
+                        chkAutoJournal.Checked = _character.GetAPIAutoUpdate(corc, dataType);
+                        break;
+                    case APIDataType.Assets:
+                        chkAutoAssets.Checked = _character.GetAPIAutoUpdate(corc, dataType);
+                        break;
+                    case APIDataType.Orders:
+                        chkAutoOrders.Checked = _character.GetAPIAutoUpdate(corc, dataType);
+                        break;
+                    case APIDataType.IndustryJobs:
+                        chkAutoIndustryJobs.Checked = _character.GetAPIAutoUpdate(corc, dataType);
+                        break;
+                    default:
+                        break;
                 }
-                else
-                {
-                    switch (dataType)
-                    {
-                        case APIDataType.Transactions:
-                            chkAutoTrans.Checked = _character.GetAPIAutoUpdate(corc, dataType);
-                            break;
-                        case APIDataType.Journal:
-                            chkAutoJournal.Checked = _character.GetAPIAutoUpdate(corc, dataType);
-                            break;
-                        case APIDataType.Assets:
-                            chkAutoAssets.Checked = _character.GetAPIAutoUpdate(corc, dataType);
-                            break;
-                        case APIDataType.Orders:
-                            chkAutoOrders.Checked = _character.GetAPIAutoUpdate(corc, dataType);
-                            break;
-                        default:
-                            break;
-                    }
-                    SetOverallUpdateState();
-                }
+                SetOverallUpdateState();
             }
         }
 
         
-        private void chkAutoTrans_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!_chkClicked)
-            {
-                _chkClicked = true;
-                _character.SetAPIAutoUpdate(_type, APIDataType.Transactions, chkAutoTrans.Checked);
-                SetOverallUpdateState();
-                _chkClicked = false;
-            }
-        }
+        //private void chkAutoTrans_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    if (!_chkClicked)
+        //    {
+        //        _chkClicked = true;
+        //        _character.SetAPIAutoUpdate(_type, APIDataType.Transactions, chkAutoTrans.Checked);
+        //        SetOverallUpdateState();
+        //        _chkClicked = false;
+        //    }
+        //}
 
-        private void chkAutoJournal_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!_chkClicked)
-            {
-                _chkClicked = true;
-                _character.SetAPIAutoUpdate(_type, APIDataType.Journal, chkAutoJournal.Checked);
-                SetOverallUpdateState();
-                _chkClicked = false;
-            }
-        }
+        //private void chkAutoJournal_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    if (!_chkClicked)
+        //    {
+        //        _chkClicked = true;
+        //        _character.SetAPIAutoUpdate(_type, APIDataType.Journal, chkAutoJournal.Checked);
+        //        SetOverallUpdateState();
+        //        _chkClicked = false;
+        //    }
+        //}
 
-        private void chkAutoOrders_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!_chkClicked)
-            {
-                _chkClicked = true;
-                _character.SetAPIAutoUpdate(_type, APIDataType.Orders, chkAutoOrders.Checked);
-                SetOverallUpdateState();
-                _chkClicked = false;
-            }
-        }
+        //private void chkAutoOrders_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    if (!_chkClicked)
+        //    {
+        //        _chkClicked = true;
+        //        _character.SetAPIAutoUpdate(_type, APIDataType.Orders, chkAutoOrders.Checked);
+        //        SetOverallUpdateState();
+        //        _chkClicked = false;
+        //    }
+        //}
 
-        private void chkAutoAssets_CheckedChanged(object sender, EventArgs e)
+        //private void chkAutoAssets_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    if (!_chkClicked)
+        //    {
+        //        _chkClicked = true;
+        //        _character.SetAPIAutoUpdate(_type, APIDataType.Assets, chkAutoAssets.Checked);
+        //        SetOverallUpdateState();
+        //        _chkClicked = false;
+        //    }
+        //}
+        void chk_CheckedChanged(object sender, EventArgs e)
         {
             if (!_chkClicked)
             {
                 _chkClicked = true;
-                _character.SetAPIAutoUpdate(_type, APIDataType.Assets, chkAutoAssets.Checked);
+                CheckBox checkbox = sender as CheckBox;
+                APIDataType APItype = (APIDataType)checkbox.Tag;
+                _character.SetAPIAutoUpdate(_type, APItype, checkbox.Checked);
                 SetOverallUpdateState();
                 _chkClicked = false;
             }
@@ -628,6 +653,7 @@ namespace EveMarketMonitorApp.GUIElements
             chkAutoJournal.Checked = _toggleAll;
             chkAutoOrders.Checked = _toggleAll;
             chkAutoTrans.Checked = _toggleAll;
+            chkAutoIndustryJobs.Checked = _toggleAll;
             SetOverallUpdateState();
             _toggleAll = !_toggleAll;
             _chkClicked = false;
@@ -640,6 +666,7 @@ namespace EveMarketMonitorApp.GUIElements
             chkAutoJournal.Checked = _toggleAll;
             chkAutoOrders.Checked = _toggleAll;
             chkAutoTrans.Checked = _toggleAll;
+            chkAutoIndustryJobs.Checked = _toggleAll;
             SetOverallUpdateState();
             _toggleAll = !_toggleAll;
             _chkClicked = false;
@@ -658,6 +685,7 @@ namespace EveMarketMonitorApp.GUIElements
                 chkAutoJournal.Checked = state;
                 chkAutoOrders.Checked = state;
                 chkAutoTrans.Checked = state;
+                chkAutoIndustryJobs.Checked = state;
             }
         }
 

@@ -5,6 +5,7 @@ using System.Xml;
 using System.Globalization;
 
 using EveMarketMonitorApp.Common;
+using EveMarketMonitorApp.AbstractionClasses;
 
 namespace EveMarketMonitorApp.DatabaseClasses
 {
@@ -65,6 +66,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.charAssetsTransUpdateID);
             GetValue(Setting.corpAssetsEffectiveDate);
             GetValue(Setting.corpAssetsTransUpdateID);
+            GetValue(Setting.corpIndustryJobsAPIAccess);
             GetValue(Setting.lastCourierDest);
             GetValue(Setting.corpOrdersAPIAccess);
             GetValue(Setting.corpTransactionsAPIAccess);
@@ -73,6 +75,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.firstUpdateDoneAssetsChar);
             GetValue(Setting.firstUpdateDoneAssetsCorp);
             GetValue(Setting.updatedOwnerIDToCorpID);
+            GetValue(Setting.lastCharIndustryJobsUpdate);
+            GetValue(Setting.lastCorpIndustryJobsUpdate);
         }
 
         /// <summary>
@@ -197,6 +201,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 case Setting.corpAssetsAPIAccess:
                     retVal = bool.TrueString;
                     break;
+                case Setting.corpIndustryJobsAPIAccess:
+                    retVal = bool.TrueString;
+                    break;
                 case Setting.firstUpdateDoneAssetsChar:
                     //if (CharAssetsEffectiveDate.CompareTo(defaultDateTime) == 0) { retVal = bool.FalseString; }
                     //else { retVal = bool.TrueString; }
@@ -209,6 +216,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     break;
                 case Setting.updatedOwnerIDToCorpID:
                     retVal = bool.FalseString;
+                    break;
+                case Setting.lastCorpIndustryJobsUpdate:
+                    retVal = defaultDateTime.ToString(CultureInfo.InvariantCulture.DateTimeFormat);
+                    break;
+                case Setting.lastCharIndustryJobsUpdate:
+                    retVal = defaultDateTime.ToString(CultureInfo.InvariantCulture.DateTimeFormat);
                     break;
                 default:
                     break;
@@ -269,6 +282,67 @@ namespace EveMarketMonitorApp.DatabaseClasses
             get { return bool.Parse(GetValue(Setting.corpAssetsAPIAccess)); }
             set { SetValue(Setting.corpAssetsAPIAccess, value.ToString()); }
         }
+        public bool CorpIndustryJobsAPIAccess
+        {
+            get { return bool.Parse(GetValue(Setting.corpIndustryJobsAPIAccess)); }
+            set { SetValue(Setting.corpIndustryJobsAPIAccess, value.ToString()); }
+        }
+        public bool GetCorpAPIAccess(APIDataType type)
+        {
+            bool retVal =false;
+            switch (type)
+            {
+                case APIDataType.Transactions:
+                    retVal = CorpTransactionsAPIAccess;
+                    break;
+                case APIDataType.Journal:
+                    retVal = CorpJournalAPIAccess; 
+                    break;
+                case APIDataType.Assets:
+                    retVal = CorpAssetsAPIAccess;
+                    break;
+                case APIDataType.Orders:
+                    retVal = CorpOrdersAPIAccess;
+                    break;
+                case APIDataType.IndustryJobs:
+                    retVal = CorpIndustryJobsAPIAccess;
+                    break;
+                case APIDataType.Unknown:
+                    break;
+                case APIDataType.Full:
+                    break;
+                default:
+                    break;
+            }
+            return retVal;
+        }
+        public void SetCorpAPIAccess(APIDataType type, bool value)
+        {
+            switch (type)
+            {
+                case APIDataType.Transactions:
+                    CorpTransactionsAPIAccess = value;
+                    break;
+                case APIDataType.Journal:
+                    CorpJournalAPIAccess = value;
+                    break;
+                case APIDataType.Assets:
+                    CorpAssetsAPIAccess = value;
+                    break;
+                case APIDataType.Orders:
+                    CorpOrdersAPIAccess = value;
+                    break;
+                case APIDataType.IndustryJobs:
+                    CorpIndustryJobsAPIAccess = value;
+                    break;
+                case APIDataType.Unknown:
+                    break;
+                case APIDataType.Full:
+                    break;
+                default:
+                    break;
+            }
+        }
 
         public bool FirstUpdateDoneAssetsChar
         {
@@ -285,6 +359,20 @@ namespace EveMarketMonitorApp.DatabaseClasses
             get { return bool.Parse(GetValue(Setting.updatedOwnerIDToCorpID)); }
             set { SetValue(Setting.updatedOwnerIDToCorpID, value.ToString()); }
         }
+
+        public DateTime LastCharIndustryJobsUpdate
+        {
+            get { return DateTime.Parse(GetValue(Setting.lastCharIndustryJobsUpdate), CultureInfo.InvariantCulture.DateTimeFormat); }
+            set { SetValue(Setting.lastCharIndustryJobsUpdate, value.ToString(CultureInfo.InvariantCulture.DateTimeFormat)); }
+        }
+
+        public DateTime LastCorpIndustryJobsUpdate
+        {
+            get { return DateTime.Parse(GetValue(Setting.lastCorpIndustryJobsUpdate), CultureInfo.InvariantCulture.DateTimeFormat); }
+            set { SetValue(Setting.lastCorpIndustryJobsUpdate, value.ToString(CultureInfo.InvariantCulture.DateTimeFormat)); }
+        }
+
+
         #endregion
 
         private enum Setting
@@ -298,9 +386,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
             corpJournalAPIAccess,
             corpTransactionsAPIAccess,
             corpAssetsAPIAccess,
+            corpIndustryJobsAPIAccess,
             firstUpdateDoneAssetsChar,
             firstUpdateDoneAssetsCorp,
-            updatedOwnerIDToCorpID
+            updatedOwnerIDToCorpID,
+            lastCharIndustryJobsUpdate,
+            lastCorpIndustryJobsUpdate
         }
 
     }

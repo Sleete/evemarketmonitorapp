@@ -8614,6 +8614,161 @@ AS
                         }
                         #endregion
                     }
+                    if (dbVersion.CompareTo(new Version("1.5.1.5")) < 0)
+                    {
+                        #region Add 'AutoUpdateIndustryJobs' column to RptGroupChars table
+                        commandText =
+                               @"ALTER TABLE dbo.RptGroupChars
+ADD AutoUpdateIndustryJobs bit NOT NULL DEFAULT 0";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.5"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'AutoUpdateIndustryJobs' column to RptGroupChars table", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.1.6")) < 0)
+                    {
+                        #region Add 'AutoUpdateIndustryJobs' column to RptGroupCorps table
+                        commandText =
+                               @"ALTER TABLE dbo.RptGroupCorps
+ADD AutoUpdateIndustryJobs bit NOT NULL DEFAULT 0";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.6"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem adding 'AutoUpdateIndustryJobs' column to RptGroupCorps table", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.1.7")) < 0)
+                    {
+                        #region Updating RptGroupSetHasCorp stored proc
+                        commandText =
+                               @"ALTER PROCEDURE dbo.RptGroupSetHasCorp 
+	@rptGroupID		int,
+	@apiCorpID		int,
+	@included		bit,
+	@autoTrans		bit,
+	@autoJournal	bit,
+	@autoAssets		bit,
+	@autoOrders		bit,
+	@autoIndustry	bit,
+	@apiCharID		int
+AS
+	DELETE FROM	RptGroupCorps
+	WHERE	ReportGroupID = @rptGroupID AND APICorpID = @apiCorpID AND APICharID = @apiCharID
+
+	IF(@included = 1)
+	BEGIN
+		INSERT INTO RptGroupCorps (ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, APICharID, AutoUpdateIndustryJobs) 
+		VALUES (@rptGroupID, @apiCorpID, @autoTrans, @autoJournal, @autoAssets, @autoOrders, @apiCharID, @autoIndustry)
+	END
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.7"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'RptGroupSetHasCorp' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.1.8")) < 0)
+                    {
+                        #region Updating RptGroupSetHasChar stored proc
+                        commandText =
+                               @"ALTER PROCEDURE dbo.RptGroupSetHasChar 
+	@rptGroupID		int,
+	@apiCharID		int,
+	@included		bit,
+	@autoTrans		bit,
+	@autoJournal	bit,
+	@autoAssets		bit,
+	@autoOrders		bit,
+	@autoIndustry	bit
+AS
+	DELETE FROM	RptGroupChars
+	WHERE	ReportGroupID = @rptGroupID AND APICharID = @apiCharID
+
+	IF(@included = 1)
+	BEGIN
+		INSERT INTO RptGroupChars (ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, AutoUpdateIndustryJobs) 
+		VALUES (@rptGroupID, @apiCharID, @autoTrans, @autoJournal, @autoAssets, @autoOrders, @autoIndustry)
+	END
+	
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.8"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'RptGroupSetHasChar' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.1.9")) < 0)
+                    {
+                        #region Create IndustryJobGetByID stored proc
+                        commandText =
+                               @"CREATE PROCEDURE dbo.IndustryJobGetByID 
+	@jobID			bigint
+AS
+	SELECT *
+	FROM IndustryJobs
+	WHERE ID = @jobID
+	
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.9"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'IndustryJobGetByID' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+
+                
+                
                 }
 
             }

@@ -50,7 +50,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             bool corp = false;
             APICharacter charData = UserAccount.CurrentGroup.GetCharacter(orderData.OwnerID, ref corp);
-            orderRow.OwnerID = charData.CharID;
+            //orderRow.OwnerID = charData.CharID;
+            orderRow.OwnerID = orderData.OwnerID;
             orderRow.ForCorp = corp;
             orderRow.StationID = orderData.StationID;
             orderRow.TotalVol = orderData.TotalVol;
@@ -65,6 +66,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             orderRow.Price = orderData.Price;
             orderRow.BuyOrder = orderData.BuyOrder;
             orderRow.Issued = orderData.Date;
+            orderRow.EveOrderID = orderData.EveOrderID;
             orderRow.Processed = false;
 
             if (newRow)

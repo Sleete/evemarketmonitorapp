@@ -48,21 +48,21 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
         public static void SetCharGroupSettings(int reportGroupID, int APICharID, bool included, bool autoTrans,
-            bool autoJournal, bool autoAssets, bool autoOrders)
+            bool autoJournal, bool autoAssets, bool autoOrders, bool autoIndustryJobs)
         {
             lock (groupCharsTableAdapter)
             {
                 groupCharsTableAdapter.Store(reportGroupID, APICharID, included, autoTrans, autoJournal,
-                    autoAssets, autoOrders);
+                    autoAssets, autoOrders, autoIndustryJobs);
             }
         }
         public static void SetCorpGroupSettings(int reportGroupID, int APICorpID, bool included, bool autoTrans,
-            bool autoJournal, bool autoAssets, bool autoOrders, int APICharID)
+            bool autoJournal, bool autoAssets, bool autoOrders, bool autoIndustryJobs, int APICharID)
         {
             lock (groupCorpsTableAdapter)
             {
                 groupCorpsTableAdapter.Store(reportGroupID, APICorpID, included, autoTrans, autoJournal,
-                    autoAssets, autoOrders, APICharID);
+                    autoAssets, autoOrders, autoIndustryJobs, APICharID);
             }
         }
 
@@ -77,7 +77,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="autoUpdateOrders"></param>
         /// <returns>True if the char is in the report group, false otherwise</returns>
         public static bool GroupCharSettings(int reportGroupID, int APICharID, ref bool autoUpdateTrans,
-            ref bool autoUpdateJournal, ref bool autoUpdateAssets, ref bool autoUpdateOrders)
+            ref bool autoUpdateJournal, ref bool autoUpdateAssets, ref bool autoUpdateOrders,
+            ref bool autoUpdateIndustryJobs)
         {
             bool retVal = true;
             EMMADataSet.RptGroupCharsDataTable table = new EMMADataSet.RptGroupCharsDataTable();
@@ -96,6 +97,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 autoUpdateOrders = table[0].AutoUpdateOrders;
                 autoUpdateJournal = table[0].AutoUpdateJournal;
                 autoUpdateAssets = table[0].AutoUpdateAssets;
+                autoUpdateIndustryJobs = table[0].AutoUpdateIndustryJobs;
             }
 
             return retVal;
@@ -111,7 +113,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="autoUpdateOrders"></param>
         /// <returns>True if the corp is in the report group, false otherwise</returns>
         public static bool GroupCorpSettings(int reportGroupID, int APICorpID, ref bool autoUpdateTrans,
-            ref bool autoUpdateJournal, ref bool autoUpdateAssets, ref bool autoUpdateOrders, int APICharID)
+            ref bool autoUpdateJournal, ref bool autoUpdateAssets, ref bool autoUpdateOrders,
+            ref bool autoUpdateIndustryJobs, int APICharID)
         {
             bool retVal = true;
             EMMADataSet.RptGroupCorpsDataTable table = new EMMADataSet.RptGroupCorpsDataTable();
@@ -130,6 +133,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 autoUpdateOrders = table[0].AutoUpdateOrders;
                 autoUpdateJournal = table[0].AutoUpdateJournal;
                 autoUpdateAssets = table[0].AutoUpdateAssets;
+                autoUpdateIndustryJobs = table[0].AutoUpdateIndustryJobs;
             }
 
             return retVal;

@@ -36,6 +36,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private bool _buyOrder;
         private DateTime _date;
 
+        private long _eveOrderID;
+
 
         private long _twelveHourMovement;
         private bool _gotTwelveHourMovement = false;
@@ -74,6 +76,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             _gotTwoDayMovement = true;
             _sevenDayMovement = 0;
             _gotSevenDayMovement = true;
+            _eveOrderID = 0;
         }
 
         public Order(EMMADataSet.OrdersRow dataRow)
@@ -103,12 +106,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 {
                     _date = _date.AddHours(Globals.HoursOffset);
                 }
+                _eveOrderID = dataRow.EveOrderID;
             }
         }
 
         public int ID
         {
             get { return _id; }
+        }
+
+        public long EveOrderID
+        {
+            get { return _eveOrderID; }
+            set { _eveOrderID = value; }
         }
 
         public string Owner

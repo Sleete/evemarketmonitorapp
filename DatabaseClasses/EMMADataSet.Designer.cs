@@ -35,8 +35,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         
         private PortraitsDataTable tablePortraits;
         
-        private RptGroupCharsDataTable tableRptGroupChars;
-        
         private JournalGenerationsDataTable tableJournalGenerations;
         
         private NamesDataTable tableNames;
@@ -89,8 +87,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         
         private ReprocessJobDataTable tableReprocessJob;
         
-        private RptGroupCorpsDataTable tableRptGroupCorps;
-        
         private RiskRatingDataTable tableRiskRating;
         
         private PublicCorpsDataTable tablePublicCorps;
@@ -120,6 +116,10 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         private AssetsLostDataTable tableAssetsLost;
         
         private IndustryJobsDataTable tableIndustryJobs;
+        
+        private RptGroupCharsDataTable tableRptGroupChars;
+        
+        private RptGroupCorpsDataTable tableRptGroupCorps;
         
         private WalletDivisionsDataTable tableWalletDivisions;
         
@@ -163,9 +163,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 }
                 if ((ds.Tables["Portraits"] != null)) {
                     base.Tables.Add(new PortraitsDataTable(ds.Tables["Portraits"]));
-                }
-                if ((ds.Tables["RptGroupChars"] != null)) {
-                    base.Tables.Add(new RptGroupCharsDataTable(ds.Tables["RptGroupChars"]));
                 }
                 if ((ds.Tables["JournalGenerations"] != null)) {
                     base.Tables.Add(new JournalGenerationsDataTable(ds.Tables["JournalGenerations"]));
@@ -245,9 +242,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 if ((ds.Tables["ReprocessJob"] != null)) {
                     base.Tables.Add(new ReprocessJobDataTable(ds.Tables["ReprocessJob"]));
                 }
-                if ((ds.Tables["RptGroupCorps"] != null)) {
-                    base.Tables.Add(new RptGroupCorpsDataTable(ds.Tables["RptGroupCorps"]));
-                }
                 if ((ds.Tables["RiskRating"] != null)) {
                     base.Tables.Add(new RiskRatingDataTable(ds.Tables["RiskRating"]));
                 }
@@ -292,6 +286,12 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 }
                 if ((ds.Tables["IndustryJobs"] != null)) {
                     base.Tables.Add(new IndustryJobsDataTable(ds.Tables["IndustryJobs"]));
+                }
+                if ((ds.Tables["RptGroupChars"] != null)) {
+                    base.Tables.Add(new RptGroupCharsDataTable(ds.Tables["RptGroupChars"]));
+                }
+                if ((ds.Tables["RptGroupCorps"] != null)) {
+                    base.Tables.Add(new RptGroupCorpsDataTable(ds.Tables["RptGroupCorps"]));
                 }
                 if ((ds.Tables["WalletDivisions"] != null)) {
                     base.Tables.Add(new WalletDivisionsDataTable(ds.Tables["WalletDivisions"]));
@@ -356,15 +356,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         public PortraitsDataTable Portraits {
             get {
                 return this.tablePortraits;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Browsable(false)]
-        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public RptGroupCharsDataTable RptGroupChars {
-            get {
-                return this.tableRptGroupChars;
             }
         }
         
@@ -605,15 +596,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public RptGroupCorpsDataTable RptGroupCorps {
-            get {
-                return this.tableRptGroupCorps;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Browsable(false)]
-        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
         public RiskRatingDataTable RiskRating {
             get {
                 return this.tableRiskRating;
@@ -749,6 +731,24 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public RptGroupCharsDataTable RptGroupChars {
+            get {
+                return this.tableRptGroupChars;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public RptGroupCorpsDataTable RptGroupCorps {
+            get {
+                return this.tableRptGroupCorps;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
         public WalletDivisionsDataTable WalletDivisions {
             get {
                 return this.tableWalletDivisions;
@@ -829,9 +829,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 if ((ds.Tables["Portraits"] != null)) {
                     base.Tables.Add(new PortraitsDataTable(ds.Tables["Portraits"]));
                 }
-                if ((ds.Tables["RptGroupChars"] != null)) {
-                    base.Tables.Add(new RptGroupCharsDataTable(ds.Tables["RptGroupChars"]));
-                }
                 if ((ds.Tables["JournalGenerations"] != null)) {
                     base.Tables.Add(new JournalGenerationsDataTable(ds.Tables["JournalGenerations"]));
                 }
@@ -910,9 +907,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 if ((ds.Tables["ReprocessJob"] != null)) {
                     base.Tables.Add(new ReprocessJobDataTable(ds.Tables["ReprocessJob"]));
                 }
-                if ((ds.Tables["RptGroupCorps"] != null)) {
-                    base.Tables.Add(new RptGroupCorpsDataTable(ds.Tables["RptGroupCorps"]));
-                }
                 if ((ds.Tables["RiskRating"] != null)) {
                     base.Tables.Add(new RiskRatingDataTable(ds.Tables["RiskRating"]));
                 }
@@ -957,6 +951,12 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 }
                 if ((ds.Tables["IndustryJobs"] != null)) {
                     base.Tables.Add(new IndustryJobsDataTable(ds.Tables["IndustryJobs"]));
+                }
+                if ((ds.Tables["RptGroupChars"] != null)) {
+                    base.Tables.Add(new RptGroupCharsDataTable(ds.Tables["RptGroupChars"]));
+                }
+                if ((ds.Tables["RptGroupCorps"] != null)) {
+                    base.Tables.Add(new RptGroupCorpsDataTable(ds.Tables["RptGroupCorps"]));
                 }
                 if ((ds.Tables["WalletDivisions"] != null)) {
                     base.Tables.Add(new WalletDivisionsDataTable(ds.Tables["WalletDivisions"]));
@@ -1019,12 +1019,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             if ((initTable == true)) {
                 if ((this.tablePortraits != null)) {
                     this.tablePortraits.InitVars();
-                }
-            }
-            this.tableRptGroupChars = ((RptGroupCharsDataTable)(base.Tables["RptGroupChars"]));
-            if ((initTable == true)) {
-                if ((this.tableRptGroupChars != null)) {
-                    this.tableRptGroupChars.InitVars();
                 }
             }
             this.tableJournalGenerations = ((JournalGenerationsDataTable)(base.Tables["JournalGenerations"]));
@@ -1183,12 +1177,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                     this.tableReprocessJob.InitVars();
                 }
             }
-            this.tableRptGroupCorps = ((RptGroupCorpsDataTable)(base.Tables["RptGroupCorps"]));
-            if ((initTable == true)) {
-                if ((this.tableRptGroupCorps != null)) {
-                    this.tableRptGroupCorps.InitVars();
-                }
-            }
             this.tableRiskRating = ((RiskRatingDataTable)(base.Tables["RiskRating"]));
             if ((initTable == true)) {
                 if ((this.tableRiskRating != null)) {
@@ -1279,6 +1267,18 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                     this.tableIndustryJobs.InitVars();
                 }
             }
+            this.tableRptGroupChars = ((RptGroupCharsDataTable)(base.Tables["RptGroupChars"]));
+            if ((initTable == true)) {
+                if ((this.tableRptGroupChars != null)) {
+                    this.tableRptGroupChars.InitVars();
+                }
+            }
+            this.tableRptGroupCorps = ((RptGroupCorpsDataTable)(base.Tables["RptGroupCorps"]));
+            if ((initTable == true)) {
+                if ((this.tableRptGroupCorps != null)) {
+                    this.tableRptGroupCorps.InitVars();
+                }
+            }
             this.tableWalletDivisions = ((WalletDivisionsDataTable)(base.Tables["WalletDivisions"]));
             if ((initTable == true)) {
                 if ((this.tableWalletDivisions != null)) {
@@ -1304,8 +1304,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             base.Tables.Add(this.tableEveAccounts);
             this.tablePortraits = new PortraitsDataTable();
             base.Tables.Add(this.tablePortraits);
-            this.tableRptGroupChars = new RptGroupCharsDataTable();
-            base.Tables.Add(this.tableRptGroupChars);
             this.tableJournalGenerations = new JournalGenerationsDataTable();
             base.Tables.Add(this.tableJournalGenerations);
             this.tableNames = new NamesDataTable();
@@ -1358,8 +1356,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             base.Tables.Add(this.tableReprocessResult);
             this.tableReprocessJob = new ReprocessJobDataTable();
             base.Tables.Add(this.tableReprocessJob);
-            this.tableRptGroupCorps = new RptGroupCorpsDataTable();
-            base.Tables.Add(this.tableRptGroupCorps);
             this.tableRiskRating = new RiskRatingDataTable();
             base.Tables.Add(this.tableRiskRating);
             this.tablePublicCorps = new PublicCorpsDataTable();
@@ -1390,6 +1386,10 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             base.Tables.Add(this.tableAssetsLost);
             this.tableIndustryJobs = new IndustryJobsDataTable();
             base.Tables.Add(this.tableIndustryJobs);
+            this.tableRptGroupChars = new RptGroupCharsDataTable();
+            base.Tables.Add(this.tableRptGroupChars);
+            this.tableRptGroupCorps = new RptGroupCorpsDataTable();
+            base.Tables.Add(this.tableRptGroupCorps);
             this.tableWalletDivisions = new WalletDivisionsDataTable();
             base.Tables.Add(this.tableWalletDivisions);
         }
@@ -1416,11 +1416,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         private bool ShouldSerializePortraits() {
-            return false;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private bool ShouldSerializeRptGroupChars() {
             return false;
         }
         
@@ -1555,11 +1550,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private bool ShouldSerializeRptGroupCorps() {
-            return false;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         private bool ShouldSerializeRiskRating() {
             return false;
         }
@@ -1635,6 +1625,16 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private bool ShouldSerializeRptGroupChars() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private bool ShouldSerializeRptGroupCorps() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         private bool ShouldSerializeWalletDivisions() {
             return false;
         }
@@ -1702,8 +1702,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         
         public delegate void PortraitsRowChangeEventHandler(object sender, PortraitsRowChangeEvent e);
         
-        public delegate void RptGroupCharsRowChangeEventHandler(object sender, RptGroupCharsRowChangeEvent e);
-        
         public delegate void JournalGenerationsRowChangeEventHandler(object sender, JournalGenerationsRowChangeEvent e);
         
         public delegate void NamesRowChangeEventHandler(object sender, NamesRowChangeEvent e);
@@ -1756,8 +1754,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         
         public delegate void ReprocessJobRowChangeEventHandler(object sender, ReprocessJobRowChangeEvent e);
         
-        public delegate void RptGroupCorpsRowChangeEventHandler(object sender, RptGroupCorpsRowChangeEvent e);
-        
         public delegate void RiskRatingRowChangeEventHandler(object sender, RiskRatingRowChangeEvent e);
         
         public delegate void PublicCorpsRowChangeEventHandler(object sender, PublicCorpsRowChangeEvent e);
@@ -1787,6 +1783,10 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         public delegate void AssetsLostRowChangeEventHandler(object sender, AssetsLostRowChangeEvent e);
         
         public delegate void IndustryJobsRowChangeEventHandler(object sender, IndustryJobsRowChangeEvent e);
+        
+        public delegate void RptGroupCharsRowChangeEventHandler(object sender, RptGroupCharsRowChangeEvent e);
+        
+        public delegate void RptGroupCorpsRowChangeEventHandler(object sender, RptGroupCorpsRowChangeEvent e);
         
         public delegate void WalletDivisionsRowChangeEventHandler(object sender, WalletDivisionsRowChangeEvent e);
         
@@ -3089,310 +3089,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
                 attribute2.FixedValue = "PortraitsDataTable";
-                type.Attributes.Add(attribute2);
-                type.Particle = sequence;
-                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
-                if (xs.Contains(dsSchema.TargetNamespace)) {
-                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
-                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
-                    try {
-                        global::System.Xml.Schema.XmlSchema schema = null;
-                        dsSchema.Write(s1);
-                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
-                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
-                            s2.SetLength(0);
-                            schema.Write(s2);
-                            if ((s1.Length == s2.Length)) {
-                                s1.Position = 0;
-                                s2.Position = 0;
-                                for (; ((s1.Position != s1.Length) 
-                                            && (s1.ReadByte() == s2.ReadByte())); ) {
-                                    ;
-                                }
-                                if ((s1.Position == s1.Length)) {
-                                    return type;
-                                }
-                            }
-                        }
-                    }
-                    finally {
-                        if ((s1 != null)) {
-                            s1.Close();
-                        }
-                        if ((s2 != null)) {
-                            s2.Close();
-                        }
-                    }
-                }
-                xs.Add(dsSchema);
-                return type;
-            }
-        }
-        
-        /// <summary>
-        ///Represents the strongly named DataTable class.
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-        [global::System.Serializable()]
-        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class RptGroupCharsDataTable : global::System.Data.TypedTableBase<RptGroupCharsRow> {
-            
-            private global::System.Data.DataColumn columnReportGroupID;
-            
-            private global::System.Data.DataColumn columnAPICharID;
-            
-            private global::System.Data.DataColumn columnAutoUpdateTrans;
-            
-            private global::System.Data.DataColumn columnAutoUpdateJournal;
-            
-            private global::System.Data.DataColumn columnAutoUpdateAssets;
-            
-            private global::System.Data.DataColumn columnAutoUpdateOrders;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCharsDataTable() {
-                this.TableName = "RptGroupChars";
-                this.BeginInit();
-                this.InitClass();
-                this.EndInit();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            internal RptGroupCharsDataTable(global::System.Data.DataTable table) {
-                this.TableName = table.TableName;
-                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
-                    this.CaseSensitive = table.CaseSensitive;
-                }
-                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
-                    this.Locale = table.Locale;
-                }
-                if ((table.Namespace != table.DataSet.Namespace)) {
-                    this.Namespace = table.Namespace;
-                }
-                this.Prefix = table.Prefix;
-                this.MinimumCapacity = table.MinimumCapacity;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected RptGroupCharsDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
-                    base(info, context) {
-                this.InitVars();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn ReportGroupIDColumn {
-                get {
-                    return this.columnReportGroupID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn APICharIDColumn {
-                get {
-                    return this.columnAPICharID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn AutoUpdateTransColumn {
-                get {
-                    return this.columnAutoUpdateTrans;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn AutoUpdateJournalColumn {
-                get {
-                    return this.columnAutoUpdateJournal;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn AutoUpdateAssetsColumn {
-                get {
-                    return this.columnAutoUpdateAssets;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn AutoUpdateOrdersColumn {
-                get {
-                    return this.columnAutoUpdateOrders;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.ComponentModel.Browsable(false)]
-            public int Count {
-                get {
-                    return this.Rows.Count;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCharsRow this[int index] {
-                get {
-                    return ((RptGroupCharsRow)(this.Rows[index]));
-                }
-            }
-            
-            public event RptGroupCharsRowChangeEventHandler RptGroupCharsRowChanging;
-            
-            public event RptGroupCharsRowChangeEventHandler RptGroupCharsRowChanged;
-            
-            public event RptGroupCharsRowChangeEventHandler RptGroupCharsRowDeleting;
-            
-            public event RptGroupCharsRowChangeEventHandler RptGroupCharsRowDeleted;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public void AddRptGroupCharsRow(RptGroupCharsRow row) {
-                this.Rows.Add(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCharsRow AddRptGroupCharsRow(int ReportGroupID, int APICharID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders) {
-                RptGroupCharsRow rowRptGroupCharsRow = ((RptGroupCharsRow)(this.NewRow()));
-                object[] columnValuesArray = new object[] {
-                        ReportGroupID,
-                        APICharID,
-                        AutoUpdateTrans,
-                        AutoUpdateJournal,
-                        AutoUpdateAssets,
-                        AutoUpdateOrders};
-                rowRptGroupCharsRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowRptGroupCharsRow);
-                return rowRptGroupCharsRow;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCharsRow FindByReportGroupIDAPICharID(int ReportGroupID, int APICharID) {
-                return ((RptGroupCharsRow)(this.Rows.Find(new object[] {
-                            ReportGroupID,
-                            APICharID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public override global::System.Data.DataTable Clone() {
-                RptGroupCharsDataTable cln = ((RptGroupCharsDataTable)(base.Clone()));
-                cln.InitVars();
-                return cln;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override global::System.Data.DataTable CreateInstance() {
-                return new RptGroupCharsDataTable();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            internal void InitVars() {
-                this.columnReportGroupID = base.Columns["ReportGroupID"];
-                this.columnAPICharID = base.Columns["APICharID"];
-                this.columnAutoUpdateTrans = base.Columns["AutoUpdateTrans"];
-                this.columnAutoUpdateJournal = base.Columns["AutoUpdateJournal"];
-                this.columnAutoUpdateAssets = base.Columns["AutoUpdateAssets"];
-                this.columnAutoUpdateOrders = base.Columns["AutoUpdateOrders"];
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            private void InitClass() {
-                this.columnReportGroupID = new global::System.Data.DataColumn("ReportGroupID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnReportGroupID);
-                this.columnAPICharID = new global::System.Data.DataColumn("APICharID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAPICharID);
-                this.columnAutoUpdateTrans = new global::System.Data.DataColumn("AutoUpdateTrans", typeof(bool), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAutoUpdateTrans);
-                this.columnAutoUpdateJournal = new global::System.Data.DataColumn("AutoUpdateJournal", typeof(bool), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAutoUpdateJournal);
-                this.columnAutoUpdateAssets = new global::System.Data.DataColumn("AutoUpdateAssets", typeof(bool), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAutoUpdateAssets);
-                this.columnAutoUpdateOrders = new global::System.Data.DataColumn("AutoUpdateOrders", typeof(bool), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAutoUpdateOrders);
-                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnReportGroupID,
-                                this.columnAPICharID}, true));
-                this.columnReportGroupID.AllowDBNull = false;
-                this.columnAPICharID.AllowDBNull = false;
-                this.columnAutoUpdateTrans.AllowDBNull = false;
-                this.columnAutoUpdateJournal.AllowDBNull = false;
-                this.columnAutoUpdateAssets.AllowDBNull = false;
-                this.columnAutoUpdateOrders.AllowDBNull = false;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCharsRow NewRptGroupCharsRow() {
-                return ((RptGroupCharsRow)(this.NewRow()));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new RptGroupCharsRow(builder);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override global::System.Type GetRowType() {
-                return typeof(RptGroupCharsRow);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanged(e);
-                if ((this.RptGroupCharsRowChanged != null)) {
-                    this.RptGroupCharsRowChanged(this, new RptGroupCharsRowChangeEvent(((RptGroupCharsRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanging(e);
-                if ((this.RptGroupCharsRowChanging != null)) {
-                    this.RptGroupCharsRowChanging(this, new RptGroupCharsRowChangeEvent(((RptGroupCharsRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleted(e);
-                if ((this.RptGroupCharsRowDeleted != null)) {
-                    this.RptGroupCharsRowDeleted(this, new RptGroupCharsRowChangeEvent(((RptGroupCharsRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleting(e);
-                if ((this.RptGroupCharsRowDeleting != null)) {
-                    this.RptGroupCharsRowDeleting(this, new RptGroupCharsRowChangeEvent(((RptGroupCharsRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public void RemoveRptGroupCharsRow(RptGroupCharsRow row) {
-                this.Rows.Remove(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
-                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                EMMADataSet ds = new EMMADataSet();
-                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
-                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
-                any1.MinOccurs = new decimal(0);
-                any1.MaxOccurs = decimal.MaxValue;
-                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any1);
-                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
-                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
-                any2.MinOccurs = new decimal(1);
-                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any2);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute1.Name = "namespace";
-                attribute1.FixedValue = ds.Namespace;
-                type.Attributes.Add(attribute1);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "RptGroupCharsDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -10802,326 +10498,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class RptGroupCorpsDataTable : global::System.Data.TypedTableBase<RptGroupCorpsRow> {
-            
-            private global::System.Data.DataColumn columnReportGroupID;
-            
-            private global::System.Data.DataColumn columnAPICorpID;
-            
-            private global::System.Data.DataColumn columnAutoUpdateTrans;
-            
-            private global::System.Data.DataColumn columnAutoUpdateJournal;
-            
-            private global::System.Data.DataColumn columnAutoUpdateAssets;
-            
-            private global::System.Data.DataColumn columnAutoUpdateOrders;
-            
-            private global::System.Data.DataColumn columnAPICharID;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCorpsDataTable() {
-                this.TableName = "RptGroupCorps";
-                this.BeginInit();
-                this.InitClass();
-                this.EndInit();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            internal RptGroupCorpsDataTable(global::System.Data.DataTable table) {
-                this.TableName = table.TableName;
-                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
-                    this.CaseSensitive = table.CaseSensitive;
-                }
-                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
-                    this.Locale = table.Locale;
-                }
-                if ((table.Namespace != table.DataSet.Namespace)) {
-                    this.Namespace = table.Namespace;
-                }
-                this.Prefix = table.Prefix;
-                this.MinimumCapacity = table.MinimumCapacity;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected RptGroupCorpsDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
-                    base(info, context) {
-                this.InitVars();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn ReportGroupIDColumn {
-                get {
-                    return this.columnReportGroupID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn APICorpIDColumn {
-                get {
-                    return this.columnAPICorpID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn AutoUpdateTransColumn {
-                get {
-                    return this.columnAutoUpdateTrans;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn AutoUpdateJournalColumn {
-                get {
-                    return this.columnAutoUpdateJournal;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn AutoUpdateAssetsColumn {
-                get {
-                    return this.columnAutoUpdateAssets;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn AutoUpdateOrdersColumn {
-                get {
-                    return this.columnAutoUpdateOrders;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataColumn APICharIDColumn {
-                get {
-                    return this.columnAPICharID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.ComponentModel.Browsable(false)]
-            public int Count {
-                get {
-                    return this.Rows.Count;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCorpsRow this[int index] {
-                get {
-                    return ((RptGroupCorpsRow)(this.Rows[index]));
-                }
-            }
-            
-            public event RptGroupCorpsRowChangeEventHandler RptGroupCorpsRowChanging;
-            
-            public event RptGroupCorpsRowChangeEventHandler RptGroupCorpsRowChanged;
-            
-            public event RptGroupCorpsRowChangeEventHandler RptGroupCorpsRowDeleting;
-            
-            public event RptGroupCorpsRowChangeEventHandler RptGroupCorpsRowDeleted;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public void AddRptGroupCorpsRow(RptGroupCorpsRow row) {
-                this.Rows.Add(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCorpsRow AddRptGroupCorpsRow(int ReportGroupID, int APICorpID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, int APICharID) {
-                RptGroupCorpsRow rowRptGroupCorpsRow = ((RptGroupCorpsRow)(this.NewRow()));
-                object[] columnValuesArray = new object[] {
-                        ReportGroupID,
-                        APICorpID,
-                        AutoUpdateTrans,
-                        AutoUpdateJournal,
-                        AutoUpdateAssets,
-                        AutoUpdateOrders,
-                        APICharID};
-                rowRptGroupCorpsRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowRptGroupCorpsRow);
-                return rowRptGroupCorpsRow;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCorpsRow FindByReportGroupIDAPICorpIDAPICharID(int ReportGroupID, int APICorpID, int APICharID) {
-                return ((RptGroupCorpsRow)(this.Rows.Find(new object[] {
-                            ReportGroupID,
-                            APICorpID,
-                            APICharID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public override global::System.Data.DataTable Clone() {
-                RptGroupCorpsDataTable cln = ((RptGroupCorpsDataTable)(base.Clone()));
-                cln.InitVars();
-                return cln;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override global::System.Data.DataTable CreateInstance() {
-                return new RptGroupCorpsDataTable();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            internal void InitVars() {
-                this.columnReportGroupID = base.Columns["ReportGroupID"];
-                this.columnAPICorpID = base.Columns["APICorpID"];
-                this.columnAutoUpdateTrans = base.Columns["AutoUpdateTrans"];
-                this.columnAutoUpdateJournal = base.Columns["AutoUpdateJournal"];
-                this.columnAutoUpdateAssets = base.Columns["AutoUpdateAssets"];
-                this.columnAutoUpdateOrders = base.Columns["AutoUpdateOrders"];
-                this.columnAPICharID = base.Columns["APICharID"];
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            private void InitClass() {
-                this.columnReportGroupID = new global::System.Data.DataColumn("ReportGroupID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnReportGroupID);
-                this.columnAPICorpID = new global::System.Data.DataColumn("APICorpID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAPICorpID);
-                this.columnAutoUpdateTrans = new global::System.Data.DataColumn("AutoUpdateTrans", typeof(bool), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAutoUpdateTrans);
-                this.columnAutoUpdateJournal = new global::System.Data.DataColumn("AutoUpdateJournal", typeof(bool), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAutoUpdateJournal);
-                this.columnAutoUpdateAssets = new global::System.Data.DataColumn("AutoUpdateAssets", typeof(bool), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAutoUpdateAssets);
-                this.columnAutoUpdateOrders = new global::System.Data.DataColumn("AutoUpdateOrders", typeof(bool), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAutoUpdateOrders);
-                this.columnAPICharID = new global::System.Data.DataColumn("APICharID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAPICharID);
-                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnReportGroupID,
-                                this.columnAPICorpID,
-                                this.columnAPICharID}, true));
-                this.columnReportGroupID.AllowDBNull = false;
-                this.columnAPICorpID.AllowDBNull = false;
-                this.columnAutoUpdateTrans.AllowDBNull = false;
-                this.columnAutoUpdateJournal.AllowDBNull = false;
-                this.columnAutoUpdateAssets.AllowDBNull = false;
-                this.columnAutoUpdateOrders.AllowDBNull = false;
-                this.columnAPICharID.AllowDBNull = false;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCorpsRow NewRptGroupCorpsRow() {
-                return ((RptGroupCorpsRow)(this.NewRow()));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new RptGroupCorpsRow(builder);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override global::System.Type GetRowType() {
-                return typeof(RptGroupCorpsRow);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanged(e);
-                if ((this.RptGroupCorpsRowChanged != null)) {
-                    this.RptGroupCorpsRowChanged(this, new RptGroupCorpsRowChangeEvent(((RptGroupCorpsRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanging(e);
-                if ((this.RptGroupCorpsRowChanging != null)) {
-                    this.RptGroupCorpsRowChanging(this, new RptGroupCorpsRowChangeEvent(((RptGroupCorpsRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleted(e);
-                if ((this.RptGroupCorpsRowDeleted != null)) {
-                    this.RptGroupCorpsRowDeleted(this, new RptGroupCorpsRowChangeEvent(((RptGroupCorpsRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleting(e);
-                if ((this.RptGroupCorpsRowDeleting != null)) {
-                    this.RptGroupCorpsRowDeleting(this, new RptGroupCorpsRowChangeEvent(((RptGroupCorpsRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public void RemoveRptGroupCorpsRow(RptGroupCorpsRow row) {
-                this.Rows.Remove(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
-                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                EMMADataSet ds = new EMMADataSet();
-                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
-                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
-                any1.MinOccurs = new decimal(0);
-                any1.MaxOccurs = decimal.MaxValue;
-                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any1);
-                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
-                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
-                any2.MinOccurs = new decimal(1);
-                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any2);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute1.Name = "namespace";
-                attribute1.FixedValue = ds.Namespace;
-                type.Attributes.Add(attribute1);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "RptGroupCorpsDataTable";
-                type.Attributes.Add(attribute2);
-                type.Particle = sequence;
-                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
-                if (xs.Contains(dsSchema.TargetNamespace)) {
-                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
-                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
-                    try {
-                        global::System.Xml.Schema.XmlSchema schema = null;
-                        dsSchema.Write(s1);
-                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
-                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
-                            s2.SetLength(0);
-                            schema.Write(s2);
-                            if ((s1.Length == s2.Length)) {
-                                s1.Position = 0;
-                                s2.Position = 0;
-                                for (; ((s1.Position != s1.Length) 
-                                            && (s1.ReadByte() == s2.ReadByte())); ) {
-                                    ;
-                                }
-                                if ((s1.Position == s1.Length)) {
-                                    return type;
-                                }
-                            }
-                        }
-                    }
-                    finally {
-                        if ((s1 != null)) {
-                            s1.Close();
-                        }
-                        if ((s2 != null)) {
-                            s2.Close();
-                        }
-                    }
-                }
-                xs.Add(dsSchema);
-                return type;
-            }
-        }
-        
-        /// <summary>
-        ///Represents the strongly named DataTable class.
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-        [global::System.Serializable()]
-        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class RiskRatingDataTable : global::System.Data.TypedTableBase<RiskRatingRow> {
             
             private global::System.Data.DataColumn columnID;
@@ -16812,6 +16188,658 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class RptGroupCharsDataTable : global::System.Data.TypedTableBase<RptGroupCharsRow> {
+            
+            private global::System.Data.DataColumn columnReportGroupID;
+            
+            private global::System.Data.DataColumn columnAPICharID;
+            
+            private global::System.Data.DataColumn columnAutoUpdateTrans;
+            
+            private global::System.Data.DataColumn columnAutoUpdateJournal;
+            
+            private global::System.Data.DataColumn columnAutoUpdateAssets;
+            
+            private global::System.Data.DataColumn columnAutoUpdateOrders;
+            
+            private global::System.Data.DataColumn columnAutoUpdateIndustryJobs;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public RptGroupCharsDataTable() {
+                this.TableName = "RptGroupChars";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            internal RptGroupCharsDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected RptGroupCharsDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn ReportGroupIDColumn {
+                get {
+                    return this.columnReportGroupID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn APICharIDColumn {
+                get {
+                    return this.columnAPICharID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn AutoUpdateTransColumn {
+                get {
+                    return this.columnAutoUpdateTrans;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn AutoUpdateJournalColumn {
+                get {
+                    return this.columnAutoUpdateJournal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn AutoUpdateAssetsColumn {
+                get {
+                    return this.columnAutoUpdateAssets;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn AutoUpdateOrdersColumn {
+                get {
+                    return this.columnAutoUpdateOrders;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn AutoUpdateIndustryJobsColumn {
+                get {
+                    return this.columnAutoUpdateIndustryJobs;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public RptGroupCharsRow this[int index] {
+                get {
+                    return ((RptGroupCharsRow)(this.Rows[index]));
+                }
+            }
+            
+            public event RptGroupCharsRowChangeEventHandler RptGroupCharsRowChanging;
+            
+            public event RptGroupCharsRowChangeEventHandler RptGroupCharsRowChanged;
+            
+            public event RptGroupCharsRowChangeEventHandler RptGroupCharsRowDeleting;
+            
+            public event RptGroupCharsRowChangeEventHandler RptGroupCharsRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public void AddRptGroupCharsRow(RptGroupCharsRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public RptGroupCharsRow AddRptGroupCharsRow(int ReportGroupID, int APICharID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, bool AutoUpdateIndustryJobs) {
+                RptGroupCharsRow rowRptGroupCharsRow = ((RptGroupCharsRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        ReportGroupID,
+                        APICharID,
+                        AutoUpdateTrans,
+                        AutoUpdateJournal,
+                        AutoUpdateAssets,
+                        AutoUpdateOrders,
+                        AutoUpdateIndustryJobs};
+                rowRptGroupCharsRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowRptGroupCharsRow);
+                return rowRptGroupCharsRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public RptGroupCharsRow FindByReportGroupIDAPICharID(int ReportGroupID, int APICharID) {
+                return ((RptGroupCharsRow)(this.Rows.Find(new object[] {
+                            ReportGroupID,
+                            APICharID})));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public override global::System.Data.DataTable Clone() {
+                RptGroupCharsDataTable cln = ((RptGroupCharsDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new RptGroupCharsDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            internal void InitVars() {
+                this.columnReportGroupID = base.Columns["ReportGroupID"];
+                this.columnAPICharID = base.Columns["APICharID"];
+                this.columnAutoUpdateTrans = base.Columns["AutoUpdateTrans"];
+                this.columnAutoUpdateJournal = base.Columns["AutoUpdateJournal"];
+                this.columnAutoUpdateAssets = base.Columns["AutoUpdateAssets"];
+                this.columnAutoUpdateOrders = base.Columns["AutoUpdateOrders"];
+                this.columnAutoUpdateIndustryJobs = base.Columns["AutoUpdateIndustryJobs"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            private void InitClass() {
+                this.columnReportGroupID = new global::System.Data.DataColumn("ReportGroupID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReportGroupID);
+                this.columnAPICharID = new global::System.Data.DataColumn("APICharID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAPICharID);
+                this.columnAutoUpdateTrans = new global::System.Data.DataColumn("AutoUpdateTrans", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAutoUpdateTrans);
+                this.columnAutoUpdateJournal = new global::System.Data.DataColumn("AutoUpdateJournal", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAutoUpdateJournal);
+                this.columnAutoUpdateAssets = new global::System.Data.DataColumn("AutoUpdateAssets", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAutoUpdateAssets);
+                this.columnAutoUpdateOrders = new global::System.Data.DataColumn("AutoUpdateOrders", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAutoUpdateOrders);
+                this.columnAutoUpdateIndustryJobs = new global::System.Data.DataColumn("AutoUpdateIndustryJobs", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAutoUpdateIndustryJobs);
+                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
+                                this.columnReportGroupID,
+                                this.columnAPICharID}, true));
+                this.columnReportGroupID.AllowDBNull = false;
+                this.columnAPICharID.AllowDBNull = false;
+                this.columnAutoUpdateTrans.AllowDBNull = false;
+                this.columnAutoUpdateJournal.AllowDBNull = false;
+                this.columnAutoUpdateAssets.AllowDBNull = false;
+                this.columnAutoUpdateOrders.AllowDBNull = false;
+                this.columnAutoUpdateIndustryJobs.AllowDBNull = false;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public RptGroupCharsRow NewRptGroupCharsRow() {
+                return ((RptGroupCharsRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new RptGroupCharsRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override global::System.Type GetRowType() {
+                return typeof(RptGroupCharsRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.RptGroupCharsRowChanged != null)) {
+                    this.RptGroupCharsRowChanged(this, new RptGroupCharsRowChangeEvent(((RptGroupCharsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.RptGroupCharsRowChanging != null)) {
+                    this.RptGroupCharsRowChanging(this, new RptGroupCharsRowChangeEvent(((RptGroupCharsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.RptGroupCharsRowDeleted != null)) {
+                    this.RptGroupCharsRowDeleted(this, new RptGroupCharsRowChangeEvent(((RptGroupCharsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.RptGroupCharsRowDeleting != null)) {
+                    this.RptGroupCharsRowDeleting(this, new RptGroupCharsRowChangeEvent(((RptGroupCharsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public void RemoveRptGroupCharsRow(RptGroupCharsRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                EMMADataSet ds = new EMMADataSet();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "RptGroupCharsDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class RptGroupCorpsDataTable : global::System.Data.TypedTableBase<RptGroupCorpsRow> {
+            
+            private global::System.Data.DataColumn columnReportGroupID;
+            
+            private global::System.Data.DataColumn columnAPICorpID;
+            
+            private global::System.Data.DataColumn columnAutoUpdateTrans;
+            
+            private global::System.Data.DataColumn columnAutoUpdateJournal;
+            
+            private global::System.Data.DataColumn columnAutoUpdateAssets;
+            
+            private global::System.Data.DataColumn columnAutoUpdateOrders;
+            
+            private global::System.Data.DataColumn columnAPICharID;
+            
+            private global::System.Data.DataColumn columnAutoUpdateIndustryJobs;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public RptGroupCorpsDataTable() {
+                this.TableName = "RptGroupCorps";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            internal RptGroupCorpsDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected RptGroupCorpsDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn ReportGroupIDColumn {
+                get {
+                    return this.columnReportGroupID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn APICorpIDColumn {
+                get {
+                    return this.columnAPICorpID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn AutoUpdateTransColumn {
+                get {
+                    return this.columnAutoUpdateTrans;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn AutoUpdateJournalColumn {
+                get {
+                    return this.columnAutoUpdateJournal;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn AutoUpdateAssetsColumn {
+                get {
+                    return this.columnAutoUpdateAssets;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn AutoUpdateOrdersColumn {
+                get {
+                    return this.columnAutoUpdateOrders;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn APICharIDColumn {
+                get {
+                    return this.columnAPICharID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataColumn AutoUpdateIndustryJobsColumn {
+                get {
+                    return this.columnAutoUpdateIndustryJobs;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public RptGroupCorpsRow this[int index] {
+                get {
+                    return ((RptGroupCorpsRow)(this.Rows[index]));
+                }
+            }
+            
+            public event RptGroupCorpsRowChangeEventHandler RptGroupCorpsRowChanging;
+            
+            public event RptGroupCorpsRowChangeEventHandler RptGroupCorpsRowChanged;
+            
+            public event RptGroupCorpsRowChangeEventHandler RptGroupCorpsRowDeleting;
+            
+            public event RptGroupCorpsRowChangeEventHandler RptGroupCorpsRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public void AddRptGroupCorpsRow(RptGroupCorpsRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public RptGroupCorpsRow AddRptGroupCorpsRow(int ReportGroupID, int APICorpID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, int APICharID, bool AutoUpdateIndustryJobs) {
+                RptGroupCorpsRow rowRptGroupCorpsRow = ((RptGroupCorpsRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        ReportGroupID,
+                        APICorpID,
+                        AutoUpdateTrans,
+                        AutoUpdateJournal,
+                        AutoUpdateAssets,
+                        AutoUpdateOrders,
+                        APICharID,
+                        AutoUpdateIndustryJobs};
+                rowRptGroupCorpsRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowRptGroupCorpsRow);
+                return rowRptGroupCorpsRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public RptGroupCorpsRow FindByReportGroupIDAPICorpIDAPICharID(int ReportGroupID, int APICorpID, int APICharID) {
+                return ((RptGroupCorpsRow)(this.Rows.Find(new object[] {
+                            ReportGroupID,
+                            APICorpID,
+                            APICharID})));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public override global::System.Data.DataTable Clone() {
+                RptGroupCorpsDataTable cln = ((RptGroupCorpsDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new RptGroupCorpsDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            internal void InitVars() {
+                this.columnReportGroupID = base.Columns["ReportGroupID"];
+                this.columnAPICorpID = base.Columns["APICorpID"];
+                this.columnAutoUpdateTrans = base.Columns["AutoUpdateTrans"];
+                this.columnAutoUpdateJournal = base.Columns["AutoUpdateJournal"];
+                this.columnAutoUpdateAssets = base.Columns["AutoUpdateAssets"];
+                this.columnAutoUpdateOrders = base.Columns["AutoUpdateOrders"];
+                this.columnAPICharID = base.Columns["APICharID"];
+                this.columnAutoUpdateIndustryJobs = base.Columns["AutoUpdateIndustryJobs"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            private void InitClass() {
+                this.columnReportGroupID = new global::System.Data.DataColumn("ReportGroupID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReportGroupID);
+                this.columnAPICorpID = new global::System.Data.DataColumn("APICorpID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAPICorpID);
+                this.columnAutoUpdateTrans = new global::System.Data.DataColumn("AutoUpdateTrans", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAutoUpdateTrans);
+                this.columnAutoUpdateJournal = new global::System.Data.DataColumn("AutoUpdateJournal", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAutoUpdateJournal);
+                this.columnAutoUpdateAssets = new global::System.Data.DataColumn("AutoUpdateAssets", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAutoUpdateAssets);
+                this.columnAutoUpdateOrders = new global::System.Data.DataColumn("AutoUpdateOrders", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAutoUpdateOrders);
+                this.columnAPICharID = new global::System.Data.DataColumn("APICharID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAPICharID);
+                this.columnAutoUpdateIndustryJobs = new global::System.Data.DataColumn("AutoUpdateIndustryJobs", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAutoUpdateIndustryJobs);
+                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
+                                this.columnReportGroupID,
+                                this.columnAPICorpID,
+                                this.columnAPICharID}, true));
+                this.columnReportGroupID.AllowDBNull = false;
+                this.columnAPICorpID.AllowDBNull = false;
+                this.columnAutoUpdateTrans.AllowDBNull = false;
+                this.columnAutoUpdateJournal.AllowDBNull = false;
+                this.columnAutoUpdateAssets.AllowDBNull = false;
+                this.columnAutoUpdateOrders.AllowDBNull = false;
+                this.columnAPICharID.AllowDBNull = false;
+                this.columnAutoUpdateIndustryJobs.AllowDBNull = false;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public RptGroupCorpsRow NewRptGroupCorpsRow() {
+                return ((RptGroupCorpsRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new RptGroupCorpsRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override global::System.Type GetRowType() {
+                return typeof(RptGroupCorpsRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.RptGroupCorpsRowChanged != null)) {
+                    this.RptGroupCorpsRowChanged(this, new RptGroupCorpsRowChangeEvent(((RptGroupCorpsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.RptGroupCorpsRowChanging != null)) {
+                    this.RptGroupCorpsRowChanging(this, new RptGroupCorpsRowChangeEvent(((RptGroupCorpsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.RptGroupCorpsRowDeleted != null)) {
+                    this.RptGroupCorpsRowDeleted(this, new RptGroupCorpsRowChangeEvent(((RptGroupCorpsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.RptGroupCorpsRowDeleting != null)) {
+                    this.RptGroupCorpsRowDeleting(this, new RptGroupCorpsRowChangeEvent(((RptGroupCorpsRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public void RemoveRptGroupCorpsRow(RptGroupCorpsRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                EMMADataSet ds = new EMMADataSet();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "RptGroupCorpsDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class WalletDivisionsDataTable : global::System.Data.TypedTableBase<WalletDivisionsRow> {
             
             private global::System.Data.DataColumn columnID;
@@ -17287,81 +17315,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 }
                 set {
                     this[this.tablePortraits.portraitColumn] = value;
-                }
-            }
-        }
-        
-        /// <summary>
-        ///Represents strongly named DataRow class.
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-        public partial class RptGroupCharsRow : global::System.Data.DataRow {
-            
-            private RptGroupCharsDataTable tableRptGroupChars;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            internal RptGroupCharsRow(global::System.Data.DataRowBuilder rb) : 
-                    base(rb) {
-                this.tableRptGroupChars = ((RptGroupCharsDataTable)(this.Table));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int ReportGroupID {
-                get {
-                    return ((int)(this[this.tableRptGroupChars.ReportGroupIDColumn]));
-                }
-                set {
-                    this[this.tableRptGroupChars.ReportGroupIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int APICharID {
-                get {
-                    return ((int)(this[this.tableRptGroupChars.APICharIDColumn]));
-                }
-                set {
-                    this[this.tableRptGroupChars.APICharIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public bool AutoUpdateTrans {
-                get {
-                    return ((bool)(this[this.tableRptGroupChars.AutoUpdateTransColumn]));
-                }
-                set {
-                    this[this.tableRptGroupChars.AutoUpdateTransColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public bool AutoUpdateJournal {
-                get {
-                    return ((bool)(this[this.tableRptGroupChars.AutoUpdateJournalColumn]));
-                }
-                set {
-                    this[this.tableRptGroupChars.AutoUpdateJournalColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public bool AutoUpdateAssets {
-                get {
-                    return ((bool)(this[this.tableRptGroupChars.AutoUpdateAssetsColumn]));
-                }
-                set {
-                    this[this.tableRptGroupChars.AutoUpdateAssetsColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public bool AutoUpdateOrders {
-                get {
-                    return ((bool)(this[this.tableRptGroupChars.AutoUpdateOrdersColumn]));
-                }
-                set {
-                    this[this.tableRptGroupChars.AutoUpdateOrdersColumn] = value;
                 }
             }
         }
@@ -18907,91 +18860,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 }
                 set {
                     this[this.tableReprocessJob.OwnerIDColumn] = value;
-                }
-            }
-        }
-        
-        /// <summary>
-        ///Represents strongly named DataRow class.
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-        public partial class RptGroupCorpsRow : global::System.Data.DataRow {
-            
-            private RptGroupCorpsDataTable tableRptGroupCorps;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            internal RptGroupCorpsRow(global::System.Data.DataRowBuilder rb) : 
-                    base(rb) {
-                this.tableRptGroupCorps = ((RptGroupCorpsDataTable)(this.Table));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int ReportGroupID {
-                get {
-                    return ((int)(this[this.tableRptGroupCorps.ReportGroupIDColumn]));
-                }
-                set {
-                    this[this.tableRptGroupCorps.ReportGroupIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int APICorpID {
-                get {
-                    return ((int)(this[this.tableRptGroupCorps.APICorpIDColumn]));
-                }
-                set {
-                    this[this.tableRptGroupCorps.APICorpIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public bool AutoUpdateTrans {
-                get {
-                    return ((bool)(this[this.tableRptGroupCorps.AutoUpdateTransColumn]));
-                }
-                set {
-                    this[this.tableRptGroupCorps.AutoUpdateTransColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public bool AutoUpdateJournal {
-                get {
-                    return ((bool)(this[this.tableRptGroupCorps.AutoUpdateJournalColumn]));
-                }
-                set {
-                    this[this.tableRptGroupCorps.AutoUpdateJournalColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public bool AutoUpdateAssets {
-                get {
-                    return ((bool)(this[this.tableRptGroupCorps.AutoUpdateAssetsColumn]));
-                }
-                set {
-                    this[this.tableRptGroupCorps.AutoUpdateAssetsColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public bool AutoUpdateOrders {
-                get {
-                    return ((bool)(this[this.tableRptGroupCorps.AutoUpdateOrdersColumn]));
-                }
-                set {
-                    this[this.tableRptGroupCorps.AutoUpdateOrdersColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int APICharID {
-                get {
-                    return ((int)(this[this.tableRptGroupCorps.APICharIDColumn]));
-                }
-                set {
-                    this[this.tableRptGroupCorps.APICharIDColumn] = value;
                 }
             }
         }
@@ -20880,6 +20748,186 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///Represents strongly named DataRow class.
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+        public partial class RptGroupCharsRow : global::System.Data.DataRow {
+            
+            private RptGroupCharsDataTable tableRptGroupChars;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            internal RptGroupCharsRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableRptGroupChars = ((RptGroupCharsDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int ReportGroupID {
+                get {
+                    return ((int)(this[this.tableRptGroupChars.ReportGroupIDColumn]));
+                }
+                set {
+                    this[this.tableRptGroupChars.ReportGroupIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int APICharID {
+                get {
+                    return ((int)(this[this.tableRptGroupChars.APICharIDColumn]));
+                }
+                set {
+                    this[this.tableRptGroupChars.APICharIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool AutoUpdateTrans {
+                get {
+                    return ((bool)(this[this.tableRptGroupChars.AutoUpdateTransColumn]));
+                }
+                set {
+                    this[this.tableRptGroupChars.AutoUpdateTransColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool AutoUpdateJournal {
+                get {
+                    return ((bool)(this[this.tableRptGroupChars.AutoUpdateJournalColumn]));
+                }
+                set {
+                    this[this.tableRptGroupChars.AutoUpdateJournalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool AutoUpdateAssets {
+                get {
+                    return ((bool)(this[this.tableRptGroupChars.AutoUpdateAssetsColumn]));
+                }
+                set {
+                    this[this.tableRptGroupChars.AutoUpdateAssetsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool AutoUpdateOrders {
+                get {
+                    return ((bool)(this[this.tableRptGroupChars.AutoUpdateOrdersColumn]));
+                }
+                set {
+                    this[this.tableRptGroupChars.AutoUpdateOrdersColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool AutoUpdateIndustryJobs {
+                get {
+                    return ((bool)(this[this.tableRptGroupChars.AutoUpdateIndustryJobsColumn]));
+                }
+                set {
+                    this[this.tableRptGroupChars.AutoUpdateIndustryJobsColumn] = value;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+        public partial class RptGroupCorpsRow : global::System.Data.DataRow {
+            
+            private RptGroupCorpsDataTable tableRptGroupCorps;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            internal RptGroupCorpsRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableRptGroupCorps = ((RptGroupCorpsDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int ReportGroupID {
+                get {
+                    return ((int)(this[this.tableRptGroupCorps.ReportGroupIDColumn]));
+                }
+                set {
+                    this[this.tableRptGroupCorps.ReportGroupIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int APICorpID {
+                get {
+                    return ((int)(this[this.tableRptGroupCorps.APICorpIDColumn]));
+                }
+                set {
+                    this[this.tableRptGroupCorps.APICorpIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool AutoUpdateTrans {
+                get {
+                    return ((bool)(this[this.tableRptGroupCorps.AutoUpdateTransColumn]));
+                }
+                set {
+                    this[this.tableRptGroupCorps.AutoUpdateTransColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool AutoUpdateJournal {
+                get {
+                    return ((bool)(this[this.tableRptGroupCorps.AutoUpdateJournalColumn]));
+                }
+                set {
+                    this[this.tableRptGroupCorps.AutoUpdateJournalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool AutoUpdateAssets {
+                get {
+                    return ((bool)(this[this.tableRptGroupCorps.AutoUpdateAssetsColumn]));
+                }
+                set {
+                    this[this.tableRptGroupCorps.AutoUpdateAssetsColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool AutoUpdateOrders {
+                get {
+                    return ((bool)(this[this.tableRptGroupCorps.AutoUpdateOrdersColumn]));
+                }
+                set {
+                    this[this.tableRptGroupCorps.AutoUpdateOrdersColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public int APICharID {
+                get {
+                    return ((int)(this[this.tableRptGroupCorps.APICharIDColumn]));
+                }
+                set {
+                    this[this.tableRptGroupCorps.APICharIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public bool AutoUpdateIndustryJobs {
+                get {
+                    return ((bool)(this[this.tableRptGroupCorps.AutoUpdateIndustryJobsColumn]));
+                }
+                set {
+                    this[this.tableRptGroupCorps.AutoUpdateIndustryJobsColumn] = value;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
         public partial class WalletDivisionsRow : global::System.Data.DataRow {
             
             private WalletDivisionsDataTable tableWalletDivisions;
@@ -21068,37 +21116,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             public PortraitsRow Row {
-                get {
-                    return this.eventRow;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataRowAction Action {
-                get {
-                    return this.eventAction;
-                }
-            }
-        }
-        
-        /// <summary>
-        ///Row event argument class
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-        public class RptGroupCharsRowChangeEvent : global::System.EventArgs {
-            
-            private RptGroupCharsRow eventRow;
-            
-            private global::System.Data.DataRowAction eventAction;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCharsRowChangeEvent(RptGroupCharsRow row, global::System.Data.DataRowAction action) {
-                this.eventRow = row;
-                this.eventAction = action;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCharsRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -21922,37 +21939,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-        public class RptGroupCorpsRowChangeEvent : global::System.EventArgs {
-            
-            private RptGroupCorpsRow eventRow;
-            
-            private global::System.Data.DataRowAction eventAction;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCorpsRowChangeEvent(RptGroupCorpsRow row, global::System.Data.DataRowAction action) {
-                this.eventRow = row;
-                this.eventAction = action;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCorpsRow Row {
-                get {
-                    return this.eventRow;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public global::System.Data.DataRowAction Action {
-                get {
-                    return this.eventAction;
-                }
-            }
-        }
-        
-        /// <summary>
-        ///Row event argument class
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
         public class RiskRatingRowChangeEvent : global::System.EventArgs {
             
             private RiskRatingRow eventRow;
@@ -22401,6 +22387,68 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             public IndustryJobsRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+        public class RptGroupCharsRowChangeEvent : global::System.EventArgs {
+            
+            private RptGroupCharsRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public RptGroupCharsRowChangeEvent(RptGroupCharsRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public RptGroupCharsRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+        public class RptGroupCorpsRowChangeEvent : global::System.EventArgs {
+            
+            private RptGroupCorpsRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public RptGroupCorpsRowChangeEvent(RptGroupCorpsRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            public RptGroupCorpsRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -24341,424 +24389,6 @@ SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (User
                     this.Adapter.InsertCommand.Connection.Close();
                 }
             }
-        }
-    }
-    
-    /// <summary>
-    ///Represents the connection and commands used to retrieve and save data.
-    ///</summary>
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-    [global::System.ComponentModel.DesignerCategoryAttribute("code")]
-    [global::System.ComponentModel.ToolboxItem(true)]
-    [global::System.ComponentModel.DataObjectAttribute(true)]
-    [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
-        ", Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-    [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class RptGroupCharsTableAdapter : global::System.ComponentModel.Component {
-        
-        private global::System.Data.SqlClient.SqlDataAdapter _adapter;
-        
-        private global::System.Data.SqlClient.SqlConnection _connection;
-        
-        private global::System.Data.SqlClient.SqlCommand[] _commandCollection;
-        
-        private bool _clearBeforeFill;
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public RptGroupCharsTableAdapter() {
-            this.ClearBeforeFill = true;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private global::System.Data.SqlClient.SqlDataAdapter Adapter {
-            get {
-                if ((this._adapter == null)) {
-                    this.InitAdapter();
-                }
-                return this._adapter;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        internal global::System.Data.SqlClient.SqlConnection Connection {
-            get {
-                if ((this._connection == null)) {
-                    this.InitConnection();
-                }
-                return this._connection;
-            }
-            set {
-                this._connection = value;
-                if ((this.Adapter.InsertCommand != null)) {
-                    this.Adapter.InsertCommand.Connection = value;
-                }
-                if ((this.Adapter.DeleteCommand != null)) {
-                    this.Adapter.DeleteCommand.Connection = value;
-                }
-                if ((this.Adapter.UpdateCommand != null)) {
-                    this.Adapter.UpdateCommand.Connection = value;
-                }
-                for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
-                    if ((this.CommandCollection[i] != null)) {
-                        ((global::System.Data.SqlClient.SqlCommand)(this.CommandCollection[i])).Connection = value;
-                    }
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        protected global::System.Data.SqlClient.SqlCommand[] CommandCollection {
-            get {
-                if ((this._commandCollection == null)) {
-                    this.InitCommandCollection();
-                }
-                return this._commandCollection;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public bool ClearBeforeFill {
-            get {
-                return this._clearBeforeFill;
-            }
-            set {
-                this._clearBeforeFill = value;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private void InitAdapter() {
-            this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
-            global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
-            tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "RptGroupChars";
-            tableMapping.ColumnMappings.Add("ReportGroupID", "ReportGroupID");
-            tableMapping.ColumnMappings.Add("APICharID", "APICharID");
-            tableMapping.ColumnMappings.Add("AutoUpdateTrans", "AutoUpdateTrans");
-            tableMapping.ColumnMappings.Add("AutoUpdateJournal", "AutoUpdateJournal");
-            tableMapping.ColumnMappings.Add("AutoUpdateAssets", "AutoUpdateAssets");
-            tableMapping.ColumnMappings.Add("AutoUpdateOrders", "AutoUpdateOrders");
-            this._adapter.TableMappings.Add(tableMapping);
-            this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[RptGroupChars] WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICharID] = @Original_APICharID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders))";
-            this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[RptGroupChars] ([ReportGroupID], [APICharID], [AutoUpdateTrans], [AutoUpdateJournal], [AutoUpdateAssets], [AutoUpdateOrders]) VALUES (@ReportGroupID, @APICharID, @AutoUpdateTrans, @AutoUpdateJournal, @AutoUpdateAssets, @AutoUpdateOrders);
-SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders FROM RptGroupChars WHERE (APICharID = @APICharID) AND (ReportGroupID = @ReportGroupID)";
-            this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[RptGroupChars] SET [ReportGroupID] = @ReportGroupID, [APICharID] = @APICharID, [AutoUpdateTrans] = @AutoUpdateTrans, [AutoUpdateJournal] = @AutoUpdateJournal, [AutoUpdateAssets] = @AutoUpdateAssets, [AutoUpdateOrders] = @AutoUpdateOrders WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICharID] = @Original_APICharID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders));
-SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders FROM RptGroupChars WHERE (APICharID = @APICharID) AND (ReportGroupID = @ReportGroupID)";
-            this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private void InitConnection() {
-            this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::EveMarketMonitorApp.Properties.Settings.Default.EMMA_DatabaseConnectionString;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[3];
-            this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAs" +
-                "sets, AutoUpdateOrders FROM dbo.RptGroupChars";
-            this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
-            this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.RptGroupCharSettings";
-            this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@groupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "dbo.RptGroupSetHasChar";
-            this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@rptGroupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@apiCharID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@included", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoTrans", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoJournal", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoAssets", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoOrders", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(EMMADataSet.RptGroupCharsDataTable dataTable) {
-            this.Adapter.SelectCommand = this.CommandCollection[0];
-            if ((this.ClearBeforeFill == true)) {
-                dataTable.Clear();
-            }
-            int returnValue = this.Adapter.Fill(dataTable);
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual EMMADataSet.RptGroupCharsDataTable GetData() {
-            this.Adapter.SelectCommand = this.CommandCollection[0];
-            EMMADataSet.RptGroupCharsDataTable dataTable = new EMMADataSet.RptGroupCharsDataTable();
-            this.Adapter.Fill(dataTable);
-            return dataTable;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByIDs(EMMADataSet.RptGroupCharsDataTable dataTable, global::System.Nullable<int> groupID, global::System.Nullable<int> charID) {
-            this.Adapter.SelectCommand = this.CommandCollection[1];
-            if ((groupID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(groupID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((charID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(charID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((this.ClearBeforeFill == true)) {
-                dataTable.Clear();
-            }
-            int returnValue = this.Adapter.Fill(dataTable);
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.RptGroupCharsDataTable GetDataByIDs(global::System.Nullable<int> groupID, global::System.Nullable<int> charID) {
-            this.Adapter.SelectCommand = this.CommandCollection[1];
-            if ((groupID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(groupID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((charID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(charID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            EMMADataSet.RptGroupCharsDataTable dataTable = new EMMADataSet.RptGroupCharsDataTable();
-            this.Adapter.Fill(dataTable);
-            return dataTable;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(EMMADataSet.RptGroupCharsDataTable dataTable) {
-            return this.Adapter.Update(dataTable);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(EMMADataSet dataSet) {
-            return this.Adapter.Update(dataSet, "RptGroupChars");
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(global::System.Data.DataRow dataRow) {
-            return this.Adapter.Update(new global::System.Data.DataRow[] {
-                        dataRow});
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(global::System.Data.DataRow[] dataRows) {
-            return this.Adapter.Update(dataRows);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_ReportGroupID, int Original_APICharID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ReportGroupID));
-            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_APICharID));
-            this.Adapter.DeleteCommand.Parameters[2].Value = ((bool)(Original_AutoUpdateTrans));
-            this.Adapter.DeleteCommand.Parameters[3].Value = ((bool)(Original_AutoUpdateJournal));
-            this.Adapter.DeleteCommand.Parameters[4].Value = ((bool)(Original_AutoUpdateAssets));
-            this.Adapter.DeleteCommand.Parameters[5].Value = ((bool)(Original_AutoUpdateOrders));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
-            if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.DeleteCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.DeleteCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.DeleteCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int ReportGroupID, int APICharID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders) {
-            this.Adapter.InsertCommand.Parameters[0].Value = ((int)(ReportGroupID));
-            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(APICharID));
-            this.Adapter.InsertCommand.Parameters[2].Value = ((bool)(AutoUpdateTrans));
-            this.Adapter.InsertCommand.Parameters[3].Value = ((bool)(AutoUpdateJournal));
-            this.Adapter.InsertCommand.Parameters[4].Value = ((bool)(AutoUpdateAssets));
-            this.Adapter.InsertCommand.Parameters[5].Value = ((bool)(AutoUpdateOrders));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
-            if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.InsertCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.InsertCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.InsertCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int ReportGroupID, int APICharID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, int Original_ReportGroupID, int Original_APICharID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders) {
-            this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(ReportGroupID));
-            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(APICharID));
-            this.Adapter.UpdateCommand.Parameters[2].Value = ((bool)(AutoUpdateTrans));
-            this.Adapter.UpdateCommand.Parameters[3].Value = ((bool)(AutoUpdateJournal));
-            this.Adapter.UpdateCommand.Parameters[4].Value = ((bool)(AutoUpdateAssets));
-            this.Adapter.UpdateCommand.Parameters[5].Value = ((bool)(AutoUpdateOrders));
-            this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(Original_ReportGroupID));
-            this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(Original_APICharID));
-            this.Adapter.UpdateCommand.Parameters[8].Value = ((bool)(Original_AutoUpdateTrans));
-            this.Adapter.UpdateCommand.Parameters[9].Value = ((bool)(Original_AutoUpdateJournal));
-            this.Adapter.UpdateCommand.Parameters[10].Value = ((bool)(Original_AutoUpdateAssets));
-            this.Adapter.UpdateCommand.Parameters[11].Value = ((bool)(Original_AutoUpdateOrders));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
-            if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.UpdateCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.UpdateCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.UpdateCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, int Original_ReportGroupID, int Original_APICharID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders) {
-            return this.Update(Original_ReportGroupID, Original_APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, Original_ReportGroupID, Original_APICharID, Original_AutoUpdateTrans, Original_AutoUpdateJournal, Original_AutoUpdateAssets, Original_AutoUpdateOrders);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Store(global::System.Nullable<int> rptGroupID, global::System.Nullable<int> apiCharID, global::System.Nullable<bool> included, global::System.Nullable<bool> autoTrans, global::System.Nullable<bool> autoJournal, global::System.Nullable<bool> autoAssets, global::System.Nullable<bool> autoOrders) {
-            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[2];
-            if ((rptGroupID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(rptGroupID.Value));
-            }
-            else {
-                command.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((apiCharID.HasValue == true)) {
-                command.Parameters[2].Value = ((int)(apiCharID.Value));
-            }
-            else {
-                command.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((included.HasValue == true)) {
-                command.Parameters[3].Value = ((bool)(included.Value));
-            }
-            else {
-                command.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            if ((autoTrans.HasValue == true)) {
-                command.Parameters[4].Value = ((bool)(autoTrans.Value));
-            }
-            else {
-                command.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((autoJournal.HasValue == true)) {
-                command.Parameters[5].Value = ((bool)(autoJournal.Value));
-            }
-            else {
-                command.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            if ((autoAssets.HasValue == true)) {
-                command.Parameters[6].Value = ((bool)(autoAssets.Value));
-            }
-            else {
-                command.Parameters[6].Value = global::System.DBNull.Value;
-            }
-            if ((autoOrders.HasValue == true)) {
-                command.Parameters[7].Value = ((bool)(autoOrders.Value));
-            }
-            else {
-                command.Parameters[7].Value = global::System.DBNull.Value;
-            }
-            global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
-            if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                command.Connection.Open();
-            }
-            int returnValue;
-            try {
-                returnValue = command.ExecuteNonQuery();
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    command.Connection.Close();
-                }
-            }
-            return returnValue;
         }
     }
     
@@ -35246,453 +34876,6 @@ SELECT ID, JobDate, StationID, GroupID, OwnerID FROM ReprocessJob WHERE (ID = @I
     [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
         ", Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class RptGroupCorpsTableAdapter : global::System.ComponentModel.Component {
-        
-        private global::System.Data.SqlClient.SqlDataAdapter _adapter;
-        
-        private global::System.Data.SqlClient.SqlConnection _connection;
-        
-        private global::System.Data.SqlClient.SqlCommand[] _commandCollection;
-        
-        private bool _clearBeforeFill;
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public RptGroupCorpsTableAdapter() {
-            this.ClearBeforeFill = true;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private global::System.Data.SqlClient.SqlDataAdapter Adapter {
-            get {
-                if ((this._adapter == null)) {
-                    this.InitAdapter();
-                }
-                return this._adapter;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        internal global::System.Data.SqlClient.SqlConnection Connection {
-            get {
-                if ((this._connection == null)) {
-                    this.InitConnection();
-                }
-                return this._connection;
-            }
-            set {
-                this._connection = value;
-                if ((this.Adapter.InsertCommand != null)) {
-                    this.Adapter.InsertCommand.Connection = value;
-                }
-                if ((this.Adapter.DeleteCommand != null)) {
-                    this.Adapter.DeleteCommand.Connection = value;
-                }
-                if ((this.Adapter.UpdateCommand != null)) {
-                    this.Adapter.UpdateCommand.Connection = value;
-                }
-                for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
-                    if ((this.CommandCollection[i] != null)) {
-                        ((global::System.Data.SqlClient.SqlCommand)(this.CommandCollection[i])).Connection = value;
-                    }
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        protected global::System.Data.SqlClient.SqlCommand[] CommandCollection {
-            get {
-                if ((this._commandCollection == null)) {
-                    this.InitCommandCollection();
-                }
-                return this._commandCollection;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public bool ClearBeforeFill {
-            get {
-                return this._clearBeforeFill;
-            }
-            set {
-                this._clearBeforeFill = value;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private void InitAdapter() {
-            this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
-            global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
-            tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "RptGroupCorps";
-            tableMapping.ColumnMappings.Add("ReportGroupID", "ReportGroupID");
-            tableMapping.ColumnMappings.Add("APICorpID", "APICorpID");
-            tableMapping.ColumnMappings.Add("AutoUpdateTrans", "AutoUpdateTrans");
-            tableMapping.ColumnMappings.Add("AutoUpdateJournal", "AutoUpdateJournal");
-            tableMapping.ColumnMappings.Add("AutoUpdateAssets", "AutoUpdateAssets");
-            tableMapping.ColumnMappings.Add("AutoUpdateOrders", "AutoUpdateOrders");
-            tableMapping.ColumnMappings.Add("APICharID", "APICharID");
-            this._adapter.TableMappings.Add(tableMapping);
-            this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[RptGroupCorps] WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICorpID] = @Original_APICorpID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders) AND ([APICharID] = @Original_APICharID))";
-            this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[RptGroupCorps] ([ReportGroupID], [APICorpID], [AutoUpdateTrans], [AutoUpdateJournal], [AutoUpdateAssets], [AutoUpdateOrders], [APICharID]) VALUES (@ReportGroupID, @APICorpID, @AutoUpdateTrans, @AutoUpdateJournal, @AutoUpdateAssets, @AutoUpdateOrders, @APICharID);
-SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, APICharID FROM RptGroupCorps WHERE (APICharID = @APICharID) AND (APICorpID = @APICorpID) AND (ReportGroupID = @ReportGroupID)";
-            this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[RptGroupCorps] SET [ReportGroupID] = @ReportGroupID, [APICorpID] = @APICorpID, [AutoUpdateTrans] = @AutoUpdateTrans, [AutoUpdateJournal] = @AutoUpdateJournal, [AutoUpdateAssets] = @AutoUpdateAssets, [AutoUpdateOrders] = @AutoUpdateOrders, [APICharID] = @APICharID WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICorpID] = @Original_APICorpID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders) AND ([APICharID] = @Original_APICharID));
-SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, APICharID FROM RptGroupCorps WHERE (APICharID = @APICharID) AND (APICorpID = @APICorpID) AND (ReportGroupID = @ReportGroupID)";
-            this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private void InitConnection() {
-            this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::EveMarketMonitorApp.Properties.Settings.Default.EMMA_DatabaseConnectionString;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[3];
-            this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAs" +
-                "sets, AutoUpdateOrders, APICharID FROM dbo.RptGroupCorps";
-            this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
-            this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.RptGroupCorpSettings";
-            this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@groupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "dbo.RptGroupSetHasCorp";
-            this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@rptGroupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@apiCorpID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@included", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoTrans", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoJournal", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoAssets", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoOrders", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@apiCharID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(EMMADataSet.RptGroupCorpsDataTable dataTable) {
-            this.Adapter.SelectCommand = this.CommandCollection[0];
-            if ((this.ClearBeforeFill == true)) {
-                dataTable.Clear();
-            }
-            int returnValue = this.Adapter.Fill(dataTable);
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual EMMADataSet.RptGroupCorpsDataTable GetData() {
-            this.Adapter.SelectCommand = this.CommandCollection[0];
-            EMMADataSet.RptGroupCorpsDataTable dataTable = new EMMADataSet.RptGroupCorpsDataTable();
-            this.Adapter.Fill(dataTable);
-            return dataTable;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByIDs(EMMADataSet.RptGroupCorpsDataTable dataTable, global::System.Nullable<int> groupID, global::System.Nullable<int> corpID, global::System.Nullable<int> charID) {
-            this.Adapter.SelectCommand = this.CommandCollection[1];
-            if ((groupID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(groupID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((corpID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(corpID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((charID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(charID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            if ((this.ClearBeforeFill == true)) {
-                dataTable.Clear();
-            }
-            int returnValue = this.Adapter.Fill(dataTable);
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.RptGroupCorpsDataTable GetDataByIDs(global::System.Nullable<int> groupID, global::System.Nullable<int> corpID, global::System.Nullable<int> charID) {
-            this.Adapter.SelectCommand = this.CommandCollection[1];
-            if ((groupID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(groupID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((corpID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(corpID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((charID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(charID.Value));
-            }
-            else {
-                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            EMMADataSet.RptGroupCorpsDataTable dataTable = new EMMADataSet.RptGroupCorpsDataTable();
-            this.Adapter.Fill(dataTable);
-            return dataTable;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(EMMADataSet.RptGroupCorpsDataTable dataTable) {
-            return this.Adapter.Update(dataTable);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(EMMADataSet dataSet) {
-            return this.Adapter.Update(dataSet, "RptGroupCorps");
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(global::System.Data.DataRow dataRow) {
-            return this.Adapter.Update(new global::System.Data.DataRow[] {
-                        dataRow});
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(global::System.Data.DataRow[] dataRows) {
-            return this.Adapter.Update(dataRows);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_ReportGroupID, int Original_APICorpID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, int Original_APICharID) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ReportGroupID));
-            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_APICorpID));
-            this.Adapter.DeleteCommand.Parameters[2].Value = ((bool)(Original_AutoUpdateTrans));
-            this.Adapter.DeleteCommand.Parameters[3].Value = ((bool)(Original_AutoUpdateJournal));
-            this.Adapter.DeleteCommand.Parameters[4].Value = ((bool)(Original_AutoUpdateAssets));
-            this.Adapter.DeleteCommand.Parameters[5].Value = ((bool)(Original_AutoUpdateOrders));
-            this.Adapter.DeleteCommand.Parameters[6].Value = ((int)(Original_APICharID));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
-            if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.DeleteCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.DeleteCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.DeleteCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int ReportGroupID, int APICorpID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, int APICharID) {
-            this.Adapter.InsertCommand.Parameters[0].Value = ((int)(ReportGroupID));
-            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(APICorpID));
-            this.Adapter.InsertCommand.Parameters[2].Value = ((bool)(AutoUpdateTrans));
-            this.Adapter.InsertCommand.Parameters[3].Value = ((bool)(AutoUpdateJournal));
-            this.Adapter.InsertCommand.Parameters[4].Value = ((bool)(AutoUpdateAssets));
-            this.Adapter.InsertCommand.Parameters[5].Value = ((bool)(AutoUpdateOrders));
-            this.Adapter.InsertCommand.Parameters[6].Value = ((int)(APICharID));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
-            if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.InsertCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.InsertCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.InsertCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int ReportGroupID, int APICorpID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, int APICharID, int Original_ReportGroupID, int Original_APICorpID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, int Original_APICharID) {
-            this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(ReportGroupID));
-            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(APICorpID));
-            this.Adapter.UpdateCommand.Parameters[2].Value = ((bool)(AutoUpdateTrans));
-            this.Adapter.UpdateCommand.Parameters[3].Value = ((bool)(AutoUpdateJournal));
-            this.Adapter.UpdateCommand.Parameters[4].Value = ((bool)(AutoUpdateAssets));
-            this.Adapter.UpdateCommand.Parameters[5].Value = ((bool)(AutoUpdateOrders));
-            this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(APICharID));
-            this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(Original_ReportGroupID));
-            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_APICorpID));
-            this.Adapter.UpdateCommand.Parameters[9].Value = ((bool)(Original_AutoUpdateTrans));
-            this.Adapter.UpdateCommand.Parameters[10].Value = ((bool)(Original_AutoUpdateJournal));
-            this.Adapter.UpdateCommand.Parameters[11].Value = ((bool)(Original_AutoUpdateAssets));
-            this.Adapter.UpdateCommand.Parameters[12].Value = ((bool)(Original_AutoUpdateOrders));
-            this.Adapter.UpdateCommand.Parameters[13].Value = ((int)(Original_APICharID));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
-            if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.UpdateCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.UpdateCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.UpdateCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, int Original_ReportGroupID, int Original_APICorpID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, int Original_APICharID) {
-            return this.Update(Original_ReportGroupID, Original_APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, Original_APICharID, Original_ReportGroupID, Original_APICorpID, Original_AutoUpdateTrans, Original_AutoUpdateJournal, Original_AutoUpdateAssets, Original_AutoUpdateOrders, Original_APICharID);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Store(global::System.Nullable<int> rptGroupID, global::System.Nullable<int> apiCorpID, global::System.Nullable<bool> included, global::System.Nullable<bool> autoTrans, global::System.Nullable<bool> autoJournal, global::System.Nullable<bool> autoAssets, global::System.Nullable<bool> autoOrders, global::System.Nullable<int> apiCharID) {
-            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[2];
-            if ((rptGroupID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(rptGroupID.Value));
-            }
-            else {
-                command.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((apiCorpID.HasValue == true)) {
-                command.Parameters[2].Value = ((int)(apiCorpID.Value));
-            }
-            else {
-                command.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((included.HasValue == true)) {
-                command.Parameters[3].Value = ((bool)(included.Value));
-            }
-            else {
-                command.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            if ((autoTrans.HasValue == true)) {
-                command.Parameters[4].Value = ((bool)(autoTrans.Value));
-            }
-            else {
-                command.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((autoJournal.HasValue == true)) {
-                command.Parameters[5].Value = ((bool)(autoJournal.Value));
-            }
-            else {
-                command.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            if ((autoAssets.HasValue == true)) {
-                command.Parameters[6].Value = ((bool)(autoAssets.Value));
-            }
-            else {
-                command.Parameters[6].Value = global::System.DBNull.Value;
-            }
-            if ((autoOrders.HasValue == true)) {
-                command.Parameters[7].Value = ((bool)(autoOrders.Value));
-            }
-            else {
-                command.Parameters[7].Value = global::System.DBNull.Value;
-            }
-            if ((apiCharID.HasValue == true)) {
-                command.Parameters[8].Value = ((int)(apiCharID.Value));
-            }
-            else {
-                command.Parameters[8].Value = global::System.DBNull.Value;
-            }
-            global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
-            if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                command.Connection.Open();
-            }
-            int returnValue;
-            try {
-                returnValue = command.ExecuteNonQuery();
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    command.Connection.Close();
-                }
-            }
-            return returnValue;
-        }
-    }
-    
-    /// <summary>
-    ///Represents the connection and commands used to retrieve and save data.
-    ///</summary>
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
-    [global::System.ComponentModel.DesignerCategoryAttribute("code")]
-    [global::System.ComponentModel.ToolboxItem(true)]
-    [global::System.ComponentModel.DataObjectAttribute(true)]
-    [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
-        ", Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-    [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
     public partial class RiskRatingTableAdapter : global::System.ComponentModel.Component {
         
         private global::System.Data.SqlClient.SqlDataAdapter _adapter;
@@ -46162,7 +45345,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[3];
+            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[4];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = @"SELECT ID, AssemblyLineID, ContainerID, InstalledItemID, InstalledItemLocationID, InstalledItemQuantity, InstalledItemPL, InstalledItemME, InstalledItemRunsRemaining, OutputLcoationID, InstallerID, JobRuns, OutputRuns, MaterialModifier, CharMaterialModifier, TimeMultiplier, CharTimeMultiplier, InstalledItemTypeID, OutputTypeID, ContainerTypeID, InstalledItemCopy, Completed, CompletedSuccessfully, InstalledItemFlag, OutputFlag, ActivityID, CompletedStatus, InstallTime, BeginProductionTime, EndProductionTime, PauseProductionTime FROM dbo.IndustryJobs";
@@ -46179,12 +45362,18 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@jobEndDateBefore", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "dbo.IndustryJobsGetByProduct";
+            this._commandCollection[2].CommandText = "dbo.IndustryJobGetByID";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@installerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@productTypeID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@jobCompletedAfter", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@jobID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[3].Connection = this.Connection;
+            this._commandCollection[3].CommandText = "dbo.IndustryJobsGetByProduct";
+            this._commandCollection[3].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@installerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@productTypeID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@jobCompletedAfter", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -46294,8 +45483,42 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByProduct(EMMADataSet.IndustryJobsDataTable dataTable, global::System.Nullable<int> installerID, global::System.Nullable<int> productTypeID, global::System.Nullable<global::System.DateTime> jobCompletedAfter) {
+        public virtual int FillByID(EMMADataSet.IndustryJobsDataTable dataTable, global::System.Nullable<long> jobID) {
             this.Adapter.SelectCommand = this.CommandCollection[2];
+            if ((jobID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(jobID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual EMMADataSet.IndustryJobsDataTable GetDataByID(global::System.Nullable<long> jobID) {
+            this.Adapter.SelectCommand = this.CommandCollection[2];
+            if ((jobID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(jobID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            EMMADataSet.IndustryJobsDataTable dataTable = new EMMADataSet.IndustryJobsDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByProduct(EMMADataSet.IndustryJobsDataTable dataTable, global::System.Nullable<int> installerID, global::System.Nullable<int> productTypeID, global::System.Nullable<global::System.DateTime> jobCompletedAfter) {
+            this.Adapter.SelectCommand = this.CommandCollection[3];
             if ((installerID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(installerID.Value));
             }
@@ -46325,7 +45548,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
         public virtual EMMADataSet.IndustryJobsDataTable GetDataByProduct(global::System.Nullable<int> installerID, global::System.Nullable<int> productTypeID, global::System.Nullable<global::System.DateTime> jobCompletedAfter) {
-            this.Adapter.SelectCommand = this.CommandCollection[2];
+            this.Adapter.SelectCommand = this.CommandCollection[3];
             if ((installerID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(installerID.Value));
             }
@@ -46748,6 +45971,920 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
                     System.DateTime Original_EndProductionTime, 
                     System.DateTime Original_PauseProductionTime) {
             return this.Update(Original_ID, AssemblyLineID, ContainerID, InstalledItemID, InstalledItemLocationID, InstalledItemQuantity, InstalledItemPL, InstalledItemME, InstalledItemRunsRemaining, OutputLcoationID, InstallerID, JobRuns, OutputRuns, MaterialModifier, CharMaterialModifier, TimeMultiplier, CharTimeMultiplier, InstalledItemTypeID, OutputTypeID, ContainerTypeID, InstalledItemCopy, Completed, CompletedSuccessfully, InstalledItemFlag, OutputFlag, ActivityID, CompletedStatus, InstallTime, BeginProductionTime, EndProductionTime, PauseProductionTime, Original_ID, Original_AssemblyLineID, Original_ContainerID, Original_InstalledItemID, Original_InstalledItemLocationID, Original_InstalledItemQuantity, Original_InstalledItemPL, Original_InstalledItemME, Original_InstalledItemRunsRemaining, Original_OutputLcoationID, Original_InstallerID, Original_JobRuns, Original_OutputRuns, Original_MaterialModifier, Original_CharMaterialModifier, Original_TimeMultiplier, Original_CharTimeMultiplier, Original_InstalledItemTypeID, Original_OutputTypeID, Original_ContainerTypeID, Original_InstalledItemCopy, Original_Completed, Original_CompletedSuccessfully, Original_InstalledItemFlag, Original_OutputFlag, Original_ActivityID, Original_CompletedStatus, Original_InstallTime, Original_BeginProductionTime, Original_EndProductionTime, Original_PauseProductionTime);
+        }
+    }
+    
+    /// <summary>
+    ///Represents the connection and commands used to retrieve and save data.
+    ///</summary>
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+    [global::System.ComponentModel.DesignerCategoryAttribute("code")]
+    [global::System.ComponentModel.ToolboxItem(true)]
+    [global::System.ComponentModel.DataObjectAttribute(true)]
+    [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
+        ", Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
+    [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+    public partial class RptGroupCharsTableAdapter : global::System.ComponentModel.Component {
+        
+        private global::System.Data.SqlClient.SqlDataAdapter _adapter;
+        
+        private global::System.Data.SqlClient.SqlConnection _connection;
+        
+        private global::System.Data.SqlClient.SqlCommand[] _commandCollection;
+        
+        private bool _clearBeforeFill;
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public RptGroupCharsTableAdapter() {
+            this.ClearBeforeFill = true;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private global::System.Data.SqlClient.SqlDataAdapter Adapter {
+            get {
+                if ((this._adapter == null)) {
+                    this.InitAdapter();
+                }
+                return this._adapter;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        internal global::System.Data.SqlClient.SqlConnection Connection {
+            get {
+                if ((this._connection == null)) {
+                    this.InitConnection();
+                }
+                return this._connection;
+            }
+            set {
+                this._connection = value;
+                if ((this.Adapter.InsertCommand != null)) {
+                    this.Adapter.InsertCommand.Connection = value;
+                }
+                if ((this.Adapter.DeleteCommand != null)) {
+                    this.Adapter.DeleteCommand.Connection = value;
+                }
+                if ((this.Adapter.UpdateCommand != null)) {
+                    this.Adapter.UpdateCommand.Connection = value;
+                }
+                for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
+                    if ((this.CommandCollection[i] != null)) {
+                        ((global::System.Data.SqlClient.SqlCommand)(this.CommandCollection[i])).Connection = value;
+                    }
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        protected global::System.Data.SqlClient.SqlCommand[] CommandCollection {
+            get {
+                if ((this._commandCollection == null)) {
+                    this.InitCommandCollection();
+                }
+                return this._commandCollection;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public bool ClearBeforeFill {
+            get {
+                return this._clearBeforeFill;
+            }
+            set {
+                this._clearBeforeFill = value;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private void InitAdapter() {
+            this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
+            global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
+            tableMapping.SourceTable = "Table";
+            tableMapping.DataSetTable = "RptGroupChars";
+            tableMapping.ColumnMappings.Add("ReportGroupID", "ReportGroupID");
+            tableMapping.ColumnMappings.Add("APICharID", "APICharID");
+            tableMapping.ColumnMappings.Add("AutoUpdateTrans", "AutoUpdateTrans");
+            tableMapping.ColumnMappings.Add("AutoUpdateJournal", "AutoUpdateJournal");
+            tableMapping.ColumnMappings.Add("AutoUpdateAssets", "AutoUpdateAssets");
+            tableMapping.ColumnMappings.Add("AutoUpdateOrders", "AutoUpdateOrders");
+            tableMapping.ColumnMappings.Add("AutoUpdateIndustryJobs", "AutoUpdateIndustryJobs");
+            this._adapter.TableMappings.Add(tableMapping);
+            this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.DeleteCommand.Connection = this.Connection;
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[RptGroupChars] WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICharID] = @Original_APICharID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders) AND ([AutoUpdateIndustryJobs] = @Original_AutoUpdateIndustryJobs))";
+            this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateIndustryJobs", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateIndustryJobs", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.InsertCommand.Connection = this.Connection;
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[RptGroupChars] ([ReportGroupID], [APICharID], [AutoUpdateTrans], [AutoUpdateJournal], [AutoUpdateAssets], [AutoUpdateOrders], [AutoUpdateIndustryJobs]) VALUES (@ReportGroupID, @APICharID, @AutoUpdateTrans, @AutoUpdateJournal, @AutoUpdateAssets, @AutoUpdateOrders, @AutoUpdateIndustryJobs);
+SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, AutoUpdateIndustryJobs FROM RptGroupChars WHERE (APICharID = @APICharID) AND (ReportGroupID = @ReportGroupID)";
+            this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateIndustryJobs", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateIndustryJobs", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.UpdateCommand.Connection = this.Connection;
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[RptGroupChars] SET [ReportGroupID] = @ReportGroupID, [APICharID] = @APICharID, [AutoUpdateTrans] = @AutoUpdateTrans, [AutoUpdateJournal] = @AutoUpdateJournal, [AutoUpdateAssets] = @AutoUpdateAssets, [AutoUpdateOrders] = @AutoUpdateOrders, [AutoUpdateIndustryJobs] = @AutoUpdateIndustryJobs WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICharID] = @Original_APICharID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders) AND ([AutoUpdateIndustryJobs] = @Original_AutoUpdateIndustryJobs));
+SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, AutoUpdateIndustryJobs FROM RptGroupChars WHERE (APICharID = @APICharID) AND (ReportGroupID = @ReportGroupID)";
+            this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateIndustryJobs", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateIndustryJobs", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateIndustryJobs", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateIndustryJobs", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private void InitConnection() {
+            this._connection = new global::System.Data.SqlClient.SqlConnection();
+            this._connection.ConnectionString = global::EveMarketMonitorApp.Properties.Settings.Default.EMMA_DatabaseConnectionString;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private void InitCommandCollection() {
+            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[3];
+            this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[0].Connection = this.Connection;
+            this._commandCollection[0].CommandText = "SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAs" +
+                "sets, AutoUpdateOrders, AutoUpdateIndustryJobs FROM dbo.RptGroupChars";
+            this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[1].Connection = this.Connection;
+            this._commandCollection[1].CommandText = "dbo.RptGroupCharSettings";
+            this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@groupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[2].Connection = this.Connection;
+            this._commandCollection[2].CommandText = "dbo.RptGroupSetHasChar";
+            this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@rptGroupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@apiCharID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@included", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoTrans", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoJournal", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoAssets", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoOrders", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoIndustry", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
+        public virtual int Fill(EMMADataSet.RptGroupCharsDataTable dataTable) {
+            this.Adapter.SelectCommand = this.CommandCollection[0];
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
+        public virtual EMMADataSet.RptGroupCharsDataTable GetData() {
+            this.Adapter.SelectCommand = this.CommandCollection[0];
+            EMMADataSet.RptGroupCharsDataTable dataTable = new EMMADataSet.RptGroupCharsDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByIDs(EMMADataSet.RptGroupCharsDataTable dataTable, global::System.Nullable<int> groupID, global::System.Nullable<int> charID) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((groupID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(groupID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((charID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(charID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual EMMADataSet.RptGroupCharsDataTable GetDataByIDs(global::System.Nullable<int> groupID, global::System.Nullable<int> charID) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((groupID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(groupID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((charID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(charID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            EMMADataSet.RptGroupCharsDataTable dataTable = new EMMADataSet.RptGroupCharsDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(EMMADataSet.RptGroupCharsDataTable dataTable) {
+            return this.Adapter.Update(dataTable);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(EMMADataSet dataSet) {
+            return this.Adapter.Update(dataSet, "RptGroupChars");
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(global::System.Data.DataRow dataRow) {
+            return this.Adapter.Update(new global::System.Data.DataRow[] {
+                        dataRow});
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(global::System.Data.DataRow[] dataRows) {
+            return this.Adapter.Update(dataRows);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
+        public virtual int Delete(int Original_ReportGroupID, int Original_APICharID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, bool Original_AutoUpdateIndustryJobs) {
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ReportGroupID));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_APICharID));
+            this.Adapter.DeleteCommand.Parameters[2].Value = ((bool)(Original_AutoUpdateTrans));
+            this.Adapter.DeleteCommand.Parameters[3].Value = ((bool)(Original_AutoUpdateJournal));
+            this.Adapter.DeleteCommand.Parameters[4].Value = ((bool)(Original_AutoUpdateAssets));
+            this.Adapter.DeleteCommand.Parameters[5].Value = ((bool)(Original_AutoUpdateOrders));
+            this.Adapter.DeleteCommand.Parameters[6].Value = ((bool)(Original_AutoUpdateIndustryJobs));
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
+            if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.DeleteCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.DeleteCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.DeleteCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
+        public virtual int Insert(int ReportGroupID, int APICharID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, bool AutoUpdateIndustryJobs) {
+            this.Adapter.InsertCommand.Parameters[0].Value = ((int)(ReportGroupID));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(APICharID));
+            this.Adapter.InsertCommand.Parameters[2].Value = ((bool)(AutoUpdateTrans));
+            this.Adapter.InsertCommand.Parameters[3].Value = ((bool)(AutoUpdateJournal));
+            this.Adapter.InsertCommand.Parameters[4].Value = ((bool)(AutoUpdateAssets));
+            this.Adapter.InsertCommand.Parameters[5].Value = ((bool)(AutoUpdateOrders));
+            this.Adapter.InsertCommand.Parameters[6].Value = ((bool)(AutoUpdateIndustryJobs));
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
+            if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.InsertCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.InsertCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.InsertCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
+        public virtual int Update(int ReportGroupID, int APICharID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, bool AutoUpdateIndustryJobs, int Original_ReportGroupID, int Original_APICharID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, bool Original_AutoUpdateIndustryJobs) {
+            this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(ReportGroupID));
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(APICharID));
+            this.Adapter.UpdateCommand.Parameters[2].Value = ((bool)(AutoUpdateTrans));
+            this.Adapter.UpdateCommand.Parameters[3].Value = ((bool)(AutoUpdateJournal));
+            this.Adapter.UpdateCommand.Parameters[4].Value = ((bool)(AutoUpdateAssets));
+            this.Adapter.UpdateCommand.Parameters[5].Value = ((bool)(AutoUpdateOrders));
+            this.Adapter.UpdateCommand.Parameters[6].Value = ((bool)(AutoUpdateIndustryJobs));
+            this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(Original_ReportGroupID));
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_APICharID));
+            this.Adapter.UpdateCommand.Parameters[9].Value = ((bool)(Original_AutoUpdateTrans));
+            this.Adapter.UpdateCommand.Parameters[10].Value = ((bool)(Original_AutoUpdateJournal));
+            this.Adapter.UpdateCommand.Parameters[11].Value = ((bool)(Original_AutoUpdateAssets));
+            this.Adapter.UpdateCommand.Parameters[12].Value = ((bool)(Original_AutoUpdateOrders));
+            this.Adapter.UpdateCommand.Parameters[13].Value = ((bool)(Original_AutoUpdateIndustryJobs));
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
+            if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.UpdateCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.UpdateCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.UpdateCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
+        public virtual int Update(bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, bool AutoUpdateIndustryJobs, int Original_ReportGroupID, int Original_APICharID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, bool Original_AutoUpdateIndustryJobs) {
+            return this.Update(Original_ReportGroupID, Original_APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, AutoUpdateIndustryJobs, Original_ReportGroupID, Original_APICharID, Original_AutoUpdateTrans, Original_AutoUpdateJournal, Original_AutoUpdateAssets, Original_AutoUpdateOrders, Original_AutoUpdateIndustryJobs);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Store(global::System.Nullable<int> rptGroupID, global::System.Nullable<int> apiCharID, global::System.Nullable<bool> included, global::System.Nullable<bool> autoTrans, global::System.Nullable<bool> autoJournal, global::System.Nullable<bool> autoAssets, global::System.Nullable<bool> autoOrders, global::System.Nullable<bool> autoIndustry) {
+            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[2];
+            if ((rptGroupID.HasValue == true)) {
+                command.Parameters[1].Value = ((int)(rptGroupID.Value));
+            }
+            else {
+                command.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((apiCharID.HasValue == true)) {
+                command.Parameters[2].Value = ((int)(apiCharID.Value));
+            }
+            else {
+                command.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((included.HasValue == true)) {
+                command.Parameters[3].Value = ((bool)(included.Value));
+            }
+            else {
+                command.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((autoTrans.HasValue == true)) {
+                command.Parameters[4].Value = ((bool)(autoTrans.Value));
+            }
+            else {
+                command.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((autoJournal.HasValue == true)) {
+                command.Parameters[5].Value = ((bool)(autoJournal.Value));
+            }
+            else {
+                command.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            if ((autoAssets.HasValue == true)) {
+                command.Parameters[6].Value = ((bool)(autoAssets.Value));
+            }
+            else {
+                command.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((autoOrders.HasValue == true)) {
+                command.Parameters[7].Value = ((bool)(autoOrders.Value));
+            }
+            else {
+                command.Parameters[7].Value = global::System.DBNull.Value;
+            }
+            if ((autoIndustry.HasValue == true)) {
+                command.Parameters[8].Value = ((bool)(autoIndustry.Value));
+            }
+            else {
+                command.Parameters[8].Value = global::System.DBNull.Value;
+            }
+            global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
+            if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                command.Connection.Open();
+            }
+            int returnValue;
+            try {
+                returnValue = command.ExecuteNonQuery();
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    command.Connection.Close();
+                }
+            }
+            return returnValue;
+        }
+    }
+    
+    /// <summary>
+    ///Represents the connection and commands used to retrieve and save data.
+    ///</summary>
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "2.0.0.0")]
+    [global::System.ComponentModel.DesignerCategoryAttribute("code")]
+    [global::System.ComponentModel.ToolboxItem(true)]
+    [global::System.ComponentModel.DataObjectAttribute(true)]
+    [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
+        ", Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
+    [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+    public partial class RptGroupCorpsTableAdapter : global::System.ComponentModel.Component {
+        
+        private global::System.Data.SqlClient.SqlDataAdapter _adapter;
+        
+        private global::System.Data.SqlClient.SqlConnection _connection;
+        
+        private global::System.Data.SqlClient.SqlCommand[] _commandCollection;
+        
+        private bool _clearBeforeFill;
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public RptGroupCorpsTableAdapter() {
+            this.ClearBeforeFill = true;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private global::System.Data.SqlClient.SqlDataAdapter Adapter {
+            get {
+                if ((this._adapter == null)) {
+                    this.InitAdapter();
+                }
+                return this._adapter;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        internal global::System.Data.SqlClient.SqlConnection Connection {
+            get {
+                if ((this._connection == null)) {
+                    this.InitConnection();
+                }
+                return this._connection;
+            }
+            set {
+                this._connection = value;
+                if ((this.Adapter.InsertCommand != null)) {
+                    this.Adapter.InsertCommand.Connection = value;
+                }
+                if ((this.Adapter.DeleteCommand != null)) {
+                    this.Adapter.DeleteCommand.Connection = value;
+                }
+                if ((this.Adapter.UpdateCommand != null)) {
+                    this.Adapter.UpdateCommand.Connection = value;
+                }
+                for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
+                    if ((this.CommandCollection[i] != null)) {
+                        ((global::System.Data.SqlClient.SqlCommand)(this.CommandCollection[i])).Connection = value;
+                    }
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        protected global::System.Data.SqlClient.SqlCommand[] CommandCollection {
+            get {
+                if ((this._commandCollection == null)) {
+                    this.InitCommandCollection();
+                }
+                return this._commandCollection;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public bool ClearBeforeFill {
+            get {
+                return this._clearBeforeFill;
+            }
+            set {
+                this._clearBeforeFill = value;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private void InitAdapter() {
+            this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
+            global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
+            tableMapping.SourceTable = "Table";
+            tableMapping.DataSetTable = "RptGroupCorps";
+            tableMapping.ColumnMappings.Add("ReportGroupID", "ReportGroupID");
+            tableMapping.ColumnMappings.Add("APICorpID", "APICorpID");
+            tableMapping.ColumnMappings.Add("AutoUpdateTrans", "AutoUpdateTrans");
+            tableMapping.ColumnMappings.Add("AutoUpdateJournal", "AutoUpdateJournal");
+            tableMapping.ColumnMappings.Add("AutoUpdateAssets", "AutoUpdateAssets");
+            tableMapping.ColumnMappings.Add("AutoUpdateOrders", "AutoUpdateOrders");
+            tableMapping.ColumnMappings.Add("APICharID", "APICharID");
+            tableMapping.ColumnMappings.Add("AutoUpdateIndustryJobs", "AutoUpdateIndustryJobs");
+            this._adapter.TableMappings.Add(tableMapping);
+            this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.DeleteCommand.Connection = this.Connection;
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[RptGroupCorps] WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICorpID] = @Original_APICorpID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders) AND ([APICharID] = @Original_APICharID) AND ([AutoUpdateIndustryJobs] = @Original_AutoUpdateIndustryJobs))";
+            this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateIndustryJobs", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateIndustryJobs", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.InsertCommand.Connection = this.Connection;
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[RptGroupCorps] ([ReportGroupID], [APICorpID], [AutoUpdateTrans], [AutoUpdateJournal], [AutoUpdateAssets], [AutoUpdateOrders], [APICharID], [AutoUpdateIndustryJobs]) VALUES (@ReportGroupID, @APICorpID, @AutoUpdateTrans, @AutoUpdateJournal, @AutoUpdateAssets, @AutoUpdateOrders, @APICharID, @AutoUpdateIndustryJobs);
+SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, APICharID, AutoUpdateIndustryJobs FROM RptGroupCorps WHERE (APICharID = @APICharID) AND (APICorpID = @APICorpID) AND (ReportGroupID = @ReportGroupID)";
+            this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateIndustryJobs", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateIndustryJobs", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.UpdateCommand.Connection = this.Connection;
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[RptGroupCorps] SET [ReportGroupID] = @ReportGroupID, [APICorpID] = @APICorpID, [AutoUpdateTrans] = @AutoUpdateTrans, [AutoUpdateJournal] = @AutoUpdateJournal, [AutoUpdateAssets] = @AutoUpdateAssets, [AutoUpdateOrders] = @AutoUpdateOrders, [APICharID] = @APICharID, [AutoUpdateIndustryJobs] = @AutoUpdateIndustryJobs WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICorpID] = @Original_APICorpID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders) AND ([APICharID] = @Original_APICharID) AND ([AutoUpdateIndustryJobs] = @Original_AutoUpdateIndustryJobs));
+SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, APICharID, AutoUpdateIndustryJobs FROM RptGroupCorps WHERE (APICharID = @APICharID) AND (APICorpID = @APICorpID) AND (ReportGroupID = @ReportGroupID)";
+            this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateIndustryJobs", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateIndustryJobs", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateIndustryJobs", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateIndustryJobs", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private void InitConnection() {
+            this._connection = new global::System.Data.SqlClient.SqlConnection();
+            this._connection.ConnectionString = global::EveMarketMonitorApp.Properties.Settings.Default.EMMA_DatabaseConnectionString;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        private void InitCommandCollection() {
+            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[3];
+            this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[0].Connection = this.Connection;
+            this._commandCollection[0].CommandText = "SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAs" +
+                "sets, AutoUpdateOrders, APICharID, AutoUpdateIndustryJobs FROM dbo.RptGroupCorps" +
+                "";
+            this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
+            this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[1].Connection = this.Connection;
+            this._commandCollection[1].CommandText = "dbo.RptGroupCorpSettings";
+            this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@groupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection[2].Connection = this.Connection;
+            this._commandCollection[2].CommandText = "dbo.RptGroupSetHasCorp";
+            this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@rptGroupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@apiCorpID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@included", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoTrans", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoJournal", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoAssets", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoOrders", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoIndustry", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@apiCharID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
+        public virtual int Fill(EMMADataSet.RptGroupCorpsDataTable dataTable) {
+            this.Adapter.SelectCommand = this.CommandCollection[0];
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
+        public virtual EMMADataSet.RptGroupCorpsDataTable GetData() {
+            this.Adapter.SelectCommand = this.CommandCollection[0];
+            EMMADataSet.RptGroupCorpsDataTable dataTable = new EMMADataSet.RptGroupCorpsDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
+        public virtual int FillByIDs(EMMADataSet.RptGroupCorpsDataTable dataTable, global::System.Nullable<int> groupID, global::System.Nullable<int> corpID, global::System.Nullable<int> charID) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((groupID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(groupID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((corpID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(corpID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((charID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(charID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
+        public virtual EMMADataSet.RptGroupCorpsDataTable GetDataByIDs(global::System.Nullable<int> groupID, global::System.Nullable<int> corpID, global::System.Nullable<int> charID) {
+            this.Adapter.SelectCommand = this.CommandCollection[1];
+            if ((groupID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(groupID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((corpID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(corpID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((charID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(charID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            EMMADataSet.RptGroupCorpsDataTable dataTable = new EMMADataSet.RptGroupCorpsDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(EMMADataSet.RptGroupCorpsDataTable dataTable) {
+            return this.Adapter.Update(dataTable);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(EMMADataSet dataSet) {
+            return this.Adapter.Update(dataSet, "RptGroupCorps");
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(global::System.Data.DataRow dataRow) {
+            return this.Adapter.Update(new global::System.Data.DataRow[] {
+                        dataRow});
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Update(global::System.Data.DataRow[] dataRows) {
+            return this.Adapter.Update(dataRows);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
+        public virtual int Delete(int Original_ReportGroupID, int Original_APICorpID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, int Original_APICharID, bool Original_AutoUpdateIndustryJobs) {
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ReportGroupID));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_APICorpID));
+            this.Adapter.DeleteCommand.Parameters[2].Value = ((bool)(Original_AutoUpdateTrans));
+            this.Adapter.DeleteCommand.Parameters[3].Value = ((bool)(Original_AutoUpdateJournal));
+            this.Adapter.DeleteCommand.Parameters[4].Value = ((bool)(Original_AutoUpdateAssets));
+            this.Adapter.DeleteCommand.Parameters[5].Value = ((bool)(Original_AutoUpdateOrders));
+            this.Adapter.DeleteCommand.Parameters[6].Value = ((int)(Original_APICharID));
+            this.Adapter.DeleteCommand.Parameters[7].Value = ((bool)(Original_AutoUpdateIndustryJobs));
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
+            if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.DeleteCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.DeleteCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.DeleteCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
+        public virtual int Insert(int ReportGroupID, int APICorpID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, int APICharID, bool AutoUpdateIndustryJobs) {
+            this.Adapter.InsertCommand.Parameters[0].Value = ((int)(ReportGroupID));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(APICorpID));
+            this.Adapter.InsertCommand.Parameters[2].Value = ((bool)(AutoUpdateTrans));
+            this.Adapter.InsertCommand.Parameters[3].Value = ((bool)(AutoUpdateJournal));
+            this.Adapter.InsertCommand.Parameters[4].Value = ((bool)(AutoUpdateAssets));
+            this.Adapter.InsertCommand.Parameters[5].Value = ((bool)(AutoUpdateOrders));
+            this.Adapter.InsertCommand.Parameters[6].Value = ((int)(APICharID));
+            this.Adapter.InsertCommand.Parameters[7].Value = ((bool)(AutoUpdateIndustryJobs));
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
+            if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.InsertCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.InsertCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.InsertCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
+        public virtual int Update(
+                    int ReportGroupID, 
+                    int APICorpID, 
+                    bool AutoUpdateTrans, 
+                    bool AutoUpdateJournal, 
+                    bool AutoUpdateAssets, 
+                    bool AutoUpdateOrders, 
+                    int APICharID, 
+                    bool AutoUpdateIndustryJobs, 
+                    int Original_ReportGroupID, 
+                    int Original_APICorpID, 
+                    bool Original_AutoUpdateTrans, 
+                    bool Original_AutoUpdateJournal, 
+                    bool Original_AutoUpdateAssets, 
+                    bool Original_AutoUpdateOrders, 
+                    int Original_APICharID, 
+                    bool Original_AutoUpdateIndustryJobs) {
+            this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(ReportGroupID));
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(APICorpID));
+            this.Adapter.UpdateCommand.Parameters[2].Value = ((bool)(AutoUpdateTrans));
+            this.Adapter.UpdateCommand.Parameters[3].Value = ((bool)(AutoUpdateJournal));
+            this.Adapter.UpdateCommand.Parameters[4].Value = ((bool)(AutoUpdateAssets));
+            this.Adapter.UpdateCommand.Parameters[5].Value = ((bool)(AutoUpdateOrders));
+            this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(APICharID));
+            this.Adapter.UpdateCommand.Parameters[7].Value = ((bool)(AutoUpdateIndustryJobs));
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_ReportGroupID));
+            this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(Original_APICorpID));
+            this.Adapter.UpdateCommand.Parameters[10].Value = ((bool)(Original_AutoUpdateTrans));
+            this.Adapter.UpdateCommand.Parameters[11].Value = ((bool)(Original_AutoUpdateJournal));
+            this.Adapter.UpdateCommand.Parameters[12].Value = ((bool)(Original_AutoUpdateAssets));
+            this.Adapter.UpdateCommand.Parameters[13].Value = ((bool)(Original_AutoUpdateOrders));
+            this.Adapter.UpdateCommand.Parameters[14].Value = ((int)(Original_APICharID));
+            this.Adapter.UpdateCommand.Parameters[15].Value = ((bool)(Original_AutoUpdateIndustryJobs));
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
+            if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.UpdateCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.UpdateCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.UpdateCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
+        public virtual int Update(bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, bool AutoUpdateIndustryJobs, int Original_ReportGroupID, int Original_APICorpID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, int Original_APICharID, bool Original_AutoUpdateIndustryJobs) {
+            return this.Update(Original_ReportGroupID, Original_APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, Original_APICharID, AutoUpdateIndustryJobs, Original_ReportGroupID, Original_APICorpID, Original_AutoUpdateTrans, Original_AutoUpdateJournal, Original_AutoUpdateAssets, Original_AutoUpdateOrders, Original_APICharID, Original_AutoUpdateIndustryJobs);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        public virtual int Store(global::System.Nullable<int> rptGroupID, global::System.Nullable<int> apiCorpID, global::System.Nullable<bool> included, global::System.Nullable<bool> autoTrans, global::System.Nullable<bool> autoJournal, global::System.Nullable<bool> autoAssets, global::System.Nullable<bool> autoOrders, global::System.Nullable<bool> autoIndustry, global::System.Nullable<int> apiCharID) {
+            global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[2];
+            if ((rptGroupID.HasValue == true)) {
+                command.Parameters[1].Value = ((int)(rptGroupID.Value));
+            }
+            else {
+                command.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((apiCorpID.HasValue == true)) {
+                command.Parameters[2].Value = ((int)(apiCorpID.Value));
+            }
+            else {
+                command.Parameters[2].Value = global::System.DBNull.Value;
+            }
+            if ((included.HasValue == true)) {
+                command.Parameters[3].Value = ((bool)(included.Value));
+            }
+            else {
+                command.Parameters[3].Value = global::System.DBNull.Value;
+            }
+            if ((autoTrans.HasValue == true)) {
+                command.Parameters[4].Value = ((bool)(autoTrans.Value));
+            }
+            else {
+                command.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((autoJournal.HasValue == true)) {
+                command.Parameters[5].Value = ((bool)(autoJournal.Value));
+            }
+            else {
+                command.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            if ((autoAssets.HasValue == true)) {
+                command.Parameters[6].Value = ((bool)(autoAssets.Value));
+            }
+            else {
+                command.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((autoOrders.HasValue == true)) {
+                command.Parameters[7].Value = ((bool)(autoOrders.Value));
+            }
+            else {
+                command.Parameters[7].Value = global::System.DBNull.Value;
+            }
+            if ((autoIndustry.HasValue == true)) {
+                command.Parameters[8].Value = ((bool)(autoIndustry.Value));
+            }
+            else {
+                command.Parameters[8].Value = global::System.DBNull.Value;
+            }
+            if ((apiCharID.HasValue == true)) {
+                command.Parameters[9].Value = ((int)(apiCharID.Value));
+            }
+            else {
+                command.Parameters[9].Value = global::System.DBNull.Value;
+            }
+            global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
+            if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                command.Connection.Open();
+            }
+            int returnValue;
+            try {
+                returnValue = command.ExecuteNonQuery();
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    command.Connection.Close();
+                }
+            }
+            return returnValue;
         }
     }
 }

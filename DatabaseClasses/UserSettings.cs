@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 using EveMarketMonitorApp.Common;
+using EveMarketMonitorApp.AbstractionClasses;
 
 namespace EveMarketMonitorApp.DatabaseClasses
 {
@@ -69,6 +70,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.APIJournUpdatePeriod);
             GetValue(Setting.APIOrderUpdatePeriod);
             GetValue(Setting.APITransUpdatePeriod);
+            GetValue(Setting.APIIndustryJobsUpdatePeriod);
             GetValue(Setting.UseLocalTimezone);
             GetValue(Setting.GridCalcEnabled);
             GetValue(Setting.CSVExportDir);
@@ -78,6 +80,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.APIIndividualUpdate);
             GetValue(Setting.CalcCostInAssetView);
             GetValue(Setting.CalcProfitInTransView);
+            GetValue(Setting.UseCompactUpdatePanel);
         }
 
         /// <summary>
@@ -251,6 +254,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     TimeSpan time4 = new TimeSpan(23, 1, 0);
                     retVal = time4.ToString();
                     break;
+                case Setting.APIIndustryJobsUpdatePeriod:
+                    TimeSpan time5 = new TimeSpan(1, 1, 0);
+                    retVal = time5.ToString();
+                    break;
                 case Setting.UseLocalTimezone:
                     retVal = bool.TrueString;
                     break;
@@ -276,6 +283,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     retVal = bool.FalseString;
                     break;
                 case Setting.CalcProfitInTransView:
+                    retVal = bool.FalseString;
+                    break;
+                case Setting.UseCompactUpdatePanel:
                     retVal = bool.FalseString;
                     break;
                 default:
@@ -361,7 +371,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 }
                 catch
                 {
-                    retVal = new TimeSpan(1, 0, 10);
+                    retVal = new TimeSpan(1, 1, 0);
                     SetValue(Setting.APITransUpdatePeriod, retVal.ToString());
                 }
                 return retVal;
@@ -369,9 +379,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set
             {
                 TimeSpan newVal = value;
-                if (newVal.CompareTo(new TimeSpan(1, 0, 10)) < 0)
+                if (newVal.CompareTo(new TimeSpan(1, 1, 0)) < 0)
                 {
-                    newVal = new TimeSpan(1, 0, 10);
+                    newVal = new TimeSpan(1, 1, 0);
                 }
                 SetValue(Setting.APITransUpdatePeriod, newVal.ToString());
             }
@@ -388,7 +398,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 }
                 catch
                 {
-                    retVal = new TimeSpan(1, 0, 10);
+                    retVal = new TimeSpan(1, 1, 0);
                     SetValue(Setting.APIJournUpdatePeriod, retVal.ToString());
                 }
                 return retVal;
@@ -396,9 +406,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set
             {
                 TimeSpan newVal = value;
-                if (newVal.CompareTo(new TimeSpan(1, 0, 10)) < 0)
+                if (newVal.CompareTo(new TimeSpan(1, 1, 0)) < 0)
                 {
-                    newVal = new TimeSpan(1, 0, 10);
+                    newVal = new TimeSpan(1, 1, 0);
                 }
                 SetValue(Setting.APIJournUpdatePeriod, newVal.ToString());
             }
@@ -415,7 +425,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 }
                 catch
                 {
-                    retVal = new TimeSpan(1, 0, 10);
+                    retVal = new TimeSpan(1, 1, 0);
                     SetValue(Setting.APIOrderUpdatePeriod, retVal.ToString());
                 }
                 return retVal;
@@ -423,9 +433,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set
             {
                 TimeSpan newVal = value;
-                if (newVal.CompareTo(new TimeSpan(1, 0, 10)) < 0)
+                if (newVal.CompareTo(new TimeSpan(1, 1, 0)) < 0)
                 {
-                    newVal = new TimeSpan(1, 0, 10);
+                    newVal = new TimeSpan(1, 1, 0);
                 }
                 SetValue(Setting.APIOrderUpdatePeriod, newVal.ToString());
             }
@@ -442,7 +452,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 }
                 catch
                 {
-                    retVal = new TimeSpan(23, 0, 10);
+                    retVal = new TimeSpan(23, 1, 0);
                     SetValue(Setting.APIAssetUpdatePeriod, retVal.ToString());
                 }
                 return retVal;
@@ -450,13 +460,71 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set
             {
                 TimeSpan newVal = value;
-                if (newVal.CompareTo(new TimeSpan(23, 0, 10)) < 0)
+                if (newVal.CompareTo(new TimeSpan(23, 1, 0)) < 0)
                 {
-                    newVal = new TimeSpan(23, 0, 10);
+                    newVal = new TimeSpan(23, 1, 0);
                 }
                 SetValue(Setting.APIAssetUpdatePeriod, newVal.ToString());
             }
         }
+
+        public TimeSpan APIIndustryJobsUpdatePeriod
+        {
+            get
+            {
+                TimeSpan retVal;
+                try
+                {
+                    retVal = TimeSpan.Parse(GetValue(Setting.APIIndustryJobsUpdatePeriod));
+                }
+                catch
+                {
+                    retVal = new TimeSpan(1, 1, 0);
+                    SetValue(Setting.APIIndustryJobsUpdatePeriod, retVal.ToString());
+                }
+                return retVal;
+            }
+            set
+            {
+                TimeSpan newVal = value;
+                if (newVal.CompareTo(new TimeSpan(1, 1, 0)) < 0)
+                {
+                    newVal = new TimeSpan(1, 1, 0);
+                }
+                SetValue(Setting.APIIndustryJobsUpdatePeriod, newVal.ToString());
+            }
+        }
+
+        public TimeSpan GetAPIUpdatePeriod(APIDataType type)
+        {
+            TimeSpan retVal = new TimeSpan(1, 1, 0);
+            switch (type)
+            {
+                case APIDataType.Transactions:
+                    retVal = TimeSpan.Parse(GetValue(Setting.APITransUpdatePeriod));
+                    break;
+                case APIDataType.Journal:
+                    retVal = TimeSpan.Parse(GetValue(Setting.APIJournUpdatePeriod));
+                    break;
+                case APIDataType.Assets:
+                    retVal = TimeSpan.Parse(GetValue(Setting.APIAssetUpdatePeriod));
+                    break;
+                case APIDataType.Orders:
+                    retVal = TimeSpan.Parse(GetValue(Setting.APIOrderUpdatePeriod));
+                    break;
+                case APIDataType.IndustryJobs:
+                    retVal = TimeSpan.Parse(GetValue(Setting.APIIndustryJobsUpdatePeriod));
+                    break;
+                case APIDataType.Unknown:
+                    break;
+                case APIDataType.Full:
+                    break;
+                default:
+                    break;
+            }
+            return retVal;
+        }
+
         public int AssetsUpdateMaxMinutes
         {
             get
@@ -504,6 +572,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             get { return bool.Parse(GetValue(Setting.CalcProfitInTransView)); }
             set { SetValue(Setting.CalcProfitInTransView, value.ToString()); }
+        }
+        public bool UseCompactUpdatePanel
+        {
+            get { return bool.Parse(GetValue(Setting.UseCompactUpdatePanel)); }
+            set { SetValue(Setting.UseCompactUpdatePanel, value.ToString()); }
         }
         #endregion
 
@@ -652,7 +725,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             AssetsViewWarning,
             APIIndividualUpdate,
             CalcCostInAssetView,
-            CalcProfitInTransView
+            CalcProfitInTransView,
+            APIIndustryJobsUpdatePeriod,
+            UseCompactUpdatePanel
         }
 
     }

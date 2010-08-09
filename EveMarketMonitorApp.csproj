@@ -153,6 +153,7 @@
       <DependentUpon>EMMADataSet.xsd</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DatabaseClasses\IndustryJobs.cs" />
     <Compile Include="DatabaseClasses\TradedItems.cs" />
     <Compile Include="DatabaseClasses\EMMADataSet.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -256,6 +257,13 @@
     </Compile>
     <Compile Include="GUIElements\AutoUpdateSettings.Designer.cs">
       <DependentUpon>AutoUpdateSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUIElements\Interfaces\IUpdatePanel.cs" />
+    <Compile Include="GUIElements\UpdatePanelCompact.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUIElements\UpdatePanelCompact.Designer.cs">
+      <DependentUpon>UpdatePanelCompact.cs</DependentUpon>
     </Compile>
     <Compile Include="GUIElements\DeliveryPlanner.cs">
       <SubType>Form</SubType>
@@ -668,6 +676,10 @@
     <EmbeddedResource Include="GUIElements\AutoUpdateSettings.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AutoUpdateSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUIElements\UpdatePanelCompact.resx">
+      <DependentUpon>UpdatePanelCompact.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GUIElements\DeliveryPlanner.resx">
       <DependentUpon>DeliveryPlanner.cs</DependentUpon>
