@@ -59,6 +59,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.chkAllowIndividualUpdate = new System.Windows.Forms.CheckBox();
+            this.chkCompactView = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -254,7 +255,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(431, 480);
+            this.btnCancel.Location = new System.Drawing.Point(431, 511);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(79, 30);
             this.btnCancel.TabIndex = 2;
@@ -265,7 +266,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(346, 480);
+            this.btnOk.Location = new System.Drawing.Point(346, 511);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(79, 30);
             this.btnOk.TabIndex = 3;
@@ -283,7 +284,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox3.Controls.Add(this.txtAssetsUpdateMaxMinutes);
             this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Location = new System.Drawing.Point(12, 233);
+            this.groupBox3.Location = new System.Drawing.Point(12, 264);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(498, 241);
             this.groupBox3.TabIndex = 4;
@@ -351,10 +352,11 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.chkCompactView);
             this.groupBox4.Controls.Add(this.chkAllowIndividualUpdate);
             this.groupBox4.Location = new System.Drawing.Point(12, 184);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(498, 43);
+            this.groupBox4.Size = new System.Drawing.Size(498, 74);
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "General Update Settings";
@@ -369,11 +371,21 @@ namespace EveMarketMonitorApp.GUIElements
             this.chkAllowIndividualUpdate.Text = "Allow individual API update (Not recommended)";
             this.chkAllowIndividualUpdate.UseVisualStyleBackColor = true;
             // 
+            // chkCompactView
+            // 
+            this.chkCompactView.AutoSize = true;
+            this.chkCompactView.Location = new System.Drawing.Point(9, 42);
+            this.chkCompactView.Name = "chkCompactView";
+            this.chkCompactView.Size = new System.Drawing.Size(201, 17);
+            this.chkCompactView.TabIndex = 1;
+            this.chkCompactView.Text = "Use compact API status update view";
+            this.chkCompactView.UseVisualStyleBackColor = true;
+            // 
             // APIUpdateSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(522, 522);
+            this.ClientSize = new System.Drawing.Size(522, 553);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btnOk);
@@ -429,5 +441,6 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.CheckBox chkManufacturing;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox chkAllowIndividualUpdate;
+        private System.Windows.Forms.CheckBox chkCompactView;
     }
 }

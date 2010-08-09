@@ -8,12 +8,13 @@ using System.Windows.Forms;
 
 using EveMarketMonitorApp.DatabaseClasses;
 using EveMarketMonitorApp.AbstractionClasses;
+using EveMarketMonitorApp.GUIElements.Interfaces;
 
 namespace EveMarketMonitorApp.GUIElements
 {
     public partial class UpdateStatus : Form
     {
-        private Dictionary<string, UpdatePanel> panels = new Dictionary<string, UpdatePanel>();
+        private Dictionary<string, IUpdatePanel> panels = new Dictionary<string, IUpdatePanel>();
         private static bool _allowClose = false;
         private static bool _closing = false;
         private static bool _updating = false;
@@ -34,7 +35,15 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void UpdateStatus_Load(object sender, EventArgs e)
         {
-            UpdatePanel tmpPanel = new UpdatePanel();
+            IUpdatePanel tmpPanel;
+            if (UserAccount.Settings.UseCompactUpdatePanel)
+            {
+                tmpPanel = new UpdatePanelCompact();
+            }
+            else
+            {
+                tmpPanel = new UpdatePanel();
+            }
             this.Width = tmpPanel.Width + 8 + 6;
             mainPanel.Width = tmpPanel.Width + 6;
             PopulatePanels();
@@ -60,7 +69,7 @@ namespace EveMarketMonitorApp.GUIElements
             int position = 4;
             List<int> ids = new List<int>();
 
-            Dictionary<string, UpdatePanel>.Enumerator e = panels.GetEnumerator();
+            Dictionary<string, IUpdatePanel>.Enumerator e = panels.GetEnumerator();
             while (e.MoveNext())
             {
                 e.Current.Value.Dispose();
@@ -84,7 +93,15 @@ namespace EveMarketMonitorApp.GUIElements
                         {
                             if (!ids.Contains(character.CharID))
                             {
-                                UpdatePanel panel = new UpdatePanel(CharOrCorp.Char, character);
+                                IUpdatePanel panel;
+                                if (UserAccount.Settings.UseCompactUpdatePanel)
+                                {
+                                    panel = new UpdatePanelCompact(CharOrCorp.Char, character);
+                                }
+                                else
+                                {
+                                    panel = new UpdatePanel(CharOrCorp.Char, character);
+                                }
                                 panel.Size = new Size(this.Width - 12 - (position >= this.Height - 
                                     System.Windows.Forms.SystemInformation.CaptionHeight ? 
                                     System.Windows.Forms.SystemInformation.VerticalScrollBarWidth : 0), 
@@ -92,7 +109,7 @@ namespace EveMarketMonitorApp.GUIElements
                                 panel.Location = new Point(4, position);
                                 panel.Anchor = AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Top;
                                 panel.UpdateEvent += new APIUpdateEvent(panel_UpdateEvent);
-                                mainPanel.Controls.Add(panel);
+                                mainPanel.Controls.Add(panel as UserControl);
                                 position += panel.Height + 8;
                                 panels.Add("C" + character.CharID, panel);
                                 ids.Add(character.CharID);
@@ -102,14 +119,22 @@ namespace EveMarketMonitorApp.GUIElements
                         {
                             if (!ids.Contains(character.CorpID))
                             {
-                                UpdatePanel panel = new UpdatePanel(CharOrCorp.Corp, character);
+                                IUpdatePanel panel;
+                                if (UserAccount.Settings.UseCompactUpdatePanel)
+                                {
+                                    panel = new UpdatePanelCompact(CharOrCorp.Corp, character);
+                                }
+                                else
+                                {
+                                    panel = new UpdatePanel(CharOrCorp.Corp, character);
+                                }
                                 panel.Size = new Size(this.Width - 12 - (position > this.Height ? 
                                     System.Windows.Forms.SystemInformation.VerticalScrollBarWidth : 0), 
                                     panel.Size.Height);
                                 panel.Location = new Point(4, position);
                                 panel.Anchor = AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Top;
                                 panel.UpdateEvent += new APIUpdateEvent(panel_UpdateEvent);
-                                mainPanel.Controls.Add(panel);
+                                mainPanel.Controls.Add(panel as UserControl);
                                 position += panel.Height + 8;
                                 panels.Add("O" + character.CharID, panel);
                                 ids.Add(character.CorpID);
@@ -152,7 +177,7 @@ namespace EveMarketMonitorApp.GUIElements
             if (!_closing && !_updating)
             {
                 _updating = true;
-                Dictionary<string, UpdatePanel>.Enumerator enumerator = panels.GetEnumerator();
+                Dictionary<string, IUpdatePanel>.Enumerator enumerator = panels.GetEnumerator();
                 while (enumerator.MoveNext())
                 {
                     enumerator.Current.Value.UpdateData();

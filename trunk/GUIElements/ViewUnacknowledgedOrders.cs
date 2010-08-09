@@ -130,7 +130,8 @@ namespace EveMarketMonitorApp.GUIElements
         public void DisplayOrders()
         {
             // Only refresh the display if the number of unacknowledged orders has changed.
-            OrdersList unack = Orders.LoadOrders(UserAccount.CurrentGroup.GetAssetAccessParams(APIDataType.Orders),
+            OrdersList unack = Orders.LoadOrders(
+                UserAccount.CurrentGroup.GetAssetAccessParams(APIDataType.Orders),
                 new List<int>(), new List<int>(), (int)OrderState.ExpiredOrFilledAndUnacknowledged, "Any");
             if (unack.Count != _lastNumberOfOrders)
             {

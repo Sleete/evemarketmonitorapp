@@ -19,6 +19,7 @@ using EveMarketMonitorApp.Common;
 using EveMarketMonitorApp.Reporting;
 
 using Enforcer;
+using EveMarketMonitorApp.GUIElements.Interfaces;
 
 namespace EveMarketMonitorApp.GUIElements
 {
@@ -395,6 +396,7 @@ namespace EveMarketMonitorApp.GUIElements
             _updatesRunning.Add(APIDataType.Journal, new List<int>());
             _updatesRunning.Add(APIDataType.Orders, new List<int>());
             _updatesRunning.Add(APIDataType.Transactions, new List<int>());
+            _updatesRunning.Add(APIDataType.IndustryJobs, new List<int>());
         }
 
         private void AutoUpdate()
@@ -575,6 +577,8 @@ namespace EveMarketMonitorApp.GUIElements
             ids = _updatesRunning[APIDataType.Orders];
             if (ids.Count > 0) { updatesInProg = true; }
             ids = _updatesRunning[APIDataType.Transactions];
+            if (ids.Count > 0) { updatesInProg = true; }
+            ids = _updatesRunning[APIDataType.IndustryJobs];
             if (ids.Count > 0) { updatesInProg = true; }
 
             if (updatesInProg)

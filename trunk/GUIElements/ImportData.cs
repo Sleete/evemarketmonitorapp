@@ -93,22 +93,27 @@ namespace EveMarketMonitorApp.GUIElements
                             {
                                 case APIDataType.Transactions:
                                     prgDialog = new ProgressDialog("Loading Transactions", character);
-                                    character.RetrieveTrans(xml, corc, (short)walletID);
+                                    character.ProcessTransactionsXML(xml, corc, (short)walletID);
                                     prgDialog.ShowDialog();
                                     break;
                                 case APIDataType.Journal:
                                     prgDialog = new ProgressDialog("Loading Journal Data", character);
-                                    character.RetrieveJournal(xml, (short)walletID);
+                                    character.ProcessJournalXML(xml, corc, (short)walletID);
                                     prgDialog.ShowDialog();
                                     break;
                                 case APIDataType.Assets:
                                     prgDialog = new DetailProgressDialog("Loading Assets", character);
-                                    character.RetrieveAssets(xml, corc);
+                                    character.ProcessAssetXML(xml, corc);
                                     prgDialog.ShowDialog();
                                     break;
                                 case APIDataType.Orders:
                                     prgDialog = new ProgressDialog("Loading Orders", character);
-                                    character.RetrieveOrders(xml, corc);
+                                    character.ProcessOrdersXML(xml, corc);
+                                    prgDialog.ShowDialog();
+                                    break;
+                                case APIDataType.IndustryJobs:
+                                    prgDialog = new ProgressDialog("Loading Industry Jobs", character);
+                                    character.ProcessIndustryJobsXML(xml, corc);
                                     prgDialog.ShowDialog();
                                     break;
                                 case APIDataType.Unknown:

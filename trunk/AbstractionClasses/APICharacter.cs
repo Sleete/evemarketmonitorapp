@@ -10,6 +10,7 @@ using EveMarketMonitorApp.DatabaseClasses;
 using EveMarketMonitorApp.Common;
 using EveMarketMonitorApp.GUIElements;
 using System.Data;
+using EveMarketMonitorApp.GUIElements.Interfaces;
 
 namespace EveMarketMonitorApp.AbstractionClasses
 {
@@ -63,6 +64,10 @@ namespace EveMarketMonitorApp.AbstractionClasses
         private AssetList _unacknowledgedLosses = new AssetList();
         private AssetList _corpUnacknowledgedGains = new AssetList();
         private AssetList _corpUnacknowledgedLosses = new AssetList();
+
+        private Queue<string> _unprocessedXMLFiles = new Queue<string>();
+
+        private int _downloadsInProgress = 0;
 
         #region Public properties
         public int CharID
@@ -255,6 +260,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
             SetLastAPIUpdateTime(CharOrCorp.Corp, APIDataType.Journal, data.LastCorpJournalUpdate);
             SetLastAPIUpdateTime(CharOrCorp.Corp, APIDataType.Orders, data.LastCorpOrdersUpdate);
             SetLastAPIUpdateTime(CharOrCorp.Corp, APIDataType.Transactions, data.LastCorpTransUpdate);
+            // Note - don't need to set industry job update dates as they are stored in the settings xml
+            // instead of directly on the character record.
 
             SetHighestID(CharOrCorp.Char, APIDataType.Transactions, data.HighestCharTransID);
             SetHighestID(CharOrCorp.Corp, APIDataType.Transactions, data.HighestCorpTransID);
@@ -334,7 +341,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     _apiSettings.GetAutoUpdateFlag(CharOrCorp.Char, APIDataType.Transactions),
                     _apiSettings.GetAutoUpdateFlag(CharOrCorp.Char, APIDataType.Journal),
                     _apiSettings.GetAutoUpdateFlag(CharOrCorp.Char, APIDataType.Assets),
-                    _apiSettings.GetAutoUpdateFlag(CharOrCorp.Char, APIDataType.Orders));
+                    _apiSettings.GetAutoUpdateFlag(CharOrCorp.Char, APIDataType.Orders),
+                    _apiSettings.GetAutoUpdateFlag(CharOrCorp.Char, APIDataType.IndustryJobs));
                 _oldCharIncWithRptGroup = _charIncWithRptGroup;
             }
             if (type == SettingsStoreType.Corp | type == SettingsStoreType.Both)
@@ -343,7 +351,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     _apiSettings.GetAutoUpdateFlag(CharOrCorp.Corp, APIDataType.Transactions),
                     _apiSettings.GetAutoUpdateFlag(CharOrCorp.Corp, APIDataType.Journal),
                     _apiSettings.GetAutoUpdateFlag(CharOrCorp.Corp, APIDataType.Assets),
-                    _apiSettings.GetAutoUpdateFlag(CharOrCorp.Corp, APIDataType.Orders), _charID);
+                    _apiSettings.GetAutoUpdateFlag(CharOrCorp.Corp, APIDataType.Orders),
+                    _apiSettings.GetAutoUpdateFlag(CharOrCorp.Corp, APIDataType.IndustryJobs),
+                    _charID);
                 _oldCorpIncWithRptGroup = _corpIncWithRptGroup;
             }
         }
@@ -593,75 +603,85 @@ namespace EveMarketMonitorApp.AbstractionClasses
         }
 
 
-        public void UpdateDataFromAPI(CharOrCorp corc, APIDataType type)
+        public void DownloadXMLFromAPI(CharOrCorp corc, APIDataType type)
         {
-            SetLastAPIUpdateError(corc, type, "QUEUED");
-
             switch (type)
             {
                 case APIDataType.Transactions:
-                    ThreadPool.QueueUserWorkItem(RetrieveAPITrans, corc);
+                    SetLastAPIUpdateError(corc, type, "QUEUED");
+                    ThreadPool.QueueUserWorkItem(RetrieveAPIXML, new APIUpdateInfo(corc, type));
                     break;
                 case APIDataType.Journal:
-                    ThreadPool.QueueUserWorkItem(RetrieveAPIJournal, corc);
+                    SetLastAPIUpdateError(corc, type, "QUEUED");
+                    ThreadPool.QueueUserWorkItem(RetrieveAPIXML, new APIUpdateInfo(corc, type));
                     break;
                 case APIDataType.Assets:
-                    ThreadPool.QueueUserWorkItem(RetrieveAPIAssets, corc);
+                    SetLastAPIUpdateError(corc, type, "QUEUED");
+                    ThreadPool.QueueUserWorkItem(RetrieveAPIXML, new APIUpdateInfo(corc, type));
                     break;
                 case APIDataType.Orders:
-                    ThreadPool.QueueUserWorkItem(RetrieveAPIOrders, corc);
+                    SetLastAPIUpdateError(corc, type, "QUEUED");
+                    ThreadPool.QueueUserWorkItem(RetrieveAPIXML, new APIUpdateInfo(corc, type));
+                    break;
+                case APIDataType.IndustryJobs:
+                    SetLastAPIUpdateError(corc, type, "QUEUED");
+                    ThreadPool.QueueUserWorkItem(RetrieveAPIXML, new APIUpdateInfo(corc, type));
+                    break;
+                case APIDataType.Unknown:
+                    break;
+                case APIDataType.Full:
+                    SetLastAPIUpdateError(corc, APIDataType.Transactions, "QUEUED");
+                    SetLastAPIUpdateError(corc, APIDataType.Orders, "QUEUED");
+                    SetLastAPIUpdateError(corc, APIDataType.IndustryJobs, "QUEUED");
+                    SetLastAPIUpdateError(corc, APIDataType.Journal, "QUEUED");
+                    SetLastAPIUpdateError(corc, APIDataType.Assets, "QUEUED");
+                    ThreadPool.QueueUserWorkItem(RetrieveAPIXML, new APIUpdateInfo(corc, APIDataType.Transactions));
+                    ThreadPool.QueueUserWorkItem(RetrieveAPIXML, new APIUpdateInfo(corc, APIDataType.Orders));
+                    ThreadPool.QueueUserWorkItem(RetrieveAPIXML, new APIUpdateInfo(corc, APIDataType.IndustryJobs));
+                    ThreadPool.QueueUserWorkItem(RetrieveAPIXML, new APIUpdateInfo(corc, APIDataType.Journal));
+                    ThreadPool.QueueUserWorkItem(RetrieveAPIXML, new APIUpdateInfo(corc, APIDataType.Assets));
                     break;
                 default:
                     break;
             }
-
         }
 
-        #region Update Assets
-        private void RetrieveAPIAssets(object param)
+
+
+        //public void UpdateDataFromAPI(CharOrCorp corc, APIDataType type)
+        //{
+        //    SetLastAPIUpdateError(corc, type, "QUEUED");
+
+        //    switch (type)
+        //    {
+        //        case APIDataType.Transactions:
+        //            ThreadPool.QueueUserWorkItem(RetrieveAPITrans, corc);
+        //            break;
+        //        case APIDataType.Journal:
+        //            ThreadPool.QueueUserWorkItem(RetrieveAPIJournal, corc);
+        //            break;
+        //        case APIDataType.Assets:
+        //            ThreadPool.QueueUserWorkItem(RetrieveAPIAssets, corc);
+        //            break;
+        //        case APIDataType.Orders:
+        //            ThreadPool.QueueUserWorkItem(RetrieveAPIOrders, corc);
+        //            break;
+        //        default:
+        //            break;
+        //    }
+
+        //}
+
+        private void RetrieveAPIXML(object param)
         {
-            CharOrCorp corc = (CharOrCorp)param;
+            APIUpdateInfo updateInfo = param as APIUpdateInfo;
+            CharOrCorp corc = updateInfo.Corc;
+            APIDataType type = updateInfo.Type;
 
-            bool updateAllowed = false;
-            DateTime startTryUpdate = DateTime.Now;
-            //bool askUser = false;
-            while (!updateAllowed)
-            {
-                // This time limit approach is rather confusing for the user. Instead, we change EMMA
-                // to not allow the user to update from specific parts of the API, they have to update
-                // from all or none.
-
-                // Only allow the assets update to run if there has been an update to transactions and 
-                // orders within the last x minutes, the number of minutes is specified by the user.
-                //TimeSpan timeSinceTransUpdate = DateTime.UtcNow.Subtract(
-                //    GetLastAPIUpdateTime(corc, APIDataType.Transactions));
-                //TimeSpan timeSinceOrdersUpdate = DateTime.UtcNow.Subtract(
-                //    GetLastAPIUpdateTime(corc, APIDataType.Orders));
-                //int minutes = UserAccount.Settings.AssetsUpdateMaxMinutes;
-
-                //if (minutes == 0 ||
-                //    (timeSinceOrdersUpdate.TotalMinutes < minutes && timeSinceTransUpdate.TotalMinutes < minutes))
-                //{
-                    updateAllowed = true;
-                    // Note, the sync lock is used to make sure that a transaction, assets or orders update do
-                    // not run at the same time for a character. 
-                    lock (_syncLock)
-                    {
-                        SetLastAPIUpdateError(corc, APIDataType.Assets, "UPDATING");
-                        RetrieveAssets(corc, null);
-                    }
-                //}
-                //else
-                //{
-                //    // Wait for five seconds before checking order/transaction update times again.
-                //    Thread.Sleep(5000);
-                //    if (!askUser && startTryUpdate.AddMinutes(2).CompareTo(DateTime.Now) < 0)
-                //    {
-                //        SetLastAPIUpdateError(corc, APIDataType.Assets, "BLOCKED");                       
-                //        askUser = true;
-                //    }
-                //}
-            }
+            _downloadsInProgress++;
+            SetLastAPIUpdateError(corc, type, "DOWNLOADING");
+            RetrieveAPIXML(corc, type);
+            _downloadsInProgress--;
 
             try
             {
@@ -669,159 +689,328 @@ namespace EveMarketMonitorApp.AbstractionClasses
             }
             catch (Exception) { }
 
-            if (GetLastAPIUpdateError(corc, APIDataType.Assets).Equals("UPDATING"))
+            if (GetLastAPIUpdateError(corc, type).Equals("DOWNLOADING"))
             {
-                SetLastAPIUpdateError(corc, APIDataType.Assets, "");
+                SetLastAPIUpdateError(corc, type, "QUEUED");
             }
         }
 
-        public void RetrieveAssets(XmlDocument fileXml, CharOrCorp corc)
+        /// <summary>
+        /// Download XML from the Eve API
+        /// </summary>
+        /// <param name="corc"></param>
+        /// <param name="type"></param>
+        private void RetrieveAPIXML(CharOrCorp corc, APIDataType type)
         {
-            DataImportParams parameters = new DataImportParams();
-            parameters.xmlData = fileXml;
-            parameters.corc = corc;
-            parameters.walletID = 0;
-            Thread t0 = new Thread(new ParameterizedThreadStart(RetrieveAssets));
-            t0.Start(parameters);
-        }
+            TimeSpan timeBetweenUpdates = UserAccount.Settings.GetAPIUpdatePeriod(type);
+            DateTime earliestUpdate = GetLastAPIUpdateTime(corc, type).Add(timeBetweenUpdates);
+            DateTime dataDate = DateTime.MinValue;
 
-        private void RetrieveAssets(object parameters)
-        {
-            // Just wait a moment to allow the caller to display the 
-            // progress dialog if importing from a file.
-            Thread.Sleep(200);
-            DataImportParams data = (DataImportParams)parameters;
-            RetrieveAssets(data.corc, data.xmlData);
-        }
-
-        private void RetrieveAssets(CharOrCorp corc, XmlDocument fileXml)
-        {
-            DateTime earliestUpdate = GetLastAPIUpdateTime(corc, APIDataType.Assets).AddHours(23);
-            EMMADataSet.AssetsDataTable assetData = new EMMADataSet.AssetsDataTable();
-            bool fromFile = fileXml != null;
-            DateTime fileDate = DateTime.MinValue;
+            short walletID = corc == CharOrCorp.Corp ? (short)1000 : (short)0;
+            decimal beforeID = 0;
+            bool finishedDownloading = false;
+            bool walletExhausted = false;
+            bool noData = true;
+            bool abort = false;
+            string xmlFile = "";
+            XmlDocument xml = null;
 
             try
             {
-                // Set the 'processed' flag to false for all of this char/corp's assets.
-                Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, (int)AssetStatus.States.Normal, false);
-                Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, (int)AssetStatus.States.ForSaleViaMarket, false);
-                Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, (int)AssetStatus.States.ForSaleViaContract, false);
-                Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, (int)AssetStatus.States.InTransit, false);
-                // Remove containers and all thier contents
-                //Assets.ClearUnProcessed(_charID, corc == CharOrCorp.Char, corc == CharOrCorp.Corp, true);
-
-                if (!fromFile & earliestUpdate.CompareTo(DateTime.UtcNow) > 0)
+                // Make sure we don't download if we've already done so recently.
+                if (earliestUpdate.CompareTo(DateTime.UtcNow) > 0)
                 {
-                    throw new EMMAEveAPIException(ExceptionSeverity.Warning, 1000, "Cannot get asset data so soon" +
-                        " after the last update. Wait until at least " + earliestUpdate.ToLongTimeString() +
-                        " before retrieving the asset list.");
+                    throw new EMMAEveAPIException(ExceptionSeverity.Warning, 1000, "Cannot get " + 
+                        type.ToString() + " data so soon after the last update. Wait until at least " + 
+                        earliestUpdate.ToLongTimeString() + " before updating.");
                 }
 
-                XmlNodeList assetList = null;
-                XmlDocument xml = new XmlDocument();
-
-                try
+                while (!finishedDownloading)
                 {
-                    if (fromFile)
+                    try
                     {
-                        UpdateStatus(0, 1, "Getting asset data from file", "", false);
+                        // Set parameters that will be passed to the API
+                        #region Set parameters
+                        StringBuilder parameters = new StringBuilder();
+                        parameters.Append("userid=");
+                        parameters.Append(_userID);
+                        parameters.Append("&apiKey=");
+                        parameters.Append(_apiKey);
+                        parameters.Append("&characterID=");
+                        parameters.Append(_charID);
+                        if (type == APIDataType.Journal || type == APIDataType.Transactions)
+                        {
+                            if (walletID != 0)
+                            {
+                                parameters.Append("&accountKey=");
+                                parameters.Append(walletID);
+                            }
+                            if (type == APIDataType.Journal) { parameters.Append("&beforeRefID="); }
+                            if (type == APIDataType.Transactions) { parameters.Append("&beforeTransID="); }
+                            parameters.Append(beforeID);
+                        }
+                        if (type == APIDataType.Assets || type == APIDataType.Orders)
+                        {
+                            parameters.Append("&version=2");
+                        }
+                        #endregion
 
-                        fileDate = EveAPI.GetAssetDataTime(fileXml);
-                        DateTime assetsEffectiveDate = corc == CharOrCorp.Char ? Settings.CharAssetsEffectiveDate :
-                            Settings.CorpAssetsEffectiveDate;
-                        if (fileDate.CompareTo(assetsEffectiveDate) < 0)
+                        xml = EveAPI.GetXml(EveAPI.URL_EveApiBase + EveAPI.GetURL(corc, type), 
+                            parameters.ToString(), ref xmlFile);
+                        XmlNodeList tmp = EveAPI.GetResults(xml);
+                        if (xmlFile.Length > 0)
                         {
-                            UpdateStatus(1, 1, "Error", "This data in this file is from " + fileDate.ToString() +
-                                ". EMMA has imaport asset data dated " + assetsEffectiveDate + " therefore the" +
-                                " database will not be updated.", true);
-                            assetList = null;
+                            lock (_unprocessedXMLFiles) { _unprocessedXMLFiles.Enqueue(xmlFile); }
                         }
-                        else
-                        {
-                            assetList = EveAPI.GetResults(fileXml);
-                            UpdateStatus(1, 1, "", assetList.Count + " asset data lines found.", false);
-                        }
-                    }
-                    else
-                    {
-                        xml = EveAPI.GetXml(
-                            EveAPI.URL_EveApiBase + (corc == CharOrCorp.Corp ? EveAPI.URL_AssetCorpApi :
-                            EveAPI.URL_AssetApi),
-                            "userid=" + _userID + "&apiKey=" + _apiKey + "&version=2" +
-                            "&characterID=" + _charID);
 
-                        fileDate = EveAPI.GetAssetDataTime(xml);
-                        DateTime assetsEffectiveDate = corc == CharOrCorp.Char ? Settings.CharAssetsEffectiveDate :
-                            Settings.CorpAssetsEffectiveDate;
-                        if (fileDate.CompareTo(assetsEffectiveDate) < 0)
-                        {
-                            // If the assets file we're loading is dated before what we have previously loaded
-                            // then don't bother.
-                            assetList = null;
-                        }
-                        else
-                        {
-                            assetList = EveAPI.GetResults(xml);
-                            SetLastAPIUpdateTime(corc, APIDataType.Assets, fileDate);
-                        }
+                        // Set the last update time to the effective date of the data in the file rather 
+                        // than the current date
+                        dataDate = EveAPI.GetCachedUntilTime(xml);
+                        dataDate.AddHours(type == APIDataType.Assets ? -23 : -1);
+                        SetLastAPIUpdateTime(corc, type, dataDate);
 
                         // If we've been successfull in getting data and this is a corporate data request
                         // then make sure we've got access set to true;
                         if (corc == CharOrCorp.Corp)
                         {
-                            Settings.CorpAssetsAPIAccess = true;
+                            Settings.SetCorpAPIAccess(type, true);
+                        }
+
+                        noData = false;
+                    }
+                    catch (EMMAEveAPIException emmaApiEx)
+                    {
+                        #region API Error Handling
+                        if (emmaApiEx.EveCode == 100)
+                        {
+                            // Error code 100 indicates that a 'beforeRefID' has been passed in when the
+                            // api was not expecting it. If we know for sure that we've already called
+                            // the api once then have to abandon the data we have got so far.
+                            // (No idea why the API does this, it just happens from time to time)
+                            if (!noData)
+                            {
+                                walletExhausted = true;
+                                SetLastAPIUpdateError(corc, type, "Eve API Error 100");
+                            }
+                            else
+                            {
+                                throw emmaApiEx;
+                            }
+                        }
+                        else if (emmaApiEx.EveCode == 101 || emmaApiEx.EveCode == 102 ||
+                            emmaApiEx.EveCode == 103 || emmaApiEx.EveCode == 117)
+                        {
+                            // Data already retrieved
+                            string err = emmaApiEx.EveDescription;
+
+                            // If there is a cachedUntil tag, dont try and get data again until
+                            // after it has expired.
+                            DateTime nextAllowed = EveAPI.GetCachedUntilTime(xml);
+                            SetLastAPIUpdateTime(corc, type, nextAllowed.Subtract(
+                                UserAccount.Settings.GetAPIUpdatePeriod(type)));
+                            SetLastAPIUpdateError(corc, type,
+                                "The Eve API reports that this data has already been retrieved, no update has occured.");
+                            walletExhausted = true;
+                        }
+                        else if (emmaApiEx.EveCode == 200)
+                        {
+                            // Security level not high enough
+                            SetLastAPIUpdateError(corc, type,
+                                "You must enter your FULL api key to retrieve financial and asset data.\r\n" +
+                                "Use the 'manage group' button to correct this.");
+                            abort = true;
+                        }
+                        else if (emmaApiEx.EveCode == 206 || emmaApiEx.EveCode == 208 ||
+                            emmaApiEx.EveCode == 209)
+                        {
+                            // Character does not have required corporate role.
+                            Settings.SetCorpAPIAccess(type, false);
+                            SetAPIAutoUpdate(corc, type, false);
+                            SetLastAPIUpdateError(corc, type, emmaApiEx.Message);
+                            abort = true;
+                        }
+                        else
+                        {
+                            throw emmaApiEx;
+                        }
+                        #endregion
+                    }
+
+
+                    /// By default, we're now done..
+                    finishedDownloading = true;
+
+                    // However, for some update types, we'll want to go round a few more times
+                    #region Determine if we should access API again with different variables
+                    if (!abort)
+                    {
+                        if (type == APIDataType.Journal || type == APIDataType.Transactions)
+                        {
+                            XmlNode lastRowNode = xml.SelectSingleNode(@"/eveapi/result/rowset/row[last()]");
+                            if (lastRowNode != null)
+                            {
+                                string idAttribName = "";
+                                if (type == APIDataType.Journal) { idAttribName = "@refID"; }
+                                if (type == APIDataType.Transactions) { idAttribName = "@transactionID"; }
+                                beforeID = decimal.Parse(lastRowNode.SelectSingleNode(idAttribName).Value);
+                            }
+                            else { walletExhausted = true; }
+                            if (!walletExhausted) { finishedDownloading = false; }
+                            if (walletExhausted && corc == CharOrCorp.Corp && walletID < 1006)
+                            {
+                                walletID++;
+                                beforeID = 0;
+                                finishedDownloading = false;
+                            }
                         }
                     }
-
-                    //UpdateStatus(1, 1, "", assetList.Count + " asset data lines retrieved.", false);
+                    #endregion
                 }
-                catch (EMMAEveAPIException emmaApiEx)
+
+            }
+            catch (Exception ex)
+            {
+                EMMAException emmaEx = ex as EMMAException;
+                if (emmaEx == null)
                 {
-                    if (emmaApiEx.EveCode == 102)
-                    {
-                        string err = emmaApiEx.EveDescription;
+                    // If we've caught a standard exception rather than an EMMA one then log it be creating a 
+                    // new exception.
+                    // Note that we don't need to actually throw it..
+                    emmaEx = new EMMAException(ExceptionSeverity.Error,
+                        "Error when downloading " + type.ToString() + " from Eve API", ex);
+                }
 
-                        // If there is a cachedUntil tag, dont try and get data again until
-                        // after it has expired.
-                        XmlNode nextTime = xml.SelectSingleNode("/eveapi/cachedUntil");
-                        XmlNode eveTime = xml.SelectSingleNode("/eveapi/currentTime");
-                        TimeSpan difference = DateTime.UtcNow.Subtract(DateTime.Parse(eveTime.FirstChild.Value,
-                            System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat));
-                        DateTime nextAllowed = DateTime.Parse(nextTime.FirstChild.Value,
-                            System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat).Add(difference);
+                SetLastAPIUpdateError(corc, type, ex.Message);
+            }
+        }
 
-                        SetLastAPIUpdateTime(corc, APIDataType.Assets, nextAllowed.Subtract(
-                            UserAccount.Settings.APIAssetUpdatePeriod));
-                        SetLastAPIUpdateError(corc, APIDataType.Assets,
-                            "The Eve API reports that this data has already been retrieved, no update has occured.");
 
-                        //UpdateStatus(0, 0, "Warning", "Asset data already retrieved in the last 24 hours.", false);
-                        assetList = null;
-                    }
-                    else if (emmaApiEx.EveCode == 200)
+        public void ProcessQueuedXML(object param)
+        {
+            while (_unprocessedXMLFiles.Count > 0)
+            {
+                bool process = true;
+                string xmlFile = "";
+                lock (_unprocessedXMLFiles) { xmlFile = _unprocessedXMLFiles.Dequeue(); }
+                // If the next file is an asset data file and we still have other files waiting
+                // then move the asset data file to the back of the queue.
+                if (xmlFile.ToUpper().Contains("ASSETS") && _unprocessedXMLFiles.Count > 0)
+                {
+                    lock (_unprocessedXMLFiles) { _unprocessedXMLFiles.Enqueue(xmlFile); }
+                    process = false;
+                }
+
+                if (process)
+                {
+                    DataImportParams parameters = new DataImportParams();
+                    CharOrCorp corc = CharOrCorp.Char;
+                    short walletID = 0;
+                    if (xmlFile.ToUpper().Contains("CORP")) { corc = CharOrCorp.Corp; }
+                    if(xmlFile.ToUpper().Contains("ACCOUNTKEY="))
                     {
-                        // Security level not high enough
-                        SetLastAPIUpdateError(corc, APIDataType.Assets,
-                            "You must enter your FULL api key to retrieve financial data.\r\n" +
-                            "Use the 'manage group' button to correct this.");
+                        string walletString = xmlFile.Substring(
+                            xmlFile.ToUpper().IndexOf("ACCOUNTKEY=") + 11, 4);
                     }
-                    else if (emmaApiEx.EveCode == 206 || emmaApiEx.EveCode == 208 ||
-                        emmaApiEx.EveCode == 209)
+                    parameters.corc = corc;
+                    parameters.walletID = walletID;
+                    parameters.xmlData = new XmlDocument();
+                    parameters.xmlData.LoadXml(xmlFile);
+
+
+                    if (xmlFile.ToUpper().Contains("ASSETS"))
                     {
-                        // Character does not have required corporate role.
-                        Settings.CorpAssetsAPIAccess = false;
-                        SetAPIAutoUpdate(corc, APIDataType.Assets, false);
-                        SetLastAPIUpdateError(corc, APIDataType.Assets, emmaApiEx.Message);
+                        ThreadPool.QueueUserWorkItem(UpdateAssetsFromXML, parameters);
                     }
-                    else
+                    else if (xmlFile.ToUpper().Contains("TRANSACTIONS"))
                     {
-                        throw emmaApiEx;
+                        ThreadPool.QueueUserWorkItem(UpdateTransactionsFromXML, parameters);
                     }
+                    else if (xmlFile.ToUpper().Contains("JOURNAL ENTRIES"))
+                    {
+                        ThreadPool.QueueUserWorkItem(UpdateJournalFromXML, parameters);
+                    }
+                    else if (xmlFile.ToUpper().Contains("MARKET ORDERS"))
+                    {
+                        ThreadPool.QueueUserWorkItem(UpdateOrdersFromXML, parameters);
+                    }
+                    else if (xmlFile.ToUpper().Contains("INDUSTRY JOBS"))
+                    {
+                        ThreadPool.QueueUserWorkItem(UpdateIndustryJobsFromXML, parameters);
+                    }
+                }
+            }
+        }
+
+        #region Update Assets
+        public void ProcessAssetXML(XmlDocument fileXml, CharOrCorp corc)
+        {
+            DataImportParams parameters = new DataImportParams();
+            parameters.xmlData = fileXml;
+            parameters.corc = corc;
+            parameters.walletID = 0;
+            ThreadPool.QueueUserWorkItem(UpdateAssetsFromXML, parameters);
+        }
+
+        private void UpdateAssetsFromXML(object parameters)
+        {
+            // Just wait a moment to allow the caller to display the 
+            // progress dialog if importing from a file.
+            Thread.Sleep(200);
+
+            DataImportParams data = (DataImportParams)parameters;
+            SetLastAPIUpdateError(data.corc, APIDataType.Assets, "UPDATING");
+
+            lock (_syncLock)
+            {
+                UpdateAssetsFromXML(data.corc, data.xmlData);
+            }
+
+            APICharacters.Store(this);
+            if (GetLastAPIUpdateError(data.corc, APIDataType.Assets).Equals("UPDATING"))
+            {
+                SetLastAPIUpdateError(data.corc, APIDataType.Assets, "");
+            }
+        }
+
+
+
+        private void UpdateAssetsFromXML(CharOrCorp corc, XmlDocument xml)
+        {
+            DateTime earliestUpdate = GetLastAPIUpdateTime(corc, APIDataType.Assets).AddHours(23);
+            EMMADataSet.AssetsDataTable assetData = new EMMADataSet.AssetsDataTable();
+            DateTime dataDate = DateTime.MinValue;
+
+            try
+            {
+                XmlNodeList assetList = null;
+
+                UpdateStatus(0, 1, "Getting asset data from file", "", false);
+
+                dataDate = EveAPI.GetCachedUntilTime(xml);
+                dataDate = dataDate.AddHours(-23);
+                DateTime assetsEffectiveDate = corc == CharOrCorp.Char ?
+                    Settings.CharAssetsEffectiveDate : Settings.CorpAssetsEffectiveDate;
+                if (dataDate.CompareTo(assetsEffectiveDate) < 0)
+                {
+                    UpdateStatus(1, 1, "Error", "This data in this file is from " + dataDate.ToString() +
+                        ". EMMA has already imported asset data dated " + assetsEffectiveDate + " therefore the" +
+                        " database will not be updated.", true);
+                    assetList = null;
+                }
+                else
+                {
+                    assetList = EveAPI.GetResults(xml);
+                    UpdateStatus(1, 1, "", assetList.Count + " asset data lines found.", false);
                 }
 
                 if (assetList != null)
                 {
+                    // Set the 'processed' flag to false for all of this char/corp's assets.
+                    Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, (int)AssetStatus.States.Normal, false);
+                    Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, (int)AssetStatus.States.ForSaleViaMarket, false);
+                    Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, (int)AssetStatus.States.ForSaleViaContract, false);
+                    Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, (int)AssetStatus.States.InTransit, false);
+
                     AssetList changes = new AssetList();
 
                     // Create an in-memory datatable with all of the changes required to the assets 
@@ -829,28 +1018,28 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     UpdateAssets(assetData, assetList, 0, corc, 0, changes);
                     // Use the currently active sell order to account for assets that appear to be
                     // missing.
-                    if (fromFile) { UpdateStatus(0, 0, "Processing active sell orders", "", false); }
+                    UpdateStatus(0, 0, "Processing active sell orders", "", false);
                     Assets.ProcessSellOrders(assetData, changes, corc == CharOrCorp.Corp ? _corpID : _charID);
-                    if (fromFile) { UpdateStatus(0, 0, "", "Complete", false); }
+                    UpdateStatus(0, 0, "", "Complete", false);
                     // Use transactions that occured after the effective date of the asset data file
                     // to ensure that the asset list is as up-to-date as possible.
-                    if (fromFile) { UpdateStatus(0, 0, "Updating assets from transactions that occur after " +
-                        "the asset file's effective date", "", false); }
-                    long maxID = Assets.UpdateFromTransactions(assetData, changes, _charID, _corpID, 
-                        corc == CharOrCorp.Corp, fileDate);
+                    UpdateStatus(0, 0, "Updating assets from transactions that occur after " +
+                        "the asset file's effective date", "", false);
+                    long maxID = Assets.UpdateFromTransactions(assetData, changes, _charID, _corpID,
+                        corc == CharOrCorp.Corp, dataDate);
                     if (corc == CharOrCorp.Char) { Settings.CharAssetsTransUpdateID = maxID; }
                     else { Settings.CorpAssetsTransUpdateID = maxID; }
-                    if (fromFile) { UpdateStatus(0, 0, "", "Complete", false); }
+                    UpdateStatus(0, 0, "", "Complete", false);
 
                     AssetList gained = new AssetList();
                     AssetList lost = new AssetList();
                     if ((corc == CharOrCorp.Char && Settings.FirstUpdateDoneAssetsChar) ||
                         (corc == CharOrCorp.Corp && Settings.FirstUpdateDoneAssetsCorp))
                     {
-                        if (fromFile) { UpdateStatus(0, 0, "Analysing changes to assets", "", false);}
-                        Assets.AnalyseChanges(assetData, corc == CharOrCorp.Corp ? _corpID : _charID, 
+                        UpdateStatus(0, 0, "Analysing changes to assets", "", false);
+                        Assets.AnalyseChanges(assetData, corc == CharOrCorp.Corp ? _corpID : _charID,
                             changes, out gained, out lost);
-                        if (fromFile) { UpdateStatus(0, 0, "", "Complete", false); }
+                        UpdateStatus(0, 0, "", "Complete", false);
                     }
 
                     if (corc == CharOrCorp.Char)
@@ -864,9 +1053,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         _corpUnacknowledgedLosses = lost;
                     }
 
-                    if (fromFile) { UpdateStatus(0, 0, "Updating assets database", "", false); }
+                    UpdateStatus(0, 0, "Updating assets database", "", false);
                     Assets.UpdateDatabase(assetData);
-                    if (fromFile) { UpdateStatus(0, 0, "", "Complete", false); }
+                    UpdateStatus(0, 0, "", "Complete", false);
 
                     // Set all 'for sale via contract' and 'in transit' assets in the database to processed.
                     // These types of assets would not be expected to show up in either the XML from the
@@ -878,29 +1067,26 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     // i.e. either 'for sale via contract' or 'in transit'.
                     // We set them to processed to prevent them from being removed along with other
                     // unprocessed assets.
-                    Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, 
+                    Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID,
                         (int)AssetStatus.States.ForSaleViaContract, true);
-                    Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, 
-                        (int)AssetStatus.States.InTransit, true);                    
+                    Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID,
+                        (int)AssetStatus.States.InTransit, true);
                     // Clear any remaining assets that have not been processed.
                     Assets.ClearUnProcessed(corc == CharOrCorp.Corp ? _corpID : _charID, false);
                     Assets.SetProcessedFlag(corc == CharOrCorp.Corp ? _corpID : _charID, 0, false);
 
-                    if (fromFile)
-                    {
-                        UpdateStatus(0, 0, assetData.Count + " asset database entries modified.", "", false);
-                    }
+                    UpdateStatus(0, 0, assetData.Count + " asset database entries modified.", "", false);
 
                     // Update the assets effective date setting.
                     // Also set the 'FirstUpdateDone' flag
                     if (corc == CharOrCorp.Char)
                     {
-                        Settings.CharAssetsEffectiveDate = fileDate;
+                        Settings.CharAssetsEffectiveDate = dataDate;
                         Settings.FirstUpdateDoneAssetsChar = true;
                     }
                     else
                     {
-                        Settings.CorpAssetsEffectiveDate = fileDate;
+                        Settings.CorpAssetsEffectiveDate = dataDate;
                         if (!Settings.FirstUpdateDoneAssetsCorp)
                         {
                             Settings.FirstUpdateDoneAssetsCorp = true;
@@ -918,10 +1104,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     }
 
 
-                    if (fromFile)
-                    {
-                        UpdateStatus(1, 1, "", "Complete", true);
-                    }
+                    UpdateStatus(1, 1, "", "Complete", true);
                 }
             }
             catch (Exception ex)
@@ -932,18 +1115,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     // If we've caught a standard exception rather than an EMMA one then log it be creating a 
                     // new exception.
                     // Note that we don't need to actually throw it..
-                    emmaEx = new EMMAException(ExceptionSeverity.Error, "Error when adding assets" +
-                        " from api" + (fromFile ? " file" : ""), ex);
+                    emmaEx = new EMMAException(ExceptionSeverity.Error, "Error when processing assets data", ex);
                 }
 
-                if (fromFile)
-                {
-                    UpdateStatus(-1, -1, "Error", ex.Message, true);
-                }
-                else
-                {
-                    SetLastAPIUpdateError(corc, APIDataType.Assets, ex.Message);
-                }
+                UpdateStatus(-1, -1, "Error", ex.Message, true);
+                SetLastAPIUpdateError(corc, APIDataType.Assets, ex.Message);
             }
 
             if (UpdateEvent != null)
@@ -1249,520 +1425,190 @@ namespace EveMarketMonitorApp.AbstractionClasses
         #endregion
 
         #region Update Journal
-        private void RetrieveAPIJournal(object param)
-        {
-            CharOrCorp corc = (CharOrCorp)param;
-
-            // Note, the JournalAPIUpdateLock is used to make sure that journal updates for different
-            // characters and corps cannot run at the same time.
-            // This is to prevent primary key conflicts when two characters in the report group transfer
-            // cash to each other.
-            lock (Globals.JournalAPIUpdateLock)
-            {
-                SetLastAPIUpdateError(corc, APIDataType.Journal, "UPDATING");
-
-                RetrieveJournal(corc, null, 0);
-            }
-
-            APICharacters.Store(this);
-            if (GetLastAPIUpdateError(corc, APIDataType.Journal).Equals("UPDATING"))
-            {
-                SetLastAPIUpdateError(corc, APIDataType.Journal, "");
-            }
-        }
-
-        public void RetrieveJournal(XmlDocument fileXML, short walletID)
+        public void ProcessJournalXML(XmlDocument fileXml, CharOrCorp corc, short walletID)
         {
             DataImportParams parameters = new DataImportParams();
-            parameters.corc = CharOrCorp.Char; // Does not matter if we choose char or corp.
-            parameters.xmlData = fileXML;
+            parameters.xmlData = fileXml;
+            parameters.corc = corc;
             parameters.walletID = walletID;
-            Thread t0 = new Thread(new ParameterizedThreadStart(RetrieveJournal));
-            t0.Start(parameters);
+            ThreadPool.QueueUserWorkItem(UpdateAssetsFromXML, parameters);
         }
 
-        private void RetrieveJournal(object parameters) 
+        private void UpdateJournalFromXML(object parameters)
         {
             // Just wait a moment to allow the caller to display the 
             // progress dialog if importing from a file.
             Thread.Sleep(200);
+
             DataImportParams data = (DataImportParams)parameters;
-            RetrieveJournal(data.corc, data.xmlData, data.walletID);
+
+            lock (Globals.JournalAPIUpdateLock)
+            {
+                SetLastAPIUpdateError(data.corc, APIDataType.Journal, "UPDATING");
+                UpdateJournalFromXML(data.corc, data.xmlData, data.walletID);
+            }
+
+            APICharacters.Store(this);
+            if (GetLastAPIUpdateError(data.corc, APIDataType.Journal).Equals("UPDATING"))
+            {
+                SetLastAPIUpdateError(data.corc, APIDataType.Journal, "");
+            }
         }
         
         /// <summary>
-        /// Retrieves journal entries from the Eve API or the specified xml document and adds any not already present to the database.
+        /// Add journal entries from the supplied XML to the database.
         /// </summary>
         /// <param name="corc"></param>
         /// <param name="fileXML"></param>
         /// <returns>The number of rows added to the journal table.</returns>
-        private int RetrieveJournal(CharOrCorp corc, XmlDocument fileXML, short defaultWalletID)
+        private int UpdateJournalFromXML(CharOrCorp corc, XmlDocument fileXML, short walletID)
         {
-            decimal beforeRefID = 0;
-            bool moreEntriesToAdd = true;
-            bool errTryAgain = false;
             int retVal = 0;
             int updatedEntries = 0;
-            //int batchNo = 0;
-            short walletID = defaultWalletID == 0 ? (corc == CharOrCorp.Corp ? 
-                (short)1000 : (short)0) : defaultWalletID;
-            DateTime earliestUpdate = GetLastAPIUpdateTime(corc, APIDataType.Journal).AddHours(1);
             EMMADataSet.JournalDataTable journalData = new EMMADataSet.JournalDataTable();
-            bool fromFile = fileXML != null;
             long highestIDSoFar = _apiSettings.GetHighestID(corc, APIDataType.Journal);
-            long highestID = 0;
-            DateTime fileDate = DateTime.UtcNow;
-            bool noData = true;
-            DateTime ticker = DateTime.UtcNow.AddSeconds(-10);
+            long oldHighestID = _apiSettings.GetHighestID(corc, APIDataType.Journal);
+            DateTime dataDate = DateTime.UtcNow;
 
             try
             {
-                if (!fromFile & earliestUpdate.CompareTo(DateTime.UtcNow) > 0)
-                {
-                    throw new EMMAEveAPIException(ExceptionSeverity.Warning, 1000, "Cannot get more journal" +
-                        " entries so soon after the last update. Wait until at least " + 
-                        earliestUpdate.ToLongTimeString() + " before updating the journal.");
-                }
+                XmlNodeList journEntries = null;
+                XmlDocument xml = new XmlDocument();
 
-                // Loop through this while there are more entries left to add
-                while (moreEntriesToAdd)
-                {
-                    XmlNodeList journEntries = null;
-                    XmlDocument xml = new XmlDocument();
+                UpdateStatus(0, 1, "Getting journal entries from file", "", false);
+                journEntries = EveAPI.GetResults(fileXML);
+                dataDate = EveAPI.GetCachedUntilTime(fileXML).AddHours(-1);
+                UpdateStatus(1, 1, "", journEntries.Count + " entries found in file.", false);
 
-                    // Retrieve journal data from the Eve API. A maximum of 1000 results are returned in one call.
-                    // If more results need to be added to the database then the program will loop round to call this
-                    // again with the 'beforeRefID' parameter set.
-                    // Looping will stop when:
-                    // A) Less than 1000 results are returned - this indicates no more will be accessible (only up to
-                    //      1 week in the past is accessible through the API).
-                    // B) We read a journal line that has the same or lower refID than the specified 'latestEntryID'.
-                    //      This would indicate that we have hit data that is already in the EMMA database and can stop 
-                    //      requesting more.
-                    // C) An error 101 or 103 is returned from the API service. This indicates there are no more 
-                    //      transactions to be returned. 
-                    // Note: Any other error will cause an exception to be thrown.
-                    try
+                if (journEntries != null && journEntries.Count > 0)
+                {
+                    long offset = 2591720933;
+                    int batchPrg = 0;
+
+                    UpdateStatus(0, journEntries.Count, "Processing entries", "", false);
+
+
+                    // Loop through the results returned from this call to the API and add the line 
+                    // to the data table.
+                    foreach (XmlNode journEntry in journEntries)
                     {
-                        if (fromFile)
+                        bool tryUpdate = false;
+                        long id = long.Parse(journEntry.SelectSingleNode("@refID").Value) + offset;
+                        int recieverID = 0;
+                        if (corc == CharOrCorp.Corp)
                         {
-                            UpdateStatus(0, 1, "Getting journal entries from file", "", false);
-                            journEntries = EveAPI.GetResults(fileXML);
-                            fileDate = EveAPI.GetJournalDataTime(fileXML);
-                            UpdateStatus(1, 1, "", journEntries.Count + " entries found in file.", false);
-                        }
-                        else
-                        {
-                            // This funny little bit of code is trying to prevent the API from prematurely firing
-                            // error 100's.
-                            // It seems that the second request for journal data will somtimes arrive
-                            // at the API server before it has completed processing the first request.
-                            // In this case, the server recieves a request with a before ref ID when it does 
-                            // not think that it's been queried with a before ref id of zero yet, causing
-                            // an error 100 to occur.
-                            // This ensures that we wait 2 seconds between requests on the same wallet.
-                            TimeSpan sleepTime = new TimeSpan(0,0,2);
-                            sleepTime = sleepTime - DateTime.UtcNow.Subtract(ticker);
-                            if (sleepTime.TotalMilliseconds > 0) { Thread.Sleep((int)sleepTime.TotalMilliseconds); }
-                            ticker = DateTime.UtcNow;
-
-                            //UpdateStatus(0, 1, "Getting journal entries from Eve API" +
-                            //    (Settings.CorpMode ? " for corp wallet " + walletID + "" : "") +
-                            //    (beforeRefID == 0 ? "." : " where journal ref ID < " + beforeRefID + "."), "", false);
-
-                            xml = EveAPI.GetXml(
-                                EveAPI.URL_EveApiBase + 
-                                (corc == CharOrCorp.Corp ? EveAPI.URL_JournCorpApi : EveAPI.URL_JournApi),
-                                "userid=" + _userID + "&apiKey=" + _apiKey + "&characterID=" + _charID +
-                                (walletID == 0 ? "" : "&accountKey=" + walletID) +
-                                "&beforeRefID=" + beforeRefID);
-                            journEntries = EveAPI.GetResults(xml);
-                            fileDate = EveAPI.GetJournalDataTime(xml);
-
-                            SetLastAPIUpdateTime(corc, APIDataType.Journal, DateTime.UtcNow);
-
-                            // If we've been successfull in getting data and this is a corporate data request
-                            // then make sure we've got access set to true;
-                            if (corc == CharOrCorp.Corp)
+                            // This is a special case.
+                            // When bounty prizes are received by the player, corp tax is applied.
+                            // This corp tax does not appear as a seperate journal entry for the
+                            // character. It is specified by the taxReceiverID and taxAmount fields
+                            // on the bounty prize entry itself in the XML.
+                            // On the corp side, there is a specifc entry for the tax but it has
+                            // the same journalentryID and ownerID2 as the character entry. 
+                            // This means that EMMA does not differentiate between them and the
+                            // corp tax part is lost.
+                            // In order to resolve this we simply set receiver ID to be the corp
+                            // instead of character in these cases.
+                            // Note that 'BuildJournalEntry' has similar processing.
+                            if (int.Parse(journEntry.SelectSingleNode("@refTypeID").Value) == 85)
                             {
-                                Settings.CorpJournalAPIAccess = true;
+                                recieverID = _corpID;
                             }
                         }
-
-                        //UpdateStatus(1, 1, "", journEntries.Count + " entries retrieved.", false);
-                    }
-                    catch (EMMAEveAPIException emmaApiEx)
-                    {
-                        #region API Error Handling
-                        if (emmaApiEx.EveCode == 100)
+                        if (recieverID == 0)
                         {
-                            // Error code 100 indicates that a 'beforeRefID' has been passed in when the
-                            // api was not expecting it. If we know for sure that we've already called
-                            // the api once then have to abandon the data we have got so far.
-                            // (No idea why the API does this, it just happens from time to time)
-                            if (journalData.Count != 0)
+                            recieverID = int.Parse(journEntry.SelectSingleNode("@ownerID2").Value);
+                        }
+
+
+                        if (id - offset > oldHighestID)
+                        {
+                            if (id - offset > highestIDSoFar) { highestIDSoFar = id - offset; }
+                            if (Journal.EntryExists(journalData, id, recieverID))
                             {
-                                journEntries = null;
-                                moreEntriesToAdd = false;
-                                journalData = new EMMADataSet.JournalDataTable();
-                                retVal = 0;
-                                updatedEntries = 0;
-                                highestID = 0;
-                                SetLastAPIUpdateError(corc, APIDataType.Journal, "Eve API Error 100");
+                                tryUpdate = true;
                             }
                             else
                             {
-                                if (!fromFile)
+                                EMMADataSet.JournalRow tmpRow = journalData.FindByIDRecieverID(id, recieverID);
+                                if (tmpRow == null)
                                 {
-                                    SetLastAPIUpdateError(corc, APIDataType.Journal, emmaApiEx.Message);
-                                    moreEntriesToAdd = false;
+                                    EMMADataSet.JournalRow newRow =
+                                        BuildJournalEntry(journalData, journEntry, offset, walletID, corc);
+
+                                    journalData.AddJournalRow(newRow);
+                                    retVal++;
+
+                                    // This section searches the character and journal ref type tables 
+                                    // for the values used in this new journal entry.
+                                    // If they are not present in the tables then they are added.
+                                    #region Check other tables and add values if needed.
+                                    SortedList<int, string> entityIDs = new SortedList<int, string>();
+                                    entityIDs.Add(newRow.SenderID, journEntry.SelectSingleNode("@ownerName1").Value);
+                                    if (!entityIDs.ContainsKey(newRow.RecieverID))
+                                    {
+                                        entityIDs.Add(newRow.RecieverID, journEntry.SelectSingleNode("@ownerName2").Value);
+                                    }
+                                    foreach (KeyValuePair<int, string> checkName in entityIDs)
+                                    {
+                                        Names.AddName(checkName.Key, checkName.Value);
+                                    }
+                                    #endregion
                                 }
                                 else
                                 {
-                                    throw emmaApiEx;
+                                    tryUpdate = true;
                                 }
                             }
-                        }
-                        else if (emmaApiEx.EveCode == 101 || emmaApiEx.EveCode == 103)
-                        {
-                            //UpdateStatus(0, 0, "Error", "No more entries available", false);
-                            moreEntriesToAdd = false;
 
-                            try
+                            if (tryUpdate)
                             {
-                                // If there is a cachedUntil tag, dont try and get data again until
-                                // after it has expired.
-                                XmlNode nextTime = xml.SelectSingleNode("/eveapi/cachedUntil");
-                                XmlNode eveTime = xml.SelectSingleNode("/eveapi/currentTime");
-                                TimeSpan difference = DateTime.UtcNow.Subtract(DateTime.Parse(eveTime.FirstChild.Value,
-                                    System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat));
-                                DateTime nextAllowed = DateTime.Parse(nextTime.FirstChild.Value,
-                                    System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat).Add(difference);
+                                EMMADataSet.JournalRow newRow =
+                                    BuildJournalEntry(journalData, journEntry, offset, walletID, corc);
+                                EMMADataSet.JournalRow oldRow = journalData.FindByIDRecieverID(newRow.ID,
+                                        newRow.RecieverID);
+                                bool updated = false;
 
-                                SetLastAPIUpdateTime(corc, APIDataType.Journal, nextAllowed.Subtract(
-                                    UserAccount.Settings.APIJournUpdatePeriod));
-                                if (noData)
+                                if (oldRow != null)
                                 {
-                                    SetLastAPIUpdateError(corc, APIDataType.Journal,
-                                        "The Eve API reports that this data has already been retrieved, no update has occured.");
-                                }
-                            }
-                            catch (Exception) { }
-
-                        }
-                        else if (emmaApiEx.EveCode == 102)
-                        {
-                            string err = emmaApiEx.EveDescription;
-                            beforeRefID = decimal.Parse(err.Substring(err.IndexOf("[") + 1,
-                                err.IndexOf("]") - err.IndexOf("[") - 1));
-                            //UpdateStatus(0, 0, "Warning", "Data already retrieved in the last hour, " +
-                            //   "attemtping to retrieve older entries anyway.", false);
-                            journEntries = null;
-                            errTryAgain = true;
-                        }
-                        else if (emmaApiEx.EveCode == 200)
-                        {
-                            // Security level not high enough
-                            SetLastAPIUpdateError(corc, APIDataType.Journal,
-                                "You must enter your FULL api key to retrieve financial data.\r\n" +
-                                "Use the 'manage group' button to correct this.");
-                            moreEntriesToAdd = false;
-                        }
-                        else if (emmaApiEx.EveCode == 206 || emmaApiEx.EveCode == 208 ||
-                            emmaApiEx.EveCode == 209)
-                        {
-                            // Character does not have required corporate role.
-                            Settings.CorpJournalAPIAccess = false;
-                            SetAPIAutoUpdate(corc, APIDataType.Journal, false);
-                            SetLastAPIUpdateError(corc, APIDataType.Journal, emmaApiEx.Message);
-                            moreEntriesToAdd = false;
-                        }
-                        else
-                        {
-                            if (!fromFile)
-                            {
-                                SetLastAPIUpdateError(corc, APIDataType.Journal, emmaApiEx.Message);
-                                moreEntriesToAdd = false;
-                            }
-                            else
-                            {
-                                throw emmaApiEx;
-                            }
-                        }
-                        #endregion
-                    }
-
-                    if (journEntries != null && journEntries.Count > 0)
-                    {
-                        noData = false;
-                        if (journEntries.Count < 1000 || fromFile) { moreEntriesToAdd = false; }
-
-                        // Get the ID offsets of the first and last entries.
-                        XmlNode firstEntry = journEntries[0];
-                        XmlNode lastEntry = journEntries[journEntries.Count - 1];
-
-                        long offset1 = 0, offset2 = 0;
-                        bool alreadyDone = false;
-                        EMMADataSet.JournalRow newRow1 =
-                            BuildJournalEntry(journalData, firstEntry, 0, walletID, corc);
-                        XmlNode entryIDNode = firstEntry.SelectSingleNode("@refID");
-                        long fileMaxID = long.Parse(entryIDNode.Value,
-                            System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-                        if (fileMaxID > highestID) { highestID = fileMaxID; }
-
-                        if (fileMaxID < highestIDSoFar - 500000000)
-                        {
-                            // If the highest ID in this import is less than the highest ID stored
-                            // for this char/corp then we're probably dealing with a new generation
-                            // so need to reset..
-                            SetHighestID(corc, APIDataType.Journal, 0);
-                            highestIDSoFar = 0;
-                        }
-                        else if (fileMaxID < highestIDSoFar && !fromFile)
-                        {
-                            alreadyDone = true;
-                            moreEntriesToAdd = false;
-                        }
-
-                        if (!alreadyDone)
-                        {
-                            try
-                            {
-                                offset1 = JournalGenerations.GetOffset(newRow1, fileDate);
-
-                                EMMADataSet.JournalRow newRow2 =
-                                    BuildJournalEntry(journalData, lastEntry, 0, walletID, corc);
-                                try
-                                {
-                                    offset2 = JournalGenerations.GetOffset(newRow2, fileDate);
-                                }
-                                catch (Exception ex)
-                                {
-                                    EMMAException emmaEx = ex as EMMAException;
-                                    if (emmaEx == null)
+                                    if ((newRow.RBalance > 0 && oldRow.RBalance == 0) ||
+                                        (newRow.RCorpID != 0 && oldRow.RCorpID == 0))
                                     {
-                                        // If we've caught a standard exception rather than an EMMA one then log it be creating a 
-                                        // new exception.
-                                        // Note that we don't need to actually throw it..
-                                        emmaEx = new EMMAException(ExceptionSeverity.Error, "Error when adding journal data" +
-                                            " from api" + (fromFile ? " file" : ""), ex);
+                                        oldRow.RBalance = newRow.RBalance;
+                                        oldRow.RCorpID = newRow.RCorpID;
+                                        oldRow.RArgID = newRow.RArgID;
+                                        oldRow.RArgName = newRow.RArgName;
+                                        oldRow.RWalletID = newRow.RWalletID;
+                                        updated = true;
                                     }
-                                    journEntries = null;
-
-                                    if (!fromFile)
+                                    if ((newRow.SBalance > 0 && oldRow.SBalance == 0) ||
+                                        (newRow.SCorpID != 0 && oldRow.SCorpID == 0))
                                     {
-                                        SetLastAPIUpdateError(corc, APIDataType.Journal, ex.Message);
-                                    }
-                                    else
-                                    {
-                                        UpdateStatus(0, journEntries.Count, "Error calculating ID offset", ex.Message, false);
+                                        oldRow.SBalance = newRow.SBalance;
+                                        oldRow.SCorpID = newRow.SCorpID;
+                                        oldRow.SArgID = newRow.SArgID;
+                                        oldRow.SArgName = newRow.SArgName;
+                                        oldRow.SWalletID = newRow.SWalletID;
+                                        updated = true;
                                     }
                                 }
-                            }
-                            catch (Exception ex)
-                            {
-                                EMMAException emmaEx = ex as EMMAException;
-                                if (emmaEx == null)
+
+                                if (updated)
                                 {
-                                    // If we've caught a standard exception rather than an EMMA one then log it be creating a 
-                                    // new exception.
-                                    // Note that we don't need to actually throw it..
-                                    emmaEx = new EMMAException(ExceptionSeverity.Error, "Error when adding journal data" +
-                                        " from api" + (fromFile ? " file" : ""), ex);
+                                    updatedEntries++;
                                 }
-
-                                if (!fromFile)
-                                {
-                                    SetLastAPIUpdateError(corc, APIDataType.Journal, ex.Message);
-                                }
-                                else
-                                {
-                                    UpdateStatus(0, journEntries.Count, "Error calculating ID offset", ex.Message, false);
-                                }
-                                journEntries = null;
-                            }
-
-                            if (offset1 == offset2)
-                            {
-                                //batchNo++;
-                                int batchPrg = 0;
-                                if (journEntries != null)
-                                {
-                                    //UpdateStatus(0, journEntries.Count, "Processing entries batch " + batchNo, "", false);
-                                    if (fromFile)
-                                    {
-                                        UpdateStatus(0, journEntries.Count, "Processing entries", "", false);
-                                    }
-
-                                    // Loop through the results returned from this call to the API and add the line 
-                                    // to the data table.
-                                    foreach (XmlNode journEntry in journEntries)
-                                    {
-                                        bool tryUpdate = false;
-                                        long id = long.Parse(journEntry.SelectSingleNode("@refID").Value) + offset1;
-                                        int recieverID = 0;
-                                        if (corc == CharOrCorp.Corp)
-                                        {
-                                            // This is a special case.
-                                            // When bounty prizes are received by the player, corp tax is applied.
-                                            // This corp tax does not appear as a seperate journal entry for the
-                                            // character. It is specified by the taxReceiverID and taxAmount fields
-                                            // on the bounty prize entry itself in the XML.
-                                            // On the corp side, there is a specifc entry for the tax but it has
-                                            // the same journalentryID and ownerID2 as the character entry. 
-                                            // This means that EMMA does not differentiate between them and the
-                                            // corp tax part is lost.
-                                            // In order to resolve this we simply set receiver ID to be the corp
-                                            // instead of character in these cases.
-                                            // Note that 'BuildJournalEntry' has similar processing.
-                                            if (int.Parse(journEntry.SelectSingleNode("@refTypeID").Value) == 85)
-                                            {
-                                                recieverID = _corpID;
-                                            }
-                                        }
-                                        if (recieverID == 0)
-                                        {
-                                            recieverID = int.Parse(journEntry.SelectSingleNode("@ownerID2").Value);
-                                        }
-
-                                        beforeRefID = id - offset1;
-
-                                        if (beforeRefID > highestIDSoFar || fromFile)
-                                        {
-                                            if (Journal.EntryExists(journalData, id, recieverID))
-                                            {
-                                                tryUpdate = true;
-                                            }
-                                            else
-                                            {
-                                                EMMADataSet.JournalRow tmpRow = journalData.FindByIDRecieverID(id, recieverID);
-                                                if (tmpRow == null)
-                                                {
-                                                    EMMADataSet.JournalRow newRow =
-                                                        BuildJournalEntry(journalData, journEntry, offset1, walletID, corc);
-
-                                                    journalData.AddJournalRow(newRow);
-                                                    retVal++;
-
-                                                    // This section searches the character and journal ref type tables 
-                                                    // for the values used in this new journal entry.
-                                                    // If they are not present in the tables then they are added.
-                                                    #region Check other tables and add values if needed.
-                                                    //try
-                                                    //{
-                                                    //    JournalRefTypes.GetReferenceDesc(newRow.TypeID);
-                                                    //}
-                                                    //catch (EMMADataException)
-                                                    //{
-                                                    //    JournalRefTypes.AddUnspecifiedRefType(newRow.TypeID);
-                                                    //}
-                                                    SortedList<int, string> entityIDs = new SortedList<int, string>();
-                                                    entityIDs.Add(newRow.SenderID, journEntry.SelectSingleNode("@ownerName1").Value);
-                                                    if (!entityIDs.ContainsKey(newRow.RecieverID))
-                                                    {
-                                                        entityIDs.Add(newRow.RecieverID, journEntry.SelectSingleNode("@ownerName2").Value);
-                                                    }
-                                                    foreach (KeyValuePair<int, string> checkName in entityIDs)
-                                                    {
-                                                        Names.AddName(checkName.Key, checkName.Value);
-                                                    }
-                                                    #endregion
-                                                }
-                                                else
-                                                {
-                                                    tryUpdate = true;
-                                                }
-                                            }
-
-                                            if (tryUpdate)
-                                            {
-                                                EMMADataSet.JournalRow newRow =
-                                                    BuildJournalEntry(journalData, journEntry, offset1, walletID, corc);
-                                                EMMADataSet.JournalRow oldRow = journalData.FindByIDRecieverID(newRow.ID,
-                                                        newRow.RecieverID);
-                                                bool updated = false;
-
-                                                if (oldRow != null)
-                                                {
-                                                    if ((newRow.RBalance > 0 && oldRow.RBalance == 0) ||
-                                                        (newRow.RCorpID != 0 && oldRow.RCorpID == 0))
-                                                    {
-                                                        oldRow.RBalance = newRow.RBalance;
-                                                        oldRow.RCorpID = newRow.RCorpID;
-                                                        oldRow.RArgID = newRow.RArgID;
-                                                        oldRow.RArgName = newRow.RArgName;
-                                                        oldRow.RWalletID = newRow.RWalletID;
-                                                        updated = true;
-                                                    }
-                                                    if ((newRow.SBalance > 0 && oldRow.SBalance == 0) ||
-                                                        (newRow.SCorpID != 0 && oldRow.SCorpID == 0))
-                                                    {
-                                                        oldRow.SBalance = newRow.SBalance;
-                                                        oldRow.SCorpID = newRow.SCorpID;
-                                                        oldRow.SArgID = newRow.SArgID;
-                                                        oldRow.SArgName = newRow.SArgName;
-                                                        oldRow.SWalletID = newRow.SWalletID;
-                                                        updated = true;
-                                                    }
-                                                }
-
-                                                if (updated)
-                                                {
-                                                    updatedEntries++;
-                                                }
-                                            }
-
-                                        }
-
-                                        batchPrg++;
-
-                                        if (fromFile)
-                                        {
-                                            UpdateStatus(batchPrg, journEntries.Count, "", "", false);
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                throw new EMMAEveAPIException(ExceptionSeverity.Error, "It appears that the journal" +
-                                        " data in this file is from two different ID generations.");
                             }
 
                         }
 
-                    }
-                    else
-                    {
-                        if (!errTryAgain)
-                        {
-                            moreEntriesToAdd = false;
-                        }
-                        else
-                        {
-                            errTryAgain = false;
-                        }
+                        batchPrg++;
+                        UpdateStatus(batchPrg, journEntries.Count, "", "", false);
                     }
 
-                    if (!moreEntriesToAdd && highestID > highestIDSoFar && !fromFile)
-                    {
-                        SetHighestID(corc, APIDataType.Journal, highestID);
-                    }
-
-                    if (!moreEntriesToAdd && corc == CharOrCorp.Corp && walletID < 1006 && !fromFile)
-                    {
-                        walletID++;
-                        beforeRefID = 0;
-                        moreEntriesToAdd = true;
-                        ticker = DateTime.UtcNow.AddSeconds(-10);
-                    }
-
-                    if (fromFile)
-                    {
-                        UpdateStatus(0, 0, retVal + " journal entries added to database.", "", false);
-                        UpdateStatus(0, 0, updatedEntries + " existing journal entries updated.", "", true);
-                    }
+                    SetHighestID(corc, APIDataType.Journal, highestIDSoFar);
                 }
+
+                UpdateStatus(0, 0, retVal + " journal entries added to database.", "", false);
+                UpdateStatus(0, 0, updatedEntries + " existing journal entries updated.", "", true);
 
                 if (journalData.Count > 0)
                 {
@@ -1774,26 +1620,19 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 EMMAException emmaEx = ex as EMMAException;
                 if (emmaEx == null)
                 {
-                    // If we've caught a standard exception rather than an EMMA one then log it be creating a 
-                    // new exception.
+                    // If we've caught a standard exception rather than an EMMA one then log 
+                    // it by creating a new exception.
                     // Note that we don't need to actually throw it..
-                    emmaEx = new EMMAException(ExceptionSeverity.Error, "Error when adding journal data" +
-                        " from api" + (fromFile ? " file" : ""), ex);
+                    emmaEx = new EMMAException(ExceptionSeverity.Error, "Error when adding journal data", ex);
                 }
-                
-                if (!fromFile)
-                {
-                    SetLastAPIUpdateError(corc, APIDataType.Journal, ex.Message);
-                }
-                else
-                {
-                    UpdateStatus(-1, 0, "Error", ex.Message, true);
-                }
+
+                SetLastAPIUpdateError(corc, APIDataType.Journal, ex.Message);
+                UpdateStatus(-1, 0, "Error", ex.Message, true);
             }
 
             if (UpdateEvent != null)
             {
-                UpdateEvent(this, new APIUpdateEventArgs(APIDataType.Journal, 
+                UpdateEvent(this, new APIUpdateEventArgs(APIDataType.Journal,
                     corc == CharOrCorp.Char ? _charID : _corpID,
                     APIUpdateEventType.UpdateCompleted));
             }
@@ -1901,68 +1740,50 @@ namespace EveMarketMonitorApp.AbstractionClasses
         #endregion
 
         #region Update Transactions
-        private void RetrieveAPITrans(object param)
-        {
-            CharOrCorp corc = (CharOrCorp)param;
-            // The TransactionAPIUpdateLock is used to make sure that transaction updates for different
-            // characters and corps cannot run at the same time.
-            // This is to prevent primary key conflicts when two characters in the report group transfer
-            // cash to each other.
-            lock (Globals.TransactionAPIUpdateLock)
-            {
-                // Note, the sync lock is used to make sure that a transaction, assets or orders update do
-                // not run at the same time for a character. 
-                lock (_syncLock)
-                {
-                    SetLastAPIUpdateError(corc, APIDataType.Transactions, "UPDATING");
-
-                    RetrieveTrans(corc, null, 0);
-                }
-            }
-
-            APICharacters.Store(this);
-            if (GetLastAPIUpdateError(corc, APIDataType.Transactions).Equals("UPDATING"))
-            {
-                SetLastAPIUpdateError(corc, APIDataType.Transactions, "");
-            }
-        }
-
-        public void RetrieveTrans(XmlDocument fileXML, CharOrCorp corc, short walletID)
+        public void ProcessTransactionsXML(XmlDocument fileXml, CharOrCorp corc, short walletID)
         {
             DataImportParams parameters = new DataImportParams();
+            parameters.xmlData = fileXml;
             parameters.corc = corc;
-            parameters.xmlData = fileXML;
             parameters.walletID = walletID;
-            Thread t0 = new Thread(new ParameterizedThreadStart(RetrieveTrans));
-            t0.Start(parameters);
+            ThreadPool.QueueUserWorkItem(UpdateTransactionsFromXML, parameters);
         }
 
-        private void RetrieveTrans(object parameters)
+        private void UpdateTransactionsFromXML(object parameters)
         {
             // Just wait a moment to allow the caller to display the 
             // progress dialog if importing from a file.
             Thread.Sleep(200);
+
             DataImportParams data = (DataImportParams)parameters;
-            RetrieveTrans(data.corc, data.xmlData, data.walletID);
+
+            lock (Globals.TransactionAPIUpdateLock)
+            {
+                lock (_syncLock)
+                {
+                    SetLastAPIUpdateError(data.corc, APIDataType.Transactions, "UPDATING");
+                    UpdateTransactionsFromXML(data.corc, data.xmlData, data.walletID);
+                }
+            }
+
+            APICharacters.Store(this);
+            if (GetLastAPIUpdateError(data.corc, APIDataType.Transactions).Equals("UPDATING"))
+            {
+                SetLastAPIUpdateError(data.corc, APIDataType.Transactions, "");
+            }
         }
 
 
         /// <summary>
-        /// Update the database transactions table with data from the Eve API.
+        /// Update the database transactions table from the specified XML.
         /// </summary>
         /// <param name="corc"></param>
         /// <param name="fileXML"></param>
         /// <returns></returns>
-        private int RetrieveTrans(CharOrCorp corc, XmlDocument fileXML, short defaultWalletID)
+        private int UpdateTransactionsFromXML(CharOrCorp corc, XmlDocument fileXML, short walletID)
         {
-            decimal beforeTransID = 0;
-            bool moreEntriesToAdd = true;
-            bool errTryAgain = false;
             int retVal = 0;
-            short walletID = (short)(defaultWalletID == 0 ? (corc == CharOrCorp.Corp ? 1000 : 0) : defaultWalletID);
-            DateTime earliestUpdate = GetLastAPIUpdateTime(corc, APIDataType.Transactions).AddHours(1);
             EMMADataSet.TransactionsDataTable transData = new EMMADataSet.TransactionsDataTable();
-            bool fromFile = fileXML != null;
             long highestIDSoFar = _apiSettings.GetHighestID(corc, APIDataType.Transactions);
             long highestID = 0;
             DateTime ticker = DateTime.UtcNow.AddSeconds(-10);
@@ -1971,377 +1792,124 @@ namespace EveMarketMonitorApp.AbstractionClasses
             {
                 int updated = 0;
 
-                if (earliestUpdate.CompareTo(DateTime.UtcNow) > 0 && !fromFile)
+                XmlNodeList transEntries = null;
+                XmlDocument xml = new XmlDocument();
+
+                UpdateStatus(0, 1, "Getting transactions from file", "", false);
+                transEntries = EveAPI.GetResults(fileXML);
+                UpdateStatus(1, 1, "", transEntries.Count + " entries found in file.", false);
+
+
+                if (transEntries != null && transEntries.Count > 0)
                 {
-                    throw new EMMAEveAPIException(ExceptionSeverity.Warning, 1000, "Cannot get more transactions " +
-                        " so soon after the last update. Wait until at least " + earliestUpdate.ToLongTimeString() +
-                        " before updating transactions.");
-                }
+                    int batchPrg = 0;
+                    UpdateStatus(0, transEntries.Count, "Processing transactions", "", false);
 
-                // Loop through this while there are more entries left to add
-                while (moreEntriesToAdd)
-                {
-                    XmlNodeList transEntries = null;
-                    XmlDocument xml = new XmlDocument();
 
-                    // Retrieve transaction data from the Eve API. A maximum of 1000 results are returned in one call.
-                    // If more results need to be added to the database then the program will loop round to call this
-                    // again with the 'beforeRefID' parameter set.
-                    // Looping will stop when:
-                    // A) Less than 1000 results are returned - this indicates no more will be accessible (only up to
-                    //      1 week in the past is accessible through the API).
-                    // B) We read a transaction line that has the same or lower refID than the specified 'latestTransID'.
-                    //      This would indicate that we have hit data that is already in the EMMA database and can stop 
-                    //      requesting more.
-                    // C) An error 101 or 103 is returned from the API service. This indicates there are no more 
-                    //      transactions to be returned.
-                    // Note: Any other error will cause an exception to be thrown.
-                    try
+                    XmlNode entryIDNode = transEntries[0].SelectSingleNode("@transactionID");
+                    long fileMaxID = long.Parse(entryIDNode.Value,
+                        System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                    if (fileMaxID > highestID) { highestID = fileMaxID; }
+
+                    // Loop through the results returned from this call to the API and add the line to
+                    // the data table if the transactionID is not already in the database.
+                    foreach (XmlNode transEntry in transEntries)
                     {
-                        Settings.CorpTransactionsAPIAccess = true;
-                        if (fromFile)
-                        {
-                            UpdateStatus(0, 1, "Getting transactions from file", "", false);
-                            transEntries = EveAPI.GetResults(fileXML);
-                            UpdateStatus(1, 1, "", transEntries.Count + " entries found in file.", false);
-                        }
-                        else
-                        {
-                            // This funny little bit of code is trying to prevent the API from prematurely firing
-                            // error 100's.
-                            // It seems that the second request for transaction data will somtimes arrive
-                            // at the API server before it has completed processing the first request.
-                            // In this case, the server recieves a request with a before trans ID when it does 
-                            // not think that it's been queried with a before trans id of zero yet, causing
-                            // an error 100 to occur.
-                            TimeSpan sleepTime = new TimeSpan(0, 0, 2);
-                            sleepTime = sleepTime - DateTime.UtcNow.Subtract(ticker);
-                            if (sleepTime.TotalMilliseconds > 0) { Thread.Sleep((int)sleepTime.TotalMilliseconds); }
-                            ticker = DateTime.UtcNow;
-
-                            xml = EveAPI.GetXml(
-                                EveAPI.URL_EveApiBase +
-                                (corc == CharOrCorp.Corp ? EveAPI.URL_TransCorpApi : EveAPI.URL_TransApi),
-                                "userid=" + _userID + "&apiKey=" + _apiKey + "&characterID=" + _charID +
-                                (walletID == 0 ? "" : "&accountKey=" + walletID) +
-                                "&beforeTransID=" + beforeTransID);
-                            transEntries = EveAPI.GetResults(xml);
-
-                            // Set last transaction update time to now.
-                            SetLastAPIUpdateTime(corc, APIDataType.Transactions, DateTime.UtcNow);
-
-                            // If we've been successfull in getting data and this is a corporate data request
-                            // then make sure we've got access set to true;
-                            if (corc == CharOrCorp.Corp)
-                            {
-                                Settings.CorpTransactionsAPIAccess = true;
-                            }
-                        }
-
-                    }
-                    catch (EMMAEveAPIException emmaApiEx)
-                    {
-                        #region API Error Handing
-                        if (emmaApiEx.EveCode == 100)
-                        {
-                            // Error code 100 indicates that a 'beforeTransID' has been passed in when the
-                            // api was not expecting it. If we know for sure that we've already called
-                            // the api once then have to abandon the data we have got so far.
-                            // (No idea why the API does this, it just happens from time to time)
-                            if (transData.Count != 0)
-                            {
-                                transEntries = null;
-                                moreEntriesToAdd = false;
-                                transData = new EMMADataSet.TransactionsDataTable();
-                                retVal = 0;
-                                updated = 0;
-                                highestID = 0;
-                                SetLastAPIUpdateError(corc, APIDataType.Transactions, "Eve API Error 100");
-                            }
-                            else
-                            {
-                                if (!fromFile)
-                                {
-                                    SetLastAPIUpdateError(corc, APIDataType.Transactions, emmaApiEx.Message);
-                                    moreEntriesToAdd = false;
-                                }
-                                else
-                                {
-                                    throw emmaApiEx;
-                                }
-                            }
-                        }
-                        else if (emmaApiEx.EveCode == 101 || emmaApiEx.EveCode == 103)
-                        {
-                            // Wallet exhausted, retry only after specified time. 
-                            moreEntriesToAdd = false;
-
-                            try
-                            {
-                                // If there is a cachedUntil tag, dont try and get data again until
-                                // after it has expired.
-                                XmlNode nextTime = xml.SelectSingleNode("/eveapi/cachedUntil");
-                                XmlNode eveTime = xml.SelectSingleNode("/eveapi/currentTime");
-                                TimeSpan difference = DateTime.UtcNow.Subtract(DateTime.Parse(eveTime.FirstChild.Value,
-                                    System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat));
-                                DateTime nextAllowed = DateTime.Parse(nextTime.FirstChild.Value,
-                                    System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat).Add(difference);
-
-                                SetLastAPIUpdateTime(corc, APIDataType.Transactions,
-                                    nextAllowed.Subtract(UserAccount.Settings.APITransUpdatePeriod));
-                                if (transData.Count == 0)
-                                {
-                                    SetLastAPIUpdateError(corc, APIDataType.Transactions,
-                                        "The Eve API reports that this data has already been retrieved, no update has occured.");
-                                }
-                            }
-                            catch (Exception) { }
-                        }
-                        else if (emmaApiEx.EveCode == 102)
-                        {
-                            // API was expecting a different 'beforeTransID' value.
-                            // get what it was expecting and try again using that value.
-                            string err = emmaApiEx.EveDescription;
-                            beforeTransID = Decimal.Parse(err.Substring(err.IndexOf("[") + 1,
-                                err.IndexOf("]") - err.IndexOf("[") - 1),
-                                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-                            errTryAgain = true;
-                            transEntries = null;
-                        }
-                        else if (emmaApiEx.EveCode == 200)
-                        {
-                            // Security level not high enough
-                            SetLastAPIUpdateError(corc, APIDataType.Transactions, 
-                                "You must enter your FULL api key to retrieve financial data.\r\n" +
-                                "Use the 'manage group' button to correct this.");
-                            moreEntriesToAdd = false;
-                        }
-                        else if (emmaApiEx.EveCode == 206 || emmaApiEx.EveCode == 208 ||
-                            emmaApiEx.EveCode == 209)
-                        {
-                            // Character does not have required corporate role.
-                            Settings.CorpTransactionsAPIAccess = false;
-                            SetAPIAutoUpdate(corc, APIDataType.Transactions, false);
-                            SetLastAPIUpdateError(corc, APIDataType.Transactions, emmaApiEx.Message);
-                            moreEntriesToAdd = false;
-                        }
-                        else
-                        {
-                            if (!fromFile)
-                            {
-                                SetLastAPIUpdateError(corc, APIDataType.Transactions, emmaApiEx.Message);
-                                moreEntriesToAdd = false;
-                            }
-                            else
-                            {
-                                throw emmaApiEx;
-                            }
-                        }
-                        #endregion
-                    }
-
-
-                    if (transEntries != null && transEntries.Count > 0)
-                    {
-                        if (transEntries.Count < 1000 || fromFile) { moreEntriesToAdd = false; }
-
-                        bool alreadyDone = false;
-                        int batchPrg = 0;
-                        if (fromFile)
-                        {
-                            UpdateStatus(0, transEntries.Count, "Processing transactions", "", false);
-                        }
-
-                        XmlNode entryIDNode = transEntries[0].SelectSingleNode("@transactionID");
-                        long fileMaxID = long.Parse(entryIDNode.Value,
+                        XmlNode transIDNode = transEntry.SelectSingleNode("@transactionID");
+                        long transID = long.Parse(transIDNode.Value,
                             System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-                        if (fileMaxID > highestID) { highestID = fileMaxID; }
 
-                        if (fileMaxID < highestIDSoFar - 500000000)
+                        if (transID > highestIDSoFar)
                         {
-                            // If the highest ID in this import is less than the highest ID stored
-                            // for this char/corp - 1/2 a billion then we're probably dealing with 
-                            // a new generation so need to reset..
-                            SetHighestID(corc, APIDataType.Transactions, 0);
-                            highestIDSoFar = 0;
-                        }
-                        else if (fileMaxID < highestIDSoFar && !fromFile)
-                        {
-                            alreadyDone = true;
-                            moreEntriesToAdd = false;
-                        }
-
-                        if (!alreadyDone)
-                        {
-                            // Loop through the results returned from this call to the API and add the line to
-                            // the data table if the transactionID is not already in the database.
-                            foreach (XmlNode transEntry in transEntries)
+                            if (!Transactions.TransactionExists(transData, transID) &&
+                                transData.FindByID(transID) == null)
                             {
-                                XmlNode transIDNode = transEntry.SelectSingleNode("@transactionID");
-                                long transID = long.Parse(transIDNode.Value,
-                                    System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                                // Actually create the line and add it to the data table
+                                SortedList<int, string> nameIDs = new SortedList<int, string>();
+                                EMMADataSet.TransactionsRow newRow = BuildTransRow(transID, transData,
+                                    transEntry, walletID, nameIDs, false);
 
-                                beforeTransID = transID;
+                                transData.AddTransactionsRow(newRow);
+                                retVal++;
 
-                                if (beforeTransID > highestIDSoFar || fromFile)
+                                // This section searches the character, item and station ref type tables 
+                                // for the values used in this new transaction entry.
+                                // If they are not present in the table then they are added.
+                                #region Check other tables and add values if needed.
+                                foreach (KeyValuePair<int, string> checkName in nameIDs)
                                 {
-                                    if (!Transactions.TransactionExists(transData, transID) &&
-                                        transData.FindByID(transID) == null)
-                                    {
-                                        // Actually create the line and add it to the data table
-                                        SortedList<int, string> nameIDs = new SortedList<int, string>();
-                                        EMMADataSet.TransactionsRow newRow = BuildTransRow(transID, transData,
-                                            transEntry, walletID, nameIDs, false);
-
-                                        transData.AddTransactionsRow(newRow);
-                                        retVal++;
-
-                                        // This section searches the character, item and station ref type tables 
-                                        // for the values used in this new transaction entry.
-                                        // If they are not present in the table then they are added.
-                                        #region Check other tables and add values if needed.
-                                        foreach (KeyValuePair<int, string> checkName in nameIDs)
-                                        {
-                                            Names.AddName(checkName.Key, checkName.Value);
-                                        }
-                                        Items.AddItem(newRow.ItemID, transEntry.SelectSingleNode("@typeName").Value);
-                                        #endregion
-                                    }
-                                    else
-                                    {
-                                        SortedList<int, string> nameIDs = new SortedList<int, string>();
-                                        // We've got a transaction that already exists in the database,
-                                        // update the row with additional data if available. 
-                                        EMMADataSet.TransactionsRow newRow =
-                                            BuildTransRow(transID, transData, transEntry, walletID, nameIDs, true);
-                                        EMMADataSet.TransactionsRow oldRow = transData.FindByID(transID);
-                                        bool updateDone = false;
-
-                                        if (newRow.BuyerWalletID != oldRow.BuyerWalletID && newRow.BuyerWalletID != 0)
-                                        {
-                                            oldRow.BuyerWalletID = newRow.BuyerWalletID;
-                                            updateDone = true;
-                                        }
-                                        if (newRow.SellerWalletID != oldRow.SellerWalletID && newRow.SellerWalletID != 0)
-                                        {
-                                            oldRow.SellerWalletID = newRow.SellerWalletID;
-                                            updateDone = true;
-                                        }
-                                        // If a corp sells somthing to another corp (or itself) then we will get into 
-                                        // the position of having the other party set as a character when in fact
-                                        // it is that character's corp.
-                                        // We check for this here and correct it if required.
-                                        if (oldRow.BuyerID == _charID && newRow.BuyerID == _corpID)
-                                        {
-                                            oldRow.BuyerID = newRow.BuyerID;
-                                            oldRow.BuyerCharacterID = newRow.BuyerCharacterID;
-                                            oldRow.BuyerWalletID = newRow.BuyerWalletID;
-                                            oldRow.BuyerForCorp = newRow.BuyerForCorp;
-                                            updateDone = true;
-                                        }
-                                        if (oldRow.SellerID == _charID && newRow.SellerID == _corpID)
-                                        {
-                                            oldRow.SellerID = newRow.SellerID;
-                                            oldRow.SellerCharacterID = newRow.SellerCharacterID;
-                                            oldRow.SellerWalletID = newRow.SellerWalletID;
-                                            oldRow.SellerForCorp = newRow.SellerForCorp;
-                                            updateDone = true;
-                                        }
-
-                                        if (updateDone)
-                                        {
-                                            updated++;
-                                        }
-                                    }
+                                    Names.AddName(checkName.Key, checkName.Value);
                                 }
-                                else
+                                Items.AddItem(newRow.ItemID, transEntry.SelectSingleNode("@typeName").Value);
+                                #endregion
+                            }
+                            else
+                            {
+                                SortedList<int, string> nameIDs = new SortedList<int, string>();
+                                // We've got a transaction that already exists in the database,
+                                // update the row with additional data if available. 
+                                EMMADataSet.TransactionsRow newRow =
+                                    BuildTransRow(transID, transData, transEntry, walletID, nameIDs, true);
+                                EMMADataSet.TransactionsRow oldRow = transData.FindByID(transID);
+                                bool updateDone = false;
+
+                                if (newRow.BuyerWalletID != oldRow.BuyerWalletID && newRow.BuyerWalletID != 0)
                                 {
-                                    moreEntriesToAdd = false;
+                                    oldRow.BuyerWalletID = newRow.BuyerWalletID;
+                                    updateDone = true;
+                                }
+                                if (newRow.SellerWalletID != oldRow.SellerWalletID && newRow.SellerWalletID != 0)
+                                {
+                                    oldRow.SellerWalletID = newRow.SellerWalletID;
+                                    updateDone = true;
+                                }
+                                // If a corp sells somthing to another corp (or itself) then we will get into 
+                                // the position of having the other party set as a character when in fact
+                                // it is that character's corp.
+                                // We check for this here and correct it if required.
+                                if (oldRow.BuyerID == _charID && newRow.BuyerID == _corpID)
+                                {
+                                    oldRow.BuyerID = newRow.BuyerID;
+                                    oldRow.BuyerCharacterID = newRow.BuyerCharacterID;
+                                    oldRow.BuyerWalletID = newRow.BuyerWalletID;
+                                    oldRow.BuyerForCorp = newRow.BuyerForCorp;
+                                    updateDone = true;
+                                }
+                                if (oldRow.SellerID == _charID && newRow.SellerID == _corpID)
+                                {
+                                    oldRow.SellerID = newRow.SellerID;
+                                    oldRow.SellerCharacterID = newRow.SellerCharacterID;
+                                    oldRow.SellerWalletID = newRow.SellerWalletID;
+                                    oldRow.SellerForCorp = newRow.SellerForCorp;
+                                    updateDone = true;
                                 }
 
-                                batchPrg++;
-                                if (fromFile)
+                                if (updateDone)
                                 {
-                                    UpdateStatus(batchPrg, transEntries.Count, "", "", false);
+                                    updated++;
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        if (!errTryAgain)
-                        {
-                            moreEntriesToAdd = false;
-                        }
-                        else
-                        {
-                            errTryAgain = false;
-                        }
-                    }
 
-                    if (!moreEntriesToAdd && highestID > highestIDSoFar && !fromFile)
-                    {
-                        SetHighestID(corc, APIDataType.Transactions, highestID);
-                    }
-
-                    if (!moreEntriesToAdd && corc == CharOrCorp.Corp && walletID < 1006 && !fromFile)
-                    {
-                        walletID++;
-                        beforeTransID = 0;
-                        moreEntriesToAdd = true;
-                        ticker = DateTime.UtcNow.AddSeconds(-10);
+                        batchPrg++;
+                        UpdateStatus(batchPrg, transEntries.Count, "", "", false);
                     }
                 }
 
-                if (fromFile)
+                if (highestID > highestIDSoFar)
                 {
-                    UpdateStatus(0, 0, retVal + " transactions added to database.", "", false);
-                    UpdateStatus(0, 0, updated + " transactions updated.", "", false);
+                    SetHighestID(corc, APIDataType.Transactions, highestID);
                 }
+
+                UpdateStatus(0, 0, retVal + " transactions added to database.", "", false);
+                UpdateStatus(0, 0, updated + " transactions updated.", "", false);
+
 
                 if (transData.Count > 0)
                 {
                     Transactions.Store(transData);
 
-                    //if (fromFile)
-                    //{
-                    //    UpdateStatus(0, 1, "Updating assets from new transactions", "", false);
-                    //}
-
-                    // Don't use this anymore, instead, assets are updated in the BuildTransRow method below
-                    // or the Transactions.CalcProfit method that is called from there.
-
-                    //long minID = (corc == CharOrCorp.Char ? Settings.CharAssetsTransUpdateID : Settings.CorpAssetsTransUpdateID);
-                    //minID += 1;
-                    //long maxID = 0;
-
-                    // Need to update assets with the data from the transactions we've just added.
-                    // (This is done because assets can only be updated once every 24 hours or so but
-                    // transactions can be updated every hour, using those transactions to modify the 
-                    // assets data allows EMMA to give a more up-to-date view)
-                    //if (minID > 1)
-                    //{
-                    //    // If we've already updated assets from transactions since the last direct assets update
-                    //    // then use the ID of the last transactions used to update the assets last time as
-                    //    // the cutoff point.
-                    //    maxID = Assets.UpdateFromTransactions(_charID, _corpID, corc == CharOrCorp.Corp, minID);
-                    //}
-                    //else
-                    //{
-                    //    // Otherwise, use the effective date of the last assets update as the cutoff point.
-                    //    // i.e. update assets with any transactions after that date/time.
-                    //    DateTime assetsValid = (corc == CharOrCorp.Char ? Settings.CharAssetsEffectiveDate : 
-                    //        Settings.CorpAssetsEffectiveDate);
-                    //    maxID = Assets.UpdateFromTransactions(_charID, _corpID, corc == CharOrCorp.Corp, assetsValid);
-                    //}
-
-                    //if (corc == CharOrCorp.Char) { Settings.CharAssetsTransUpdateID = maxID; }
-                    //else { Settings.CorpAssetsTransUpdateID = maxID; }
-
-                    if (fromFile)
-                    {
-                        UpdateStatus(1, 1, "", "Complete", true);
-                    }
+                    UpdateStatus(1, 1, "", "Complete", true);
                 }
 
             }
@@ -2353,23 +1921,16 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     // If we've caught a standard exception rather than an EMMA one then log it be creating a 
                     // new exception.
                     // Note that we don't need to actually throw it..
-                    emmaEx = new EMMAException(ExceptionSeverity.Error, "Error when adding transactions" +
-                        " from api" + (fromFile ? " file" : ""), ex);
+                    emmaEx = new EMMAException(ExceptionSeverity.Error, "Error when adding transactions", ex);
                 }
 
-                if (!fromFile)
-                {
-                    SetLastAPIUpdateError(corc, APIDataType.Transactions, ex.Message);
-                }
-                else
-                {
-                    UpdateStatus(-1, 0, "Error", ex.Message, true);
-                }
+                SetLastAPIUpdateError(corc, APIDataType.Transactions, ex.Message);
+                UpdateStatus(-1, 0, "Error", ex.Message, true);
             }
 
             if (UpdateEvent != null)
             {
-                UpdateEvent(this, new APIUpdateEventArgs(APIDataType.Transactions, 
+                UpdateEvent(this, new APIUpdateEventArgs(APIDataType.Transactions,
                     corc == CharOrCorp.Char ? _charID : _corpID,
                     APIUpdateEventType.UpdateCompleted));
             }
@@ -2378,8 +1939,6 @@ namespace EveMarketMonitorApp.AbstractionClasses
         }
 
 
-        //private EMMADataSet.TransactionsRow BuildTransRow(long transID, EMMADataSet.TransactionsDataTable transData,
-        //    XmlNode transEntry, SortedList<int, string> nameIDs, short walletID)
         private EMMADataSet.TransactionsRow BuildTransRow(long transID, EMMADataSet.TransactionsDataTable transData,
             XmlNode transEntry, short walletID, SortedList<int, string> nameIDs, bool rowInDatabase)
         {
@@ -2468,355 +2027,200 @@ namespace EveMarketMonitorApp.AbstractionClasses
         #endregion
 
         #region Update Orders
-        private void RetrieveAPIOrders(object param)
+        public void ProcessOrdersXML(XmlDocument fileXml, CharOrCorp corc)
         {
-            CharOrCorp corc = (CharOrCorp)param;
+            DataImportParams parameters = new DataImportParams();
+            parameters.xmlData = fileXml;
+            parameters.corc = corc;
+            parameters.walletID = 0;
+            ThreadPool.QueueUserWorkItem(UpdateOrdersFromXML, parameters);
+        }
+
+        private void UpdateOrdersFromXML(object parameters)
+        {
+            // Just wait a moment to allow the caller to display the 
+            // progress dialog if importing from a file.
+            Thread.Sleep(200);
+
+            DataImportParams data = (DataImportParams)parameters;
 
             // Note, the sync lock is used to make sure that a transaction, assets or orders update do
             // not run at the same time for a character. 
             lock (_syncLock)
             {
-                SetLastAPIUpdateError(corc, APIDataType.Orders, "UPDATING");
-
-                RetrieveOrders(corc, null);
+                SetLastAPIUpdateError(data.corc, APIDataType.Orders, "UPDATING");
+                UpdateOrdersFromXML(data.corc, data.xmlData);
             }
 
             APICharacters.Store(this);
-            if (GetLastAPIUpdateError(corc, APIDataType.Orders).Equals("UPDATING"))
+            if (GetLastAPIUpdateError(data.corc, APIDataType.Orders).Equals("UPDATING"))
             {
-                SetLastAPIUpdateError(corc, APIDataType.Orders, "");
+                SetLastAPIUpdateError(data.corc, APIDataType.Orders, "");
             }
         }
 
-        public void RetrieveOrders(XmlDocument fileXML, CharOrCorp corc)
-        {
-            DataImportParams parameters = new DataImportParams();
-            parameters.corc = corc;
-            parameters.xmlData = fileXML;
-            parameters.walletID = 0; // No need to set wallet ID
-            Thread t0 = new Thread(new ParameterizedThreadStart(RetrieveOrders));
-            t0.Start(parameters);
-        }
 
-        private void RetrieveOrders(object parameters)
+        private void UpdateOrdersFromXML(CharOrCorp corc, XmlDocument fileXML)
         {
-            // Just wait a moment to allow the caller to display the 
-            // progress dialog if importing from a file.
-            Thread.Sleep(200);
-            DataImportParams data = (DataImportParams)parameters;
-            RetrieveOrders(data.corc, data.xmlData);
-        }
-
-        private void RetrieveOrders(CharOrCorp corc, XmlDocument fileXML)
-        {
-            DateTime earliestUpdate = GetLastAPIUpdateTime(corc, APIDataType.Orders).AddHours(1);
             EMMADataSet.OrdersDataTable orderData = new EMMADataSet.OrdersDataTable();
-            bool fromFile = fileXML != null;
             int added = 0;
             int updated = 0;
-            bool errorOccured = false;
-            bool otherChars = true;
-            //bool thisCharDone = false;
-            //int charIndex = 0;
-            List<int> charsDone = new List<int>();
 
             try
             {
-                if (earliestUpdate.CompareTo(DateTime.UtcNow) > 0 && !fromFile)
+
+                Orders.SetProcessed(corc == CharOrCorp.Corp ? _corpID : _charID, false);
+
+                XmlNodeList orderEntries = null;
+                XmlDocument xml = new XmlDocument();
+
+                UpdateStatus(0, 1, "Getting orders from file", "", false);
+                orderEntries = EveAPI.GetResults(fileXML);
+                UpdateStatus(1, 1, "", orderEntries.Count + " orders found in file.", false);
+
+
+                if (orderEntries != null && orderEntries.Count > 0)
                 {
-                    throw new EMMAEveAPIException(ExceptionSeverity.Warning, 1000, "Cannot update orders " +
-                        " so soon after the last update. Wait until at least " + earliestUpdate.ToLongTimeString() +
-                        " before updating orders.");
-                }
-                while(otherChars)
-                {
-                    // This section will make sure that if we're doing a corp orders update
-                    // then we also update corp orders for any other chars in the same report
-                    // group that are part of the same corp.
-                    APICharacter character = this;
-                    int userID = _userID;
-                    string apiKey = _apiKey;
-                    int charID = _charID;
-                    otherChars = false;
+                    UpdateStatus(0, orderEntries.Count, "Processing orders", "", false);
 
-                    //if (corc == CharOrCorp.Corp && !fromFile)
-                    //{
-                    //    if (thisCharDone)
-                    //    {
-                    //        List<APICharacter> otherCorpChars = OtherCorpChars;
-                    //        if (otherCorpChars.Count > 0)
-                    //        {
-                    //            character = otherCorpChars[charIndex];
-
-                    //            userID = character.UserID;
-                    //            apiKey = character.APIKey;
-                    //            charID = character.CharID;
-                    //            charIndex++;
-                    //            if (otherCorpChars.Count > charIndex) { otherChars = true; }
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        thisCharDone = true;
-                    //        otherChars = OtherCorpChars.Count > 0;
-                    //    }
-                    //}
-
-                    if (!charsDone.Contains(charID))
+                    foreach (XmlNode orderEntry in orderEntries)
                     {
-                        charsDone.Add(charID);
-                        Orders.SetProcessed(corc == CharOrCorp.Corp ? _corpID : _charID, false);
+                        EMMADataSet.OrdersRow orderRow = BuildOrdersRow(orderData, orderEntry, corc);
+                        int id = 0;
 
-                        XmlNodeList orderEntries = null;
-                        XmlDocument xml = new XmlDocument();
-
-                        // Retrieve orders from the Eve API or process the supplied XML. 
-                        try
+                        if (!Orders.Exists(orderData, orderRow, ref id, _corpID, _charID))
                         {
-                            if (fromFile)
+                            // Order does not exist in the database so add it.
+                            orderData.AddOrdersRow(orderRow);
+                            if (orderRow.OrderState == (short)OrderState.ExpiredOrFilled)
                             {
-                                UpdateStatus(0, 1, "Getting orders from file", "", false);
-                                orderEntries = EveAPI.GetResults(fileXML);
-                                UpdateStatus(1, 1, "", orderEntries.Count + " orders found in file.", false);
-                            }
-                            else
-                            {
-                                xml = EveAPI.GetXml(
-                                    EveAPI.URL_EveApiBase +
-                                    (corc == CharOrCorp.Corp ? EveAPI.URL_CorpOrdersApi : EveAPI.URL_CharOrdersApi),
-                                    "userid=" + userID + "&apiKey=" + apiKey + "&characterID=" + charID +
-                                    "&version=2");
-                                orderEntries = EveAPI.GetResults(xml);
-
-                                // Set last orders update time to now.
-                                character.SetLastAPIUpdateTime(corc, APIDataType.Orders, DateTime.UtcNow);
-
-                                // If we've been successfull in getting data and this is a corporate data request
-                                // then make sure we've got access set to true;
-                                if (corc == CharOrCorp.Corp)
+                                bool notify = false;
+                                notify = UserAccount.CurrentGroup.Settings.OrdersNotifyEnabled &&
+                                    ((UserAccount.CurrentGroup.Settings.OrdersNotifyBuy && orderRow.BuyOrder) ||
+                                    (UserAccount.CurrentGroup.Settings.OrdersNotifySell && !orderRow.BuyOrder));
+                                if (notify)
                                 {
-                                    character.Settings.CorpOrdersAPIAccess = true;
-                                }
-                            }
-                        }
-                        catch (EMMAEveAPIException emmaApiEx)
-                        {
-                            if (emmaApiEx.EveCode == 117)
-                            {
-                                errorOccured = true;
-                                try
-                                {
-                                    // If there is a cachedUntil tag, dont try and get data again until
-                                    // after it has expired.
-                                    XmlNode nextTime = xml.SelectSingleNode("/eveapi/cachedUntil");
-                                    XmlNode eveTime = xml.SelectSingleNode("/eveapi/currentTime");
-                                    TimeSpan difference = DateTime.UtcNow.Subtract(DateTime.Parse(eveTime.FirstChild.Value,
-                                        System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat));
-                                    DateTime nextAllowed = DateTime.Parse(nextTime.FirstChild.Value,
-                                        System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat).Add(difference);
-
-                                    character.SetLastAPIUpdateTime(corc, APIDataType.Orders,
-                                        nextAllowed.Subtract(UserAccount.Settings.APIOrderUpdatePeriod));
-                                    character.SetLastAPIUpdateError(corc, APIDataType.Orders,
-                                        "The Eve API reports that this data has already been retrieved, no update has occured.");
-                                }
-                                catch (Exception) { }
-                            }
-                            else if (emmaApiEx.EveCode == 200)
-                            {
-                                errorOccured = true;
-                                // Security level not high enough
-                                character.SetLastAPIUpdateError(corc, APIDataType.Orders,
-                                    "You must enter your FULL api key to retrieve financial data.\r\n" +
-                                    "Use the 'manage group' button to correct this.");
-                            }
-                            else if (emmaApiEx.EveCode == 206 || emmaApiEx.EveCode == 208 ||
-                                emmaApiEx.EveCode == 209)
-                            {
-                                // Character does not have required corporate role.
-                                character.Settings.CorpOrdersAPIAccess = false;
-                                character.SetAPIAutoUpdate(corc, APIDataType.Orders, false);
-                                character.SetLastAPIUpdateError(corc, APIDataType.Orders, emmaApiEx.Message);
-                            }
-                            else
-                            {
-                                errorOccured = true;
-                                if (!fromFile)
-                                {
-                                    character.SetLastAPIUpdateError(corc, APIDataType.Orders, emmaApiEx.Message);
+                                    orderRow.OrderState = (short)OrderState.ExpiredOrFilledAndUnacknowledged;
                                 }
                                 else
                                 {
-                                    throw emmaApiEx;
+                                    orderRow.OrderState = (short)OrderState.ExpiredOrFilledAndAcknowledged;
                                 }
                             }
+                            added++;
                         }
-
-                        if (orderEntries != null && orderEntries.Count > 0)
+                        else
                         {
-                            if (fromFile)
+                            EMMADataSet.OrdersRow oldRow = orderData.FindByID(id);
+
+                            if (oldRow.TotalVol == orderRow.TotalVol &&
+                                oldRow.RemainingVol == orderRow.RemainingVol &&
+                                oldRow.MinVolume == orderRow.MinVolume && oldRow.Range == orderRow.Range &&
+                                oldRow.Duration == orderRow.Duration && oldRow.Escrow == orderRow.Escrow &&
+                                oldRow.Price == orderRow.Price && oldRow.OrderState == orderRow.OrderState &&
+                                oldRow.EveOrderID == orderRow.EveOrderID)
                             {
-                                UpdateStatus(0, orderEntries.Count, "Processing orders", "", false);
+                                // If the order from the XML exactly matches what we have in the database
+                                // then just set the processed flag and remove it from the orderData table
+                                // without setting it to be removed from the database.
+                                //Orders.SetProcessedByID(oldRow.ID, true);
+                                orderData.RemoveOrdersRow(oldRow);
                             }
-
-                            foreach (XmlNode orderEntry in orderEntries)
+                            else
                             {
-                                EMMADataSet.OrdersRow orderRow = BuildOrdersRow(orderData, orderEntry, corc);
-                                int id = 0;
+                                // Set the row to processed right now.
+                                oldRow.Processed = true;
+                                // Accept the changes to the row (will only be the processed flag at 
+                                // this point) and set the processed flag on the database.
+                                // This will prevent the row from being double matched with another
+                                // order later.
+                                // The 'accept changes' will prevent the concurency error that we 
+                                // would get if we only updated the processed flag on the database
+                                // side.
+                                oldRow.AcceptChanges();
+                                //Orders.SetProcessedByID(oldRow.ID, true);
 
-                                if (!Orders.Exists(orderData, orderRow, ref id, _corpID, _charID))
-                                {
-                                    // Order does not exist in the database so add it.
-                                    orderData.AddOrdersRow(orderRow);
-                                    if (orderRow.OrderState == (short)OrderState.ExpiredOrFilled)
-                                    {
-                                        bool notify = false;
-                                        notify = UserAccount.CurrentGroup.Settings.OrdersNotifyEnabled &&
-                                            ((UserAccount.CurrentGroup.Settings.OrdersNotifyBuy && orderRow.BuyOrder) ||
-                                            (UserAccount.CurrentGroup.Settings.OrdersNotifySell && !orderRow.BuyOrder));
-                                        if (notify)
-                                        {
-                                            orderRow.OrderState = (short)OrderState.ExpiredOrFilledAndUnacknowledged;
-                                        }
-                                        else
-                                        {
-                                            orderRow.OrderState = (short)OrderState.ExpiredOrFilledAndAcknowledged;
-                                        }
-                                    }
-                                    added++;
-                                }
-                                else
-                                {
-                                    EMMADataSet.OrdersRow oldRow = orderData.FindByID(id);
+                                // If the order was active and is now completed/expired then flag it for
+                                // the unacknowledged orders viewer to display.
+                                bool notify = false;
+                                notify = UserAccount.CurrentGroup.Settings.OrdersNotifyEnabled &&
+                                    ((UserAccount.CurrentGroup.Settings.OrdersNotifyBuy && orderRow.BuyOrder) ||
+                                    (UserAccount.CurrentGroup.Settings.OrdersNotifySell && !orderRow.BuyOrder));
 
-                                    if (oldRow.TotalVol == orderRow.TotalVol &&
-                                        oldRow.RemainingVol == orderRow.RemainingVol &&
-                                        oldRow.MinVolume == orderRow.MinVolume && oldRow.Range == orderRow.Range &&
-                                        oldRow.Duration == orderRow.Duration && oldRow.Escrow == orderRow.Escrow &&
-                                        oldRow.Price == orderRow.Price && oldRow.OrderState == orderRow.OrderState &&
-                                        oldRow.EveOrderID == orderRow.EveOrderID)
+                                if (/*orderRow.RemainingVol == 0 &&*/
+                                    orderRow.OrderState == (short)OrderState.ExpiredOrFilled &&
+                                    (oldRow.OrderState == (short)OrderState.Active ||
+                                    oldRow.OrderState == (short)OrderState.ExpiredOrFilled))
+                                {
+                                    if (notify)
                                     {
-                                        // If the order from the XML exactly matches what we have in the database
-                                        // then just set the processed flag and remove it from the orderData table
-                                        // without setting it to be removed from the database.
-                                        //Orders.SetProcessedByID(oldRow.ID, true);
-                                        orderData.RemoveOrdersRow(oldRow);
+                                        oldRow.OrderState = (short)OrderState.ExpiredOrFilledAndUnacknowledged;
+                                        // No longer needed as the unacknowledged orders form is displayed/refreshed
+                                        // as needed when refreshing the main form after an update is complete.
+                                        //if (UpdateEvent != null)
+                                        //{
+                                        //    UpdateEvent(this, new APIUpdateEventArgs(APIDataType.Orders,
+                                        //        corc == CharOrCorp.Corp ? _corpID : _charID,
+                                        //        APIUpdateEventType.OrderHasExpiredOrCompleted));
+                                        //}
                                     }
                                     else
                                     {
-                                        // Set the row to processed right now.
-                                        oldRow.Processed = true;
-                                        // Accept the changes to the row (will only be the processed flag at 
-                                        // this point) and set the processed flag on the database.
-                                        // This will prevent the row from being double matched with another
-                                        // order later.
-                                        // The 'accept changes' will prevent the concurency error that we 
-                                        // would get if we only updated the processed flag on the database
-                                        // side.
-                                        oldRow.AcceptChanges();
-                                        //Orders.SetProcessedByID(oldRow.ID, true);
-
-                                        // If the order was active and is now completed/expired then flag it for
-                                        // the unacknowledged orders viewer to display.
-                                        bool notify = false;
-                                        notify = UserAccount.CurrentGroup.Settings.OrdersNotifyEnabled &&
-                                            ((UserAccount.CurrentGroup.Settings.OrdersNotifyBuy && orderRow.BuyOrder) ||
-                                            (UserAccount.CurrentGroup.Settings.OrdersNotifySell && !orderRow.BuyOrder));
-
-                                        if (/*orderRow.RemainingVol == 0 &&*/
-                                            orderRow.OrderState == (short)OrderState.ExpiredOrFilled &&
-                                            (oldRow.OrderState == (short)OrderState.Active ||
-                                            oldRow.OrderState == (short)OrderState.ExpiredOrFilled))
-                                        {
-                                            if (notify)
-                                            {
-                                                oldRow.OrderState = (short)OrderState.ExpiredOrFilledAndUnacknowledged;
-                                                // No longer needed as the unacknowledged orders form is displayed/refreshed
-                                                // as needed when refreshing the main form after an update is complete.
-                                                //if (UpdateEvent != null)
-                                                //{
-                                                //    UpdateEvent(this, new APIUpdateEventArgs(APIDataType.Orders,
-                                                //        corc == CharOrCorp.Corp ? _corpID : _charID,
-                                                //        APIUpdateEventType.OrderHasExpiredOrCompleted));
-                                                //}
-                                            }
-                                            else
-                                            {
-                                                oldRow.OrderState = (short)OrderState.ExpiredOrFilledAndAcknowledged;
-                                            }
-                                        }
-                                        else if (orderRow.OrderState != (short)OrderState.ExpiredOrFilled)
-                                        {
-                                            oldRow.OrderState = orderRow.OrderState;
-                                        }
-
-                                        if (oldRow.TotalVol != orderRow.TotalVol ||
-                                            oldRow.RemainingVol != orderRow.RemainingVol ||
-                                            oldRow.MinVolume != orderRow.MinVolume || oldRow.Range != orderRow.Range ||
-                                            oldRow.Duration != orderRow.Duration || oldRow.Escrow != orderRow.Escrow ||
-                                            oldRow.Price != orderRow.Price || oldRow.EveOrderID != orderRow.EveOrderID)
-                                        {
-                                            oldRow.TotalVol = orderRow.TotalVol;
-                                            oldRow.RemainingVol = orderRow.RemainingVol;
-                                            oldRow.MinVolume = orderRow.MinVolume;
-                                            oldRow.Range = orderRow.Range;
-                                            oldRow.Duration = orderRow.Duration;
-                                            oldRow.Escrow = orderRow.Escrow;
-                                            oldRow.Price = orderRow.Price;
-                                            oldRow.EveOrderID = orderRow.EveOrderID;
-                                            // Note, only other fields are 'buyOrder' and 'issued'. Neither of which we want to change.
-                                            updated++;
-                                        }
+                                        oldRow.OrderState = (short)OrderState.ExpiredOrFilledAndAcknowledged;
                                     }
                                 }
-
-                                if (fromFile)
+                                else if (orderRow.OrderState != (short)OrderState.ExpiredOrFilled)
                                 {
-                                    UpdateStatus(added + updated, orderEntries.Count, "", "", false);
+                                    oldRow.OrderState = orderRow.OrderState;
                                 }
 
+                                if (oldRow.TotalVol != orderRow.TotalVol ||
+                                    oldRow.RemainingVol != orderRow.RemainingVol ||
+                                    oldRow.MinVolume != orderRow.MinVolume || oldRow.Range != orderRow.Range ||
+                                    oldRow.Duration != orderRow.Duration || oldRow.Escrow != orderRow.Escrow ||
+                                    oldRow.Price != orderRow.Price || oldRow.EveOrderID != orderRow.EveOrderID)
+                                {
+                                    oldRow.TotalVol = orderRow.TotalVol;
+                                    oldRow.RemainingVol = orderRow.RemainingVol;
+                                    oldRow.MinVolume = orderRow.MinVolume;
+                                    oldRow.Range = orderRow.Range;
+                                    oldRow.Duration = orderRow.Duration;
+                                    oldRow.Escrow = orderRow.Escrow;
+                                    oldRow.Price = orderRow.Price;
+                                    oldRow.EveOrderID = orderRow.EveOrderID;
+                                    // Note, only other fields are 'buyOrder' and 'issued'. Neither of which we want to change.
+                                    updated++;
+                                }
                             }
                         }
 
-                        if (fromFile)
-                        {
-                            UpdateStatus(0, 0, added + " orders added to database.", "", false);
-                            UpdateStatus(0, 0, updated + " orders updated.", "", true);
-                        }
-
-                        if (orderData.Count > 0)
-                        {
-                            Orders.Store(orderData);
-                        }
-
-                        if (!errorOccured)
-                        {
-                            Orders.FinishUnProcessed(corc == CharOrCorp.Corp ? _corpID : _charID);
-                        }
+                        UpdateStatus(added + updated, orderEntries.Count, "", "", false);
                     }
                 }
 
+                UpdateStatus(0, 0, added + " orders added to database.", "", false);
+                UpdateStatus(0, 0, updated + " orders updated.", "", true);
+
+                if (orderData.Count > 0)
+                {
+                    Orders.Store(orderData);
+                }
+
+                Orders.FinishUnProcessed(corc == CharOrCorp.Corp ? _corpID : _charID);
             }
             catch (Exception ex)
             {
                 EMMAException emmaEx = ex as EMMAException;
                 if (emmaEx == null)
                 {
-                    // If we've caught a standard exception rather than an EMMA one then log it be creating a 
+                    // If we've caught a standard exception rather than an EMMA one then log it by creating a 
                     // new exception.
                     // Note that we don't need to actually throw it..
-                    emmaEx = new EMMAException(ExceptionSeverity.Error, "Error when adding market orders" +
-                        " from api" + (fromFile ? " file" : ""), ex);
+                    emmaEx = new EMMAException(ExceptionSeverity.Error, "Error when adding market orders", ex);
                 }
 
-                if (!fromFile)
-                {
-                    SetLastAPIUpdateError(corc, APIDataType.Orders, ex.Message);
-                }
-                else
-                {
-                    UpdateStatus(-1, 0, "Error", ex.Message, true);
-                }
+                SetLastAPIUpdateError(corc, APIDataType.Orders, ex.Message);
+                UpdateStatus(-1, 0, "Error", ex.Message, true);
             }
 
 
@@ -2826,7 +2230,6 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     corc == CharOrCorp.Char ? _charID : _corpID,
                     APIUpdateEventType.UpdateCompleted));
             }
-
         }
 
         private EMMADataSet.OrdersRow BuildOrdersRow(EMMADataSet.OrdersDataTable orderData, XmlNode orderEntry,
@@ -2834,7 +2237,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         {
             EMMADataSet.OrdersRow newRow = orderData.NewOrdersRow();
 
-            newRow.EveOrderID = int.Parse(orderEntry.SelectSingleNode("@orderID").Value,
+            newRow.EveOrderID = long.Parse(orderEntry.SelectSingleNode("@orderID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             //newRow.OwnerID = int.Parse(orderEntry.SelectSingleNode("@charID").Value,
             //    System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
@@ -2867,10 +2270,196 @@ namespace EveMarketMonitorApp.AbstractionClasses
             int buyOrder = int.Parse(orderEntry.SelectSingleNode("@bid").Value);
             newRow.BuyOrder = buyOrder == 1;
             newRow.Issued = DateTime.Parse(orderEntry.SelectSingleNode("@issued").Value,
-                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
             newRow.Processed = true;
 
             return newRow;
+        }
+        #endregion
+
+
+        #region Update Industry Jobs
+
+        public void ProcessIndustryJobsXML(XmlDocument fileXml, CharOrCorp corc)
+        {
+            DataImportParams parameters = new DataImportParams();
+            parameters.xmlData = fileXml;
+            parameters.corc = corc;
+            parameters.walletID = 0;
+            ThreadPool.QueueUserWorkItem(UpdateIndustryJobsFromXML, parameters);
+        }
+
+        private void UpdateIndustryJobsFromXML(object parameters)
+        {
+            // Just wait a moment to allow the caller to display the 
+            // progress dialog if importing from a file.
+            Thread.Sleep(200);
+
+            DataImportParams data = (DataImportParams)parameters;
+
+            // Note, the sync lock is used to make sure that a transaction, assets, orders or 
+            // industry jobs update do not run at the same time for a character. 
+            lock (_syncLock)
+            {
+                SetLastAPIUpdateError(data.corc, APIDataType.IndustryJobs, "UPDATING");
+                UpdateIndustryJobsFromXML(data.corc, data.xmlData);
+            }
+
+            APICharacters.Store(this);
+            if (GetLastAPIUpdateError(data.corc, APIDataType.IndustryJobs).Equals("UPDATING"))
+            {
+                SetLastAPIUpdateError(data.corc, APIDataType.IndustryJobs, "");
+            }
+        }
+
+        private void UpdateIndustryJobsFromXML(CharOrCorp corc, XmlDocument fileXML)
+        {
+            EMMADataSet.IndustryJobsDataTable jobsData = new EMMADataSet.IndustryJobsDataTable();
+
+            try
+            {
+                XmlNodeList jobEntries = null;
+
+                UpdateStatus(0, 1, "Getting industry jobs from file", "", false);
+                jobEntries = EveAPI.GetResults(fileXML);
+                UpdateStatus(1, 1, "", jobEntries.Count + " industry jobs found in file.", false);
+
+
+                if (jobEntries != null && jobEntries.Count > 0)
+                {
+                    UpdateStatus(0, jobEntries.Count, "Processing jobs", "", false);
+
+                    foreach (XmlNode jobEntry in jobEntries)
+                    {
+                        EMMADataSet.IndustryJobsRow jobRow = BuildIndustryJobRow(jobsData, jobEntry);
+                        if (IndustryJobs.GetJob(jobsData, jobRow.ID))
+                        {
+                            // The job already exists in the database. Update if needed.
+                            EMMADataSet.IndustryJobsRow oldJobRow = jobsData.FindByID(jobRow.ID);
+                            if (oldJobRow.Completed != jobRow.Completed ||
+                                oldJobRow.CompletedStatus != jobRow.CompletedStatus ||
+                                oldJobRow.CompletedSuccessfully != jobRow.CompletedSuccessfully ||
+                                oldJobRow.EndProductionTime.CompareTo(jobRow.EndProductionTime) != 0 ||
+                                oldJobRow.PauseProductionTime.CompareTo(jobRow.PauseProductionTime) != 0)
+                            {
+                                oldJobRow.Completed = jobRow.Completed;
+                                oldJobRow.CompletedStatus = jobRow.CompletedStatus;
+                                oldJobRow.CompletedSuccessfully = jobRow.CompletedSuccessfully;
+                                oldJobRow.EndProductionTime = jobRow.EndProductionTime;
+                                oldJobRow.PauseProductionTime = jobRow.PauseProductionTime;
+                            }
+                            else
+                            {
+                                // No changes
+                            }
+                        }
+                        else
+                        {
+                            // This is a new job. Add it to the database.
+                            jobsData.AddIndustryJobsRow(jobRow);
+                        }
+
+                    }
+                }
+
+                if (jobsData != null && jobsData.Count > 0)
+                {
+                    IndustryJobs.Store(jobsData);
+                }
+            }
+            catch (Exception ex)
+            {
+                EMMAException emmaEx = ex as EMMAException;
+                if (emmaEx == null)
+                {
+                    // If we've caught a standard exception rather than an EMMA one then log it by creating a 
+                    // new exception.
+                    // Note that we don't need to actually throw it..
+                    emmaEx = new EMMAException(ExceptionSeverity.Error, "Error when adding industry jobs", ex);
+                }
+
+                SetLastAPIUpdateError(corc, APIDataType.IndustryJobs, ex.Message);
+                UpdateStatus(-1, 0, "Error", ex.Message, true);
+            }
+
+
+            if (UpdateEvent != null)
+            {
+                UpdateEvent(this, new APIUpdateEventArgs(APIDataType.IndustryJobs,
+                    corc == CharOrCorp.Char ? _charID : _corpID,
+                    APIUpdateEventType.UpdateCompleted));
+            }
+
+        }
+
+        private EMMADataSet.IndustryJobsRow BuildIndustryJobRow(EMMADataSet.IndustryJobsDataTable dataTable,
+            XmlNode xmlData)
+        {
+            EMMADataSet.IndustryJobsRow jobRow = dataTable.NewIndustryJobsRow();
+            jobRow.ID = long.Parse(xmlData.SelectSingleNode("@jobID").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.ActivityID = int.Parse(xmlData.SelectSingleNode("@activityID").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.AssemblyLineID = int.Parse(xmlData.SelectSingleNode("@assemblyLineID").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.BeginProductionTime = DateTime.Parse(xmlData.SelectSingleNode("@beginProductionTime").Value,
+                System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+            jobRow.CharMaterialModifier = double.Parse(xmlData.SelectSingleNode("@charMaterialMultiplier").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.CharTimeMultiplier = double.Parse(xmlData.SelectSingleNode("@charTimeMultiplier").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.Completed = int.Parse(xmlData.SelectSingleNode("@completed").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat) == 1;
+            jobRow.CompletedStatus = int.Parse(xmlData.SelectSingleNode("@completedStatus").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.CompletedSuccessfully = int.Parse(xmlData.SelectSingleNode("@completedSuccessfully").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat) == 1;
+            jobRow.ContainerID = int.Parse(xmlData.SelectSingleNode("@containerID").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.ContainerTypeID = int.Parse(xmlData.SelectSingleNode("@containerTypeID").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.EndProductionTime = DateTime.Parse(xmlData.SelectSingleNode("@endProductionTime").Value,
+                System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+            jobRow.InstalledItemCopy = int.Parse(xmlData.SelectSingleNode("@installedItemCopy").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat) == 1;
+            jobRow.InstalledItemFlag = int.Parse(xmlData.SelectSingleNode("@installedItemFlag").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.InstalledItemID = int.Parse(xmlData.SelectSingleNode("@installedItemID").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.InstalledItemLocationID = int.Parse(xmlData.SelectSingleNode("@installedItemLocationID").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.InstalledItemME = int.Parse(xmlData.SelectSingleNode("@installedItemMaterialLevel").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.InstalledItemPL = int.Parse(xmlData.SelectSingleNode("@installedItemProductivityLevel").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.InstalledItemQuantity = int.Parse(xmlData.SelectSingleNode("@installedItemQuantity").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.InstalledItemRunsRemaining = int.Parse(xmlData.SelectSingleNode("@installedItemLicensedProductionRunsRemaining").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.InstalledItemTypeID = int.Parse(xmlData.SelectSingleNode("@installedItemTypeID").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.InstallerID = int.Parse(xmlData.SelectSingleNode("@installerID").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.InstallTime = DateTime.Parse(xmlData.SelectSingleNode("@installTime").Value,
+                System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+            jobRow.JobRuns = int.Parse(xmlData.SelectSingleNode("@runs").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.MaterialModifier = double.Parse(xmlData.SelectSingleNode("@materialMultiplier").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.OutputFlag = int.Parse(xmlData.SelectSingleNode("@outputFlag").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.OutputLcoationID = int.Parse(xmlData.SelectSingleNode("@outputLocationID").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.OutputRuns = int.Parse(xmlData.SelectSingleNode("@licensedProductionRuns").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.OutputTypeID = int.Parse(xmlData.SelectSingleNode("@outputTypeID").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            jobRow.PauseProductionTime = DateTime.Parse(xmlData.SelectSingleNode("@pauseProductionTime").Value,
+                System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+            jobRow.TimeMultiplier = double.Parse(xmlData.SelectSingleNode("@timeMultiplier").Value,
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+
+            return jobRow;
         }
         #endregion
         #endregion
@@ -3061,14 +2650,16 @@ namespace EveMarketMonitorApp.AbstractionClasses
         {
             if (UserAccount.CurrentGroup.ID != _charLastRptGroupID)
             {
-                bool autoTrans = false, autoJournal = false, autoAssets = false, autoOrders = false;
+                bool autoTrans = false, autoJournal = false, autoAssets = false, autoOrders = false, 
+                    autoIndustry = false;
                 _charLastRptGroupID = UserAccount.CurrentGroup.ID;
                 _charIncWithRptGroup = ReportGroups.GroupCharSettings(_charLastRptGroupID, _charID,
-                    ref autoTrans, ref autoJournal, ref autoAssets, ref autoOrders);
+                    ref autoTrans, ref autoJournal, ref autoAssets, ref autoOrders, ref autoIndustry);
                 _apiSettings.SetAutoUpdateFlag(CharOrCorp.Char, APIDataType.Transactions, autoTrans);
                 _apiSettings.SetAutoUpdateFlag(CharOrCorp.Char, APIDataType.Journal, autoJournal);
                 _apiSettings.SetAutoUpdateFlag(CharOrCorp.Char, APIDataType.Orders, autoOrders);
                 _apiSettings.SetAutoUpdateFlag(CharOrCorp.Char, APIDataType.Assets, autoAssets);
+                _apiSettings.SetAutoUpdateFlag(CharOrCorp.Char, APIDataType.IndustryJobs, autoIndustry);
                 _oldCharIncWithRptGroup = _charIncWithRptGroup;
             }
         }
@@ -3077,14 +2668,16 @@ namespace EveMarketMonitorApp.AbstractionClasses
         {
             if (UserAccount.CurrentGroup.ID != _corpLastRptGroupID)
             {
-                bool autoTrans = false, autoJournal = false, autoAssets = false, autoOrders = false; 
+                bool autoTrans = false, autoJournal = false, autoAssets = false, autoOrders = false,
+                    autoIndustry = false; 
                 _corpLastRptGroupID = UserAccount.CurrentGroup.ID;
                 _corpIncWithRptGroup = ReportGroups.GroupCorpSettings(_corpLastRptGroupID, _corpID,
-                    ref autoTrans, ref autoJournal, ref autoAssets, ref autoOrders, _charID);
+                    ref autoTrans, ref autoJournal, ref autoAssets, ref autoOrders, ref autoIndustry, _charID);
                 _apiSettings.SetAutoUpdateFlag(CharOrCorp.Corp, APIDataType.Transactions, autoTrans);
                 _apiSettings.SetAutoUpdateFlag(CharOrCorp.Corp, APIDataType.Journal, autoJournal);
                 _apiSettings.SetAutoUpdateFlag(CharOrCorp.Corp, APIDataType.Orders, autoOrders);
                 _apiSettings.SetAutoUpdateFlag(CharOrCorp.Corp, APIDataType.Assets, autoAssets);
+                _apiSettings.SetAutoUpdateFlag(CharOrCorp.Corp, APIDataType.IndustryJobs, autoIndustry);
                 _oldCorpIncWithRptGroup = _corpIncWithRptGroup;
             }
         }
@@ -3108,11 +2701,15 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 case APIDataType.Orders:
                     retVal = Settings.CorpOrdersAPIAccess;
                     break;
+                case APIDataType.IndustryJobs:
+                    retVal = Settings.CorpIndustryJobsAPIAccess;
+                    break;
                 case APIDataType.Unknown:
                     break;
                 case APIDataType.Full:
                     retVal = Settings.CorpTransactionsAPIAccess && Settings.CorpJournalAPIAccess &&
-                        Settings.CorpAssetsAPIAccess && Settings.CorpOrdersAPIAccess;
+                        Settings.CorpAssetsAPIAccess && Settings.CorpOrdersAPIAccess && 
+                        Settings.CorpIndustryJobsAPIAccess;
                     break;
                 default:
                     break;
@@ -3128,6 +2725,18 @@ namespace EveMarketMonitorApp.AbstractionClasses
             public CharOrCorp corc;
             public XmlDocument xmlData;
             public short walletID;
+        }
+    }
+
+    public class APIUpdateInfo
+    {
+        public CharOrCorp Corc { get; set; }
+        public APIDataType Type { get; set; }
+
+        public APIUpdateInfo(CharOrCorp corc, APIDataType type)
+        {
+            Corc = corc;
+            Type = type;
         }
     }
 

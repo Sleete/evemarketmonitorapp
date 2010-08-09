@@ -435,7 +435,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         if (qToFind > 0 && contract.OwnerID == asset.OwnerID)
                         {
                             long deltaQ = Math.Min(asset.Quantity, qToFind);
-                            asset.Cost = item.SellPrice;
+                            asset.Cost = -1 * item.SellPrice;
                             asset.CostCalc = true;
                             asset.BoughtViaContract = false;
                             updates = true;
@@ -453,7 +453,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                             if (qToFind > 0)
                             {
                                 long deltaQ = Math.Min(asset.Quantity, qToFind);
-                                asset.Cost = item.SellPrice;
+                                asset.Cost = -1 * item.SellPrice;
                                 asset.CostCalc = true;
                                 asset.BoughtViaContract = false;
                                 updates = true;
@@ -490,7 +490,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                     long deltaQ = Math.Min(asset.Quantity, qToFind);
                                     Assets.AddAssetToTable(assetData, asset.ID);
                                     EMMADataSet.AssetsRow assetRow = assetData.FindByID(asset.ID);
-                                    assetRow.Cost = item.SellPrice;
+                                    assetRow.Cost = -1 * item.SellPrice;
                                     assetRow.CostCalc = true;
                                     updates = true;
                                     qToFind -= deltaQ;
@@ -506,7 +506,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                         long deltaQ = Math.Min(asset.Quantity, qToFind);
                                         Assets.AddAssetToTable(assetData, asset.ID);
                                         EMMADataSet.AssetsRow assetRow = assetData.FindByID(asset.ID);
-                                        assetRow.Cost = item.SellPrice;
+                                        assetRow.Cost = -1 * item.SellPrice;
                                         assetRow.CostCalc = true;
                                         updates = true;
                                         qToFind -= deltaQ;

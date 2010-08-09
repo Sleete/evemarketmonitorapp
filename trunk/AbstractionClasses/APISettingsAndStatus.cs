@@ -29,19 +29,23 @@ namespace EveMarketMonitorApp.AbstractionClasses
         private bool _autoUpdateCharJournal = true;
         private bool _autoUpdateCharAssets = true;
         private bool _autoUpdateCharOrders = true;
+        private bool _autoUpdateCharIndustryJobs = true;
         private bool _autoUpdateCorpTrans = true;
         private bool _autoUpdateCorpJournal = true;
         private bool _autoUpdateCorpAssets = true;
         private bool _autoUpdateCorpOrders = true;
+        private bool _autoUpdateCorpIndustryJobs = true;
 
         private string _lastCharTransUpdateError = "";
         private string _lastCharJournalUpdateError = "";
         private string _lastCharAssetsUpdateError = "";
         private string _lastCharOrdersUpdateError = "";
+        private string _lastCharIndustryJobsUpdateError = "";
         private string _lastCorpTransUpdateError = "";
         private string _lastCorpJournalUpdateError = "";
         private string _lastCorpAssetsUpdateError = "";
         private string _lastCorpOrdersUpdateError = "";
+        private string _lastCorpIndustryJobsUpdateError = "";
 
         private long _highestCharTransID = 0;
         private long _highestCorpTransID = 0;
@@ -136,6 +140,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         case APIDataType.Orders:
                             retVal = _lastCharOrdersUpdate;
                             break;
+                        case APIDataType.IndustryJobs:
+                            retVal = _settings.LastCharIndustryJobsUpdate;
+                            break;
                         default:
                             break;
                     }
@@ -154,6 +161,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             break;
                         case APIDataType.Orders:
                             retVal = _lastCorpOrdersUpdate;
+                            break;
+                        case APIDataType.IndustryJobs:
+                            retVal = _settings.LastCorpIndustryJobsUpdate;
                             break;
                         default:
                             break;
@@ -184,6 +194,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         case APIDataType.Orders:
                             _lastCharOrdersUpdate = time;
                             break;
+                        case APIDataType.IndustryJobs:
+                            _settings.LastCharIndustryJobsUpdate = time;
+                            break;
                         default:
                             break;
                     }
@@ -202,6 +215,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             break;
                         case APIDataType.Orders:
                             _lastCorpOrdersUpdate = time;
+                            break;
+                        case APIDataType.IndustryJobs:
+                            _settings.LastCorpIndustryJobsUpdate = time;
                             break;
                         default:
                             break;
@@ -232,6 +248,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         case APIDataType.Orders:
                             retVal = _autoUpdateCharOrders;
                             break;
+                        case APIDataType.IndustryJobs:
+                            retVal = _autoUpdateCharIndustryJobs;
+                            break;
                         default:
                             break;
                     }
@@ -250,6 +269,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             break;
                         case APIDataType.Orders:
                             retVal = _autoUpdateCorpOrders;
+                            break;
+                        case APIDataType.IndustryJobs:
+                            retVal = _autoUpdateCorpIndustryJobs;
                             break;
                         default:
                             break;
@@ -280,6 +302,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         case APIDataType.Orders:
                             _autoUpdateCharOrders = auto;
                             break;
+                        case APIDataType.IndustryJobs:
+                            _autoUpdateCharIndustryJobs = auto;
+                            break;
                         default:
                             break;
                     }
@@ -298,6 +323,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             break;
                         case APIDataType.Orders:
                             _autoUpdateCorpOrders = auto;
+                            break;
+                        case APIDataType.IndustryJobs:
+                            _autoUpdateCorpIndustryJobs = auto;
                             break;
                         default:
                             break;
@@ -328,6 +356,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         case APIDataType.Orders:
                             retVal = _lastCharOrdersUpdateError;
                             break;
+                        case APIDataType.IndustryJobs:
+                            retVal = _lastCharIndustryJobsUpdateError;
+                            break;
                         default:
                             break;
                     }
@@ -346,6 +377,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             break;
                         case APIDataType.Orders:
                             retVal = _lastCorpOrdersUpdateError;
+                            break;
+                        case APIDataType.IndustryJobs:
+                            retVal = _lastCorpIndustryJobsUpdateError;
                             break;
                         default:
                             break;
@@ -376,6 +410,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         case APIDataType.Orders:
                             _lastCharOrdersUpdateError = error;
                             break;
+                        case APIDataType.IndustryJobs:
+                            _lastCharIndustryJobsUpdateError = error;
+                            break;
                         default:
                             break;
                     }
@@ -394,6 +431,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             break;
                         case APIDataType.Orders:
                             _lastCorpOrdersUpdateError = error;
+                            break;
+                        case APIDataType.IndustryJobs:
+                            _lastCorpIndustryJobsUpdateError = error;
                             break;
                         default:
                             break;
@@ -485,6 +525,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         Journal,
         Assets,
         Orders,
+        IndustryJobs,
         Unknown,
         Full
     }

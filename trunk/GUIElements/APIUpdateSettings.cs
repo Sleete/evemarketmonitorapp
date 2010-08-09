@@ -59,6 +59,7 @@ namespace EveMarketMonitorApp.GUIElements
             txtAssetsUpdateMaxMinutes.Text = UserAccount.Settings.AssetsUpdateMaxMinutes.ToString();
             chkManufacturing.Checked = UserAccount.Settings.ManufacturingMode;
             chkAllowIndividualUpdate.Checked = UserAccount.Settings.APIIndividualUpdate;
+            chkCompactView.Checked = UserAccount.Settings.UseCompactUpdatePanel;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -81,6 +82,7 @@ namespace EveMarketMonitorApp.GUIElements
                 UserAccount.Settings.AssetsUpdateMaxMinutes = int.Parse(txtAssetsUpdateMaxMinutes.Text);
                 UserAccount.Settings.ManufacturingMode = chkManufacturing.Checked;
                 UserAccount.Settings.APIIndividualUpdate = chkAllowIndividualUpdate.Checked;
+                UserAccount.Settings.UseCompactUpdatePanel = chkCompactView.Checked;
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();

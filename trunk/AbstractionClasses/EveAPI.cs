@@ -36,6 +36,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
         public const string URL_CorpOrdersApi = "/corp/MarketOrders.xml.aspx";
         public const string URL_CharStandingsApi = "/char/Standings.xml.aspx";
         public const string URL_CorpStandingsApi = "/corp/Standings.xml.aspx";
+        public const string URL_IndustryApi = "/char/IndustryJobs.xml.aspx";
+        public const string URL_IndustryCorpApi = "/corp/IndustryJobs.xml.aspx";
 
         public const string URL_JournRefsApi = "/eve/RefTypes.xml.aspx";
         public const string URL_NameApi = "/eve/CharacterName.xml.aspx";
@@ -128,9 +130,39 @@ namespace EveMarketMonitorApp.AbstractionClasses
         }*/
         #endregion
 
+        public static string GetURL(CharOrCorp corc, APIDataType type)
+        {
+            string retVal = "";
+            switch (type)
+            {
+                case APIDataType.Transactions:
+                    retVal = corc == CharOrCorp.Char ? URL_TransApi : URL_TransCorpApi;
+                    break;
+                case APIDataType.Journal:
+                    retVal = corc == CharOrCorp.Char ? URL_JournApi : URL_JournCorpApi;
+                    break;
+                case APIDataType.Assets:
+                    retVal = corc == CharOrCorp.Char ? URL_AssetApi : URL_AssetCorpApi;
+                    break;
+                case APIDataType.Orders:
+                    retVal = corc == CharOrCorp.Char ? URL_CharOrdersApi : URL_CorpOrdersApi;
+                    break;
+                case APIDataType.IndustryJobs:
+                    retVal = corc == CharOrCorp.Char ? URL_IndustryApi : URL_IndustryCorpApi;
+                    break;
+                case APIDataType.Unknown:
+                    break;
+                case APIDataType.Full:
+                    break;
+                default:
+                    break;
+            }
+            return retVal;
+        }
+
         //These methods all make use of Eve EPI functions that do not need parameters for character, corp, etc.
         #region Static API Calls
-        /// <summary>
+                /// <summary>
         /// Update player-owned outpost data from the API.
         /// </summary>
         public static void UpdateOutpostData()
@@ -278,6 +310,10 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 {
                     retVal = APIDataType.Orders;
                 }
+                else if (name.Equals("jobs"))
+                {
+                    retVal = APIDataType.IndustryJobs;
+                }
                 else
                 {
                     retVal = APIDataType.Unknown;
@@ -333,13 +369,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             return retVal;
         }
 
-        /// <summary>
-        /// This proceedure provides a way to determine the time that the snapshot of assets data 
-        /// in the supplied xml document was taken.
-        /// </summary>
-        /// <param name="xml"></param>
-        /// <returns></returns>
-        public static DateTime GetAssetDataTime(XmlDocument xml)
+        public static DateTime GetCachedUntilTime(XmlDocument xml)
         {
             DateTime retVal = new DateTime(2000, 1, 1);
 
@@ -350,58 +380,92 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 {
                     // Get the date/time that the assets data is cached until and then subtract
                     // 23 hours to get the date/time that the snapshot was actually taken.
-                    retVal = DateTime.Parse(timeNode.InnerText, 
+                    retVal = DateTime.Parse(timeNode.InnerText,
                         System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
                     // C# will asume that the value from the file is for the local time zone.
                     // in fact it is UTC so we need to specify this.
                     retVal = TimeZoneInfo.ConvertTime(retVal, TimeZoneInfo.Utc, TimeZoneInfo.Utc);
-                    // The time from the file is the 'cached until' time. Take off 23 hours to get the
-                    // time that the data in the file was generated
-                    retVal = retVal.AddHours(-23);
                 }
             }
 
             return retVal;
         }
 
-        /// <summary>
-        /// This proceedure provides a way to determine the time that the data in a journal file was
-        /// cached
-        /// </summary>
-        /// <param name="xml"></param>
-        /// <returns></returns>
-        public static DateTime GetJournalDataTime(XmlDocument xml)
+        ///// <summary>
+        ///// This proceedure provides a way to determine the time that the snapshot of assets data 
+        ///// in the supplied xml document was taken.
+        ///// </summary>
+        ///// <param name="xml"></param>
+        ///// <returns></returns>
+        //public static DateTime GetAssetDataTime(XmlDocument xml)
+        //{
+        //    DateTime retVal = new DateTime(2000, 1, 1);
+
+        //    if (xml != null)
+        //    {
+        //        XmlNode timeNode = xml.SelectSingleNode("/eveapi/cachedUntil");
+        //        if (timeNode != null)
+        //        {
+        //            // Get the date/time that the assets data is cached until and then subtract
+        //            // 23 hours to get the date/time that the snapshot was actually taken.
+        //            retVal = DateTime.Parse(timeNode.InnerText, 
+        //                System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+        //            // C# will asume that the value from the file is for the local time zone.
+        //            // in fact it is UTC so we need to specify this.
+        //            retVal = TimeZoneInfo.ConvertTime(retVal, TimeZoneInfo.Utc, TimeZoneInfo.Utc);
+        //            // The time from the file is the 'cached until' time. Take off 23 hours to get the
+        //            // time that the data in the file was generated
+        //            retVal = retVal.AddHours(-23);
+        //        }
+        //    }
+
+        //    return retVal;
+        //}
+
+        ///// <summary>
+        ///// This proceedure provides a way to determine the time that the data in a journal file was
+        ///// cached
+        ///// </summary>
+        ///// <param name="xml"></param>
+        ///// <returns></returns>
+        //public static DateTime GetJournalDataTime(XmlDocument xml)
+        //{
+        //    DateTime retVal = new DateTime(2000, 1, 1);
+
+        //    if (xml != null)
+        //    {
+        //        XmlNode timeNode = xml.SelectSingleNode("/eveapi/cachedUntil");
+        //        if (timeNode != null)
+        //        {
+        //            // Get the date/time that the assets data is cached until and then subtract
+        //            // 23 hours to get the date/time that the snapshot was actually taken.
+        //            retVal = DateTime.Parse(timeNode.InnerText, 
+        //                System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+        //            // C# will asume that the value from the file is for the local time zone.
+        //            // in fact it is UTC so we need to specify this.
+        //            retVal = TimeZoneInfo.ConvertTime(retVal, TimeZoneInfo.Utc, TimeZoneInfo.Utc);
+        //            // The time from the file is teh 'cached until' time. Take off one hour to get the
+        //            // time that the data in the file was generated
+        //            retVal = retVal.AddHours(-1);
+        //        }
+        //    }
+
+        //    return retVal;
+        //}
+
+        public static XmlDocument GetXml(string url, string parameters)
         {
-            DateTime retVal = new DateTime(2000, 1, 1);
-
-            if (xml != null)
-            {
-                XmlNode timeNode = xml.SelectSingleNode("/eveapi/cachedUntil");
-                if (timeNode != null)
-                {
-                    // Get the date/time that the assets data is cached until and then subtract
-                    // 23 hours to get the date/time that the snapshot was actually taken.
-                    retVal = DateTime.Parse(timeNode.InnerText, 
-                        System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
-                    // C# will asume that the value from the file is for the local time zone.
-                    // in fact it is UTC so we need to specify this.
-                    retVal = TimeZoneInfo.ConvertTime(retVal, TimeZoneInfo.Utc, TimeZoneInfo.Utc);
-                    // The time from the file is teh 'cached until' time. Take off one hour to get the
-                    // time that the data in the file was generated
-                    retVal = retVal.AddHours(-1);
-                }
-            }
-
-            return retVal;
+            string xmlFile = "";
+            return GetXml(url, parameters, ref xmlFile);
         }
-
+        
         /// <summary>
         /// Method to retrieve XML from the specified address using the specified parameters.
         /// </summary>
         /// <param name="url">The web address of the API service to POST to</param>
         /// <param name="parameters">The HTTP POST parameters</param>
         /// <returns></returns>
-        public static XmlDocument GetXml(string url, string parameters) 
+        public static XmlDocument GetXml(string url, string parameters, ref string xmlLogFile) 
         {
             HttpWebRequest request;
             HttpWebResponse response = null;
@@ -500,7 +564,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                         desc = desc + " " + filenameparams;
                                     }
                                 }
-                                string xmlLogFile = string.Format("{0}Logging{1}API Call History{1}{2} {3}.xml",
+                                xmlLogFile = string.Format("{0}Logging{1}API Call History{1}{2} {3}.xml",
                                     Globals.AppDataDir, Path.DirectorySeparatorChar,
                                     desc, DateTime.UtcNow.Ticks.ToString());
                                 xml.Save(xmlLogFile);
@@ -563,6 +627,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
             URL_Descriptions.Add(URL_CharOrdersApi, "Character market orders");
             URL_Descriptions.Add(URL_CorpOrdersApi, "Corp market orders");
             URL_Descriptions.Add(URL_NameApi, "Entity name");
+            URL_Descriptions.Add(URL_IndustryApi, "Character industry jobs");
+            URL_Descriptions.Add(URL_IndustryCorpApi, "Corp industry jobs");
         }
         #endregion
     }
