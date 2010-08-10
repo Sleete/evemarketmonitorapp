@@ -273,12 +273,12 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // UpdatePanel
             // 
+            this.Controls.Add(this.lblCorpTag);
             this.Controls.Add(this.chkAutoIndustryJobs);
             this.Controls.Add(this.lblIndustryJobsStatus);
             this.Controls.Add(this.lblIndustryJobs);
             this.Controls.Add(this.chkUpdate);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.lblCorpTag);
             this.Controls.Add(this.chkAutoAssets);
             this.Controls.Add(this.chkAutoOrders);
             this.Controls.Add(this.chkAutoJournal);

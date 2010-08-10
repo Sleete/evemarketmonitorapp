@@ -8766,6 +8766,29 @@ AS
                         }
                         #endregion
                     }
+                    if (dbVersion.CompareTo(new Version("1.5.1.10")) < 0)
+                    {
+                        #region A bug had caused any items bought from contract to have a negative cost. This corrects the data.
+                        commandText =
+                               @"UPDATE    Assets
+SET              Cost = Cost * - 1
+WHERE     (Cost < 0)";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.10"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem correcting Asset data", ex);
+                        }
+                        #endregion
+                    }
 
                 
                 
@@ -9289,8 +9312,8 @@ AS
                     {
                         System.Collections.Specialized.StringCollection defaults =
                             new System.Collections.Specialized.StringCollection();
-                        defaults.Add("www.eve-files.com");
                         defaults.Add("www.starfreeze.com");
+                        defaults.Add("www.eve-files.com");
                         Properties.Settings.Default.UpdateServers = defaults;
                     }
                     try

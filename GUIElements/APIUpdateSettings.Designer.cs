@@ -58,8 +58,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.chkAllowIndividualUpdate = new System.Windows.Forms.CheckBox();
             this.chkCompactView = new System.Windows.Forms.CheckBox();
+            this.chkAllowIndividualUpdate = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -361,16 +361,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "General Update Settings";
             // 
-            // chkAllowIndividualUpdate
-            // 
-            this.chkAllowIndividualUpdate.AutoSize = true;
-            this.chkAllowIndividualUpdate.Location = new System.Drawing.Point(9, 19);
-            this.chkAllowIndividualUpdate.Name = "chkAllowIndividualUpdate";
-            this.chkAllowIndividualUpdate.Size = new System.Drawing.Size(250, 17);
-            this.chkAllowIndividualUpdate.TabIndex = 0;
-            this.chkAllowIndividualUpdate.Text = "Allow individual API update (Not recommended)";
-            this.chkAllowIndividualUpdate.UseVisualStyleBackColor = true;
-            // 
             // chkCompactView
             // 
             this.chkCompactView.AutoSize = true;
@@ -380,6 +370,17 @@ namespace EveMarketMonitorApp.GUIElements
             this.chkCompactView.TabIndex = 1;
             this.chkCompactView.Text = "Use compact API status update view";
             this.chkCompactView.UseVisualStyleBackColor = true;
+            this.chkCompactView.CheckedChanged += new System.EventHandler(this.chkCompactView_CheckedChanged);
+            // 
+            // chkAllowIndividualUpdate
+            // 
+            this.chkAllowIndividualUpdate.AutoSize = true;
+            this.chkAllowIndividualUpdate.Location = new System.Drawing.Point(9, 19);
+            this.chkAllowIndividualUpdate.Name = "chkAllowIndividualUpdate";
+            this.chkAllowIndividualUpdate.Size = new System.Drawing.Size(250, 17);
+            this.chkAllowIndividualUpdate.TabIndex = 0;
+            this.chkAllowIndividualUpdate.Text = "Allow individual API update (Not recommended)";
+            this.chkAllowIndividualUpdate.UseVisualStyleBackColor = true;
             // 
             // APIUpdateSettings
             // 

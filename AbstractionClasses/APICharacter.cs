@@ -66,6 +66,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         private AssetList _corpUnacknowledgedLosses = new AssetList();
 
         private Queue<string> _unprocessedXMLFiles = new Queue<string>();
+        private bool _processingQueue = false;
 
         private int _downloadsInProgress = 0;
 
@@ -761,13 +762,22 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         if (xmlFile.Length > 0)
                         {
                             lock (_unprocessedXMLFiles) { _unprocessedXMLFiles.Enqueue(xmlFile); }
+                            noData = false;
+                        }
+                        if (type == APIDataType.Journal || type == APIDataType.Transactions)
+                        {
+                            if (tmp.Count < 1000) { walletExhausted = true; }
                         }
 
-                        // Set the last update time to the effective date of the data in the file rather 
-                        // than the current date
-                        dataDate = EveAPI.GetCachedUntilTime(xml);
-                        dataDate.AddHours(type == APIDataType.Assets ? -23 : -1);
-                        SetLastAPIUpdateTime(corc, type, dataDate);
+                        // Set the last update time based upon the 'cached until'
+                        // time rather than the actual time the update occured
+                        // Note we could modify the API update period timer instead but
+                        // that would cause other issues. It's better for the user if 
+                        // we just do things this way.
+                        //SetLastAPIUpdateTime(corc, type, DateTime.UtcNow);
+                        DateTime nextAllowed = EveAPI.GetCachedUntilTime(xml);
+                        SetLastAPIUpdateTime(corc, type, nextAllowed.Subtract(
+                            UserAccount.Settings.GetAPIUpdatePeriod(type)));
 
                         // If we've been successfull in getting data and this is a corporate data request
                         // then make sure we've got access set to true;
@@ -776,7 +786,6 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             Settings.SetCorpAPIAccess(type, true);
                         }
 
-                        noData = false;
                     }
                     catch (EMMAEveAPIException emmaApiEx)
                     {
@@ -790,7 +799,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             if (!noData)
                             {
                                 walletExhausted = true;
-                                SetLastAPIUpdateError(corc, type, "Eve API Error 100");
+                                //SetLastAPIUpdateError(corc, type, "Eve API Error 100");
                             }
                             else
                             {
@@ -798,7 +807,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             }
                         }
                         else if (emmaApiEx.EveCode == 101 || emmaApiEx.EveCode == 102 ||
-                            emmaApiEx.EveCode == 103 || emmaApiEx.EveCode == 117)
+                            emmaApiEx.EveCode == 103 || emmaApiEx.EveCode == 116 || emmaApiEx.EveCode == 117)
                         {
                             // Data already retrieved
                             string err = emmaApiEx.EveDescription;
@@ -821,7 +830,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             abort = true;
                         }
                         else if (emmaApiEx.EveCode == 206 || emmaApiEx.EveCode == 208 ||
-                            emmaApiEx.EveCode == 209)
+                            emmaApiEx.EveCode == 209 || emmaApiEx.EveCode == 213)
                         {
                             // Character does not have required corporate role.
                             Settings.SetCorpAPIAccess(type, false);
@@ -881,63 +890,82 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 }
 
                 SetLastAPIUpdateError(corc, type, ex.Message);
+                noData = true;
+            }
+
+            // If we have not retrieved any data at all then mark the update as completed.
+            if (noData)
+            {
+                if (UpdateEvent != null)
+                {
+                    UpdateEvent(this, new APIUpdateEventArgs(type,
+                        corc == CharOrCorp.Char ? _charID : _corpID,
+                        APIUpdateEventType.UpdateCompleted));
+                }
             }
         }
 
 
-        public void ProcessQueuedXML(object param)
+        public void ProcessQueuedXML()
         {
-            while (_unprocessedXMLFiles.Count > 0)
+            if (!_processingQueue)
             {
-                bool process = true;
-                string xmlFile = "";
-                lock (_unprocessedXMLFiles) { xmlFile = _unprocessedXMLFiles.Dequeue(); }
-                // If the next file is an asset data file and we still have other files waiting
-                // then move the asset data file to the back of the queue.
-                if (xmlFile.ToUpper().Contains("ASSETS") && _unprocessedXMLFiles.Count > 0)
+                _processingQueue = true;
+
+                while (_unprocessedXMLFiles.Count > 0)
                 {
-                    lock (_unprocessedXMLFiles) { _unprocessedXMLFiles.Enqueue(xmlFile); }
-                    process = false;
+                    bool process = true;
+                    string xmlFile = "";
+                    lock (_unprocessedXMLFiles) { xmlFile = _unprocessedXMLFiles.Dequeue(); }
+                    // If the next file is an asset data file and we still have other files waiting
+                    // then move the asset data file to the back of the queue.
+                    if (xmlFile.ToUpper().Contains("ASSETS") && _unprocessedXMLFiles.Count > 0)
+                    {
+                        lock (_unprocessedXMLFiles) { _unprocessedXMLFiles.Enqueue(xmlFile); }
+                        process = false;
+                    }
+
+                    if (process)
+                    {
+                        DataImportParams parameters = new DataImportParams();
+                        CharOrCorp corc = CharOrCorp.Char;
+                        short walletID = 0;
+                        if (xmlFile.ToUpper().Contains("CORP")) { corc = CharOrCorp.Corp; }
+                        if (xmlFile.ToUpper().Contains("ACCOUNTKEY="))
+                        {
+                            walletID = short.Parse(xmlFile.Substring(
+                                xmlFile.ToUpper().IndexOf("ACCOUNTKEY=") + 11, 4));
+                        }
+                        parameters.corc = corc;
+                        parameters.walletID = walletID;
+                        parameters.xmlData = new XmlDocument();
+                        parameters.xmlData.Load(xmlFile);
+
+
+                        if (xmlFile.ToUpper().Contains("ASSETS"))
+                        {
+                            ThreadPool.QueueUserWorkItem(UpdateAssetsFromXML, parameters);
+                        }
+                        else if (xmlFile.ToUpper().Contains("TRANSACTIONS"))
+                        {
+                            ThreadPool.QueueUserWorkItem(UpdateTransactionsFromXML, parameters);
+                        }
+                        else if (xmlFile.ToUpper().Contains("JOURNAL ENTRIES"))
+                        {
+                            ThreadPool.QueueUserWorkItem(UpdateJournalFromXML, parameters);
+                        }
+                        else if (xmlFile.ToUpper().Contains("MARKET ORDERS"))
+                        {
+                            ThreadPool.QueueUserWorkItem(UpdateOrdersFromXML, parameters);
+                        }
+                        else if (xmlFile.ToUpper().Contains("INDUSTRY JOBS"))
+                        {
+                            ThreadPool.QueueUserWorkItem(UpdateIndustryJobsFromXML, parameters);
+                        }
+                    }
                 }
 
-                if (process)
-                {
-                    DataImportParams parameters = new DataImportParams();
-                    CharOrCorp corc = CharOrCorp.Char;
-                    short walletID = 0;
-                    if (xmlFile.ToUpper().Contains("CORP")) { corc = CharOrCorp.Corp; }
-                    if(xmlFile.ToUpper().Contains("ACCOUNTKEY="))
-                    {
-                        string walletString = xmlFile.Substring(
-                            xmlFile.ToUpper().IndexOf("ACCOUNTKEY=") + 11, 4);
-                    }
-                    parameters.corc = corc;
-                    parameters.walletID = walletID;
-                    parameters.xmlData = new XmlDocument();
-                    parameters.xmlData.LoadXml(xmlFile);
-
-
-                    if (xmlFile.ToUpper().Contains("ASSETS"))
-                    {
-                        ThreadPool.QueueUserWorkItem(UpdateAssetsFromXML, parameters);
-                    }
-                    else if (xmlFile.ToUpper().Contains("TRANSACTIONS"))
-                    {
-                        ThreadPool.QueueUserWorkItem(UpdateTransactionsFromXML, parameters);
-                    }
-                    else if (xmlFile.ToUpper().Contains("JOURNAL ENTRIES"))
-                    {
-                        ThreadPool.QueueUserWorkItem(UpdateJournalFromXML, parameters);
-                    }
-                    else if (xmlFile.ToUpper().Contains("MARKET ORDERS"))
-                    {
-                        ThreadPool.QueueUserWorkItem(UpdateOrdersFromXML, parameters);
-                    }
-                    else if (xmlFile.ToUpper().Contains("INDUSTRY JOBS"))
-                    {
-                        ThreadPool.QueueUserWorkItem(UpdateIndustryJobsFromXML, parameters);
-                    }
-                }
+                _processingQueue = false;
             }
         }
 
@@ -2458,6 +2486,15 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
             jobRow.TimeMultiplier = double.Parse(xmlData.SelectSingleNode("@timeMultiplier").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+
+            if (jobRow.PauseProductionTime.CompareTo(SqlDateTime.MinValue.Value) < 0) { jobRow.PauseProductionTime = SqlDateTime.MinValue.Value; }
+            if (jobRow.PauseProductionTime.CompareTo(SqlDateTime.MaxValue.Value) > 0) { jobRow.PauseProductionTime = SqlDateTime.MaxValue.Value; }
+            if (jobRow.EndProductionTime.CompareTo(SqlDateTime.MinValue.Value) < 0) { jobRow.PauseProductionTime = SqlDateTime.MinValue.Value; }
+            if (jobRow.EndProductionTime.CompareTo(SqlDateTime.MaxValue.Value) > 0) { jobRow.PauseProductionTime = SqlDateTime.MaxValue.Value; }
+            if (jobRow.BeginProductionTime.CompareTo(SqlDateTime.MinValue.Value) < 0) { jobRow.PauseProductionTime = SqlDateTime.MinValue.Value; }
+            if (jobRow.BeginProductionTime.CompareTo(SqlDateTime.MaxValue.Value) > 0) { jobRow.PauseProductionTime = SqlDateTime.MaxValue.Value; }
+            if (jobRow.InstallTime.CompareTo(SqlDateTime.MinValue.Value) < 0) { jobRow.PauseProductionTime = SqlDateTime.MinValue.Value; }
+            if (jobRow.InstallTime.CompareTo(SqlDateTime.MaxValue.Value) > 0) { jobRow.PauseProductionTime = SqlDateTime.MaxValue.Value; }
 
             return jobRow;
         }

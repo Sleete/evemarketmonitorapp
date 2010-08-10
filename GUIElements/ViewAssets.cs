@@ -452,7 +452,7 @@ namespace EveMarketMonitorApp.GUIElements
             if (cmbOwner.SelectedValue != null && !chkIngoreOwner.Checked)
             {
                 CharCorp data = (CharCorp)cmbOwner.SelectedValue;
-                ownerID = data.characterObj.CharID;
+                ownerID = data.ID; //data.characterObj.CharID;
                 corpAssets = data.corp;
             }
 

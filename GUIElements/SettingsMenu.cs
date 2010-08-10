@@ -129,6 +129,11 @@ namespace EveMarketMonitorApp.GUIElements
             if (_cp != null) { _cp.Focus(); }
             APIUpdateSettings settings = new APIUpdateSettings();
             settings.ShowDialog();
+            Main mainForm = this.MdiParent as Main;
+            if (mainForm != null)
+            {
+                mainForm.RebuildUpdatePanel();
+            }
         }
 
         private void btnReprocessSettings_Click(object sender, EventArgs e)

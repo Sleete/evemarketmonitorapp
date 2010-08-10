@@ -472,7 +472,12 @@ namespace EveMarketMonitorApp.AbstractionClasses
             XmlDocument xml = null;
             byte[] data;
 
-            if (URL_Descriptions.Count == 0) { SetupURLDescriptions(); }
+            lock (URL_Descriptions)
+            {
+                // Use lock to make sure we don't have multiple thread trying to setup the
+                // dictionary at the same time.
+                if (URL_Descriptions.Count == 0) { SetupURLDescriptions(); }
+            }
 
             if (!Globals.EveAPIDown)
             {

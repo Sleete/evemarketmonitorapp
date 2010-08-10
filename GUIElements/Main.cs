@@ -115,7 +115,7 @@ namespace EveMarketMonitorApp.GUIElements
                     if (checkForUpdates)
                     {
                         DateTime lastCheck = Properties.Settings.Default.LastEMMAUpdateCheck;
-                        if (lastCheck.AddDays(2).CompareTo(DateTime.UtcNow) < 0)
+                        if (lastCheck.AddHours(5).CompareTo(DateTime.UtcNow) < 0)
                         {
                             UpdateStatus(0, 0, "Checking for updates", "", false);
                             // Check for updates to EMMA components
@@ -472,6 +472,13 @@ namespace EveMarketMonitorApp.GUIElements
         }
         #endregion
 
+        public void RebuildUpdatePanel()
+        {
+            if (_updateStatus != null)
+            {
+                _updateStatus.PopulatePanels();
+            }
+        }
 
         void ControlPanel_OptionSelected(object myObject, CPOptionSelectedArgs args)
         {
@@ -488,10 +495,7 @@ namespace EveMarketMonitorApp.GUIElements
                         if (!CheckForUpdatesInProg())
                         {
                             ManageReportGroup();
-                            if (_updateStatus != null)
-                            {
-                                _updateStatus.PopulatePanels();
-                            }
+                            RebuildUpdatePanel();
                         }
                     }
                     break;

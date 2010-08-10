@@ -64,10 +64,12 @@ namespace EveMarketMonitorApp.GUIElements
             _showingTT.Add(APIDataType.Journal, false);
             _showingTT.Add(APIDataType.Orders, false);
             _showingTT.Add(APIDataType.Transactions, false);
+            _showingTT.Add(APIDataType.IndustryJobs, false);
             _lastUpdateAttempt.Add(APIDataType.Assets, DateTime.MinValue);
             _lastUpdateAttempt.Add(APIDataType.Journal, DateTime.MinValue);
             _lastUpdateAttempt.Add(APIDataType.Orders, DateTime.MinValue);
             _lastUpdateAttempt.Add(APIDataType.Transactions, DateTime.MinValue);
+            _lastUpdateAttempt.Add(APIDataType.IndustryJobs, DateTime.MinValue);
 
             _individualUpdate = UserAccount.Settings.APIIndividualUpdate;
 
@@ -247,6 +249,8 @@ namespace EveMarketMonitorApp.GUIElements
                 UpdateLabel(lblIndustryJobsStatus, lblIndustryJobs, _type, APIDataType.IndustryJobs,
                     UserAccount.Settings.APIIndustryJobsUpdatePeriod);
 
+                _character.ProcessQueuedXML();
+
                 _updating = false;
             }
 
@@ -390,6 +394,13 @@ namespace EveMarketMonitorApp.GUIElements
                 }
                 // The update is in progress.
                 label.Text = "Updating";
+                label.BackColor = _updatingColour;
+                otherLabel.BackColor = _updatingColour;
+            }
+            else if (errorText.ToUpper().Equals("DOWNLOADING"))
+            {
+                // The update is in progress.
+                label.Text = "Downloading";
                 label.BackColor = _updatingColour;
                 otherLabel.BackColor = _updatingColour;
             }
@@ -689,6 +700,10 @@ namespace EveMarketMonitorApp.GUIElements
             }
         }
 
+        public void SetAllUpdates(bool enabled)
+        {
+            chkUpdate.Checked = enabled;
+        }
 
     }
 
