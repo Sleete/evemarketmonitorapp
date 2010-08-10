@@ -23,6 +23,8 @@ namespace EveMarketMonitorApp.GUIElements.Interfaces
         void UpdateData();
         void Dispose();
 
+        void SetAllUpdates(bool enabled);
+
         event APIUpdateEvent UpdateEvent;
     }
 }

@@ -60,6 +60,7 @@ namespace EveMarketMonitorApp.GUIElements
             chkManufacturing.Checked = UserAccount.Settings.ManufacturingMode;
             chkAllowIndividualUpdate.Checked = UserAccount.Settings.APIIndividualUpdate;
             chkCompactView.Checked = UserAccount.Settings.UseCompactUpdatePanel;
+            RefreshDisplay();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -211,6 +212,25 @@ namespace EveMarketMonitorApp.GUIElements
             }
 
             return retVal;
+        }
+
+        private void chkCompactView_CheckedChanged(object sender, EventArgs e)
+        {
+            RefreshDisplay();
+        }
+
+
+        private void RefreshDisplay()
+        {
+            if (chkCompactView.Checked)
+            {
+                chkAllowIndividualUpdate.Checked = false;
+                chkAllowIndividualUpdate.Enabled = false;
+            }
+            else
+            {
+                chkAllowIndividualUpdate.Enabled = true;
+            }
         }
 
 

@@ -20,6 +20,8 @@ namespace EveMarketMonitorApp.GUIElements
         private static bool _updating = false;
         private static List<APICharacter> charsListeningTo = new List<APICharacter>();
 
+        private bool _toggleOn = false;
+
         public event APIUpdateEvent UpdateEvent;
 
         public bool AllowClose
@@ -191,6 +193,25 @@ namespace EveMarketMonitorApp.GUIElements
             DateTime startBlockTime = DateTime.UtcNow;
             while (_updating && startBlockTime.AddMinutes(1).CompareTo(DateTime.UtcNow) > 0) { }
             PauseUpdates();
+        }
+
+        private void btnToggleAll_Click(object sender, EventArgs e)
+        {
+            Dictionary<string, IUpdatePanel>.Enumerator enumerator = panels.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                if (_toggleOn)
+                {
+                    enumerator.Current.Value.SetAllUpdates(true);
+                    btnToggleAll.Text = "Update None";
+                }
+                else
+                {
+                    enumerator.Current.Value.SetAllUpdates(false);
+                    btnToggleAll.Text = "Update All";
+                }
+            }
+            _toggleOn = !_toggleOn;
         }
 
 

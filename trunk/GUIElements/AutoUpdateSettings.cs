@@ -122,8 +122,8 @@ namespace EveMarketMonitorApp.GUIElements
         private void btnServerDefaults_Click(object sender, EventArgs e)
         {
             lstServers.Items.Clear();
-            lstServers.Items.Add("www.eve-files.com");
             lstServers.Items.Add("www.starfreeze.com");
+            lstServers.Items.Add("www.eve-files.com");
         }
 
         private void lstServers_KeyDown(object sender, KeyEventArgs e)

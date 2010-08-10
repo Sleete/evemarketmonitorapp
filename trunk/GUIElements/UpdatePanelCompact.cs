@@ -151,26 +151,29 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     APIDataType type = (APIDataType)Enum.Parse(typeof(APIDataType), typeName);
 
-                    if (tipText.Length > 0) { tipText.Append("\r\n"); }
-                    tipText.Append(typeName.ToUpper());
-                    tipText.Append(": ");
+                    if (type != APIDataType.Full && type != APIDataType.Unknown)
+                    {
+                        if (tipText.Length > 0) { tipText.Append("\r\n"); }
+                        tipText.Append(typeName.ToUpper());
+                        tipText.Append(": ");
 
-                    string statusText = _character.GetLastAPIUpdateError(_type, type);
+                        string statusText = _character.GetLastAPIUpdateError(_type, type);
 
-                    if (statusText.Equals("BLOCKED"))
-                    {
-                        int minutes = UserAccount.Settings.AssetsUpdateMaxMinutes;
-                        tipText.Append("This update is currently blocked because transaction and order updates have not occured within the last ");
-                        tipText.Append(minutes);
-                        tipText.Append(" minutes.\r\n\tTo adjust this setting, goto Settings -> API Update Settings.");
-                    }
-                    else if (statusText.Equals("AWAITING ACKNOWLEDGEMENT"))
-                    {
-                        tipText.Append("This update has completed but is currently waiting for other asset updates to complete in order to compare lost/gained items.");
-                    }
-                    else
-                    {
-                        tipText.Append(statusText);
+                        if (statusText.Equals("BLOCKED"))
+                        {
+                            int minutes = UserAccount.Settings.AssetsUpdateMaxMinutes;
+                            tipText.Append("This update is currently blocked because transaction and order updates have not occured within the last ");
+                            tipText.Append(minutes);
+                            tipText.Append(" minutes.\r\n\tTo adjust this setting, goto Settings -> API Update Settings.");
+                        }
+                        else if (statusText.Equals("AWAITING ACKNOWLEDGEMENT"))
+                        {
+                            tipText.Append("This update has completed but is currently waiting for other asset updates to complete in order to compare lost/gained items.");
+                        }
+                        else
+                        {
+                            tipText.Append(statusText);
+                        }
                     }
                 }
                 
@@ -202,6 +205,8 @@ namespace EveMarketMonitorApp.GUIElements
                     UserAccount.Settings.APIAssetUpdatePeriod);
                 UpdateLabel(lblIndustryJobsStatus, _type, APIDataType.IndustryJobs,
                     UserAccount.Settings.APIIndustryJobsUpdatePeriod);
+
+                _character.ProcessQueuedXML();
 
                 _updating = false;
             }
@@ -414,6 +419,10 @@ namespace EveMarketMonitorApp.GUIElements
             }
         }
 
+        public void SetAllUpdates(bool enabled)
+        {
+            chkUpdate.Checked = enabled;
+        }
 
     }
 
