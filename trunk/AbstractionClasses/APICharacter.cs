@@ -817,8 +817,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             DateTime nextAllowed = EveAPI.GetCachedUntilTime(xml);
                             SetLastAPIUpdateTime(corc, type, nextAllowed.Subtract(
                                 UserAccount.Settings.GetAPIUpdatePeriod(type)));
-                            SetLastAPIUpdateError(corc, type,
-                                "The Eve API reports that this data has already been retrieved, no update has occured.");
+                            if (noData)
+                            {
+                                SetLastAPIUpdateError(corc, type,
+                                    "The Eve API reports that this data has already been retrieved, no update has occured.");
+                            }
                             walletExhausted = true;
                         }
                         else if (emmaApiEx.EveCode == 200)
