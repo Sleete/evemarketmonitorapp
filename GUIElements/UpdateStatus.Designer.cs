@@ -42,11 +42,11 @@ namespace EveMarketMonitorApp.GUIElements
             // mainPanel
             // 
             this.mainPanel.AutoScroll = true;
-            this.mainPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainPanel.Location = new System.Drawing.Point(3, 37);
+            this.mainPanel.Location = new System.Drawing.Point(0, 34);
+            this.mainPanel.Margin = new System.Windows.Forms.Padding(0);
             this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Size = new System.Drawing.Size(290, 230);
+            this.mainPanel.Size = new System.Drawing.Size(296, 236);
             this.mainPanel.TabIndex = 1;
             // 
             // updateTimer
@@ -82,9 +82,10 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnToggleAll
             // 
+            this.btnToggleAll.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnToggleAll.Location = new System.Drawing.Point(106, 2);
             this.btnToggleAll.Name = "btnToggleAll";
-            this.btnToggleAll.Size = new System.Drawing.Size(84, 23);
+            this.btnToggleAll.Size = new System.Drawing.Size(85, 23);
             this.btnToggleAll.TabIndex = 3;
             this.btnToggleAll.Text = "Update None";
             this.btnToggleAll.UseVisualStyleBackColor = true;
@@ -92,6 +93,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // label2
             // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label2.BackColor = System.Drawing.Color.Red;
             this.label2.Location = new System.Drawing.Point(103, -1);
             this.label2.Name = "label2";

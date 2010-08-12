@@ -214,7 +214,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private void InitSettings()
         {
             EMMADataSet.RptGroupSettingsDataTable settingsTable = new EMMADataSet.RptGroupSettingsDataTable();
-            rptGroupSettingsTableAdapter.FillByID(settingsTable, _id);
+            lock (rptGroupSettingsTableAdapter)
+            {
+                rptGroupSettingsTableAdapter.FillByID(settingsTable, _id);
+            }
             if (settingsTable.Count > 0)
             {
                 XmlDocument settingsDoc = new XmlDocument();
@@ -238,18 +241,21 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 if (_settings.Changed)
                 {
                     EMMADataSet.RptGroupSettingsDataTable settingsTable = new EMMADataSet.RptGroupSettingsDataTable();
-                    rptGroupSettingsTableAdapter.FillByID(settingsTable, _id);
-                    if (settingsTable.Count == 0)
+                    lock (rptGroupSettingsTableAdapter)
                     {
-                        EMMADataSet.RptGroupSettingsRow newRow = settingsTable.NewRptGroupSettingsRow();
-                        newRow.ReportGroupID = _id;
-                        // Just make this blank temporarilly so we are allowed to add it to the table.
-                        newRow.Settings = "";
-                        settingsTable.AddRptGroupSettingsRow(newRow);
-                    }
-                    settingsTable[0].Settings = _settings.Xml.InnerXml;
+                        rptGroupSettingsTableAdapter.FillByID(settingsTable, _id);
+                        if (settingsTable.Count == 0)
+                        {
+                            EMMADataSet.RptGroupSettingsRow newRow = settingsTable.NewRptGroupSettingsRow();
+                            newRow.ReportGroupID = _id;
+                            // Just make this blank temporarilly so we are allowed to add it to the table.
+                            newRow.Settings = "";
+                            settingsTable.AddRptGroupSettingsRow(newRow);
+                        }
+                        settingsTable[0].Settings = _settings.Xml.InnerXml;
 
-                    rptGroupSettingsTableAdapter.Update(settingsTable);
+                        rptGroupSettingsTableAdapter.Update(settingsTable);
+                    }
                     _settings.Changed = false;
                 }
             }

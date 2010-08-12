@@ -46,8 +46,8 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 tmpPanel = new UpdatePanel();
             }
-            this.Width = tmpPanel.Width + 8 + 6;
-            mainPanel.Width = tmpPanel.Width + 6;
+            this.Width = tmpPanel.Width + 6 + 8;
+            //mainPanel.Width = tmpPanel.Width + 6;
             PopulatePanels();
             updateTimer.Start();
         }

@@ -520,20 +520,42 @@ namespace EveMarketMonitorApp.GUIElements
                     bool matchBuyer = _possibleOwners.Contains(buyerID);
                     bool matchSeller = _possibleOwners.Contains(sellerID);
                     DataGridViewCellStyle style = e.CellStyle;
+                    //DataGridViewCellStyle style2 = transactionGrid[e.ColumnIndex, e.RowIndex].Style;
                     if (matchBuyer && matchSeller)
                     {
                         style.ForeColor = Color.Blue;
+                        //style2.ForeColor = Color.Blue;
                     }
                     else if (matchBuyer)
                     {
                         style.ForeColor = Color.Red;
+                        //style2.ForeColor = Color.Red;
                     }
                     else if (matchSeller)
                     {
                         style.ForeColor = Color.Green;
+                        //style2.ForeColor = Color.Green;
+                    }
+                    
+                    //e.Value = new IskAmount((decimal)e.Value).ToString();
+                    //e.CellStyle = style;
+                    //e.FormattingApplied = true;
+                }
+                if (transactionGrid.Columns[e.ColumnIndex].Name.Equals("UnitProfitColumn"))
+                {
+                    DataGridViewCellStyle style = e.CellStyle;
+                    if ((decimal)e.Value < 0)
+                    {
+                        style.ForeColor = Color.Red;
+                    }
+                    else
+                    {
+                        style.ForeColor = Color.Green;
                     }
 
-                    e.CellStyle = style;
+                    //e.Value = new IskAmount((decimal)e.Value).ToString();
+                    //e.CellStyle = style;
+                    //e.FormattingApplied = true;
                 }
             }
         }

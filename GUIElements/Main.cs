@@ -801,7 +801,9 @@ namespace EveMarketMonitorApp.GUIElements
                 // order then display it.
                 // If the order notification window is displayed and the number of unacnowledged orders
                 // has changed then refresh it.
-                if (_unackOrders == null || !_unackOrders.Visible)
+                // _unackOrders.Visible will be false if EMMA is minimised but in this case we just
+                // want to refresh the existing window, not display a new one.
+                if (_unackOrders == null || (!_unackOrders.Visible && this.Visible))
                 {
                     OrdersList unack = Orders.LoadOrders(UserAccount.CurrentGroup.GetAssetAccessParams(
                         APIDataType.Orders), new List<int>(), new List<int>(),
@@ -1642,7 +1644,10 @@ namespace EveMarketMonitorApp.GUIElements
             EveMarketMonitorApp.Properties.Settings.Default.WindowState = WindowState;
             if (WindowState == FormWindowState.Minimized)
             {
-                Hide();
+                if (!UserAccount.Settings.ShowInTaskbarWhenMinimised)
+                {
+                    Hide();
+                }
             }
             else
             {

@@ -40,7 +40,7 @@ namespace EveMarketMonitorApp.GUIElements
             }
             chkGridCalcEnabled.Checked = UserAccount.Settings.GridCalcEnabled;
             cmbAssetsViewWarning.Text = UserAccount.Settings.AssetsViewWarning;
-
+            chkShowInTaskbar.Checked = UserAccount.Settings.ShowInTaskbarWhenMinimised;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -63,6 +63,7 @@ namespace EveMarketMonitorApp.GUIElements
             UserAccount.Settings.UseLocalTimezone = rdbLocalTime.Checked;
             UserAccount.Settings.GridCalcEnabled = chkGridCalcEnabled.Checked;
             UserAccount.Settings.AssetsViewWarning = cmbAssetsViewWarning.Text;
+            UserAccount.Settings.ShowInTaskbarWhenMinimised = chkShowInTaskbar.Checked;
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

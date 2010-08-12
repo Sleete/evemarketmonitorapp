@@ -81,6 +81,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.CalcCostInAssetView);
             GetValue(Setting.CalcProfitInTransView);
             GetValue(Setting.UseCompactUpdatePanel);
+            GetValue(Setting.ShowEMMAInTaskBarWhenMinimised);
         }
 
         /// <summary>
@@ -287,6 +288,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     break;
                 case Setting.UseCompactUpdatePanel:
                     retVal = bool.FalseString;
+                    break;
+                case Setting.ShowEMMAInTaskBarWhenMinimised:
+                    retVal = bool.TrueString;
                     break;
                 default:
                     break;
@@ -578,6 +582,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
             get { return bool.Parse(GetValue(Setting.UseCompactUpdatePanel)); }
             set { SetValue(Setting.UseCompactUpdatePanel, value.ToString()); }
         }
+        public bool ShowInTaskbarWhenMinimised
+        {
+            get { return bool.Parse(GetValue(Setting.ShowEMMAInTaskBarWhenMinimised)); }
+            set { SetValue(Setting.ShowEMMAInTaskBarWhenMinimised, value.ToString()); }
+        }
         #endregion
 
         #region Public methods
@@ -727,7 +736,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             CalcCostInAssetView,
             CalcProfitInTransView,
             APIIndustryJobsUpdatePeriod,
-            UseCompactUpdatePanel
+            UseCompactUpdatePanel,
+            ShowEMMAInTaskBarWhenMinimised
         }
 
     }
