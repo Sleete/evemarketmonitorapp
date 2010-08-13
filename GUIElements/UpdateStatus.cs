@@ -22,6 +22,8 @@ namespace EveMarketMonitorApp.GUIElements
 
         private bool _toggleOn = false;
 
+        private int _borderWidth = 0;
+
         public event APIUpdateEvent UpdateEvent;
 
         public bool AllowClose
@@ -46,7 +48,11 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 tmpPanel = new UpdatePanel();
             }
-            this.Width = tmpPanel.Width + 6 + 8;
+            _borderWidth = (this.Width - this.ClientSize.Width) / 2;
+            if (this.Width < tmpPanel.Width + _borderWidth * 2)
+            {
+                this.Width = tmpPanel.Width + _borderWidth * 2;
+            }
             //mainPanel.Width = tmpPanel.Width + 6;
             PopulatePanels();
             updateTimer.Start();
@@ -104,9 +110,10 @@ namespace EveMarketMonitorApp.GUIElements
                                 {
                                     panel = new UpdatePanel(CharOrCorp.Char, character);
                                 }
-                                panel.Size = new Size(this.Width - 12 - (position >= this.Height - 
-                                    System.Windows.Forms.SystemInformation.CaptionHeight ? 
-                                    System.Windows.Forms.SystemInformation.VerticalScrollBarWidth : 0), 
+                                panel.Size = new Size(this.ClientSize.Width - 6 - 
+                                    (position >= this.Height - 
+                                        System.Windows.Forms.SystemInformation.CaptionHeight ? 
+                                        System.Windows.Forms.SystemInformation.VerticalScrollBarWidth : 0), 
                                     panel.Size.Height);
                                 panel.Location = new Point(4, position);
                                 panel.Anchor = AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Top;
@@ -130,8 +137,10 @@ namespace EveMarketMonitorApp.GUIElements
                                 {
                                     panel = new UpdatePanel(CharOrCorp.Corp, character);
                                 }
-                                panel.Size = new Size(this.Width - 12 - (position > this.Height ? 
-                                    System.Windows.Forms.SystemInformation.VerticalScrollBarWidth : 0), 
+                                panel.Size = new Size(this.ClientSize.Width - 6 - 
+                                    (position > this.Height -
+                                        System.Windows.Forms.SystemInformation.CaptionHeight ? 
+                                        System.Windows.Forms.SystemInformation.VerticalScrollBarWidth : 0), 
                                     panel.Size.Height);
                                 panel.Location = new Point(4, position);
                                 panel.Anchor = AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Top;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.SqlTypes;
 
 namespace EveMarketMonitorApp.DatabaseClasses
 {
@@ -13,8 +14,29 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public static void Add(Asset lostAsset)
         {
             long? lostAssetID = 0;
-            _tableAdapter.New(lostAsset.OwnerID, lostAsset.CorpAsset, lostAsset.ItemID, DateTime.UtcNow,
-                Math.Abs(lostAsset.Quantity), lostAsset.UnitBuyPrice, lostAsset.UnitValue, ref lostAssetID);
+            lock (_tableAdapter)
+            {
+                _tableAdapter.New(lostAsset.OwnerID, lostAsset.CorpAsset, lostAsset.ItemID, DateTime.UtcNow,
+                    Math.Abs(lostAsset.Quantity), lostAsset.UnitBuyPrice, lostAsset.UnitValue, ref lostAssetID);
+            }
+        }
+
+
+        public static EMMADataSet.AssetsLostDataTable GetAssetsLost(int ownerID, DateTime startDate, DateTime endDate)
+        {
+            EMMADataSet.AssetsLostDataTable retVal = new EMMADataSet.AssetsLostDataTable();
+
+            if (startDate.CompareTo(SqlDateTime.MinValue.Value) < 0) startDate = SqlDateTime.MinValue.Value;
+            if (endDate.CompareTo(SqlDateTime.MinValue.Value) < 0) endDate = SqlDateTime.MinValue.Value;
+            if (startDate.CompareTo(SqlDateTime.MaxValue.Value) > 0) startDate = SqlDateTime.MaxValue.Value;
+            if (endDate.CompareTo(SqlDateTime.MaxValue.Value) > 0) endDate = SqlDateTime.MaxValue.Value;
+
+            lock (_tableAdapter)
+            {
+                _tableAdapter.FillByDate(retVal, ownerID, startDate, endDate);
+            }
+
+            return retVal;
         }
     }
 }

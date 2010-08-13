@@ -548,8 +548,9 @@ namespace EveMarketMonitorApp.GUIElements
 
             reportGrid.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             // Finally set the size of the form based upon the size and location of the report grid.
+            int windowBorder = this.Width - this.ClientSize.Width;
             this.Size = new Size(
-                reportGrid.Location.X + reportGrid.Width + Math.Max(MARGIN_SIZE, reportGrid.Location.X),
+                reportGrid.Location.X + reportGrid.Width + Math.Max(MARGIN_SIZE + windowBorder, reportGrid.Location.X + windowBorder),
                 reportGrid.Location.Y + reportGrid.Height + MARGIN_SIZE + 42);
             reportGrid.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
 

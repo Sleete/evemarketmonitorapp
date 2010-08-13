@@ -774,10 +774,19 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         // Note we could modify the API update period timer instead but
                         // that would cause other issues. It's better for the user if 
                         // we just do things this way.
-                        //SetLastAPIUpdateTime(corc, type, DateTime.UtcNow);
-                        DateTime nextAllowed = EveAPI.GetCachedUntilTime(xml);
-                        SetLastAPIUpdateTime(corc, type, nextAllowed.Subtract(
-                            UserAccount.Settings.GetAPIUpdatePeriod(type)));
+                        if (type == APIDataType.Transactions)
+                        {
+                            // Transactions XML often gives a cache expiry date time that is too soon.
+                            // If we try and update again when it says then it will fail so just wait
+                            // for the usual 1 hour. (Or whatever the user has it set to)
+                            SetLastAPIUpdateTime(corc, type, DateTime.UtcNow);
+                        }
+                        else
+                        {
+                            DateTime nextAllowed = EveAPI.GetCachedUntilTime(xml);
+                            SetLastAPIUpdateTime(corc, type, nextAllowed.Subtract(
+                                UserAccount.Settings.GetAPIUpdatePeriod(type)));
+                        }
 
                         // If we've been successfull in getting data and this is a corporate data request
                         // then make sure we've got access set to true;

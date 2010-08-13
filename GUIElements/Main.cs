@@ -96,7 +96,6 @@ namespace EveMarketMonitorApp.GUIElements
                     PingServers();
                     Diagnostics.StopTimer("PingChecks");
                     Diagnostics.StartTimer("Updates");
-                    CheckForDocumentation();
                     // Update settings and user database if needed.
                     UpdateStatus(0, 0, "Initalising database", "", false);
                     //try
@@ -111,6 +110,7 @@ namespace EveMarketMonitorApp.GUIElements
                         //    MessageBoxButtons.OK, MessageBoxIcon.Error);
                     //}
                     Updater.InitDBs();
+                    CheckForDocumentation();
                     checkForUpdates = checkForUpdates && EveMarketMonitorApp.Properties.Settings.Default.AutoUpdate; 
                     if (checkForUpdates)
                     {
