@@ -358,13 +358,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     break;
                 // Item pricing settings
                 case Setting.useEveCentral:
-                    retVal = bool.TrueString;
+                    retVal = bool.FalseString;
                     break;
                 case Setting.eveMarketValueToUse:
-                    retVal = ((short)EveMarketValueToUse.medianBuy).ToString();
+                    retVal = ((short)EveMarketValueToUse.maxBuy).ToString();
                     break;
                 case Setting.useEveMetrics:
-                    retVal = bool.FalseString;
+                    retVal = bool.TrueString;
                     break;
                 // Other settings
                 case Setting.courierCalcOnlyItemsTraded:
