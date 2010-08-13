@@ -159,7 +159,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return retVal;
         }
 
-        public static decimal GetCashInEscrow(int ownerID, bool forCorp, short walletID)
+        public static decimal GetCashInEscrow(int ownerID, short walletID)
         {
             decimal retVal = 0;
             EMMADataSet.OrdersDataTable table = new EMMADataSet.OrdersDataTable();

@@ -35,6 +35,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtNumColumns = new System.Windows.Forms.TextBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.chkInvestments = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -74,7 +75,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(144, 99);
+            this.btnOk.Location = new System.Drawing.Point(144, 118);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(88, 29);
             this.btnOk.TabIndex = 18;
@@ -86,7 +87,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(238, 99);
+            this.btnCancel.Location = new System.Drawing.Point(238, 118);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(88, 29);
             this.btnCancel.TabIndex = 19;
@@ -94,11 +95,22 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // chkInvestments
+            // 
+            this.chkInvestments.AutoSize = true;
+            this.chkInvestments.Location = new System.Drawing.Point(12, 91);
+            this.chkInvestments.Name = "chkInvestments";
+            this.chkInvestments.Size = new System.Drawing.Size(120, 17);
+            this.chkInvestments.TabIndex = 20;
+            this.chkInvestments.Text = "Include investments";
+            this.chkInvestments.UseVisualStyleBackColor = true;
+            // 
             // RptParamsNAVReport
             // 
             this.AcceptButton = this.btnOk;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(338, 139);
+            this.ClientSize = new System.Drawing.Size(338, 158);
+            this.Controls.Add(this.chkInvestments);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.txtNumColumns);
@@ -122,5 +134,6 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.TextBox txtNumColumns;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.CheckBox chkInvestments;
     }
 }

@@ -8789,8 +8789,104 @@ WHERE     (Cost < 0)";
                         }
                         #endregion
                     }
+                    if (dbVersion.CompareTo(new Version("1.5.1.11")) < 0)
+                    {
+                        #region Updating JournalGetClosest stored proc
+                        commandText =
+                               @"ALTER PROCEDURE dbo.JournalGetClosest 
+	@ownerID	int,
+	@corp		bit,
+	@walletID	smallint,
+	@datetime	datetime
+AS
+	SELECT Journal.*
+	FROM Journal
+	WHERE ((((@corp = 0 AND SenderID = @ownerID) OR (@corp = 1 AND SCorpID = @ownerID)) AND (SWalletID = @walletID OR @walletID = 0)) OR
+		(((@corp = 0 AND RecieverID = @ownerID) OR (@corp = 1 AND RCorpID = @ownerID)) AND (RWalletID = @walletID OR @walletID = 0))) AND
+		(ABS(DATEDIFF(s, @datetime, Date)) = 
+		(
+			SELECT MIN(ABS(DATEDIFF(s, @datetime, Date)))
+			FROM Journal
+			WHERE ((((@corp = 0 AND SenderID = @ownerID) OR (@corp = 1 AND SCorpID = @ownerID)) AND (SWalletID = @walletID OR @walletID = 0)) OR
+				(((@corp = 0 AND RecieverID = @ownerID) OR (@corp = 1 AND RCorpID = @ownerID)) AND (RWalletID = @walletID OR @walletID = 0)))
+		))
+ 
+	RETURN";
 
-                
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.11"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'JournalGetClosest' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.1.12")) < 0)
+                    {
+                        #region Creating AssetsLostGetByDate stored proc
+                        commandText =
+                               @"CREATE PROCEDURE dbo.AssetsLostGetByDate	
+	@ownerID		int,
+	@startDate		datetime,
+	@endDate		datetime
+AS
+	SELECT *
+	FROM AssetsLost
+	WHERE OwnerID = @ownerID AND LossDateTime BETWEEN @startDate AND @endDate
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.12"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'AssetsLostGetByDate' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+                    if (dbVersion.CompareTo(new Version("1.5.1.13")) < 0)
+                    {
+                        #region Creating AssetsProducedGetByDate stored proc
+                        commandText =
+                               @"CREATE PROCEDURE dbo.AssetsProducedGetByDate	
+	@ownerID		int,
+	@startDate		datetime,
+	@endDate		datetime
+AS
+	SELECT *
+	FROM AssetsProduced
+	WHERE OwnerID = @ownerID AND ProductionDateTime BETWEEN @startDate AND @endDate
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.13"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating 'AssetsProducedGetByDate' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+              
                 
                 }
 

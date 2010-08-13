@@ -94,7 +94,7 @@ namespace EveMarketMonitorApp.GUIElements
             // label2
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label2.BackColor = System.Drawing.Color.Red;
+            this.label2.BackColor = System.Drawing.SystemColors.Control;
             this.label2.Location = new System.Drawing.Point(103, -1);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(91, 28);

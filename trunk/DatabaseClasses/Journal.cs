@@ -41,14 +41,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return retVal;
         }
 
-        public static EMMADataSet.JournalRow GetClosest(int ownerID, short walletID, DateTime date)
+        public static EMMADataSet.JournalRow GetClosest(int ownerID, bool corp, short walletID, DateTime date)
         {
             EMMADataSet.JournalDataTable table = new EMMADataSet.JournalDataTable();
             EMMADataSet.JournalRow retVal = null;
             date = date.ToUniversalTime();
             lock (tableAdapter)
             {
-                tableAdapter.FillByClosest(table, ownerID, walletID, date);
+                tableAdapter.FillByClosest(table, ownerID, corp, walletID, date);
             }
             if (table.Count > 0) { retVal = table[0]; }
 

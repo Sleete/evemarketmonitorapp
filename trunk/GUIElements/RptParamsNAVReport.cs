@@ -61,6 +61,7 @@ namespace EveMarketMonitorApp.GUIElements
             _parameters.Add("ColumnPeriod", period);
             _parameters.Add("StartDate", DateTime.UtcNow);
             _parameters.Add("TotalColumns", totColumns);
+            _parameters.Add("IncludeInvestments", chkInvestments.Checked);
 
             _report = new NAVReport();
 

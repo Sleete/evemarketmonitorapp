@@ -15,17 +15,20 @@ namespace EveMarketMonitorApp.Reporting
     /// </summary>
     class NAVReport : ReportBase
     {
+        private bool _includeInvestments = false;
+
         public NAVReport()
         {
             _name = "NAV Report";
             _title = "NAV Report";
             _subtitle = "";
 
-            _expectedParams = new string[4];
+            _expectedParams = new string[5];
             _expectedParams[0] = "ColumnPeriod";
             _expectedParams[1] = "StartDate";
             _expectedParams[2] = "TotalColumns";
             _expectedParams[3] = "FinanceAccessParams";
+            _expectedParams[4] = "IncludeInvestments";
         }
 
         /// <summary>
@@ -51,6 +54,8 @@ namespace EveMarketMonitorApp.Reporting
                     //if (expectedParams[i].Equals("TotalColumns")) totColumns = (int)paramValue;
                     if (_expectedParams[i].Equals("FinanceAccessParams")) _financeAccessParams =
                         (List<FinanceAccessParams>)paramValue;
+                    if (_expectedParams[i].Equals("IncludeInvestments")) _includeInvestments =
+                        (bool)paramValue;
                 }
             }
             catch (Exception ex)
@@ -76,12 +81,12 @@ namespace EveMarketMonitorApp.Reporting
             ReportSection walletSection = new ReportSection(_columns.Length, "W", "Wallet Balance", this);
             ReportSection escrowSection = new ReportSection(_columns.Length, "E", "Cash in Escrow", this);
             ReportSection assetsSection = new ReportSection(_columns.Length, "A", "Assets", this);
-            ReportSection sellOrdersSection = new ReportSection(_columns.Length, "S", "Sell Orders", this);
+            //ReportSection sellOrdersSection = new ReportSection(_columns.Length, "S", "Sell Orders", this);
 
             root.AddSection(walletSection);
             root.AddSection(escrowSection);
             root.AddSection(assetsSection);
-            root.AddSection(sellOrdersSection);
+            //root.AddSection(sellOrdersSection);
 
             foreach (FinanceAccessParams accessParams in _financeAccessParams)
             {
@@ -256,26 +261,26 @@ namespace EveMarketMonitorApp.Reporting
                     SetValue(_columns[columnNo].Name, "A" + ownerID.ToString(), assetsValue);
                 }
 
-                _sections.GetSection("S").AddRow(
-                    _columns.Length,
-                    "S" + ownerID.ToString(),
-                    (corp ? character.CorpName : character.CharName));
+                //_sections.GetSection("S").AddRow(
+                //    _columns.Length,
+                //    "S" + ownerID.ToString(),
+                //    (corp ? character.CorpName : character.CharName));
 
 
-                Diagnostics.ResetTimer("NAVReport.GetSellOrderValue");
-                for (int columnNo = 0; columnNo < _columns.Length; columnNo++)
-                {
-                    progressCounter++;
-                    UpdateStatus(progressCounter, maxProgress,
-                        (corp ? character.CorpName : character.CharName),
-                        "Value of sell orders", false);
+                //Diagnostics.ResetTimer("NAVReport.GetSellOrderValue");
+                //for (int columnNo = 0; columnNo < _columns.Length; columnNo++)
+                //{
+                //    progressCounter++;
+                //    UpdateStatus(progressCounter, maxProgress,
+                //        (corp ? character.CorpName : character.CharName),
+                //        "Value of sell orders", false);
 
-                    /// Get sell orders value and add to report.
-                    Diagnostics.StartTimer("NAVReport.GetSellOrderValue");
-                    decimal sellOrdersValue = NAVHistory.GetSellOrdersValue(ownerID, _columns[columnNo].EndDate);
-                    Diagnostics.StopTimer("NAVReport.GetSellOrderValue");
-                    SetValue(_columns[columnNo].Name, "S" + ownerID.ToString(), sellOrdersValue);
-                }
+                //    /// Get sell orders value and add to report.
+                //    Diagnostics.StartTimer("NAVReport.GetSellOrderValue");
+                //    decimal sellOrdersValue = NAVHistory.GetSellOrdersValue(ownerID, _columns[columnNo].EndDate);
+                //    Diagnostics.StopTimer("NAVReport.GetSellOrderValue");
+                //    SetValue(_columns[columnNo].Name, "S" + ownerID.ToString(), sellOrdersValue);
+                //}
                 Diagnostics.StopTimer("NAVReport." + ownerID.ToString());
 
                 DiagnosticUpdate("", "--------------------------------------------");
@@ -293,38 +298,41 @@ namespace EveMarketMonitorApp.Reporting
 
             }
 
-            _sections.GetSection("NAV").AddRow(_columns.Length, "I", "Investments");
-            Diagnostics.StartTimer("NAVReport.Investments");
-
-            for (int columnNo = 0; columnNo < _columns.Length; columnNo++)
+            if (_includeInvestments)
             {
-                decimal investmentsValue = 0;
-                PublicCorpsList investments = PublicCorps.GetReportGroupInvestments(
-                    UserAccount.CurrentGroup.ID, false);
-                foreach (PublicCorp corp in investments)
+                _sections.GetSection("NAV").AddRow(_columns.Length, "I", "Investments");
+                Diagnostics.StartTimer("NAVReport.Investments");
+
+                for (int columnNo = 0; columnNo < _columns.Length; columnNo++)
                 {
-                    investmentsValue += corp.CalcSharesOwnedValue(_columns[columnNo].EndDate);
-                }
-                PublicCorpsList banks = PublicCorps.GetReportGroupInvestments(
-                    UserAccount.CurrentGroup.ID, true);
-                foreach (PublicCorp corp in banks)
-                {
-                    EMMADataSet.BankAccountDataTable accounts = BankAccounts.GetBankAccountData(
-                        UserAccount.CurrentGroup.ID, 0, corp.ID);
-                    foreach (EMMADataSet.BankAccountRow account in accounts)
+                    decimal investmentsValue = 0;
+                    PublicCorpsList investments = PublicCorps.GetReportGroupInvestments(
+                        UserAccount.CurrentGroup.ID, false);
+                    foreach (PublicCorp corp in investments)
                     {
-                        corp.OwnerID = account.OwnerID;
-                        corp.ReloadBankAccountDetails();
-
-                        BankAccounts.PayOutstandingInterest(corp.BankAccountID);
-                        investmentsValue += BankAccounts.GetAccountBalance(corp.BankAccountID,
-                            _columns[columnNo].EndDate);
+                        investmentsValue += corp.CalcSharesOwnedValue(_columns[columnNo].EndDate);
                     }
-                }
+                    PublicCorpsList banks = PublicCorps.GetReportGroupInvestments(
+                        UserAccount.CurrentGroup.ID, true);
+                    foreach (PublicCorp corp in banks)
+                    {
+                        EMMADataSet.BankAccountDataTable accounts = BankAccounts.GetBankAccountData(
+                            UserAccount.CurrentGroup.ID, 0, corp.ID);
+                        foreach (EMMADataSet.BankAccountRow account in accounts)
+                        {
+                            corp.OwnerID = account.OwnerID;
+                            corp.ReloadBankAccountDetails();
 
-                SetValue(_columns[columnNo].Name, "I", investmentsValue);
+                            BankAccounts.PayOutstandingInterest(corp.BankAccountID);
+                            investmentsValue += BankAccounts.GetAccountBalance(corp.BankAccountID,
+                                _columns[columnNo].EndDate);
+                        }
+                    }
+
+                    SetValue(_columns[columnNo].Name, "I", investmentsValue);
+                }
+                Diagnostics.StopTimer("NAVReport.Investments");
             }
-            Diagnostics.StopTimer("NAVReport.Investments");
 
             Diagnostics.StopTimer("NAVReport");
 
