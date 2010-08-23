@@ -26,6 +26,9 @@ namespace EveMarketMonitorApp.GUIElements
         private decimal _lowsecPickupBonus;
         private decimal _rewardPercPerJump;
         private decimal _rewardPercPerVol;
+        private decimal _rewardPerVol;
+        private decimal _rewardPerJump;
+        private decimal _baseReward;
 
         private BindingSource _itemsBindingSource;
         private Contract _contract;
@@ -129,6 +132,9 @@ namespace EveMarketMonitorApp.GUIElements
             _lowsecPickupBonus = settings.LowSecPickupBonusPerc;
             _rewardPercPerJump = settings.RewardPercPerJump;
             _rewardPercPerVol = settings.VolumeBasedRewardPerc;
+            _rewardPerJump = settings.RewardPerJump;
+            _rewardPerVol = settings.RewardPerVolume;
+            _baseReward = settings.PickupReward;
             
             _recentStations = settings.RecentStations;
             _recentItems = settings.RecentItems;
@@ -568,7 +574,8 @@ namespace EveMarketMonitorApp.GUIElements
                             collateral = AutoContractor.CalcCollateral(_collateralBasedOn, _collateralPerc, totBuy, totSell);
                             reward = AutoContractor.CalcReward(_rewardBasedOn, collateral, totProfit, _minReward, _maxReward,
                                 _minRewardPerc, _maxRewardPerc, _rewardPercPerJump, _rewardPercPerVol, _lowsecPickupBonus,
-                                jumps, totVolume, Stations.IsLowSec(_contract.PickupStationID));
+                                jumps, totVolume, Stations.IsLowSec(_contract.PickupStationID), _rewardPerJump, 
+                                _rewardPerVol, _baseReward);
 
                             if (!leaveCollateral) { _contract.Collateral = collateral; }
                             if (!leaveReward) { _contract.Reward = reward; }

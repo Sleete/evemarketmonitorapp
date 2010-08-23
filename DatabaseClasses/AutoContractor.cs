@@ -169,6 +169,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             decimal lowSecRewardBonus = settings.LowSecPickupBonusPerc;
             decimal rewardPerJump = settings.RewardPercPerJump;
             decimal rewardPerVol = settings.VolumeBasedRewardPerc;
+            decimal flatRewardPerJump = settings.RewardPerJump;
+            decimal flatRewardPerVol = settings.RewardPerVolume;
+            decimal baseReward = settings.PickupReward;
             
             EveDataSet.mapSolarSystemsRow pickupSystemData = SolarSystems.GetSystem(
                 Stations.GetStation(pickupStation).solarSystemID);
@@ -302,7 +305,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 // Calculate the reward that will be given from completing the contract.
                 decimal reward = CalcReward(rewardBasedOn, totCollateral, totProfit, minReward, maxReward, 
                     minRewardPerc, maxRewardPerc, rewardPerJump, rewardPerVol, lowSecRewardBonus, 
-                    numJumps, totVolume, Stations.IsLowSec(pickupStation));
+                    numJumps, totVolume, Stations.IsLowSec(pickupStation), flatRewardPerJump, flatRewardPerVol, 
+                    baseReward);
                 
                 contract.Items = items;
                 contract.Reward = reward;
@@ -548,7 +552,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public static decimal CalcReward(string rewardBasedOn, decimal collateral, decimal profit,
             decimal minReward, decimal maxReward, decimal minPercentage, decimal maxPercentage, 
             decimal percentagePerJump, decimal percentagePerVol, decimal percentageLowSecBonus,
-            int jumps, decimal volume, bool lowSecPickup)
+            int jumps, decimal volume, bool lowSecPickup, decimal rewardPerJump, decimal rewardPerVolume,
+            decimal baseReward)
         {
             decimal retVal = 0;
             decimal percentage = 0;
@@ -556,18 +561,39 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 retVal = profit;
             }
-            else
+            else if (rewardBasedOn.Equals("Collateral"))
             {
                 retVal = collateral;
             }
-            percentage = jumps * percentagePerJump;
-            percentage += volume * (percentagePerVol / 100.0m);
-            percentage += lowSecPickup ? percentageLowSecBonus : 0;
-            if (percentage < minPercentage && minPercentage != 0) { percentage = minPercentage; }
-            if (percentage > maxPercentage && maxPercentage != 0) { percentage = maxPercentage; }
-            retVal *= (percentage / 100.0m);
-            if (retVal < minReward && minReward != 0) { retVal = minReward; }
-            if (retVal > maxReward && maxReward != 0) { retVal = maxReward; }
+
+            if (rewardBasedOn.Equals("Jumps"))
+            {
+                retVal = jumps * rewardPerJump;
+                retVal += baseReward;
+            }
+            else if (rewardBasedOn.Equals("Volume"))
+            {
+                retVal = volume * rewardPerVolume;
+                retVal += baseReward;
+            }
+            else if (rewardBasedOn.Equals("VolumeAndJumps"))
+            {
+                retVal = volume * jumps * rewardPerJump;
+                retVal += baseReward;
+            }
+            else
+            {
+                percentage = jumps * percentagePerJump;
+                percentage += volume * (percentagePerVol / 100.0m);
+                percentage += lowSecPickup ? percentageLowSecBonus : 0;
+                if (percentage < minPercentage && minPercentage != 0) { percentage = minPercentage; }
+                if (percentage > maxPercentage && maxPercentage != 0) { percentage = maxPercentage; }
+                retVal *= (percentage / 100.0m);
+                retVal += baseReward;
+                if (retVal < minReward && minReward != 0) { retVal = minReward; }
+                if (retVal > maxReward && maxReward != 0) { retVal = maxReward; }
+            }
+
             return retVal;
         }
 

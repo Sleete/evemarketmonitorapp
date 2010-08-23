@@ -80,6 +80,18 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 rdbCollateral.Checked = true;
             }
+            else if (rewardBasedOn.Equals("Jumps"))
+            {
+                rdbJumps.Checked = true;
+            }
+            else if (rewardBasedOn.Equals("Volume"))
+            {
+                rdbVolume.Checked = true;
+            }
+            else if (rewardBasedOn.Equals("VolumeAndJumps"))
+            {
+                rdbVolumeAndJumps.Checked = true;
+            }
 
             txtCollateralPerc.Tag = new TagData(TagDataType.Percentage, _settings.CollateralPercentage);
 
@@ -90,6 +102,9 @@ namespace EveMarketMonitorApp.GUIElements
             txtJumpPerc.Tag = new TagData(TagDataType.Percentage, _settings.RewardPercPerJump);
             txtLowSecPerc.Tag = new TagData(TagDataType.Percentage, _settings.LowSecPickupBonusPerc);
             txtVolumePerc.Tag = new TagData(TagDataType.Percentage, _settings.VolumeBasedRewardPerc);
+            txtRewardPerJump.Tag = new TagData(TagDataType.IskAmount, _settings.RewardPerJump);
+            txtRewardPerVolume.Tag = new TagData(TagDataType.IskAmount, _settings.RewardPerVolume);
+            txtBaseReward.Tag = new TagData(TagDataType.IskAmount, _settings.PickupReward);
 
             txtAutoMinCollateral.Tag = new TagData(TagDataType.IskAmount, _settings.AutoCon_MinCollateral);
             txtAutoMinReward.Tag = new TagData(TagDataType.IskAmount, _settings.AutoCon_MinReward);
@@ -118,6 +133,9 @@ namespace EveMarketMonitorApp.GUIElements
             DisplayReadableValue(txtJumpPerc);
             DisplayReadableValue(txtLowSecPerc);
             DisplayReadableValue(txtVolumePerc);
+            DisplayReadableValue(txtRewardPerJump);
+            DisplayReadableValue(txtBaseReward);
+            DisplayReadableValue(txtRewardPerVolume);
 
             DisplayReadableValue(txtAutoMinCollateral);
             DisplayReadableValue(txtAutoMinReward);
@@ -130,6 +148,7 @@ namespace EveMarketMonitorApp.GUIElements
             DisplayReadableValue(txtExampleSale);
             DisplayReadableValue(txtExampleVolume);
 
+            SetFieldsEnabled();
             RecalcExample();
         }
 
@@ -155,6 +174,18 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 rewardBasedOn = "Collateral";
             }
+            else if (rdbJumps.Checked)
+            {
+                rewardBasedOn = "Jumps";
+            }
+            else if (rdbVolume.Checked)
+            {
+                rewardBasedOn = "Volume";
+            }
+            else if (rdbVolumeAndJumps.Checked)
+            {
+                rewardBasedOn = "VolumeAndJumps";
+            }
             _settings.RewardBasedOn = rewardBasedOn;
 
             _settings.CollateralPercentage = ((TagData)txtCollateralPerc.Tag).Value;
@@ -165,6 +196,9 @@ namespace EveMarketMonitorApp.GUIElements
             _settings.RewardPercPerJump = ((TagData)txtJumpPerc.Tag).Value;
             _settings.LowSecPickupBonusPerc = ((TagData)txtLowSecPerc.Tag).Value;
             _settings.VolumeBasedRewardPerc = ((TagData)txtVolumePerc.Tag).Value;
+            _settings.RewardPerJump = ((TagData)txtRewardPerJump.Tag).Value;
+            _settings.PickupReward = ((TagData)txtBaseReward.Tag).Value;
+            _settings.RewardPerVolume = ((TagData)txtRewardPerVolume.Tag).Value;
 
             _settings.AutoCon_MinCollateral = ((TagData)txtAutoMinCollateral.Tag).Value;
             _settings.AutoCon_MinReward = ((TagData)txtAutoMinReward.Tag).Value;
@@ -313,6 +347,30 @@ namespace EveMarketMonitorApp.GUIElements
                 helpText = "Reward % per jump: This field specifies the percentage of either expected profit or" +
                     " collateral that is given as a reward per jump.";
             }
+            if (field == txtRewardPerJump)
+            {
+                if (rdbVolumeAndJumps.Checked)
+                {
+                    helpText = "Reward per jump per m³: This field specifies the isk amount" +
+                        " that is given as a reward for one m³ of cargo moved one jump.";
+                }
+                else
+                {
+                    helpText = "Reward per jump: This field specifies the isk amount" +
+                        " that is given as a reward per jump.";
+                }
+            }
+            if (field == txtRewardPerVolume)
+            {
+                helpText = "Reward per m³: This field specifies the isk amount" +
+                    " that is given as a reward per m³ of cargo delivered.";
+            }
+            if (field == txtBaseReward)
+            {
+                helpText = "Base reward: This field specifies the base isk amount" +
+                    " that is given as a reward for the contract, regardless of anything else.\r\n" +
+                    "This amount will be added to based upon the other parameters (e.g. volume, etc).";
+            }
             //if (field == chkLowSecReward)
             //{
             //    helpText = "If enabled then x% of either expected profit or collateral will be added to the reward amount" +
@@ -420,6 +478,10 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 rewardBasedOn = "Collateral";
             }
+            else if (rdbJumps.Checked)
+            {
+                rewardBasedOn = "Jumps";
+            }
             decimal expectedProfit = ((TagData)txtExampleSale.Tag).Value - ((TagData)txtExamplePurchase.Tag).Value;
 
             reward = AutoContractor.CalcReward(rewardBasedOn, collateral,
@@ -428,7 +490,9 @@ namespace EveMarketMonitorApp.GUIElements
                 ((TagData)txtMinPerc.Tag).Value, ((TagData)txtMaxPerc.Tag).Value,
                 ((TagData)txtJumpPerc.Tag).Value, ((TagData)txtVolumePerc.Tag).Value,
                 ((TagData)txtLowSecPerc.Tag).Value, (int)((TagData)txtExampleJumps.Tag).Value,
-                ((TagData)txtExampleVolume.Tag).Value, chkExampleLowSec.Checked);
+                ((TagData)txtExampleVolume.Tag).Value, chkExampleLowSec.Checked,
+                ((TagData)txtRewardPerJump.Tag).Value, ((TagData)txtRewardPerVolume.Tag).Value,
+                ((TagData)txtBaseReward.Tag).Value);
             lblExampleReward.Text = new IskAmount(reward).ToString();
 
             lblExampleProfitPerc.Text = "(" + Math.Round((reward / collateral) * 100, 2) + "% of collateral / " +
@@ -508,6 +572,48 @@ namespace EveMarketMonitorApp.GUIElements
                     " It must be created.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void rdbRewardBasedOn_CheckedChanged(object sender, EventArgs e)
+        {
+            SetFieldsEnabled();
+        }
+
+
+        private void SetFieldsEnabled()
+        {
+            if (rdbJumps.Checked || rdbVolume.Checked || rdbVolumeAndJumps.Checked)
+            {
+                txtMinPerc.Enabled = false;
+                txtMaxPerc.Enabled = false;
+                txtJumpPerc.Enabled = false;
+                txtLowSecPerc.Enabled = false;
+                txtVolumePerc.Enabled = false;
+                txtRewardPerJump.Enabled = rdbJumps.Checked || rdbVolumeAndJumps.Checked;
+                //txtBaseReward.Enabled = true;
+                txtRewardPerVolume.Enabled = rdbVolume.Checked;
+                if (rdbVolumeAndJumps.Checked)
+                {
+                    lblRewardPer.Text = "Reward per jump per m³";
+                }
+                else if (rdbJumps.Checked)
+                {
+                    lblRewardPer.Text = "Reward per jump";
+                }
+            }
+            else
+            {
+                txtMinPerc.Enabled = true;
+                txtMaxPerc.Enabled = true;
+                txtJumpPerc.Enabled = true;
+                txtLowSecPerc.Enabled = true;
+                txtVolumePerc.Enabled = true;
+                txtRewardPerJump.Enabled = false;
+                //txtBaseReward.Enabled = false;
+                txtRewardPerVolume.Enabled = false;
+            }
+        }
+
+
 
         private class TagData
         {

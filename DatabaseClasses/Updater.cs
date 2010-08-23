@@ -8886,8 +8886,48 @@ AS
                         }
                         #endregion
                     }
-              
-                
+                    if (dbVersion.CompareTo(new Version("1.5.1.14")) < 0)
+                    {
+                        #region Updating JournalGetClosest stored proc
+                        commandText =
+                               @"ALTER PROCEDURE dbo.JournalGetClosest 
+	@ownerID	int,
+	@corp		bit,
+	@walletID	smallint,
+	@datetime	datetime
+AS
+	SELECT Journal.*
+	FROM Journal
+	WHERE ((((@corp = 0 AND SenderID = @ownerID AND SCorpID = 0) OR (@corp = 1 AND SCorpID = @ownerID)) AND (SWalletID = @walletID OR @walletID = 0)) OR
+		(((@corp = 0 AND RecieverID = @ownerID AND RCorpID = 0) OR (@corp = 1 AND RCorpID = @ownerID)) AND (RWalletID = @walletID OR @walletID = 0))) AND
+		(ABS(DATEDIFF(s, @datetime, Date)) = 
+		(
+			SELECT MIN(ABS(DATEDIFF(s, @datetime, Date)))
+			FROM Journal
+			WHERE ((((@corp = 0 AND SenderID = @ownerID AND SCorpID = 0) OR (@corp = 1 AND SCorpID = @ownerID)) AND (SWalletID = @walletID OR @walletID = 0)) OR
+				(((@corp = 0 AND RecieverID = @ownerID AND RCorpID = 0) OR (@corp = 1 AND RCorpID = @ownerID)) AND (RWalletID = @walletID OR @walletID = 0)))
+		))
+ 
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.14"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'JournalGetClosest' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+           
+       
+         
                 }
 
             }

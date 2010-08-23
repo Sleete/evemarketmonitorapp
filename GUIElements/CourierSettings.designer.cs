@@ -30,6 +30,15 @@ namespace EveMarketMonitorApp.GUIElements
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CourierSettings));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.rdbVolumeAndJumps = new System.Windows.Forms.RadioButton();
+            this.lblRewardPerVolume = new System.Windows.Forms.Label();
+            this.rdbVolume = new System.Windows.Forms.RadioButton();
+            this.txtBaseReward = new System.Windows.Forms.TextBox();
+            this.txtRewardPerVolume = new System.Windows.Forms.TextBox();
+            this.lblRewardPer = new System.Windows.Forms.Label();
+            this.txtRewardPerJump = new System.Windows.Forms.TextBox();
+            this.rdbJumps = new System.Windows.Forms.RadioButton();
             this.txtVolumePerc = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.txtMinPerc = new System.Windows.Forms.TextBox();
@@ -56,6 +65,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.chkTradedItems = new System.Windows.Forms.CheckBox();
             this.btnModifyLocation = new System.Windows.Forms.Button();
             this.btnNewLocation = new System.Windows.Forms.Button();
             this.cmbPickupLocation = new System.Windows.Forms.ComboBox();
@@ -93,7 +103,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtExamplePurchase = new System.Windows.Forms.TextBox();
             this.txtExampleSale = new System.Windows.Forms.TextBox();
             this.lblExample = new System.Windows.Forms.Label();
-            this.chkTradedItems = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -105,6 +114,15 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.label22);
+            this.groupBox1.Controls.Add(this.rdbVolumeAndJumps);
+            this.groupBox1.Controls.Add(this.lblRewardPerVolume);
+            this.groupBox1.Controls.Add(this.rdbVolume);
+            this.groupBox1.Controls.Add(this.txtBaseReward);
+            this.groupBox1.Controls.Add(this.txtRewardPerVolume);
+            this.groupBox1.Controls.Add(this.lblRewardPer);
+            this.groupBox1.Controls.Add(this.txtRewardPerJump);
+            this.groupBox1.Controls.Add(this.rdbJumps);
             this.groupBox1.Controls.Add(this.txtVolumePerc);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.txtMinPerc);
@@ -124,42 +142,138 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 183);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(330, 279);
+            this.groupBox1.Size = new System.Drawing.Size(330, 426);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Reward Calculation";
             // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(6, 345);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(66, 13);
+            this.label22.TabIndex = 26;
+            this.label22.Text = "Base reward";
+            // 
+            // rdbVolumeAndJumps
+            // 
+            this.rdbVolumeAndJumps.AutoSize = true;
+            this.rdbVolumeAndJumps.Location = new System.Drawing.Point(134, 111);
+            this.rdbVolumeAndJumps.Name = "rdbVolumeAndJumps";
+            this.rdbVolumeAndJumps.Size = new System.Drawing.Size(111, 17);
+            this.rdbVolumeAndJumps.TabIndex = 4;
+            this.rdbVolumeAndJumps.TabStop = true;
+            this.rdbVolumeAndJumps.Text = "Volume and jumps";
+            this.rdbVolumeAndJumps.UseVisualStyleBackColor = true;
+            this.rdbVolumeAndJumps.Leave += new System.EventHandler(this.field_Leave);
+            this.rdbVolumeAndJumps.Enter += new System.EventHandler(this.field_Enter);
+            this.rdbVolumeAndJumps.CheckedChanged += new System.EventHandler(this.rdbRewardBasedOn_CheckedChanged);
+            // 
+            // lblRewardPerVolume
+            // 
+            this.lblRewardPerVolume.AutoSize = true;
+            this.lblRewardPerVolume.Location = new System.Drawing.Point(6, 397);
+            this.lblRewardPerVolume.Name = "lblRewardPerVolume";
+            this.lblRewardPerVolume.Size = new System.Drawing.Size(76, 13);
+            this.lblRewardPerVolume.TabIndex = 25;
+            this.lblRewardPerVolume.Text = "Reward per m³";
+            // 
+            // rdbVolume
+            // 
+            this.rdbVolume.AutoSize = true;
+            this.rdbVolume.Location = new System.Drawing.Point(134, 88);
+            this.rdbVolume.Name = "rdbVolume";
+            this.rdbVolume.Size = new System.Drawing.Size(60, 17);
+            this.rdbVolume.TabIndex = 3;
+            this.rdbVolume.TabStop = true;
+            this.rdbVolume.Text = "Volume";
+            this.rdbVolume.UseVisualStyleBackColor = true;
+            this.rdbVolume.Leave += new System.EventHandler(this.field_Leave);
+            this.rdbVolume.Enter += new System.EventHandler(this.field_Enter);
+            this.rdbVolume.CheckedChanged += new System.EventHandler(this.rdbRewardBasedOn_CheckedChanged);
+            // 
+            // txtBaseReward
+            // 
+            this.txtBaseReward.Location = new System.Drawing.Point(134, 342);
+            this.txtBaseReward.Name = "txtBaseReward";
+            this.txtBaseReward.Size = new System.Drawing.Size(146, 20);
+            this.txtBaseReward.TabIndex = 12;
+            this.txtBaseReward.Leave += new System.EventHandler(this.field_Leave);
+            this.txtBaseReward.Enter += new System.EventHandler(this.field_Enter);
+            // 
+            // txtRewardPerVolume
+            // 
+            this.txtRewardPerVolume.Location = new System.Drawing.Point(134, 394);
+            this.txtRewardPerVolume.Name = "txtRewardPerVolume";
+            this.txtRewardPerVolume.Size = new System.Drawing.Size(146, 20);
+            this.txtRewardPerVolume.TabIndex = 14;
+            this.txtRewardPerVolume.Leave += new System.EventHandler(this.field_Leave);
+            this.txtRewardPerVolume.Enter += new System.EventHandler(this.field_Enter);
+            // 
+            // lblRewardPer
+            // 
+            this.lblRewardPer.AutoSize = true;
+            this.lblRewardPer.Location = new System.Drawing.Point(6, 371);
+            this.lblRewardPer.Name = "lblRewardPer";
+            this.lblRewardPer.Size = new System.Drawing.Size(87, 13);
+            this.lblRewardPer.TabIndex = 28;
+            this.lblRewardPer.Text = "Reward per jump";
+            // 
+            // txtRewardPerJump
+            // 
+            this.txtRewardPerJump.Location = new System.Drawing.Point(134, 368);
+            this.txtRewardPerJump.Name = "txtRewardPerJump";
+            this.txtRewardPerJump.Size = new System.Drawing.Size(146, 20);
+            this.txtRewardPerJump.TabIndex = 13;
+            this.txtRewardPerJump.Leave += new System.EventHandler(this.field_Leave);
+            this.txtRewardPerJump.Enter += new System.EventHandler(this.field_Enter);
+            // 
+            // rdbJumps
+            // 
+            this.rdbJumps.AutoSize = true;
+            this.rdbJumps.Location = new System.Drawing.Point(134, 65);
+            this.rdbJumps.Name = "rdbJumps";
+            this.rdbJumps.Size = new System.Drawing.Size(55, 17);
+            this.rdbJumps.TabIndex = 2;
+            this.rdbJumps.TabStop = true;
+            this.rdbJumps.Text = "Jumps";
+            this.rdbJumps.UseVisualStyleBackColor = true;
+            this.rdbJumps.Leave += new System.EventHandler(this.field_Leave);
+            this.rdbJumps.Enter += new System.EventHandler(this.field_Enter);
+            this.rdbJumps.CheckedChanged += new System.EventHandler(this.rdbRewardBasedOn_CheckedChanged);
+            // 
             // txtVolumePerc
             // 
-            this.txtVolumePerc.Location = new System.Drawing.Point(121, 221);
+            this.txtVolumePerc.Location = new System.Drawing.Point(134, 290);
             this.txtVolumePerc.Name = "txtVolumePerc";
-            this.txtVolumePerc.Size = new System.Drawing.Size(159, 20);
-            this.txtVolumePerc.TabIndex = 7;
+            this.txtVolumePerc.Size = new System.Drawing.Size(146, 20);
+            this.txtVolumePerc.TabIndex = 10;
             this.txtVolumePerc.Leave += new System.EventHandler(this.field_Leave);
             this.txtVolumePerc.Enter += new System.EventHandler(this.field_Enter);
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 224);
+            this.label13.Location = new System.Drawing.Point(6, 293);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(108, 13);
+            this.label13.Size = new System.Drawing.Size(105, 13);
             this.label13.TabIndex = 18;
-            this.label13.Text = "Reward % per 100m3";
+            this.label13.Text = "Reward % per 100m³";
             // 
             // txtMinPerc
             // 
-            this.txtMinPerc.Location = new System.Drawing.Point(121, 117);
+            this.txtMinPerc.Location = new System.Drawing.Point(134, 186);
             this.txtMinPerc.Name = "txtMinPerc";
-            this.txtMinPerc.Size = new System.Drawing.Size(159, 20);
-            this.txtMinPerc.TabIndex = 4;
+            this.txtMinPerc.Size = new System.Drawing.Size(146, 20);
+            this.txtMinPerc.TabIndex = 7;
             this.txtMinPerc.Leave += new System.EventHandler(this.field_Leave);
             this.txtMinPerc.Enter += new System.EventHandler(this.field_Enter);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 120);
+            this.label6.Location = new System.Drawing.Point(6, 189);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(70, 13);
             this.label6.TabIndex = 5;
@@ -167,26 +281,26 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // txtLowSecPerc
             // 
-            this.txtLowSecPerc.Location = new System.Drawing.Point(121, 247);
+            this.txtLowSecPerc.Location = new System.Drawing.Point(134, 316);
             this.txtLowSecPerc.Name = "txtLowSecPerc";
-            this.txtLowSecPerc.Size = new System.Drawing.Size(159, 20);
-            this.txtLowSecPerc.TabIndex = 8;
+            this.txtLowSecPerc.Size = new System.Drawing.Size(146, 20);
+            this.txtLowSecPerc.TabIndex = 11;
             this.txtLowSecPerc.Leave += new System.EventHandler(this.field_Leave);
             this.txtLowSecPerc.Enter += new System.EventHandler(this.field_Enter);
             // 
             // txtJumpPerc
             // 
-            this.txtJumpPerc.Location = new System.Drawing.Point(121, 195);
+            this.txtJumpPerc.Location = new System.Drawing.Point(134, 264);
             this.txtJumpPerc.Name = "txtJumpPerc";
-            this.txtJumpPerc.Size = new System.Drawing.Size(159, 20);
-            this.txtJumpPerc.TabIndex = 6;
+            this.txtJumpPerc.Size = new System.Drawing.Size(146, 20);
+            this.txtJumpPerc.TabIndex = 9;
             this.txtJumpPerc.Leave += new System.EventHandler(this.field_Leave);
             this.txtJumpPerc.Enter += new System.EventHandler(this.field_Enter);
             // 
             // lblLowSecPerc
             // 
             this.lblLowSecPerc.AutoSize = true;
-            this.lblLowSecPerc.Location = new System.Drawing.Point(6, 250);
+            this.lblLowSecPerc.Location = new System.Drawing.Point(6, 319);
             this.lblLowSecPerc.Name = "lblLowSecPerc";
             this.lblLowSecPerc.Size = new System.Drawing.Size(109, 13);
             this.lblLowSecPerc.TabIndex = 15;
@@ -195,7 +309,7 @@ namespace EveMarketMonitorApp.GUIElements
             // lblJumpPerc
             // 
             this.lblJumpPerc.AutoSize = true;
-            this.lblJumpPerc.Location = new System.Drawing.Point(6, 198);
+            this.lblJumpPerc.Location = new System.Drawing.Point(6, 267);
             this.lblJumpPerc.Name = "lblJumpPerc";
             this.lblJumpPerc.Size = new System.Drawing.Size(98, 13);
             this.lblJumpPerc.TabIndex = 14;
@@ -204,7 +318,7 @@ namespace EveMarketMonitorApp.GUIElements
             // lblMaxPerc
             // 
             this.lblMaxPerc.AutoSize = true;
-            this.lblMaxPerc.Location = new System.Drawing.Point(6, 146);
+            this.lblMaxPerc.Location = new System.Drawing.Point(6, 215);
             this.lblMaxPerc.Name = "lblMaxPerc";
             this.lblMaxPerc.Size = new System.Drawing.Size(73, 13);
             this.lblMaxPerc.TabIndex = 10;
@@ -212,17 +326,17 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // txtMaxPerc
             // 
-            this.txtMaxPerc.Location = new System.Drawing.Point(121, 143);
+            this.txtMaxPerc.Location = new System.Drawing.Point(134, 212);
             this.txtMaxPerc.Name = "txtMaxPerc";
-            this.txtMaxPerc.Size = new System.Drawing.Size(159, 20);
-            this.txtMaxPerc.TabIndex = 5;
+            this.txtMaxPerc.Size = new System.Drawing.Size(146, 20);
+            this.txtMaxPerc.TabIndex = 8;
             this.txtMaxPerc.Leave += new System.EventHandler(this.field_Leave);
             this.txtMaxPerc.Enter += new System.EventHandler(this.field_Enter);
             // 
             // rdbProfit
             // 
             this.rdbProfit.AutoSize = true;
-            this.rdbProfit.Location = new System.Drawing.Point(121, 19);
+            this.rdbProfit.Location = new System.Drawing.Point(134, 19);
             this.rdbProfit.Name = "rdbProfit";
             this.rdbProfit.Size = new System.Drawing.Size(96, 17);
             this.rdbProfit.TabIndex = 0;
@@ -231,11 +345,12 @@ namespace EveMarketMonitorApp.GUIElements
             this.rdbProfit.UseVisualStyleBackColor = true;
             this.rdbProfit.Leave += new System.EventHandler(this.field_Leave);
             this.rdbProfit.Enter += new System.EventHandler(this.field_Enter);
+            this.rdbProfit.CheckedChanged += new System.EventHandler(this.rdbRewardBasedOn_CheckedChanged);
             // 
             // rdbCollateral
             // 
             this.rdbCollateral.AutoSize = true;
-            this.rdbCollateral.Location = new System.Drawing.Point(121, 42);
+            this.rdbCollateral.Location = new System.Drawing.Point(134, 42);
             this.rdbCollateral.Name = "rdbCollateral";
             this.rdbCollateral.Size = new System.Drawing.Size(68, 17);
             this.rdbCollateral.TabIndex = 1;
@@ -244,11 +359,12 @@ namespace EveMarketMonitorApp.GUIElements
             this.rdbCollateral.UseVisualStyleBackColor = true;
             this.rdbCollateral.Leave += new System.EventHandler(this.field_Leave);
             this.rdbCollateral.Enter += new System.EventHandler(this.field_Enter);
+            this.rdbCollateral.CheckedChanged += new System.EventHandler(this.rdbRewardBasedOn_CheckedChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 68);
+            this.label3.Location = new System.Drawing.Point(6, 137);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(83, 13);
             this.label3.TabIndex = 5;
@@ -256,26 +372,26 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // txtMinReward
             // 
-            this.txtMinReward.Location = new System.Drawing.Point(121, 65);
+            this.txtMinReward.Location = new System.Drawing.Point(134, 134);
             this.txtMinReward.Name = "txtMinReward";
-            this.txtMinReward.Size = new System.Drawing.Size(159, 20);
-            this.txtMinReward.TabIndex = 2;
+            this.txtMinReward.Size = new System.Drawing.Size(146, 20);
+            this.txtMinReward.TabIndex = 5;
             this.txtMinReward.Leave += new System.EventHandler(this.field_Leave);
             this.txtMinReward.Enter += new System.EventHandler(this.field_Enter);
             // 
             // txtMaxReward
             // 
-            this.txtMaxReward.Location = new System.Drawing.Point(121, 91);
+            this.txtMaxReward.Location = new System.Drawing.Point(134, 160);
             this.txtMaxReward.Name = "txtMaxReward";
-            this.txtMaxReward.Size = new System.Drawing.Size(159, 20);
-            this.txtMaxReward.TabIndex = 3;
+            this.txtMaxReward.Size = new System.Drawing.Size(146, 20);
+            this.txtMaxReward.TabIndex = 6;
             this.txtMaxReward.Leave += new System.EventHandler(this.field_Leave);
             this.txtMaxReward.Enter += new System.EventHandler(this.field_Enter);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 94);
+            this.label2.Location = new System.Drawing.Point(6, 163);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(86, 13);
             this.label2.TabIndex = 3;
@@ -306,9 +422,9 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // txtCollateralPerc
             // 
-            this.txtCollateralPerc.Location = new System.Drawing.Point(115, 66);
+            this.txtCollateralPerc.Location = new System.Drawing.Point(134, 66);
             this.txtCollateralPerc.Name = "txtCollateralPerc";
-            this.txtCollateralPerc.Size = new System.Drawing.Size(156, 20);
+            this.txtCollateralPerc.Size = new System.Drawing.Size(137, 20);
             this.txtCollateralPerc.TabIndex = 2;
             this.txtCollateralPerc.Leave += new System.EventHandler(this.field_Leave);
             this.txtCollateralPerc.Enter += new System.EventHandler(this.field_Enter);
@@ -325,7 +441,7 @@ namespace EveMarketMonitorApp.GUIElements
             // rdbBuy
             // 
             this.rdbBuy.AutoSize = true;
-            this.rdbBuy.Location = new System.Drawing.Point(121, 42);
+            this.rdbBuy.Location = new System.Drawing.Point(134, 43);
             this.rdbBuy.Name = "rdbBuy";
             this.rdbBuy.Size = new System.Drawing.Size(96, 17);
             this.rdbBuy.TabIndex = 1;
@@ -338,7 +454,7 @@ namespace EveMarketMonitorApp.GUIElements
             // rdbSell
             // 
             this.rdbSell.AutoSize = true;
-            this.rdbSell.Location = new System.Drawing.Point(121, 19);
+            this.rdbSell.Location = new System.Drawing.Point(134, 20);
             this.rdbSell.Name = "rdbSell";
             this.rdbSell.Size = new System.Drawing.Size(119, 17);
             this.rdbSell.TabIndex = 0;
@@ -360,7 +476,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(597, 595);
+            this.btnCancel.Location = new System.Drawing.Point(597, 742);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(86, 30);
             this.btnCancel.TabIndex = 1;
@@ -371,7 +487,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(505, 595);
+            this.btnOk.Location = new System.Drawing.Point(505, 742);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(86, 30);
             this.btnOk.TabIndex = 0;
@@ -404,10 +520,22 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Location = new System.Drawing.Point(348, 85);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(330, 377);
+            this.groupBox3.Size = new System.Drawing.Size(330, 524);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Auto-Contractor Settings";
+            // 
+            // chkTradedItems
+            // 
+            this.chkTradedItems.AutoSize = true;
+            this.chkTradedItems.Location = new System.Drawing.Point(37, 314);
+            this.chkTradedItems.Name = "chkTradedItems";
+            this.chkTradedItems.Size = new System.Drawing.Size(268, 17);
+            this.chkTradedItems.TabIndex = 9;
+            this.chkTradedItems.Text = "Only include items if they are on the traded items list";
+            this.chkTradedItems.UseVisualStyleBackColor = true;
+            this.chkTradedItems.Leave += new System.EventHandler(this.field_Leave);
+            this.chkTradedItems.Enter += new System.EventHandler(this.field_Enter);
             // 
             // btnModifyLocation
             // 
@@ -435,7 +563,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.cmbPickupLocation.Location = new System.Drawing.Point(10, 201);
             this.cmbPickupLocation.Name = "cmbPickupLocation";
             this.cmbPickupLocation.Size = new System.Drawing.Size(295, 21);
-            this.cmbPickupLocation.TabIndex = 20;
+            this.cmbPickupLocation.TabIndex = 5;
             // 
             // label20
             // 
@@ -452,7 +580,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.chkExcludeContainers.Location = new System.Drawing.Point(37, 291);
             this.chkExcludeContainers.Name = "chkExcludeContainers";
             this.chkExcludeContainers.Size = new System.Drawing.Size(190, 17);
-            this.chkExcludeContainers.TabIndex = 18;
+            this.chkExcludeContainers.TabIndex = 8;
             this.chkExcludeContainers.Text = "Exclude fitted ships and containers";
             this.chkExcludeContainers.UseVisualStyleBackColor = true;
             // 
@@ -480,7 +608,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.chkSplitStack.Location = new System.Drawing.Point(37, 268);
             this.chkSplitStack.Name = "chkSplitStack";
             this.chkSplitStack.Size = new System.Drawing.Size(123, 17);
-            this.chkSplitStack.TabIndex = 6;
+            this.chkSplitStack.TabIndex = 7;
             this.chkSplitStack.Text = "Allow splitting stacks";
             this.chkSplitStack.UseVisualStyleBackColor = true;
             this.chkSplitStack.Leave += new System.EventHandler(this.field_Leave);
@@ -494,7 +622,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.cmbAutoStation.Location = new System.Drawing.Point(10, 241);
             this.cmbAutoStation.Name = "cmbAutoStation";
             this.cmbAutoStation.Size = new System.Drawing.Size(295, 21);
-            this.cmbAutoStation.TabIndex = 5;
+            this.cmbAutoStation.TabIndex = 6;
             this.cmbAutoStation.Leave += new System.EventHandler(this.field_Leave);
             this.cmbAutoStation.Enter += new System.EventHandler(this.field_Enter);
             // 
@@ -621,7 +749,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox5.Controls.Add(this.txtExamplePurchase);
             this.groupBox5.Controls.Add(this.txtExampleSale);
             this.groupBox5.Controls.Add(this.lblExample);
-            this.groupBox5.Location = new System.Drawing.Point(12, 468);
+            this.groupBox5.Location = new System.Drawing.Point(12, 615);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(666, 120);
             this.groupBox5.TabIndex = 6;
@@ -776,23 +904,11 @@ namespace EveMarketMonitorApp.GUIElements
             this.lblExample.Text = "Use the fields below to see what collateral and reward values would be given for " +
                 "different contracts.";
             // 
-            // chkTradedItems
-            // 
-            this.chkTradedItems.AutoSize = true;
-            this.chkTradedItems.Location = new System.Drawing.Point(37, 314);
-            this.chkTradedItems.Name = "chkTradedItems";
-            this.chkTradedItems.Size = new System.Drawing.Size(268, 17);
-            this.chkTradedItems.TabIndex = 24;
-            this.chkTradedItems.Text = "Only include items if they are on the traded items list";
-            this.chkTradedItems.UseVisualStyleBackColor = true;
-            this.chkTradedItems.Leave += new System.EventHandler(this.field_Leave);
-            this.chkTradedItems.Enter += new System.EventHandler(this.field_Enter);
-            // 
             // CourierSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(695, 637);
+            this.ClientSize = new System.Drawing.Size(695, 784);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -886,5 +1002,14 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.ComboBox cmbPickupLocation;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.CheckBox chkTradedItems;
+        private System.Windows.Forms.RadioButton rdbJumps;
+        private System.Windows.Forms.TextBox txtRewardPerJump;
+        private System.Windows.Forms.Label lblRewardPer;
+        private System.Windows.Forms.RadioButton rdbVolumeAndJumps;
+        private System.Windows.Forms.RadioButton rdbVolume;
+        private System.Windows.Forms.TextBox txtBaseReward;
+        private System.Windows.Forms.TextBox txtRewardPerVolume;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label lblRewardPerVolume;
     }
 }
