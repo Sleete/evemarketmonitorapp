@@ -1644,7 +1644,7 @@ namespace EveMarketMonitorApp.GUIElements
             EveMarketMonitorApp.Properties.Settings.Default.WindowState = WindowState;
             if (WindowState == FormWindowState.Minimized)
             {
-                if (!UserAccount.Settings.ShowInTaskbarWhenMinimised)
+                if (UserAccount.Settings != null && !UserAccount.Settings.ShowInTaskbarWhenMinimised)
                 {
                     Hide();
                 }

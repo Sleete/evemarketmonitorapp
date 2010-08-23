@@ -95,6 +95,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.minReward);
             GetValue(Setting.minRewardPercentage);
             GetValue(Setting.rewardPercPerJump);
+            GetValue(Setting.rewardPerJump);
+            GetValue(Setting.pickupReward);
+            GetValue(Setting.rewardPerVolume);
             GetValue(Setting.volumeBasedRewardPerc);
             GetValue(Setting.lowSecPickupBonusPerc);
             GetValue(Setting.useEveCentral);
@@ -309,6 +312,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     break;
                 case Setting.rewardPercPerJump:
                     retVal = "0.16";
+                    break;
+                case Setting.rewardPerJump:
+                    retVal = "100000";
+                    break;
+                case Setting.pickupReward:
+                    retVal = "0";
+                    break;
+                case Setting.rewardPerVolume:
+                    retVal = "50";
                     break;
                 case Setting.volumeBasedRewardPerc:
                     retVal = "0.0015";
@@ -985,6 +997,45 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
             }
         }
+        public decimal RewardPerJump
+        {
+            get
+            {
+                return decimal.Parse(GetValue(Setting.rewardPerJump),
+                    System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            }
+            set
+            {
+                SetValue(Setting.rewardPerJump,
+                    value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
+            }
+        }
+        public decimal PickupReward
+        {
+            get
+            {
+                return decimal.Parse(GetValue(Setting.pickupReward),
+                    System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            }
+            set
+            {
+                SetValue(Setting.pickupReward,
+                    value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
+            }
+        }
+        public decimal RewardPerVolume
+        {
+            get
+            {
+                return decimal.Parse(GetValue(Setting.rewardPerVolume),
+                    System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            }
+            set
+            {
+                SetValue(Setting.rewardPerVolume,
+                    value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
+            }
+        }
         public decimal VolumeBasedRewardPerc
         {
             get
@@ -1641,6 +1692,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             minRewardPercentage,
             maxRewardPercentage,
             rewardPercPerJump,
+            rewardPerJump,
+            pickupReward,
+            rewardPerVolume,
             lowSecPickupBonusPerc,
             volumeBasedRewardPerc,
             useEveCentral,
