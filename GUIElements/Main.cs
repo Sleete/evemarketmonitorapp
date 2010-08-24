@@ -38,7 +38,6 @@ namespace EveMarketMonitorApp.GUIElements
         private static bool _tutorialActive = false;
         private static bool _forceClose = false;
         private static Thread _tutorialThread;
-        private static LicenseType _license = LicenseType.Invalid;
 
         private bool _wastedTime = false;
 
@@ -81,6 +80,8 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 //splash.ShowMessage("Test Message", "Test", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DateTime start = DateTime.UtcNow;
+                UpdateStatus(0, 0, "Checking License", "", false);
+                ValidateInstall(false, splash);
 
                 // DO ANY SETUP HERE.
                 // The splash screen will be showing while these methods are executed.
@@ -100,18 +101,18 @@ namespace EveMarketMonitorApp.GUIElements
                     UpdateStatus(0, 0, "Initalising database", "", false);
                     //try
                     //{
-                        Updater.Update();
+                    Updater.Update();
                     //}
                     //catch (EMMAException)
                     //{
-                        //UpdateStatus(0, 0, "Done", "", true);
-                        //MessageBox.Show(splash, "Critical error updating EMMA database. For details, see " +
-                        //    "\"Logging/ExceptionLog.txt\"", "Ciritcal error",
-                        //    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //UpdateStatus(0, 0, "Done", "", true);
+                    //MessageBox.Show(splash, "Critical error updating EMMA database. For details, see " +
+                    //    "\"Logging/ExceptionLog.txt\"", "Ciritcal error",
+                    //    MessageBoxButtons.OK, MessageBoxIcon.Error);
                     //}
                     Updater.InitDBs();
                     CheckForDocumentation();
-                    checkForUpdates = checkForUpdates && EveMarketMonitorApp.Properties.Settings.Default.AutoUpdate; 
+                    checkForUpdates = checkForUpdates && EveMarketMonitorApp.Properties.Settings.Default.AutoUpdate;
                     if (checkForUpdates)
                     {
                         DateTime lastCheck = Properties.Settings.Default.LastEMMAUpdateCheck;
@@ -149,7 +150,7 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     emmaEx = new EMMAException(ExceptionSeverity.Critical, "Error during startup", ex);
                 }
-                splash.ShowMessage("Problem during EMMA startup.\r\nCheck " + EMMAException.logFile + 
+                splash.ShowMessage("Problem during EMMA startup.\r\nCheck " + EMMAException.logFile +
                     " for details.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 UpdateStatus(0, 0, "Done", "", true);
                 this.Close();
@@ -1222,31 +1223,35 @@ namespace EveMarketMonitorApp.GUIElements
             return retVal;
         }
 
-        private void ValidateInstall(bool showDialogIfValid)
+        public void ValidateInstall(bool showDialogIfValid)
+        {
+            ValidateInstall(showDialogIfValid, null);
+        }
+        private void ValidateInstall(bool showDialogIfValid, SplashScreen splash)
         {
             try
             {
-                /*Enforcer.LicenseManagement licenseMgt = new LicenseManagement();
-                _license = licenseMgt.GetLicenseType();
+                Enforcer.LicenseManagement licenseMgt = new LicenseManagement();
+                //Globals.License = licenseMgt.GetLicenseType();
+                Globals.License = LicenseType.Full;
 
-                if (showDialogIfValid || (_license != LicenseType.Full && _license != LicenseType.Lite))
+                if (showDialogIfValid || Globals.License != LicenseType.Full)
                 {
                     licenseMgt.ShowDialog();
-
-                    _license = licenseMgt.GetLicenseType();
-
-                    if (_license == LicenseType.Invalid || _license == LicenseType.TrialExpired)
-                    {
-                        MessageBox.Show("Your trial time has expired and you do not have a valid license key.");
-                        this.Close();
-                    }
-                }*/
-                _license = LicenseType.Full;
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("There was a problem validating your installation.\r\n" +
-                    ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (splash != null)
+                {
+                    splash.ShowMessage("There was a problem validating your installation.\r\n" +
+                        ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("There was a problem validating your installation.\r\n" +
+                        ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 this.Close();
             }
         }

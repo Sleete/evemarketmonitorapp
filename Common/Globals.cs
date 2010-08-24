@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 
 using EveMarketMonitorApp.GUIElements;
+using Enforcer;
 
 namespace EveMarketMonitorApp.Common
 {
@@ -66,6 +67,6 @@ namespace EveMarketMonitorApp.Common
 
         public static int CurrentDocVersion = 2;
 
-
+        public static LicenseType License = LicenseType.Full;
     }
 }
