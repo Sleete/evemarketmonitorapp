@@ -1232,7 +1232,16 @@ namespace EveMarketMonitorApp.GUIElements
             try
             {
                 Enforcer.LicenseManagement licenseMgt = new LicenseManagement();
-                //Globals.License = licenseMgt.GetLicenseType();
+                Globals.License = licenseMgt.GetLicenseType();
+                if (!showDialogIfValid && Globals.License != LicenseType.Full && 
+                    Globals.License != LicenseType.Lite &&
+                    Globals.License != LicenseType.Trial)
+                {
+                    splash.ShowMessage("Dear user, EMMA has been free for some time now. However, due to the additional work that has been done lately, and will be done in future, I am reintroducing the licensing model.\r\n\r\nYou are currently using an unlicensed version of EMMA. On 1st Sept 2010 it will stop working.\r\nIf you previously bought a license then eve-mail me (Ambo) and, if you're on my records, I will send you a new key\r\nIf you have not previously bought a license then please click the license button within EMMA for details of how to get one.\r\n\r\nThanks, Ambo.",
+                        "License Expired", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+                // Set license to full for now.
                 Globals.License = LicenseType.Full;
 
                 if (showDialogIfValid || Globals.License != LicenseType.Full)

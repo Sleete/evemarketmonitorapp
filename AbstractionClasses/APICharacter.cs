@@ -680,9 +680,15 @@ namespace EveMarketMonitorApp.AbstractionClasses
             APIDataType type = updateInfo.Type;
 
             _downloadsInProgress++;
-            SetLastAPIUpdateError(corc, type, "DOWNLOADING");
-            RetrieveAPIXML(corc, type);
-            _downloadsInProgress--;
+            try
+            {
+                SetLastAPIUpdateError(corc, type, "DOWNLOADING");
+                RetrieveAPIXML(corc, type);
+            }
+            finally
+            {
+                _downloadsInProgress--;
+            }
 
             try
             {
@@ -930,11 +936,15 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     string xmlFile = "";
                     lock (_unprocessedXMLFiles) { xmlFile = _unprocessedXMLFiles.Dequeue(); }
                     // If the next file is an asset data file and we still have other files waiting
-                    // then move the asset data file to the back of the queue.
-                    if (xmlFile.ToUpper().Contains("ASSETS") && _unprocessedXMLFiles.Count > 0)
+                    // or being downloaded then move the asset data file to the back of the queue.
+                    if (xmlFile.ToUpper().Contains("ASSETS") && 
+                        (_unprocessedXMLFiles.Count > 0 || _downloadsInProgress > 0))
                     {
                         lock (_unprocessedXMLFiles) { _unprocessedXMLFiles.Enqueue(xmlFile); }
                         process = false;
+                        // If only the assets file is left and we're still waiting on other 
+                        // files to download then just break out of the loop for now.
+                        if (_unprocessedXMLFiles.Count == 1) { break; }
                     }
 
                     if (process)
@@ -1522,6 +1532,10 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                 if (journEntries != null && journEntries.Count > 0)
                 {
+                    // Offset will always be the same since CCP switched over to 64 bit IDs
+                    // (At least until we break the 64bit limit... As of mid 2010, we're using 
+                    // around 2 billion IDs a year so breaking the 64 bit limit will take around 
+                    // 9 billion years... Don't think it will be a problem :))
                     long offset = 2591720933;
                     int batchPrg = 0;
 

@@ -194,7 +194,8 @@ namespace EveMarketMonitorApp.GUIElements
             if (systemID != 0)
             {
                 string systemName = SolarSystems.GetSystem(systemID).solarSystemName;
-                lstWaypoints.Items.Add(new SystemData(systemID, systemName, true));
+                string regionName = Regions.GetRegionName(SolarSystems.GetSystem(systemID).regionID);
+                lstWaypoints.Items.Add(new SystemData(systemID, systemName, regionName, true));
             }
         }
 
@@ -214,7 +215,7 @@ namespace EveMarketMonitorApp.GUIElements
 
             if (cmbOwner.SelectedItem != null)
             {
-                ownerID = ((CharCorpOption)cmbOwner.SelectedItem).CharacterObj.CharID;
+                ownerID = ((CharCorpOption)cmbOwner.SelectedItem).Data.ID;
                 corp = ((CharCorpOption)cmbOwner.SelectedItem).Corp;
             }
             if (cmbLocation.Text != "")
@@ -227,13 +228,16 @@ namespace EveMarketMonitorApp.GUIElements
                 EMMADataSet.IDTableDataTable systemIDs = Assets.GetInvolvedSystemIDs(ownerID, 
                     location.Regions, location.Stations, !chkExcludeContainers.Checked, 
                     !chkExcludeContainers.Checked);
+
                 lstWaypoints.BeginUpdate();
+                lstWaypoints.Items.Clear();
                 foreach (EMMADataSet.IDTableRow idRow in systemIDs)
                 {
                     if (!chkHighSecAssetsOnly.Checked || !SolarSystems.IsLowSec(idRow.ID))
-                    {
+                    {   
                         string systemName = SolarSystems.GetSystem(idRow.ID).solarSystemName;
-                        lstWaypoints.Items.Add(new SystemData(idRow.ID, systemName, true));
+                        string regionName = Regions.GetRegionName(SolarSystems.GetSystem(idRow.ID).regionID);
+                        lstWaypoints.Items.Add(new SystemData(idRow.ID, systemName, regionName, true));
                     }
                 }
                 lstWaypoints.EndUpdate();
@@ -307,6 +311,14 @@ namespace EveMarketMonitorApp.GUIElements
                             lstRoute.EndUpdate();
                         }
                     }
+
+                    if (lstRoute.Items.Count > 0)
+                    {
+                        lblRouteInfo.Text = string.Format("Route - {0} Jumps", lstRoute.Items.Count);
+                        lstRoute.Focus();
+                    }
+                    else
+                        lblRouteInfo.Text = "Route";
                 }
                 finally
                 {
@@ -339,20 +351,22 @@ namespace EveMarketMonitorApp.GUIElements
         private class SystemData
         {
             public int ID;
-            public string Name;
+            public string SystemName;
+            public string RegionName;
             private bool _waypoint;
             private float _security = -10;
 
-            public SystemData(int id, string name, bool waypoint)
+            public SystemData(int id, string name, string regionName, bool isWaypoint)
             {
                 ID = id;
-                Name = name;
-                _waypoint = waypoint;
+                SystemName = name;
+                RegionName = regionName;
+                _waypoint = isWaypoint;
             }
 
             public override string ToString()
             {
-                return Name;
+                return SystemName;
             }
 
             public float Security
@@ -369,21 +383,28 @@ namespace EveMarketMonitorApp.GUIElements
 
             public void Draw(Graphics g, Rectangle bounds, Font font)
             {
-                string text = (_waypoint ? ("WP\t" + this.ToString() + "   (" + Math.Round(Security, 2) + ")") :
-                    ("\t" + this.ToString() + "   (" + Math.Round(Security, 2) + ")"));
-                Color col = Color.Green;
+                string text = null;
+                string tabSystemName = null;
+                string tabRegionName = null;
+                string formatString = null;
+                Color col = Color.Empty;
+
+                SizeF systemNameTextSize = g.MeasureString(this.SystemName, font);
+                SizeF regionNameTextSize = g.MeasureString(this.RegionName, font);
+
+                tabSystemName = systemNameTextSize.Width < 47.2 ? this.SystemName + "\t\t" : this.SystemName + "\t";
+                tabRegionName = regionNameTextSize.Width < 47.2 ? this.RegionName + "\t\t" : this.RegionName + "\t";
+
+                formatString = _waypoint ? "WP\t{0}{2}\t\t{1}" : "\t{0}{2}\t\t{1}";
+                text = string.Format(formatString, tabSystemName, this.RegionName, Math.Round(Security, 2));
+                
                 if (Security > 0.45)
-                {
                     col = Color.DarkGreen;
-                }
-                else if (Security > 0)
-                {
+                else if (Security > 0.25)
                     col = Color.Orange;
-                }
                 else
-                {
                     col = Color.Red;
-                }
+
                 g.DrawString(text, font, new SolidBrush(col), bounds);
             }
         }
@@ -647,9 +668,10 @@ namespace EveMarketMonitorApp.GUIElements
                         for (int systemIndex = 0; systemIndex < route.Count; systemIndex++)
                         {
                             int systemID = route[systemIndex];
-                            retVal.Add(new SystemData(systemID,
-                                SolarSystems.GetSystemName(systemID),
-                                systemIndex == route.Count - 1));
+                            string systemName = SolarSystems.GetSystem(systemID).solarSystemName;
+                            string regionName = Regions.GetRegionName(SolarSystems.GetSystem(systemID).regionID);
+
+                            retVal.Add(new SystemData(systemID, systemName, regionName, systemIndex == route.Count - 1));
                         }
                     }
                 }
