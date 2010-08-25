@@ -36,7 +36,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.panel4 = new System.Windows.Forms.Panel();
             this.btnClear = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblRouteInfo = new System.Windows.Forms.Label();
             this.lstRoute = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnAutopilotSettings = new System.Windows.Forms.Button();
@@ -100,7 +100,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.panel4, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.lblRouteInfo, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.lstRoute, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 10);
             this.tableLayoutPanel1.Controls.Add(this.panel3, 0, 7);
@@ -160,14 +160,14 @@ namespace EveMarketMonitorApp.GUIElements
             this.label3.TabIndex = 4;
             this.label3.Text = "Waypoints";
             // 
-            // label2
+            // lblRouteInfo
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(373, 70);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(36, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Route";
+            this.lblRouteInfo.AutoSize = true;
+            this.lblRouteInfo.Location = new System.Drawing.Point(373, 70);
+            this.lblRouteInfo.Name = "lblRouteInfo";
+            this.lblRouteInfo.Size = new System.Drawing.Size(36, 13);
+            this.lblRouteInfo.TabIndex = 3;
+            this.lblRouteInfo.Text = "Route";
             // 
             // lstRoute
             // 
@@ -217,6 +217,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnClose
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnClose.Location = new System.Drawing.Point(628, 4);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(104, 29);
@@ -414,10 +415,13 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(741, 556);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RoutePlanner";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Route Planner";
             this.Load += new System.EventHandler(this.RoutePlanner_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RoutePlanner_FormClosing);
@@ -456,7 +460,7 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox cmbOwner;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblRouteInfo;
         private System.Windows.Forms.ListBox lstRoute;
         private System.Windows.Forms.Button btnAutopilotSettings;
         private System.Windows.Forms.GroupBox groupBox2;
