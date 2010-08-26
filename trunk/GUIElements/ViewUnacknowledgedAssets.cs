@@ -477,6 +477,8 @@ namespace EveMarketMonitorApp.GUIElements
             try
             {
                 _errorCount = 0;
+                int counter = 0;
+                int total = _gainedAssets.Count + _lostAssets.Count;
 
                 EMMADataSet.AssetsDataTable assetChanges = new EMMADataSet.AssetsDataTable();
                 List<Asset> assetsToRemove = new List<Asset>();
@@ -490,6 +492,9 @@ namespace EveMarketMonitorApp.GUIElements
                         gainedAsset.ContainerID != 0, gainedAsset.ContainerID, gainedAsset.IsContainer,
                         false, true, gainedAsset.AutoConExclude, false, gainedAsset.EveItemInstanceID, ref assetID);
                     EMMADataSet.AssetsRow assetRow = assetChanges.FindByID(assetID);
+
+                    counter++;
+                    UpdateStatus(counter, total, "Updating gained assets data", "", false);
 
                     if (assetRow != null)
                     {
@@ -522,11 +527,11 @@ namespace EveMarketMonitorApp.GUIElements
                                 List<AssetAccessParams> access = new List<AssetAccessParams>();
                                 bool corporate = false;
                                 access.Add(new AssetAccessParams(assetRow.OwnerID));
-                                AssetList assets = Assets.LoadAssets(access, new List<int>(), assetRow.ItemID, 0, 0, 
+                                AssetList assets = Assets.LoadAssets(access, new List<int>(), assetRow.ItemID, 0, 0,
                                     false, (int)AssetStatus.States.ForSaleViaContract, true, true);
                                 if (assets.Count > 0)
                                 {
-                                    List<long> matchedAssetsForSale = new List<long>(); 
+                                    List<long> matchedAssetsForSale = new List<long>();
                                     long qToFind = assetRow.Quantity;
                                     decimal totalCost = 0;
                                     long costq = 0;
@@ -595,6 +600,9 @@ namespace EveMarketMonitorApp.GUIElements
                 _lostAssets.ItemFilter = "";
                 foreach (Asset lostAsset in _lostAssets)
                 {
+                    counter++;
+                    UpdateStatus(counter, total, "Updating lost assets data", "", false);
+
                     switch (lostAsset.ChangeTypeID)
                     {
                         case AssetChangeTypes.ChangeType.ForSaleViaContract:
@@ -677,8 +685,10 @@ namespace EveMarketMonitorApp.GUIElements
                 MessageBox.Show("Problem processing asset changes in unacknowledged assets view:\r\n" +
                     ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            UpdateStatus(0, 0, "FinalTasks", "", true);   
+            finally
+            {
+                UpdateStatus(0, 0, "FinalTasks", "", true);
+            }
         }
 
         void itemsGrid_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
@@ -817,6 +827,7 @@ namespace EveMarketMonitorApp.GUIElements
             }
             else
             {
+                if (!busyProgress.Visible) { busyProgress.Show(); }
                 busyProgress.Maximum = _status.MaxProgress;
                 busyProgress.Value = _status.CurrentProgress;
             }
