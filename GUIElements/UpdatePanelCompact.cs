@@ -170,6 +170,10 @@ namespace EveMarketMonitorApp.GUIElements
                         {
                             tipText.Append("This update has completed but is currently waiting for other asset updates to complete in order to compare lost/gained items.");
                         }
+                        else if (statusText.Equals(""))
+                        {
+                            tipText.Append("Up to date");
+                        }
                         else
                         {
                             tipText.Append(statusText);
@@ -179,7 +183,7 @@ namespace EveMarketMonitorApp.GUIElements
                 
                 errorToolTip.Show(tipText.ToString(), this.Parent,
                     new Point(MousePosition.X - Parent.PointToScreen(Parent.Location).X + 10,
-                    MousePosition.Y - Parent.PointToScreen(Parent.Location).Y), 6000);
+                    MousePosition.Y - Parent.PointToScreen(Parent.Location).Y), 4000);
                 _showingTT = true;
             }
         }
@@ -304,7 +308,7 @@ namespace EveMarketMonitorApp.GUIElements
                     if (metaData.TimerType == APIUpdateTimerType.Normal)
                     {
                         // Update overdue
-                        label.Text = "Overdue";
+                        //label.Text = "Overdue";
                         label.BackColor = _overdueUpdateColour;
                         doUpdate = true;
                     }
@@ -320,7 +324,7 @@ namespace EveMarketMonitorApp.GUIElements
                         if (timeSinceLastAttempt.TotalMinutes > 60)
                         {
                             // Update overdue
-                            label.Text = "Overdue";
+                            //label.Text = "Overdue";
                             label.BackColor = _overdueUpdateColour;
                             doUpdate = true;
                         }

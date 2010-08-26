@@ -67,6 +67,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
         private Queue<string> _unprocessedXMLFiles = new Queue<string>();
         private bool _processingQueue = false;
+        private DateTime _lastQueueProcessingDT = new DateTime(2000, 1, 1);
 
         private int _downloadsInProgress = 0;
 
@@ -929,60 +930,74 @@ namespace EveMarketMonitorApp.AbstractionClasses
             if (!_processingQueue)
             {
                 _processingQueue = true;
-
-                while (_unprocessedXMLFiles.Count > 0)
+                // Don't process the queue more than once every 10 seconds.
+                if (_lastQueueProcessingDT.AddSeconds(10).CompareTo(DateTime.UtcNow) < 0)
                 {
-                    bool process = true;
-                    string xmlFile = "";
-                    lock (_unprocessedXMLFiles) { xmlFile = _unprocessedXMLFiles.Dequeue(); }
-                    // If the next file is an asset data file and we still have other files waiting
-                    // or being downloaded then move the asset data file to the back of the queue.
-                    if (xmlFile.ToUpper().Contains("ASSETS") && 
-                        (_unprocessedXMLFiles.Count > 0 || _downloadsInProgress > 0))
+                    _lastQueueProcessingDT = DateTime.UtcNow;
+
+                    while (_unprocessedXMLFiles.Count > 0)
                     {
-                        lock (_unprocessedXMLFiles) { _unprocessedXMLFiles.Enqueue(xmlFile); }
-                        process = false;
-                        // If only the assets file is left and we're still waiting on other 
-                        // files to download then just break out of the loop for now.
-                        if (_unprocessedXMLFiles.Count == 1) { break; }
-                    }
+                        bool process = true;
+                        string xmlFile = "";
+                        lock (_unprocessedXMLFiles) { xmlFile = _unprocessedXMLFiles.Dequeue(); }
+                        // If the next file is an asset data file and we still have other files waiting
+                        // or being downloaded then move the asset data file to the back of the queue.
+                        if (xmlFile.ToUpper().Contains("ASSETS") &&
+                            (_unprocessedXMLFiles.Count > 0 || _downloadsInProgress > 0))
+                        {
+                            if (_unprocessedXMLFiles.Count == 1 && 
+                                _unprocessedXMLFiles.Peek().ToUpper().Contains("ASSETS"))
+                            {
+                                // If this character also gets the corp updates then there may be another 
+                                // asset file waiting. If this is the case, allow the xml to be processed.
+                            }
+                            else
+                            {
+                                lock (_unprocessedXMLFiles) { _unprocessedXMLFiles.Enqueue(xmlFile); }
+                                process = false;
+                                // If only the single assets file is left and we're still waiting on other 
+                                // files to download then just break out of the loop for now.
+                                if (_unprocessedXMLFiles.Count == 1 && _downloadsInProgress > 0) { break; }
+                            }
+                        }
 
-                    if (process)
-                    {
-                        DataImportParams parameters = new DataImportParams();
-                        CharOrCorp corc = CharOrCorp.Char;
-                        short walletID = 0;
-                        if (xmlFile.ToUpper().Contains("CORP")) { corc = CharOrCorp.Corp; }
-                        if (xmlFile.ToUpper().Contains("ACCOUNTKEY="))
+                        if (process)
                         {
-                            walletID = short.Parse(xmlFile.Substring(
-                                xmlFile.ToUpper().IndexOf("ACCOUNTKEY=") + 11, 4));
-                        }
-                        parameters.corc = corc;
-                        parameters.walletID = walletID;
-                        parameters.xmlData = new XmlDocument();
-                        parameters.xmlData.Load(xmlFile);
+                            DataImportParams parameters = new DataImportParams();
+                            CharOrCorp corc = CharOrCorp.Char;
+                            short walletID = 0;
+                            if (xmlFile.ToUpper().Contains("CORP")) { corc = CharOrCorp.Corp; }
+                            if (xmlFile.ToUpper().Contains("ACCOUNTKEY="))
+                            {
+                                walletID = short.Parse(xmlFile.Substring(
+                                    xmlFile.ToUpper().IndexOf("ACCOUNTKEY=") + 11, 4));
+                            }
+                            parameters.corc = corc;
+                            parameters.walletID = walletID;
+                            parameters.xmlData = new XmlDocument();
+                            parameters.xmlData.Load(xmlFile);
 
 
-                        if (xmlFile.ToUpper().Contains("ASSETS"))
-                        {
-                            ThreadPool.QueueUserWorkItem(UpdateAssetsFromXML, parameters);
-                        }
-                        else if (xmlFile.ToUpper().Contains("TRANSACTIONS"))
-                        {
-                            ThreadPool.QueueUserWorkItem(UpdateTransactionsFromXML, parameters);
-                        }
-                        else if (xmlFile.ToUpper().Contains("JOURNAL ENTRIES"))
-                        {
-                            ThreadPool.QueueUserWorkItem(UpdateJournalFromXML, parameters);
-                        }
-                        else if (xmlFile.ToUpper().Contains("MARKET ORDERS"))
-                        {
-                            ThreadPool.QueueUserWorkItem(UpdateOrdersFromXML, parameters);
-                        }
-                        else if (xmlFile.ToUpper().Contains("INDUSTRY JOBS"))
-                        {
-                            ThreadPool.QueueUserWorkItem(UpdateIndustryJobsFromXML, parameters);
+                            if (xmlFile.ToUpper().Contains("ASSETS"))
+                            {
+                                ThreadPool.QueueUserWorkItem(UpdateAssetsFromXML, parameters);
+                            }
+                            else if (xmlFile.ToUpper().Contains("TRANSACTIONS"))
+                            {
+                                ThreadPool.QueueUserWorkItem(UpdateTransactionsFromXML, parameters);
+                            }
+                            else if (xmlFile.ToUpper().Contains("JOURNAL ENTRIES"))
+                            {
+                                ThreadPool.QueueUserWorkItem(UpdateJournalFromXML, parameters);
+                            }
+                            else if (xmlFile.ToUpper().Contains("MARKET ORDERS"))
+                            {
+                                ThreadPool.QueueUserWorkItem(UpdateOrdersFromXML, parameters);
+                            }
+                            else if (xmlFile.ToUpper().Contains("INDUSTRY JOBS"))
+                            {
+                                ThreadPool.QueueUserWorkItem(UpdateIndustryJobsFromXML, parameters);
+                            }
                         }
                     }
                 }

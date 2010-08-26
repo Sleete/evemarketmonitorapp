@@ -285,7 +285,7 @@ namespace EveMarketMonitorApp.GUIElements
                 Hide();
             }
 
-            ValidateInstall(false);
+            //ValidateInstall(false);
         }
 
         private void SetupEnvironment()
@@ -1233,7 +1233,8 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 Enforcer.LicenseManagement licenseMgt = new LicenseManagement();
                 Globals.License = licenseMgt.GetLicenseType();
-                if (!showDialogIfValid && Globals.License != LicenseType.Full && 
+                if (splash != null && !showDialogIfValid && 
+                    Globals.License != LicenseType.Full && 
                     Globals.License != LicenseType.Lite &&
                     Globals.License != LicenseType.Trial)
                 {
