@@ -108,6 +108,16 @@ namespace EveMarketMonitorApp.Common
             : base(severity, message, inner) { }
     }
 
+    public class EMMALicensingException : EMMAException
+    {
+        public EMMALicensingException(ExceptionSeverity severity)
+            : base(severity, "Licensing problem") { }
+        public EMMALicensingException(ExceptionSeverity severity, string message)
+            : base(severity, message) { }
+        public EMMALicensingException(ExceptionSeverity severity, string message, Exception inner)
+            : base(severity, message, inner) { }
+    }
+
     public class EMMAEveAPIException : EMMAException
     {
         private int eveCode = 0;

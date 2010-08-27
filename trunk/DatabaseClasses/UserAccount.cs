@@ -106,6 +106,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     if (account.Password.Trim().Equals(pwd.GetSaltedHash()))
                     {
                         _name = account.Name.Trim();
+                        Diagnostics.StartTimer("OpenAccount.InitSettings");
+                        InitSettings();
+                        Diagnostics.StopTimer("OpenAccount.InitSettings");
                         Diagnostics.StartTimer("OpenAccount.GetGroups");
                         _reportGroups = ReportGroups.GetUsersGroups(_name, true);
                         Diagnostics.StopTimer("OpenAccount.GetGroups");
@@ -119,9 +122,6 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                 i = _reportGroups.Count;
                             }
                         }
-                        Diagnostics.StartTimer("OpenAccount.InitSettings");
-                        InitSettings();
-                        Diagnostics.StopTimer("OpenAccount.InitSettings");
                     }
                     else
                     {
@@ -278,11 +278,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     _currentGroup.StoreItemsTraded();
                 }
                 UserAccount._currentGroup = value;
-                if (_currentGroup != null)
+                try
                 {
-                    _currentGroup.LoadEveAccounts();
+                    if (_currentGroup != null)
+                    {
+                        _currentGroup.LoadEveAccounts();
+                        StoreLastGroup();
+                    }
                 }
-                StoreLastGroup();
+                catch (EMMALicensingException) { _currentGroup = null; throw; }
             }
         }
 

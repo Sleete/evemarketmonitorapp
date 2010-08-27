@@ -130,7 +130,16 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 try
                 {
-                    UserAccount.OpenAccount(txtUsername.Text, txtPassword.Text);
+                    try
+                    {
+                        UserAccount.OpenAccount(txtUsername.Text, txtPassword.Text);
+                    }
+                    catch (EMMALicensingException) 
+                    {
+                        // This happens if EMMA is not licensed to open the default report group
+                        // just continue as normal.
+                        // The user will have to choose to use a different group or create a new one.
+                    }
 
                     UpdateAutoLoginFile();
 

@@ -6,6 +6,7 @@ using System.Xml;
 using EveMarketMonitorApp.AbstractionClasses;
 using EveMarketMonitorApp.GUIElements;
 using EveMarketMonitorApp.Common;
+using System.Windows.Forms;
 
 namespace EveMarketMonitorApp.DatabaseClasses
 {
@@ -136,6 +137,30 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 {
                     account.UpdateCharList(false);
                     account.PopulateChars();
+                }
+
+                if (Globals.License == Enforcer.LicenseType.Lite)
+                {
+                    // Check that only one character/corp is in this report group
+                    int charTotal = 0;
+                    int corpTotal = 0;
+                    foreach (EVEAccount account in _accounts)
+                    {
+                        foreach (APICharacter character in account.Chars)
+                        {
+                            if (character.CharIncWithRptGroup) { charTotal++; }
+                            if (character.CorpIncWithRptGroup) { corpTotal++; }
+                        }
+                    }
+                    if (charTotal + corpTotal > 1)
+                    {
+                        throw new EMMALicensingException(ExceptionSeverity.Error,
+                            "You have an EMMA 'lite' license. This only allows you to work with " +
+                            "report groups containing a single character or corporation. The report group '" +
+                            _name + "' contains " + charTotal + " characters and " + corpTotal + " corps." +
+                            " You must create new report groups, each with only one character/corporation." +
+                            " Note that you will still retain all existing data.");
+                    }
                 }
             }
             Diagnostics.StopTimer("RptGrp.LoadEveAccounts");

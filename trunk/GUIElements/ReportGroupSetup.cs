@@ -362,6 +362,51 @@ namespace EveMarketMonitorApp.GUIElements
                         }
                     }
                 }
+                // If user has 'lite' license then do not allow more than one 
+                // character/corp to be selected.
+                if (Globals.License == Enforcer.LicenseType.Lite)
+                {
+                    if (charsAndCorpsGrid.Columns[e.ColumnIndex] == corpIncludedColumn ||
+                        charsAndCorpsGrid.Columns[e.ColumnIndex] == charIncludedColumn)
+                    {
+                        DataGridViewDataErrorContexts context = DataGridViewDataErrorContexts.Commit;
+                        charsAndCorpsGrid.CommitEdit(context);
+                        bool showWarning = false;
+                        if ((bool)charsAndCorpsGrid[e.ColumnIndex, e.RowIndex].Value == true)
+                        {
+                            for (int i = 0; i < charsAndCorpsGrid.Rows.Count; i++)
+                            {
+                                bool setCorpFalse = true;
+                                bool setCharFalse = true;
+                                if (e.RowIndex == i)
+                                {
+                                    if (charsAndCorpsGrid.Columns[e.ColumnIndex] == corpIncludedColumn) { setCorpFalse = false; }
+                                    if (charsAndCorpsGrid.Columns[e.ColumnIndex] == charIncludedColumn) { setCharFalse = false; }
+                                }
+
+                                if (setCorpFalse)
+                                {
+                                    if ((bool)charsAndCorpsGrid[corpIncludedColumn.Index, i].Value) { showWarning = true; }
+                                    charsAndCorpsGrid[corpIncludedColumn.Index, i].Value = false;
+                                }
+                                if (setCharFalse)
+                                {
+                                    if ((bool)charsAndCorpsGrid[charIncludedColumn.Index, i].Value) { showWarning = true; }
+                                    charsAndCorpsGrid[charIncludedColumn.Index, i].Value = false;
+                                }
+                                
+                                charsAndCorpsGrid.RefreshEdit();
+                            }
+                        }
+
+                        if (showWarning)
+                        {
+                            MessageBox.Show("You have an EMMA 'lite' license so cannot select more " +
+                                "than one character or corporation.",
+                                "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                }
             }
 
         }
