@@ -1056,10 +1056,22 @@ namespace EveMarketMonitorApp.GUIElements
                         password = passwordNode.FirstChild.Value;
                     }
 
-                    Diagnostics.StartTimer("OpenAccount");
-                    UserAccount.OpenAccount(username, password);
-                    Diagnostics.StopTimer("OpenAccount");
-
+                    try
+                    {
+                        Diagnostics.StartTimer("OpenAccount");
+                        UserAccount.OpenAccount(username, password);
+                        Diagnostics.StopTimer("OpenAccount");
+                    }
+                    catch (EMMALicensingException ex)
+                    {
+                        // If this occurs then it means that the account is logged in but the 
+                        // default report group cannot be used. Just let the user know and then
+                        // continue as normal.
+                        splash.ShowMessage(
+                            "Licensing problem when opening default report group: " + ex.Message, 
+                            "Licensing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    
                     retVal = true;
                     _status = UserAccount.CurrentGroup == null ?
                         SystemStatus.NoReportGroupSelected : SystemStatus.Complete;
@@ -1145,27 +1157,42 @@ namespace EveMarketMonitorApp.GUIElements
                     RefreshDisplay();
                 }
                 else if (result == DialogResult.Cancel && UserAccount.CurrentGroup != null) 
-                {
-                    _status = SystemStatus.Complete;
+                {                    _status = SystemStatus.Complete;
                     RefreshDisplay();
                 }
                 else if (result != DialogResult.Cancel)
                 {
-                    UserAccount.CurrentGroup = rptGroup.SelectedGroup;
-                    UserAccount.Settings.FirstRun = false;
-                    _status = SystemStatus.Complete;
-                    InitaliseUpdatesRunning();
-                    if (_updateStatus != null && _updateStatus.Visible)
+                    try
                     {
-                        _updateStatus.Close();
-                        _updateStatus = null;
+                        UserAccount.CurrentGroup = rptGroup.SelectedGroup;
+                        UserAccount.Settings.FirstRun = false;
+                        _status = SystemStatus.Complete;
+                        InitaliseUpdatesRunning();
+                        if (_updateStatus != null && _updateStatus.Visible)
+                        {
+                            _updateStatus.Close();
+                            _updateStatus = null;
+                        }
+                        if (_unackOrders != null && _unackOrders.Visible)
+                        {
+                            _unackOrders.Close();
+                            _unackOrders = null;
+                        }
+                        if (_unackAssets != null && _unackAssets.Visible)
+                        {
+                            _unackAssets.Close();
+                            _unackAssets = null;
+                        }
+                        RefreshDisplay();
                     }
-                    if (_unackOrders != null && _unackOrders.Visible)
+                    catch (Exception ex)
                     {
-                        _unackOrders.Close();
-                        _unackOrders = null;
+                        if (!(ex is EMMAException)) { new EMMAException(ExceptionSeverity.Error, 
+                            "Error while trying to change report group", ex); }
+                        MessageBox.Show("Error while trying to change report group: " + ex.Message,
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    RefreshDisplay();
+
                 }
             }
         }
@@ -1243,9 +1270,10 @@ namespace EveMarketMonitorApp.GUIElements
                 }
 
                 // Set license to full for now.
-                Globals.License = LicenseType.Full;
+                if (Globals.License != LicenseType.Lite) { Globals.License = LicenseType.Full; }
 
-                if (showDialogIfValid || Globals.License != LicenseType.Full)
+                if (showDialogIfValid || 
+                    (Globals.License != LicenseType.Full && Globals.License != LicenseType.Lite))
                 {
                     licenseMgt.ShowDialog();
                 }

@@ -935,7 +935,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 {
                     _lastQueueProcessingDT = DateTime.UtcNow;
 
-                    while (_unprocessedXMLFiles.Count > 0)
+                    // Limit this loop to running for no more than 1/2 a second
+                    while (_unprocessedXMLFiles.Count > 0 && 
+                        _lastQueueProcessingDT.AddMilliseconds(500).CompareTo(DateTime.UtcNow) > 0)
                     {
                         bool process = true;
                         string xmlFile = "";
@@ -999,6 +1001,28 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                 ThreadPool.QueueUserWorkItem(UpdateIndustryJobsFromXML, parameters);
                             }
                         }
+                    }
+
+                    if (_unprocessedXMLFiles.Count > 0)
+                    {
+                        // If we weren't able to process everything then dump some diagnostics.
+                        TimeSpan processingTime = DateTime.UtcNow.Subtract(_lastQueueProcessingDT);
+
+                        StringBuilder message= new StringBuilder(
+                            "Warning, not all queued XML files were processed.\r\n");
+                        message.Append("Files not processed:\r\n");
+                        foreach (string file in _unprocessedXMLFiles)
+                        {
+                            message.Append(file);
+                            message.Append("\r\n");
+                        }
+                        message.Append("Downloads active: ");
+                        message.Append(_downloadsInProgress);
+                        message.Append("\r\nApprox processing time: ");
+                        message.Append(processingTime.TotalMilliseconds);
+                        message.Append(" milliseconds");
+
+                        new EMMAException(ExceptionSeverity.Warning, message.ToString(), true);  
                     }
                 }
 
