@@ -36,12 +36,16 @@ namespace EveMarketMonitorApp.GUIElements
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewTransactions));
             this.GridContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showOnlyThisItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.copyCellDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyRowDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyCellTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyRowTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chkCalcProfit = new System.Windows.Forms.CheckBox();
             this.btnCSV = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -61,7 +65,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.cmbItem = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.chkCalcProfit = new System.Windows.Forms.CheckBox();
             this.transactionGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
             this.IDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateTimeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -69,6 +72,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.PriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.QuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TotalValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RegionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UnitProfitColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BuyerColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BuyerIDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -80,7 +85,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.SellerCharIDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BuyerWalletColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SellerWalletColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.StationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GridContextMenu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -91,38 +95,60 @@ namespace EveMarketMonitorApp.GUIElements
             // GridContextMenu
             // 
             this.GridContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showOnlyThisItemToolStripMenuItem,
+            this.showAllToolStripMenuItem,
+            this.toolStripSeparator1,
             this.copyCellDataToolStripMenuItem,
             this.copyRowDataToolStripMenuItem,
             this.copyCellTextToolStripMenuItem,
             this.copyRowTextToolStripMenuItem});
             this.GridContextMenu.Name = "GridContextMenu";
-            this.GridContextMenu.Size = new System.Drawing.Size(161, 92);
+            this.GridContextMenu.Size = new System.Drawing.Size(185, 142);
+            // 
+            // showOnlyThisItemToolStripMenuItem
+            // 
+            this.showOnlyThisItemToolStripMenuItem.Name = "showOnlyThisItemToolStripMenuItem";
+            this.showOnlyThisItemToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.showOnlyThisItemToolStripMenuItem.Text = "Show only this Item";
+            this.showOnlyThisItemToolStripMenuItem.Click += new System.EventHandler(this.showOnlyThisItemToolStripMenuItem_Click);
+            // 
+            // showAllToolStripMenuItem
+            // 
+            this.showAllToolStripMenuItem.Name = "showAllToolStripMenuItem";
+            this.showAllToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.showAllToolStripMenuItem.Text = "Show All";
+            this.showAllToolStripMenuItem.Click += new System.EventHandler(this.showAllToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(181, 6);
             // 
             // copyCellDataToolStripMenuItem
             // 
             this.copyCellDataToolStripMenuItem.Name = "copyCellDataToolStripMenuItem";
-            this.copyCellDataToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.copyCellDataToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.copyCellDataToolStripMenuItem.Text = "Copy Cell Data";
             this.copyCellDataToolStripMenuItem.Click += new System.EventHandler(this.copyCellDataToolStripMenuItem_Click);
             // 
             // copyRowDataToolStripMenuItem
             // 
             this.copyRowDataToolStripMenuItem.Name = "copyRowDataToolStripMenuItem";
-            this.copyRowDataToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.copyRowDataToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.copyRowDataToolStripMenuItem.Text = "Copy Row Data";
             this.copyRowDataToolStripMenuItem.Click += new System.EventHandler(this.copyRowDataToolStripMenuItem_Click);
             // 
             // copyCellTextToolStripMenuItem
             // 
             this.copyCellTextToolStripMenuItem.Name = "copyCellTextToolStripMenuItem";
-            this.copyCellTextToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.copyCellTextToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.copyCellTextToolStripMenuItem.Text = "Copy Cell Text";
             this.copyCellTextToolStripMenuItem.Click += new System.EventHandler(this.copyCellTextToolStripMenuItem_Click);
             // 
             // copyRowTextToolStripMenuItem
             // 
             this.copyRowTextToolStripMenuItem.Name = "copyRowTextToolStripMenuItem";
-            this.copyRowTextToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.copyRowTextToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.copyRowTextToolStripMenuItem.Text = "Copy Row Text";
             this.copyRowTextToolStripMenuItem.Click += new System.EventHandler(this.copyRowTextToolStripMenuItem_Click);
             // 
@@ -153,6 +179,17 @@ namespace EveMarketMonitorApp.GUIElements
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(991, 28);
             this.panel1.TabIndex = 3;
+            // 
+            // chkCalcProfit
+            // 
+            this.chkCalcProfit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkCalcProfit.AutoSize = true;
+            this.chkCalcProfit.Location = new System.Drawing.Point(711, 7);
+            this.chkCalcProfit.Name = "chkCalcProfit";
+            this.chkCalcProfit.Size = new System.Drawing.Size(181, 17);
+            this.chkCalcProfit.TabIndex = 3;
+            this.chkCalcProfit.Text = "Calculate unit profit if unavailable";
+            this.chkCalcProfit.UseVisualStyleBackColor = true;
             // 
             // btnCSV
             // 
@@ -352,17 +389,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.label1.TabIndex = 0;
             this.label1.Text = "Item";
             // 
-            // chkCalcProfit
-            // 
-            this.chkCalcProfit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkCalcProfit.AutoSize = true;
-            this.chkCalcProfit.Location = new System.Drawing.Point(711, 7);
-            this.chkCalcProfit.Name = "chkCalcProfit";
-            this.chkCalcProfit.Size = new System.Drawing.Size(181, 17);
-            this.chkCalcProfit.TabIndex = 3;
-            this.chkCalcProfit.Text = "Calculate unit profit if unavailable";
-            this.chkCalcProfit.UseVisualStyleBackColor = true;
-            // 
             // transactionGrid
             // 
             this.transactionGrid.AllowUserToAddRows = false;
@@ -376,6 +402,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.PriceColumn,
             this.QuantityColumn,
             this.TotalValueColumn,
+            this.StationColumn,
+            this.RegionColumn,
             this.UnitProfitColumn,
             this.BuyerColumn,
             this.BuyerIDColumn,
@@ -386,8 +414,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.SellerCharacterColumn,
             this.SellerCharIDColumn,
             this.BuyerWalletColumn,
-            this.SellerWalletColumn,
-            this.StationColumn});
+            this.SellerWalletColumn});
             this.transactionGrid.ContextMenuStrip = this.GridContextMenu;
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
@@ -404,8 +431,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.transactionGrid.Size = new System.Drawing.Size(991, 330);
             this.transactionGrid.TabIndex = 0;
             this.transactionGrid.VirtualMode = true;
-            this.transactionGrid.MouseDown += new System.Windows.Forms.MouseEventHandler(this.transactionGrid_MouseDown);
             this.transactionGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.transactionGrid_CellFormatting);
+            this.transactionGrid.MouseDown += new System.Windows.Forms.MouseEventHandler(this.transactionGrid_MouseDown);
             // 
             // IDColumn
             // 
@@ -453,6 +480,19 @@ namespace EveMarketMonitorApp.GUIElements
             this.TotalValueColumn.Name = "TotalValueColumn";
             this.TotalValueColumn.ReadOnly = true;
             this.TotalValueColumn.Width = 150;
+            // 
+            // StationColumn
+            // 
+            this.StationColumn.HeaderText = "Station";
+            this.StationColumn.Name = "StationColumn";
+            this.StationColumn.ReadOnly = true;
+            this.StationColumn.Width = 300;
+            // 
+            // RegionColumn
+            // 
+            this.RegionColumn.HeaderText = "Region";
+            this.RegionColumn.Name = "RegionColumn";
+            this.RegionColumn.ReadOnly = true;
             // 
             // UnitProfitColumn
             // 
@@ -533,13 +573,6 @@ namespace EveMarketMonitorApp.GUIElements
             this.SellerWalletColumn.ReadOnly = true;
             this.SellerWalletColumn.Width = 180;
             // 
-            // StationColumn
-            // 
-            this.StationColumn.HeaderText = "Station";
-            this.StationColumn.Name = "StationColumn";
-            this.StationColumn.ReadOnly = true;
-            this.StationColumn.Width = 300;
-            // 
             // ViewTransactions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -591,12 +624,18 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnCSV;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.CheckBox chkCalcProfit;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem showOnlyThisItemToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showAllToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn IDColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DateTimeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ItemColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn PriceColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn QuantityColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn TotalValueColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StationColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RegionColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn UnitProfitColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyerColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyerIDColumn;
@@ -608,7 +647,5 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.DataGridViewTextBoxColumn SellerCharIDColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn BuyerWalletColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn SellerWalletColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn StationColumn;
-        private System.Windows.Forms.CheckBox chkCalcProfit;
     }
 }
