@@ -392,8 +392,8 @@ namespace EveMarketMonitorApp.GUIElements
                 SizeF systemNameTextSize = g.MeasureString(this.SystemName, font);
                 SizeF regionNameTextSize = g.MeasureString(this.RegionName, font);
 
-                tabSystemName = systemNameTextSize.Width < 47.2 ? this.SystemName + "\t\t" : this.SystemName + "\t";
-                tabRegionName = regionNameTextSize.Width < 47.2 ? this.RegionName + "\t\t" : this.RegionName + "\t";
+                tabSystemName = systemNameTextSize.Width < 47.4 ? this.SystemName + "\t\t" : this.SystemName + "\t";
+                tabRegionName = regionNameTextSize.Width < 47.4 ? this.RegionName + "\t\t" : this.RegionName + "\t";
 
                 formatString = IsWaypoint ? "WP\t{0}{2}\t\t{1}" : "\t{0}{2}\t\t{1}";
                 text = string.Format(formatString, tabSystemName, this.RegionName, Math.Round(Security, 2));
