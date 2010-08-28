@@ -177,7 +177,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.lstRoute.Location = new System.Drawing.Point(373, 89);
             this.lstRoute.Name = "lstRoute";
             this.tableLayoutPanel1.SetRowSpan(this.lstRoute, 8);
-            this.lstRoute.Size = new System.Drawing.Size(365, 420);
+            this.lstRoute.Size = new System.Drawing.Size(365, 422);
             this.lstRoute.TabIndex = 1;
             this.lstRoute.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lstRoute_DrawItem);
             this.lstRoute.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.lstRoute_MeasureItem);
@@ -331,7 +331,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.lstWaypoints.FormattingEnabled = true;
             this.lstWaypoints.Location = new System.Drawing.Point(3, 183);
             this.lstWaypoints.Name = "lstWaypoints";
-            this.lstWaypoints.Size = new System.Drawing.Size(364, 121);
+            this.lstWaypoints.Size = new System.Drawing.Size(364, 126);
+            this.lstWaypoints.Sorted = true;
             this.lstWaypoints.TabIndex = 2;
             this.lstWaypoints.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstWaypoints_KeyDown);
             // 
@@ -423,8 +424,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.Name = "RoutePlanner";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Route Planner";
-            this.Load += new System.EventHandler(this.RoutePlanner_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RoutePlanner_FormClosing);
+            this.Load += new System.EventHandler(this.RoutePlanner_Load);
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();

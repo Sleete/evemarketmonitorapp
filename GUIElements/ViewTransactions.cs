@@ -71,6 +71,7 @@ namespace EveMarketMonitorApp.GUIElements
                 BuyerCharacterColumn.DataPropertyName = "BuyerChar";
                 SellerCharacterColumn.DataPropertyName = "SellerChar";
                 StationColumn.DataPropertyName = "Station";
+                RegionColumn.DataPropertyName = "Region";
                 BuyerIDColumn.DataPropertyName = "BuyerID";
                 SellerIDColumn.DataPropertyName = "SellerID";
                 BuyerCharIDColumn.DataPropertyName = "BuyerCharID";
@@ -270,11 +271,13 @@ namespace EveMarketMonitorApp.GUIElements
                             }
                         }
                         catch (EMMADataException) { }
-
-                        _lastItem = cmbItem.Text;
-                        DisplayTrans();
                     }
-                    if ((short)cmbItem.Tag == 0) { cmbItem.Text = ""; }
+
+                    if ((short)cmbItem.Tag == 0) 
+                        cmbItem.Text = "";
+
+                    _lastItem = cmbItem.Text;
+                    DisplayTrans();
                 }
             }
             finally
@@ -575,8 +578,32 @@ namespace EveMarketMonitorApp.GUIElements
                     _clickedCell = transactionGrid[Hti.ColumnIndex, Hti.RowIndex];
                     _clickedRow.Selected = true;
                 }
+                else
+                {
+                    _clickedRow = null;
+                    _clickedCell = null;
+                }
             }
 
+        }
+
+        private void showOnlyThisItemToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_clickedRow != null)
+            {
+                DataGridViewCell cell = _clickedRow.Cells["ItemColumn"];
+                if (cell != null && cell.Value != null)
+                {
+                    cmbItem.Text = cell.Value.ToString();
+                    SetSelectedItem();
+                }
+            }
+        }
+
+        private void showAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            cmbItem.Text = "";
+            SetSelectedItem();
         }
 
         private void copyCellDataToolStripMenuItem_Click(object sender, EventArgs e)
@@ -638,6 +665,5 @@ namespace EveMarketMonitorApp.GUIElements
         {
             CSVExport.Export(transactionGrid, "transactions");
         }
-
     }
 }

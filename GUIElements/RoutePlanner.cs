@@ -153,7 +153,7 @@ namespace EveMarketMonitorApp.GUIElements
                         catch (EMMADataException) { }
 
                         if (field == txtSystem) { _lastSystem = field.Text; }
-                        else if (field == txtStartSystem) {  _lastStartSystem = field.Text; }
+                        else if (field == txtStartSystem) { _lastStartSystem = field.Text; }
                         else if (field == txtEndSystem) { _lastEndSystem = field.Text; }
                     }
                     if ((int)field.Tag == 0) { field.Text = ""; }
@@ -225,8 +225,8 @@ namespace EveMarketMonitorApp.GUIElements
 
             if (ownerID != 0 && location != null)
             {
-                EMMADataSet.IDTableDataTable systemIDs = Assets.GetInvolvedSystemIDs(ownerID, 
-                    location.Regions, location.Stations, !chkExcludeContainers.Checked, 
+                EMMADataSet.IDTableDataTable systemIDs = Assets.GetInvolvedSystemIDs(ownerID,
+                    location.Regions, location.Stations, !chkExcludeContainers.Checked,
                     !chkExcludeContainers.Checked);
 
                 lstWaypoints.BeginUpdate();
@@ -353,7 +353,7 @@ namespace EveMarketMonitorApp.GUIElements
             public int ID;
             public string SystemName;
             public string RegionName;
-            private bool _waypoint;
+            public bool IsWaypoint;
             private float _security = -10;
 
             public SystemData(int id, string name, string regionName, bool isWaypoint)
@@ -361,7 +361,7 @@ namespace EveMarketMonitorApp.GUIElements
                 ID = id;
                 SystemName = name;
                 RegionName = regionName;
-                _waypoint = isWaypoint;
+                IsWaypoint = isWaypoint;
             }
 
             public override string ToString()
@@ -395,9 +395,9 @@ namespace EveMarketMonitorApp.GUIElements
                 tabSystemName = systemNameTextSize.Width < 47.2 ? this.SystemName + "\t\t" : this.SystemName + "\t";
                 tabRegionName = regionNameTextSize.Width < 47.2 ? this.RegionName + "\t\t" : this.RegionName + "\t";
 
-                formatString = _waypoint ? "WP\t{0}{2}\t\t{1}" : "\t{0}{2}\t\t{1}";
+                formatString = IsWaypoint ? "WP\t{0}{2}\t\t{1}" : "\t{0}{2}\t\t{1}";
                 text = string.Format(formatString, tabSystemName, this.RegionName, Math.Round(Security, 2));
-                
+
                 if (Security > 0.45)
                     col = Color.DarkGreen;
                 else if (Security > 0.25)
@@ -417,7 +417,7 @@ namespace EveMarketMonitorApp.GUIElements
             private Dictionary<int, int> _idMapper;
 
 
-            public WPRoute(List<int> waypoints, ref int nextFreeIndex, ref short[,] jumps, 
+            public WPRoute(List<int> waypoints, ref int nextFreeIndex, ref short[,] jumps,
                 Dictionary<int, int> idMapper)
                 : base(waypoints)
             {
@@ -449,7 +449,7 @@ namespace EveMarketMonitorApp.GUIElements
                 List<WPRoute> population = new List<WPRoute>();
                 WPRoute bestRoute = null;
                 // Just wait half a second to allow the caller to display the progress dialog.
-                Thread.Sleep(500); 
+                Thread.Sleep(500);
                 UpdateStatus(0, 1, "Optimizing Route", "", false);
                 UpdateStatus(0, 1, "", "Pre-caching data", false);
                 SolarSystemDistances.PopulateJumpsArray(this, this, ref _jumps, _idMapper, ref _nextFreeIndex);
@@ -707,9 +707,5 @@ namespace EveMarketMonitorApp.GUIElements
         {
             lstWaypoints.Items.Clear();
         }
-
-        
-
     }
-
 }
