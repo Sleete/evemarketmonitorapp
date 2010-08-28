@@ -35,6 +35,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private bool _gotStation = false;
         private string _station;
         private int _regionID;
+        private string _region;
         private bool _buyerForCorp;
         private bool _sellerForCorp;
         private short _buyerWalletID;
@@ -256,6 +257,17 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             get { return _regionID; }
             set { _regionID = value; }
+        }
+
+        public string Region
+        {
+            get
+            {
+                if (_regionID > -1 && string.IsNullOrEmpty(_region))
+                    _region = Regions.GetRegionName(_regionID);
+
+                return _region;
+            }
         }
 
         public short BuyerWalletID

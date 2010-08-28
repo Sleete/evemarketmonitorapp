@@ -1407,6 +1407,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
             bool forCorp = bool.Parse(node.SelectSingleNode("ForCorp").FirstChild.Value);
 
+            // bug fix
+            newRow.CalcProfitFromAssets = false;
+            newRow.SellerUnitProfit = 0;
+
             if (transType.Trim().ToLower().Equals("buy"))
             {
                 newRow.BuyerID = forCorp ? corpID : charID;
