@@ -103,52 +103,54 @@ namespace EveMarketMonitorApp.GUIElements
             this.copyCellTextToolStripMenuItem,
             this.copyRowTextToolStripMenuItem});
             this.GridContextMenu.Name = "GridContextMenu";
-            this.GridContextMenu.Size = new System.Drawing.Size(185, 142);
+            this.GridContextMenu.Size = new System.Drawing.Size(200, 164);
+            this.GridContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.GridContextMenu_Opening);
             // 
             // showOnlyThisItemToolStripMenuItem
             // 
+            this.showOnlyThisItemToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showOnlyThisItemToolStripMenuItem.Name = "showOnlyThisItemToolStripMenuItem";
-            this.showOnlyThisItemToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.showOnlyThisItemToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.showOnlyThisItemToolStripMenuItem.Text = "Show only this Item";
             this.showOnlyThisItemToolStripMenuItem.Click += new System.EventHandler(this.showOnlyThisItemToolStripMenuItem_Click);
             // 
             // showAllToolStripMenuItem
             // 
             this.showAllToolStripMenuItem.Name = "showAllToolStripMenuItem";
-            this.showAllToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.showAllToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.showAllToolStripMenuItem.Text = "Show All";
             this.showAllToolStripMenuItem.Click += new System.EventHandler(this.showAllToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(181, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(196, 6);
             // 
             // copyCellDataToolStripMenuItem
             // 
             this.copyCellDataToolStripMenuItem.Name = "copyCellDataToolStripMenuItem";
-            this.copyCellDataToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.copyCellDataToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.copyCellDataToolStripMenuItem.Text = "Copy Cell Data";
             this.copyCellDataToolStripMenuItem.Click += new System.EventHandler(this.copyCellDataToolStripMenuItem_Click);
             // 
             // copyRowDataToolStripMenuItem
             // 
             this.copyRowDataToolStripMenuItem.Name = "copyRowDataToolStripMenuItem";
-            this.copyRowDataToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.copyRowDataToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.copyRowDataToolStripMenuItem.Text = "Copy Row Data";
             this.copyRowDataToolStripMenuItem.Click += new System.EventHandler(this.copyRowDataToolStripMenuItem_Click);
             // 
             // copyCellTextToolStripMenuItem
             // 
             this.copyCellTextToolStripMenuItem.Name = "copyCellTextToolStripMenuItem";
-            this.copyCellTextToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.copyCellTextToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.copyCellTextToolStripMenuItem.Text = "Copy Cell Text";
             this.copyCellTextToolStripMenuItem.Click += new System.EventHandler(this.copyCellTextToolStripMenuItem_Click);
             // 
             // copyRowTextToolStripMenuItem
             // 
             this.copyRowTextToolStripMenuItem.Name = "copyRowTextToolStripMenuItem";
-            this.copyRowTextToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.copyRowTextToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.copyRowTextToolStripMenuItem.Text = "Copy Row Text";
             this.copyRowTextToolStripMenuItem.Click += new System.EventHandler(this.copyRowTextToolStripMenuItem_Click);
             // 

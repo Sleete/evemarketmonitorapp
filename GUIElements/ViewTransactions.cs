@@ -587,6 +587,20 @@ namespace EveMarketMonitorApp.GUIElements
 
         }
 
+        private void GridContextMenu_Opening(object sender, CancelEventArgs e)
+        {
+            if (_clickedRow != null)
+            {
+                DataGridViewCell cell = _clickedRow.Cells["ItemColumn"];
+                if (cell != null && cell.Value != null)
+                    showOnlyThisItemToolStripMenuItem.Text = cell.Value.ToString();
+            }
+            else
+            {
+                showOnlyThisItemToolStripMenuItem.Text = "No Item selected!";
+            }
+        }
+
         private void showOnlyThisItemToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (_clickedRow != null)
