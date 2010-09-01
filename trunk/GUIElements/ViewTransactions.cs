@@ -273,9 +273,7 @@ namespace EveMarketMonitorApp.GUIElements
                         catch (EMMADataException) { }
                     }
 
-                    if ((short)cmbItem.Tag == 0) 
-                        cmbItem.Text = "";
-
+                    if ((short)cmbItem.Tag == 0) { cmbItem.Text = ""; }
                     _lastItem = cmbItem.Text;
                     DisplayTrans();
                 }

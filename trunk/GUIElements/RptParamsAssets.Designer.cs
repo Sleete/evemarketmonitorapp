@@ -94,7 +94,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.chkItemsByGroup.Name = "chkItemsByGroup";
             this.chkItemsByGroup.Size = new System.Drawing.Size(145, 17);
             this.chkItemsByGroup.TabIndex = 12;
-            this.chkItemsByGroup.Text = "Arange items by category";
+            this.chkItemsByGroup.Text = "Arrange items by category";
             this.chkItemsByGroup.UseVisualStyleBackColor = true;
             // 
             // cmbValueRegion
@@ -174,7 +174,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.chkIncludeContainers.Name = "chkIncludeContainers";
             this.chkIncludeContainers.Size = new System.Drawing.Size(330, 17);
             this.chkIncludeContainers.TabIndex = 22;
-            this.chkIncludeContainers.Text = "Include unpackaged ships, fittings, containers and thier contents";
+            this.chkIncludeContainers.Text = "Include unpackaged ships, fittings, containers and their contents";
             this.chkIncludeContainers.UseVisualStyleBackColor = true;
             // 
             // RptParamsAssets
