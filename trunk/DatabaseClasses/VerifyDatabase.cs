@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 
 using EveMarketMonitorApp.Common;
+using EveMarketMonitorApp.AbstractionClasses;
 
 namespace EveMarketMonitorApp.DatabaseClasses
 {
@@ -14,7 +15,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public void Run()
         {
             Thread.Sleep(500); // Wait for half a second to allow the calling thread to display the dialog...
-            int checks = 1;
+            int checks = 2;
 
             try
             {
@@ -30,6 +31,18 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 else
                 {
                     UpdateStatus(1, checks, "", total + " duplicates found and removed.", false);
+                }
+
+                // Check 2 - Move assets/orders stored against character IDs to corp IDs.
+                UpdateStatus(1, checks, "", "Checking for corporate assets stored by character ID", false);
+                foreach (EVEAccount account in UserAccount.CurrentGroup.Accounts)
+                {
+                    foreach (APICharacter character in account.Chars)
+                    {
+                        UpdateStatus(1, checks, "", "Checking " + character.CharName + "...", false);
+                        character.Settings.UpdatedOwnerIDToCorpID = false;
+                        character.UpdateOwnerIDToCorpID();
+                    }
                 }
 
                 UpdateStatus(checks, checks, "Checks complete", "", true);

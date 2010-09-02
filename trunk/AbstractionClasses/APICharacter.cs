@@ -70,6 +70,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         private DateTime _lastQueueProcessingDT = new DateTime(2000, 1, 1);
 
         private int _downloadsInProgress = 0;
+        private object _syncDownloadsInProg = new object();
 
         #region Public properties
         public int CharID
@@ -305,7 +306,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         /// This is called to migrate legacy corporate market orders and assets that were stored against
         /// the character ID rather than the corporate ID.
         /// </summary>
-        private void UpdateOwnerIDToCorpID() 
+        public void UpdateOwnerIDToCorpID() 
         {
             if (!Settings.UpdatedOwnerIDToCorpID)
             {
@@ -680,7 +681,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             CharOrCorp corc = updateInfo.Corc;
             APIDataType type = updateInfo.Type;
 
-            _downloadsInProgress++;
+            lock (_syncDownloadsInProg) { _downloadsInProgress++; }
             try
             {
                 SetLastAPIUpdateError(corc, type, "DOWNLOADING");
@@ -688,7 +689,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             }
             finally
             {
-                _downloadsInProgress--;
+                lock (_syncDownloadsInProg) { _downloadsInProgress--; }
             }
 
             try

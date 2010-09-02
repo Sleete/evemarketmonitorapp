@@ -83,64 +83,73 @@ namespace EveMarketMonitorApp.GUIElements
                 UpdateStatus(0, 0, "Checking License", "", false);
                 ValidateInstall(false, splash);
 
-                // DO ANY SETUP HERE.
-                // The splash screen will be showing while these methods are executed.
-                Diagnostics.StartTimer("Environment");
-                UpdateStatus(0, 0, "Setting up environment", "", false);
-                SetupEnvironment();
-                Diagnostics.StopTimer("Environment");
-                UpdateStatus(0, 0, "Checking Prerequesits", "", false);
-                if (Prerequs())
+                if (Globals.License != LicenseType.Full &&
+                    Globals.License != LicenseType.Lite &&
+                    Globals.License != LicenseType.Trial)
                 {
-                    Diagnostics.StartTimer("PingChecks");
-                    UpdateStatus(0, 0, "Checking remote servers", "", false);
-                    PingServers();
-                    Diagnostics.StopTimer("PingChecks");
-                    Diagnostics.StartTimer("Updates");
-                    // Update settings and user database if needed.
-                    UpdateStatus(0, 0, "Initalising database", "", false);
-                    //try
-                    //{
-                    Updater.Update();
-                    //}
-                    //catch (EMMAException)
-                    //{
-                    //UpdateStatus(0, 0, "Done", "", true);
-                    //MessageBox.Show(splash, "Critical error updating EMMA database. For details, see " +
-                    //    "\"Logging/ExceptionLog.txt\"", "Ciritcal error",
-                    //    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    //}
-                    Updater.InitDBs();
-                    CheckForDocumentation();
-                    checkForUpdates = checkForUpdates && EveMarketMonitorApp.Properties.Settings.Default.AutoUpdate;
-                    if (checkForUpdates)
+                    this.Close();
+                }
+                else
+                {
+                    // DO ANY SETUP HERE.
+                    // The splash screen will be showing while these methods are executed.
+                    Diagnostics.StartTimer("Environment");
+                    UpdateStatus(0, 0, "Setting up environment", "", false);
+                    SetupEnvironment();
+                    Diagnostics.StopTimer("Environment");
+                    UpdateStatus(0, 0, "Checking Prerequesits", "", false);
+                    if (Prerequs())
                     {
-                        DateTime lastCheck = Properties.Settings.Default.LastEMMAUpdateCheck;
-                        if (lastCheck.AddHours(5).CompareTo(DateTime.UtcNow) < 0)
+                        Diagnostics.StartTimer("PingChecks");
+                        UpdateStatus(0, 0, "Checking remote servers", "", false);
+                        PingServers();
+                        Diagnostics.StopTimer("PingChecks");
+                        Diagnostics.StartTimer("Updates");
+                        // Update settings and user database if needed.
+                        UpdateStatus(0, 0, "Initalising database", "", false);
+                        //try
+                        //{
+                        Updater.Update();
+                        //}
+                        //catch (EMMAException)
+                        //{
+                        //UpdateStatus(0, 0, "Done", "", true);
+                        //MessageBox.Show(splash, "Critical error updating EMMA database. For details, see " +
+                        //    "\"Logging/ExceptionLog.txt\"", "Ciritcal error",
+                        //    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        //}
+                        Updater.InitDBs();
+                        CheckForDocumentation();
+                        checkForUpdates = checkForUpdates && EveMarketMonitorApp.Properties.Settings.Default.AutoUpdate;
+                        if (checkForUpdates)
                         {
-                            UpdateStatus(0, 0, "Checking for updates", "", false);
-                            // Check for updates to EMMA components
-                            AutoUpdate();
-                            Properties.Settings.Default.LastEMMAUpdateCheck = DateTime.UtcNow;
-                            Properties.Settings.Default.Save();
+                            DateTime lastCheck = Properties.Settings.Default.LastEMMAUpdateCheck;
+                            if (lastCheck.AddHours(5).CompareTo(DateTime.UtcNow) < 0)
+                            {
+                                UpdateStatus(0, 0, "Checking for updates", "", false);
+                                // Check for updates to EMMA components
+                                AutoUpdate();
+                                Properties.Settings.Default.LastEMMAUpdateCheck = DateTime.UtcNow;
+                                Properties.Settings.Default.Save();
+                            }
                         }
-                    }
-                    Diagnostics.StopTimer("Updates");
-                    Diagnostics.StartTimer("MapInit");
-                    // Pre-load map data.
-                    Map.InitaliseData();
-                    UpdateStatus(0, 0, "Getting latest outpost data", "", false);
-                    EveAPI.UpdateOutpostData();
-                    Diagnostics.StopTimer("MapInit");
-                    Diagnostics.StartTimer("AutoLogin");
-                    // Log user in if they have auto login turned on
-                    AutoLogin();
-                    Diagnostics.StopTimer("AutoLogin");
-                    //UpdateStatus(0, 0, "Starting program", "", false);
+                        Diagnostics.StopTimer("Updates");
+                        Diagnostics.StartTimer("MapInit");
+                        // Pre-load map data.
+                        Map.InitaliseData();
+                        UpdateStatus(0, 0, "Getting latest outpost data", "", false);
+                        EveAPI.UpdateOutpostData();
+                        Diagnostics.StopTimer("MapInit");
+                        Diagnostics.StartTimer("AutoLogin");
+                        // Log user in if they have auto login turned on
+                        AutoLogin();
+                        Diagnostics.StopTimer("AutoLogin");
+                        //UpdateStatus(0, 0, "Starting program", "", false);
 
-                    // make sure we show the splash screen for a minimum of one second.
-                    // ... it looks wierd otherwise.
-                    while (start.AddSeconds(1).CompareTo(DateTime.UtcNow) > 0) { }
+                        // make sure we show the splash screen for a minimum of one second.
+                        // ... it looks wierd otherwise.
+                        while (start.AddSeconds(1).CompareTo(DateTime.UtcNow) > 0) { }
+                    }
                 }
             }
             catch (Exception ex)
@@ -1277,6 +1286,7 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     licenseMgt.ShowDialog();
                 }
+                Globals.License = licenseMgt.GetLicenseType();
             }
             catch (Exception ex)
             {

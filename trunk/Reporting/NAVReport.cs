@@ -81,12 +81,12 @@ namespace EveMarketMonitorApp.Reporting
             ReportSection walletSection = new ReportSection(_columns.Length, "W", "Wallet Balance", this);
             ReportSection escrowSection = new ReportSection(_columns.Length, "E", "Cash in Escrow", this);
             ReportSection assetsSection = new ReportSection(_columns.Length, "A", "Assets", this);
-            //ReportSection sellOrdersSection = new ReportSection(_columns.Length, "S", "Sell Orders", this);
+            ReportSection sellOrdersSection = new ReportSection(_columns.Length, "S", "Sell Orders", this);
 
             root.AddSection(walletSection);
             root.AddSection(escrowSection);
             root.AddSection(assetsSection);
-            //root.AddSection(sellOrdersSection);
+            root.AddSection(sellOrdersSection);
 
             foreach (FinanceAccessParams accessParams in _financeAccessParams)
             {
@@ -261,26 +261,26 @@ namespace EveMarketMonitorApp.Reporting
                     SetValue(_columns[columnNo].Name, "A" + ownerID.ToString(), assetsValue);
                 }
 
-                //_sections.GetSection("S").AddRow(
-                //    _columns.Length,
-                //    "S" + ownerID.ToString(),
-                //    (corp ? character.CorpName : character.CharName));
+                _sections.GetSection("S").AddRow(
+                    _columns.Length,
+                    "S" + ownerID.ToString(),
+                    (corp ? character.CorpName : character.CharName));
 
 
-                //Diagnostics.ResetTimer("NAVReport.GetSellOrderValue");
-                //for (int columnNo = 0; columnNo < _columns.Length; columnNo++)
-                //{
-                //    progressCounter++;
-                //    UpdateStatus(progressCounter, maxProgress,
-                //        (corp ? character.CorpName : character.CharName),
-                //        "Value of sell orders", false);
+                Diagnostics.ResetTimer("NAVReport.GetSellOrderValue");
+                for (int columnNo = 0; columnNo < _columns.Length; columnNo++)
+                {
+                    progressCounter++;
+                    UpdateStatus(progressCounter, maxProgress,
+                        (corp ? character.CorpName : character.CharName),
+                        "Value of sell orders", false);
 
-                //    /// Get sell orders value and add to report.
-                //    Diagnostics.StartTimer("NAVReport.GetSellOrderValue");
-                //    decimal sellOrdersValue = NAVHistory.GetSellOrdersValue(ownerID, _columns[columnNo].EndDate);
-                //    Diagnostics.StopTimer("NAVReport.GetSellOrderValue");
-                //    SetValue(_columns[columnNo].Name, "S" + ownerID.ToString(), sellOrdersValue);
-                //}
+                    /// Get sell orders value and add to report.
+                    Diagnostics.StartTimer("NAVReport.GetSellOrderValue");
+                    decimal sellOrdersValue = NAVHistory.GetSellOrdersValue(ownerID, _columns[columnNo].EndDate);
+                    Diagnostics.StopTimer("NAVReport.GetSellOrderValue");
+                    SetValue(_columns[columnNo].Name, "S" + ownerID.ToString(), sellOrdersValue);
+                }
                 Diagnostics.StopTimer("NAVReport." + ownerID.ToString());
 
                 DiagnosticUpdate("", "--------------------------------------------");
