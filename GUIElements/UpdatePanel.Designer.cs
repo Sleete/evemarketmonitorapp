@@ -45,7 +45,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.lblAssetsStatus = new System.Windows.Forms.Label();
             this.lblCorpTag = new System.Windows.Forms.Label();
             this.errorToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblName = new System.Windows.Forms.Label();
             this.chkUpdate = new System.Windows.Forms.CheckBox();
             this.chkAutoIndustryJobs = new System.Windows.Forms.CheckBox();
             this.lblIndustryJobsStatus = new System.Windows.Forms.Label();
@@ -234,14 +234,15 @@ namespace EveMarketMonitorApp.GUIElements
             this.lblCorpTag.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCorpTag.Visible = false;
             // 
-            // label1
+            // lblName
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(-3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(85, 13);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "Update from API";
+            this.lblName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblName.Location = new System.Drawing.Point(-3, 0);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(155, 14);
+            this.lblName.TabIndex = 14;
+            this.lblName.Text = "Update from API";
             // 
             // chkUpdate
             // 
@@ -317,7 +318,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.lblName);
             this.panel1.Controls.Add(this.chkUpdate);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(123, 3);
@@ -433,7 +434,7 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.Label lblAssetsStatus;
         private System.Windows.Forms.Label lblCorpTag;
         private System.Windows.Forms.ToolTip errorToolTip;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.CheckBox chkUpdate;
         private System.Windows.Forms.CheckBox chkAutoIndustryJobs;
         private System.Windows.Forms.Label lblIndustryJobsStatus;

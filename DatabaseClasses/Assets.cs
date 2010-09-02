@@ -615,10 +615,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
         public static decimal GetAssetsValue(int ownerID)
         {
+            return GetAssetsValue(ownerID, null);
+        }
+        public static decimal GetAssetsValue(int ownerID, List<int> excludedStates)
+        {
             decimal retVal = 0;
             List<AssetAccessParams> accessParams = new List<AssetAccessParams>();
             accessParams.Add(new AssetAccessParams(ownerID));
             EMMADataSet.AssetsDataTable assets = GetAssets(accessParams);
+            if (excludedStates == null) { excludedStates = new List<int>(); }
             //StreamWriter log = File.CreateText("C:\\NAVAssets.txt");
             //try
             //{
@@ -627,7 +632,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     // Use The forge to value items if possible.
                     //decimal value = UserAccount.CurrentGroup.ItemValues.GetItemValue(asset.ItemID, 10000002, true);
                     //retVal += value * asset.Quantity;
-                    retVal += new Asset(asset).TotalValue;
+                    if (!excludedStates.Contains(asset.Status))
+                    {
+                        retVal += new Asset(asset).TotalValue;
+                    }
                     //log.WriteLine(Items.GetItemName(asset.ItemID) + ", " + asset.Quantity + ", " + value); 
                 }
             //}

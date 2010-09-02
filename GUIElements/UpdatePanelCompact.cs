@@ -44,6 +44,9 @@ namespace EveMarketMonitorApp.GUIElements
             _type = type;
             _character = character;
 
+            lblName.Text = "Update " + (type == CharOrCorp.Char ? _character.CharName : _character.CorpName) + 
+                " from API";
+            
             lblTransStatus.BackColor = _upToDateColour;
 
             _lastUpdateAttempt.Add(APIDataType.Assets, DateTime.MinValue);

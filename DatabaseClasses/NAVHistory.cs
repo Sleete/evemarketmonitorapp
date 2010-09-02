@@ -264,7 +264,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             if (date.CompareTo(DateTime.UtcNow.AddHours(-2)) >= 0)
             {
-                retVal = Assets.GetAssetsValue(ownerID);
+                List<int> excludedStates = new List<int>();
+                excludedStates.Add((int)AssetStatus.States.ForSaleViaMarket);
+                retVal = Assets.GetAssetsValue(ownerID, excludedStates);
                 //retVal += Orders.GetSellOrderValue(character.CharID, corp, 0);
             }
             else
@@ -285,7 +287,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 //{
                     // If there is no data in the database then get the current value of all assets and use
                     // it to work from.
-                    retVal = Assets.GetAssetsValue(ownerID);
+                    List<int> excludedStates = new List<int>();
+                    excludedStates.Add((int)AssetStatus.States.ForSaleViaMarket);
+                    retVal = Assets.GetAssetsValue(ownerID, excludedStates);
                     startDate = date;
                     endDate = DateTime.UtcNow;
                 /*}
@@ -369,16 +373,33 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         }
                         if (trans.SellerID == ownerID /*|| trans.SellerCharacterID == ownerID*/)
                         {
-                            mult = 1;
+                            // Since we deal with the value of items in sell orders seperately,
+                            // we need to figure out if this sell transaction relates to a sell
+                            // order or was just a direct sale.
+                            Order empty, sellOrder;
+                            if (Orders.GetOrder(new Transaction(trans), out empty, out sellOrder))
+                            {
+                                // Found a matching order so ignore this transaction.
+                                mult = 0;
+                            }
+                            else
+                            {
+                                // We can't find a matching sell order so assume it was a direct sale
+                                // and include with our numbers here.
+                                mult = 1;
+                            }
                         }
 
-                        if (deltaQuantaties.ContainsKey(trans.ItemID))
+                        if (mult != 0)
                         {
-                            deltaQuantaties[trans.ItemID] += trans.Quantity * mult;
-                        }
-                        else
-                        {
-                            deltaQuantaties.Add(trans.ItemID, trans.Quantity * mult);
+                            if (deltaQuantaties.ContainsKey(trans.ItemID))
+                            {
+                                deltaQuantaties[trans.ItemID] += trans.Quantity * mult;
+                            }
+                            else
+                            {
+                                deltaQuantaties.Add(trans.ItemID, trans.Quantity * mult);
+                            }
                         }
                     }
 

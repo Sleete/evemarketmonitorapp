@@ -33,7 +33,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.picPortrait = new System.Windows.Forms.PictureBox();
             this.lblCorpTag = new System.Windows.Forms.Label();
             this.errorToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblName = new System.Windows.Forms.Label();
             this.chkUpdate = new System.Windows.Forms.CheckBox();
             this.lblTransStatus = new System.Windows.Forms.Label();
             this.chkAutoIndustryJobs = new System.Windows.Forms.CheckBox();
@@ -77,14 +77,15 @@ namespace EveMarketMonitorApp.GUIElements
             this.lblCorpTag.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCorpTag.Visible = false;
             // 
-            // label1
+            // lblName
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 3);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(85, 13);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "Update from API";
+            this.lblName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblName.Location = new System.Drawing.Point(3, 3);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(108, 14);
+            this.lblName.TabIndex = 14;
+            this.lblName.Text = "Update from API";
             // 
             // chkUpdate
             // 
@@ -248,7 +249,7 @@ namespace EveMarketMonitorApp.GUIElements
             // panel3
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.panel3, 5);
-            this.panel3.Controls.Add(this.label1);
+            this.panel3.Controls.Add(this.lblName);
             this.panel3.Controls.Add(this.chkUpdate);
             this.panel3.Controls.Add(this.chkAutoIndustryJobs);
             this.panel3.Controls.Add(this.chkAutoAssets);
@@ -281,7 +282,7 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.PictureBox picPortrait;
         private System.Windows.Forms.Label lblCorpTag;
         private System.Windows.Forms.ToolTip errorToolTip;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.CheckBox chkUpdate;
         private System.Windows.Forms.Label lblTransStatus;
         private System.Windows.Forms.CheckBox chkAutoIndustryJobs;
