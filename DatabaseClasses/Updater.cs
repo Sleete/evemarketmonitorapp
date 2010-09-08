@@ -8925,7 +8925,37 @@ AS
                         }
                         #endregion
                     }
-           
+                    if (dbVersion.CompareTo(new Version("1.5.1.15")) < 0)
+                    {
+                        #region Creating Blueprints table
+                        commandText =
+                               @"CREATE TABLE [dbo].[Blueprints](
+	[AssetID] [bigint] NOT NULL,
+	[PE] [int] NOT NULL,
+	[ME] [int] NOT NULL,
+	[BPO] [bit] NOT NULL,
+	[Value] [decimal](18, 2) NOT NULL,
+ CONSTRAINT [PK_Blueprints] PRIMARY KEY CLUSTERED 
+(
+	[AssetID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.15"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem creating Blueprints table", ex);
+                        }
+                        #endregion
+                    }
+          
        
          
                 }

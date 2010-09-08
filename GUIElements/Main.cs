@@ -85,7 +85,8 @@ namespace EveMarketMonitorApp.GUIElements
 
                 if (Globals.License != LicenseType.Full &&
                     Globals.License != LicenseType.Lite &&
-                    Globals.License != LicenseType.Trial)
+                    Globals.License != LicenseType.Trial &&
+                    Globals.License != LicenseType.Monthly)
                 {
                     this.Close();
                 }
