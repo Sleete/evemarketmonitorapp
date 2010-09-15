@@ -82,6 +82,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.CalcProfitInTransView);
             GetValue(Setting.UseCompactUpdatePanel);
             GetValue(Setting.ShowEMMAInTaskBarWhenMinimised);
+            GetValue(Setting.ExtendedDiags);
         }
 
         /// <summary>
@@ -291,6 +292,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     break;
                 case Setting.ShowEMMAInTaskBarWhenMinimised:
                     retVal = bool.TrueString;
+                    break;
+                case Setting.ExtendedDiags:
+                    retVal = bool.FalseString;
                     break;
                 default:
                     break;
@@ -555,6 +559,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set { SetValue(Setting.ManufacturingMode, value.ToString()); }
         }
 
+        public bool ExtendedDiagnostics
+        {
+            get { return bool.Parse(GetValue(Setting.ExtendedDiags)); }
+            set { SetValue(Setting.ExtendedDiags, value.ToString()); }
+        }
+
         public string AssetsViewWarning
         {
             get { return GetValue(Setting.AssetsViewWarning); }
@@ -737,7 +747,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             CalcProfitInTransView,
             APIIndustryJobsUpdatePeriod,
             UseCompactUpdatePanel,
-            ShowEMMAInTaskBarWhenMinimised
+            ShowEMMAInTaskBarWhenMinimised,
+            ExtendedDiags
         }
 
     }

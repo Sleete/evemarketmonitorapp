@@ -873,7 +873,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
         public static EMMADataSet.IDTableDataTable GetInvolvedSystemIDs(int ownerID,
-            List<int> regionIDs, List<int> stationIDs, bool includeContainers, bool includeContents)
+            List<int> regionIDs, List<int> stationIDs, int itemID, int minimumQuantity,
+            bool includeContainers, bool includeContents)
         {
             EMMADataSet.IDTableDataTable table = new EMMADataSet.IDTableDataTable();
             if (regionIDs == null) { regionIDs = new List<int>(); }
@@ -896,7 +897,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             lock (assetsTableAdapter)
             {
                 IDTableAdapter.FillLimitedSystemIDsByAssets(table, ownerID,
-                    regionIDList.ToString(), stationIDList.ToString(), includeContainers, includeContents);
+                    regionIDList.ToString(), stationIDList.ToString(), itemID, minimumQuantity,
+                    includeContainers, includeContents);
             }
             return table;
         }

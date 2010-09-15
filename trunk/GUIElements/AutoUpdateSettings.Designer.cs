@@ -51,6 +51,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.chkShowInTaskbar = new System.Windows.Forms.CheckBox();
+            this.chkExtendedDiags = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -63,7 +64,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(197, 258);
+            this.btnCancel.Location = new System.Drawing.Point(197, 311);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(82, 29);
             this.btnCancel.TabIndex = 0;
@@ -74,7 +75,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(109, 258);
+            this.btnOk.Location = new System.Drawing.Point(109, 311);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(82, 29);
             this.btnOk.TabIndex = 1;
@@ -95,7 +96,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnUpdate
             // 
             this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnUpdate.Location = new System.Drawing.Point(6, 241);
+            this.btnUpdate.Location = new System.Drawing.Point(6, 294);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(83, 37);
             this.btnUpdate.TabIndex = 3;
@@ -118,7 +119,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox1.Controls.Add(this.btnUpdate);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(274, 284);
+            this.groupBox1.Size = new System.Drawing.Size(274, 337);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Update Settings";
@@ -136,7 +137,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnDocUpdates
             // 
             this.btnDocUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDocUpdates.Location = new System.Drawing.Point(95, 241);
+            this.btnDocUpdates.Location = new System.Drawing.Point(95, 294);
             this.btnDocUpdates.Name = "btnDocUpdates";
             this.btnDocUpdates.Size = new System.Drawing.Size(83, 37);
             this.btnDocUpdates.TabIndex = 7;
@@ -147,7 +148,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnServerDefaults
             // 
             this.btnServerDefaults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnServerDefaults.Location = new System.Drawing.Point(184, 241);
+            this.btnServerDefaults.Location = new System.Drawing.Point(184, 294);
             this.btnServerDefaults.Name = "btnServerDefaults";
             this.btnServerDefaults.Size = new System.Drawing.Size(83, 37);
             this.btnServerDefaults.TabIndex = 7;
@@ -172,7 +173,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.lstServers.FormattingEnabled = true;
             this.lstServers.Location = new System.Drawing.Point(6, 104);
             this.lstServers.Name = "lstServers";
-            this.lstServers.Size = new System.Drawing.Size(262, 121);
+            this.lstServers.Size = new System.Drawing.Size(262, 173);
             this.lstServers.TabIndex = 5;
             this.lstServers.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstServers_KeyDown);
             // 
@@ -297,16 +298,17 @@ namespace EveMarketMonitorApp.GUIElements
             this.splitContainer1.Panel2.Controls.Add(this.btnCancel);
             this.splitContainer1.Panel2.Controls.Add(this.btnOk);
             this.splitContainer1.Panel2.Controls.Add(this.groupBox3);
-            this.splitContainer1.Size = new System.Drawing.Size(566, 299);
+            this.splitContainer1.Size = new System.Drawing.Size(566, 352);
             this.splitContainer1.SplitterDistance = 280;
             this.splitContainer1.TabIndex = 7;
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.chkExtendedDiags);
             this.groupBox4.Controls.Add(this.chkShowInTaskbar);
             this.groupBox4.Location = new System.Drawing.Point(3, 208);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(276, 44);
+            this.groupBox4.Size = new System.Drawing.Size(276, 97);
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Other settings";
@@ -321,11 +323,21 @@ namespace EveMarketMonitorApp.GUIElements
             this.chkShowInTaskbar.Text = "Show EMMA in taskbar when minimised";
             this.chkShowInTaskbar.UseVisualStyleBackColor = true;
             // 
+            // chkExtendedDiags
+            // 
+            this.chkExtendedDiags.Location = new System.Drawing.Point(6, 42);
+            this.chkExtendedDiags.Name = "chkExtendedDiags";
+            this.chkExtendedDiags.Size = new System.Drawing.Size(261, 30);
+            this.chkExtendedDiags.TabIndex = 1;
+            this.chkExtendedDiags.Text = "Extended diagnostics (warning, large log files may be generated. Do not leave swi" +
+                "tched on)";
+            this.chkExtendedDiags.UseVisualStyleBackColor = true;
+            // 
             // AutoUpdateSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(566, 299);
+            this.ClientSize = new System.Drawing.Size(566, 352);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AutoUpdateSettings";
@@ -370,5 +382,6 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.CheckBox chkDocUpdates;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox chkShowInTaskbar;
+        private System.Windows.Forms.CheckBox chkExtendedDiags;
     }
 }

@@ -8955,7 +8955,45 @@ AS
                         }
                         #endregion
                     }
-          
+                    if (dbVersion.CompareTo(new Version("1.5.1.16")) < 0)
+                    {
+                        #region Updating AssetsGetLimitedSystemIDs stored proc
+                        commandText =
+                           @"ALTER PROCEDURE dbo.AssetsGetLimitedSystemIDs
+	@ownerID			int,
+	@regionIDs			varchar(MAX),
+	@stationIDs			varchar(MAX),
+	@itemID				int,
+	@minQuantity		int,
+	@includeContainers	bit,
+	@includeContents	bit
+AS
+	SELECT SystemID AS [ID]
+	FROM Assets
+		JOIN CLR_intlist_split(@regionIDs) r ON (Assets.RegionID = r.number OR r.number = 0)
+		JOIN CLR_intlist_split(@stationIDs) s ON (Assets.LocationID = s.number OR s.number = 0)
+	WHERE (OwnerID = @ownerID) AND (Assets.ContainerID = 0 OR @includeContents = 1) AND
+		(Assets.IsContainer = 0 OR @includeContainers = 1) AND (Assets.ItemID = @itemID OR @itemID = 0) AND
+		(Assets.Quantity > @minQuantity)
+	GROUP BY SystemID
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.5.1.16"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetLimitedSystemIDs' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+      
        
          
                 }

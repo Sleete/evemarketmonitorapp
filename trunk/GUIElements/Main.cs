@@ -80,61 +80,62 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 //splash.ShowMessage("Test Message", "Test", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DateTime start = DateTime.UtcNow;
-                UpdateStatus(0, 0, "Checking License", "", false);
-                ValidateInstall(false, splash);
-
-                if (Globals.License != LicenseType.Full &&
-                    Globals.License != LicenseType.Lite &&
-                    Globals.License != LicenseType.Trial &&
-                    Globals.License != LicenseType.Monthly)
+                // DO ANY SETUP HERE.
+                // The splash screen will be showing while these methods are executed.
+                Diagnostics.StartTimer("Environment");
+                UpdateStatus(0, 0, "Setting up environment", "", false);
+                SetupEnvironment();
+                Diagnostics.StopTimer("Environment");
+                UpdateStatus(0, 0, "Checking Prerequesits", "", false);
+                if (Prerequs())
                 {
-                    this.Close();
-                }
-                else
-                {
-                    // DO ANY SETUP HERE.
-                    // The splash screen will be showing while these methods are executed.
-                    Diagnostics.StartTimer("Environment");
-                    UpdateStatus(0, 0, "Setting up environment", "", false);
-                    SetupEnvironment();
-                    Diagnostics.StopTimer("Environment");
-                    UpdateStatus(0, 0, "Checking Prerequesits", "", false);
-                    if (Prerequs())
+                    Diagnostics.StartTimer("PingChecks");
+                    UpdateStatus(0, 0, "Checking remote servers", "", false);
+                    PingServers();
+                    Diagnostics.StopTimer("PingChecks");
+                    Diagnostics.StartTimer("Updates");
+                    // Update settings and user database if needed.
+                    UpdateStatus(0, 0, "Initalising database", "", false);
+                    //try
+                    //{
+                    Updater.Update();
+                    //}
+                    //catch (EMMAException)
+                    //{
+                    //UpdateStatus(0, 0, "Done", "", true);
+                    //MessageBox.Show(splash, "Critical error updating EMMA database. For details, see " +
+                    //    "\"Logging/ExceptionLog.txt\"", "Ciritcal error",
+                    //    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //}
+                    Updater.InitDBs();
+                    CheckForDocumentation();
+                    checkForUpdates = checkForUpdates && EveMarketMonitorApp.Properties.Settings.Default.AutoUpdate;
+                    if (checkForUpdates)
                     {
-                        Diagnostics.StartTimer("PingChecks");
-                        UpdateStatus(0, 0, "Checking remote servers", "", false);
-                        PingServers();
-                        Diagnostics.StopTimer("PingChecks");
-                        Diagnostics.StartTimer("Updates");
-                        // Update settings and user database if needed.
-                        UpdateStatus(0, 0, "Initalising database", "", false);
-                        //try
-                        //{
-                        Updater.Update();
-                        //}
-                        //catch (EMMAException)
-                        //{
-                        //UpdateStatus(0, 0, "Done", "", true);
-                        //MessageBox.Show(splash, "Critical error updating EMMA database. For details, see " +
-                        //    "\"Logging/ExceptionLog.txt\"", "Ciritcal error",
-                        //    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        //}
-                        Updater.InitDBs();
-                        CheckForDocumentation();
-                        checkForUpdates = checkForUpdates && EveMarketMonitorApp.Properties.Settings.Default.AutoUpdate;
-                        if (checkForUpdates)
+                        DateTime lastCheck = Properties.Settings.Default.LastEMMAUpdateCheck;
+                        if (lastCheck.AddHours(5).CompareTo(DateTime.UtcNow) < 0)
                         {
-                            DateTime lastCheck = Properties.Settings.Default.LastEMMAUpdateCheck;
-                            if (lastCheck.AddHours(5).CompareTo(DateTime.UtcNow) < 0)
-                            {
-                                UpdateStatus(0, 0, "Checking for updates", "", false);
-                                // Check for updates to EMMA components
-                                AutoUpdate();
-                                Properties.Settings.Default.LastEMMAUpdateCheck = DateTime.UtcNow;
-                                Properties.Settings.Default.Save();
-                            }
+                            UpdateStatus(0, 0, "Checking for updates", "", false);
+                            // Check for updates to EMMA components
+                            AutoUpdate();
+                            Properties.Settings.Default.LastEMMAUpdateCheck = DateTime.UtcNow;
+                            Properties.Settings.Default.Save();
                         }
-                        Diagnostics.StopTimer("Updates");
+                    }
+                    Diagnostics.StopTimer("Updates");
+                    UpdateStatus(0, 0, "Checking License", "", false);
+                    ValidateInstall(false, splash);
+
+                    if (Globals.License != LicenseType.Full &&
+                        Globals.License != LicenseType.Lite &&
+                        Globals.License != LicenseType.Trial &&
+                        Globals.License != LicenseType.Monthly)
+                    {
+                        this.Close();
+                    }
+                    else
+                    {
+
                         Diagnostics.StartTimer("MapInit");
                         // Pre-load map data.
                         Map.InitaliseData();
