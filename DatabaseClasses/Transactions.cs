@@ -36,6 +36,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             int stationID = newRow.StationID;
 
             //int ownerID = corp ? UserAccount.CurrentGroup.GetCharacter(charID).CorpID : charID;
+            bool exDiag = UserAccount.Settings.ExtendedDiagnostics;
+
+            StringBuilder process = new StringBuilder("");
 
             try
             {
@@ -46,6 +49,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     // the profit.
 
                     // Note: in future, we could try and work it out from 'AssetsLost'
+                    if (exDiag)
+                    {
+                        process.Append("Effective date of last assets update is after this transaction's date/time.");
+                        process.Append(assetsEffectiveDate);
+                        process.Append(" / ");
+                        process.Append(newRow.DateTime);
+                    }
                 }
                 else
                 {
@@ -123,6 +133,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     }
                     else
                     {
+                        if (exDiag)
+                        {
+                            process.Append(Names.GetName(ownerID));
+                            process.Append(" has no ");
+                            process.Append(Items.GetItemName(newRow.ItemID));
+                            process.Append("'s at ");
+                            process.Append(Stations.GetStationName(newRow.StationID));
+                            process.Append(". Consquently, no profit value can be calculated right now. This transaction has been flagged to have it's profit calculated when the next assets update occurs.");
+                        }
                         // If there are no assets at the station where the sell took place then flag
                         // the transaction to have it's profit calculated when the next assets 
                         // update is performed.
@@ -679,7 +698,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         totSell += quantityToUse;
                         decimal transTot = trans.Price * quantityToUse;
                         totIskSell += transTot;
-                        totIskSellProfit += trans.SellerUnitProfit * quantityToUse;
+                        if (trans.SellerUnitProfit == 0)
+                        {
+                            // If the seller unit profit has not been recorded for some reason then
+                            // we need to calculate it.
+                            Transaction t = new Transaction(trans);
+                            totIskSellProfit += t.GrossUnitProfit * quantityToUse;
+                        }
+                        else { totIskSellProfit += trans.SellerUnitProfit * quantityToUse; }
 
                         if (getMedians)
                         {

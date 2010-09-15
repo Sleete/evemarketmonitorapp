@@ -41,6 +41,7 @@ namespace EveMarketMonitorApp.GUIElements
             chkGridCalcEnabled.Checked = UserAccount.Settings.GridCalcEnabled;
             cmbAssetsViewWarning.Text = UserAccount.Settings.AssetsViewWarning;
             chkShowInTaskbar.Checked = UserAccount.Settings.ShowInTaskbarWhenMinimised;
+            chkExtendedDiags.Checked = UserAccount.Settings.ExtendedDiagnostics;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -64,6 +65,7 @@ namespace EveMarketMonitorApp.GUIElements
             UserAccount.Settings.GridCalcEnabled = chkGridCalcEnabled.Checked;
             UserAccount.Settings.AssetsViewWarning = cmbAssetsViewWarning.Text;
             UserAccount.Settings.ShowInTaskbarWhenMinimised = chkShowInTaskbar.Checked;
+            UserAccount.Settings.ExtendedDiagnostics = chkExtendedDiags.Checked;
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

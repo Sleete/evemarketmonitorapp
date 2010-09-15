@@ -25443,12 +25443,14 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessParams", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[4].Connection = this.Connection;
-            this._commandCollection[4].CommandText = "dbo.AssetsGetLimitedSystemIDs";
+            this._commandCollection[4].CommandText = "AssetsGetLimitedSystemIDs";
             this._commandCollection[4].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@minQuantity", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeContents", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5] = new global::System.Data.SqlClient.SqlCommand();
@@ -25647,7 +25649,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillLimitedSystemIDsByAssets(EMMADataSet.IDTableDataTable dataTable, global::System.Nullable<int> ownerID, string regionIDs, string stationIDs, global::System.Nullable<bool> includeContainers, global::System.Nullable<bool> includeContents) {
+        public virtual int FillLimitedSystemIDsByAssets(EMMADataSet.IDTableDataTable dataTable, global::System.Nullable<int> ownerID, string regionIDs, string stationIDs, global::System.Nullable<int> itemID, global::System.Nullable<int> minQuantity, global::System.Nullable<bool> includeContainers, global::System.Nullable<bool> includeContents) {
             this.Adapter.SelectCommand = this.CommandCollection[4];
             if ((ownerID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
@@ -25667,17 +25669,29 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = ((string)(stationIDs));
             }
-            if ((includeContainers.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((bool)(includeContainers.Value));
+            if ((itemID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(itemID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
-            if ((includeContents.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((bool)(includeContents.Value));
+            if ((minQuantity.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(minQuantity.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            if ((includeContainers.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[6].Value = ((bool)(includeContainers.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((includeContents.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[7].Value = ((bool)(includeContents.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[7].Value = global::System.DBNull.Value;
             }
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -25689,7 +25703,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.IDTableDataTable GetLimitedSystemIDsByAssets(global::System.Nullable<int> ownerID, string regionIDs, string stationIDs, global::System.Nullable<bool> includeContainers, global::System.Nullable<bool> includeContents) {
+        public virtual EMMADataSet.IDTableDataTable GetLimitedSystemIDsByAssets(global::System.Nullable<int> ownerID, string regionIDs, string stationIDs, global::System.Nullable<int> itemID, global::System.Nullable<int> minQuantity, global::System.Nullable<bool> includeContainers, global::System.Nullable<bool> includeContents) {
             this.Adapter.SelectCommand = this.CommandCollection[4];
             if ((ownerID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
@@ -25709,17 +25723,29 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = ((string)(stationIDs));
             }
-            if ((includeContainers.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((bool)(includeContainers.Value));
+            if ((itemID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(itemID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
-            if ((includeContents.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((bool)(includeContents.Value));
+            if ((minQuantity.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(minQuantity.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            if ((includeContainers.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[6].Value = ((bool)(includeContainers.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[6].Value = global::System.DBNull.Value;
+            }
+            if ((includeContents.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[7].Value = ((bool)(includeContents.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[7].Value = global::System.DBNull.Value;
             }
             EMMADataSet.IDTableDataTable dataTable = new EMMADataSet.IDTableDataTable();
             this.Adapter.Fill(dataTable);

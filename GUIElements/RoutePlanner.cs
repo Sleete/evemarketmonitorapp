@@ -22,6 +22,9 @@ namespace EveMarketMonitorApp.GUIElements
         private int _nextFreeIndex = 0;
         private string _lastStartSystem = "";
         private string _lastEndSystem = "";
+        private List<string> _recentItems;
+        private string _lastItem = "";
+        private List<int> _listedWPs = new List<int>();
 
         public RoutePlanner()
         {
@@ -82,6 +85,16 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     cmbOwner.SelectedIndex = 0;
                 }
+
+                _recentItems = UserAccount.CurrentGroup.Settings.RecentItems;
+                _recentItems.Sort();
+                cmbItem.Items.AddRange(_recentItems.ToArray());
+                cmbItem.AutoCompleteSource = AutoCompleteSource.ListItems;
+                cmbItem.AutoCompleteMode = AutoCompleteMode.Suggest;
+                cmbItem.KeyDown += new KeyEventHandler(cmbItem_KeyDown);
+                cmbItem.SelectedIndexChanged += new EventHandler(cmbItem_SelectedIndexChanged);
+                cmbItem.Tag = 0;
+
             }
             catch (Exception ex)
             {
@@ -95,6 +108,57 @@ namespace EveMarketMonitorApp.GUIElements
                     " for details.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+        }
+
+        void cmbItem_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return)
+            {
+                SetSelectedItem();
+            }
+        }
+
+        void cmbItem_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetSelectedItem();
+        }
+
+        private void SetSelectedItem()
+        {
+            this.Cursor = Cursors.WaitCursor;
+            try
+            {
+                if (!cmbItem.Text.Equals(_lastItem))
+                {
+                    cmbItem.Tag = (short)0;
+                    if (!cmbItem.Text.Equals(""))
+                    {
+                        try
+                        {
+                            EveDataSet.invTypesRow item = Items.GetItem(cmbItem.Text);
+                            if (item != null)
+                            {
+                                cmbItem.Tag = item.typeID;
+                                string name = item.typeName;
+                                cmbItem.Text = name;
+                                if (!cmbItem.Items.Contains(name))
+                                {
+                                    cmbItem.Items.Add(name);
+                                    _recentItems.Add(name);
+                                }
+                            }
+                        }
+                        catch (EMMADataException) { }
+                    }
+
+                    if ((short)cmbItem.Tag == 0) { cmbItem.Text = ""; }
+                    _lastItem = cmbItem.Text;
+                }
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
 
         void txtSystem_KeyDown(object sender, KeyEventArgs e)
@@ -193,9 +257,13 @@ namespace EveMarketMonitorApp.GUIElements
             int systemID = (int)txtSystem.Tag;
             if (systemID != 0)
             {
-                string systemName = SolarSystems.GetSystem(systemID).solarSystemName;
-                string regionName = Regions.GetRegionName(SolarSystems.GetSystem(systemID).regionID);
-                lstWaypoints.Items.Add(new SystemData(systemID, systemName, regionName, true));
+                if (!_listedWPs.Contains(systemID))
+                {
+                    string systemName = SolarSystems.GetSystem(systemID).solarSystemName;
+                    string regionName = Regions.GetRegionName(SolarSystems.GetSystem(systemID).regionID);
+                    lstWaypoints.Items.Add(new SystemData(systemID, systemName, regionName, true));
+                    _listedWPs.Add(systemID);
+                }
             }
         }
 
@@ -203,6 +271,11 @@ namespace EveMarketMonitorApp.GUIElements
         {
             if (e.KeyCode == Keys.Delete && lstWaypoints.SelectedIndex >= 0)
             {
+                int systemID = ((SystemData)lstWaypoints.SelectedItem).ID;
+                if (_listedWPs.Contains(systemID))
+                {
+                    _listedWPs.Remove(systemID);
+                }
                 lstWaypoints.Items.RemoveAt(lstWaypoints.SelectedIndex);
             }
         }
@@ -212,32 +285,47 @@ namespace EveMarketMonitorApp.GUIElements
             int ownerID = 0;
             bool corp = false;
             GroupLocation location = null;
+            int itemID = 0;
+            int minQ = 0;
 
             if (cmbOwner.SelectedItem != null)
             {
                 ownerID = ((CharCorpOption)cmbOwner.SelectedItem).Data.ID;
                 corp = ((CharCorpOption)cmbOwner.SelectedItem).Corp;
             }
-            if (cmbLocation.Text != "")
+            if (cmbLocation.Text.Length > 0)
             {
                 location = GroupLocations.GetLocationDetail(cmbLocation.Text);
+            }
+            if (cmbItem.Text.Length > 0)
+            {
+                itemID = (short)cmbItem.Tag;
+            }
+            if (txtMinQuantity.Text.Length > 0)
+            {
+                minQ = int.Parse(txtMinQuantity.Text);
             }
 
             if (ownerID != 0 && location != null)
             {
                 EMMADataSet.IDTableDataTable systemIDs = Assets.GetInvolvedSystemIDs(ownerID,
-                    location.Regions, location.Stations, !chkExcludeContainers.Checked,
+                    location.Regions, location.Stations, itemID, minQ, !chkExcludeContainers.Checked,
                     !chkExcludeContainers.Checked);
 
                 lstWaypoints.BeginUpdate();
-                lstWaypoints.Items.Clear();
+                // User can always clear this list manually if they wish to
+                //lstWaypoints.Items.Clear();
                 foreach (EMMADataSet.IDTableRow idRow in systemIDs)
                 {
                     if (!chkHighSecAssetsOnly.Checked || !SolarSystems.IsLowSec(idRow.ID))
-                    {   
-                        string systemName = SolarSystems.GetSystem(idRow.ID).solarSystemName;
-                        string regionName = Regions.GetRegionName(SolarSystems.GetSystem(idRow.ID).regionID);
-                        lstWaypoints.Items.Add(new SystemData(idRow.ID, systemName, regionName, true));
+                    {
+                        if (!_listedWPs.Contains(idRow.ID))
+                        {
+                            string systemName = SolarSystems.GetSystem(idRow.ID).solarSystemName;
+                            string regionName = Regions.GetRegionName(SolarSystems.GetSystem(idRow.ID).regionID);
+                            lstWaypoints.Items.Add(new SystemData(idRow.ID, systemName, regionName, true));
+                            _listedWPs.Add(idRow.ID);
+                        }
                     }
                 }
                 lstWaypoints.EndUpdate();
@@ -344,6 +432,54 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 SystemData system = (SystemData)lstRoute.Items[e.Index];
                 system.Draw(e.Graphics, e.Bounds, e.Font);
+            }
+        }
+
+        private void btnAutopilotSettings_Click(object sender, EventArgs e)
+        {
+            RouteCalcSettings settings = new RouteCalcSettings();
+            settings.ShowDialog();
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            lstWaypoints.Items.Clear();
+            _listedWPs.Clear();
+        }
+
+        private void txtMinQuantity_Leave(object sender, EventArgs e)
+        {
+            int q = 0;
+            try
+            {
+                q = int.Parse(txtMinQuantity.Text);
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("The specified minimum quantity is invalid, it has been reset to zero", "Invalid value",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtMinQuantity.Text = q.ToString();
+            }
+        }
+
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int selectedIndex = lstRoute.SelectedIndex;
+            for (int i = 0; i < selectedIndex; i++)
+            {
+                SystemData sys = (SystemData)lstRoute.Items[i];
+                if (sys.IsWaypoint)
+                {
+                    foreach (object obj in lstWaypoints.Items)
+                    {
+                        SystemData wpSys = (SystemData)obj;
+                        if (wpSys.ID == sys.ID)
+                        {
+                            lstWaypoints.Items.Remove(obj);
+                        }
+                    }
+                    _listedWPs.Remove(sys.ID);
+                }
             }
         }
 
@@ -550,11 +686,58 @@ namespace EveMarketMonitorApp.GUIElements
                         }
                         else
                         {
-                            // If we get no improvement for 6 consecutive generations then assume that
-                            // we've got the best route we are going to get and leave it at that.
                             if (noImprovementGen == 0) { noImprovementGen = generation; }
+                            if (generation == noImprovementGen + 4)
+                            {
+                                // If we get no improvement for 4 consecutive generations then check
+                                // if we can smartly re-arrange the order of any waypoints in order
+                                // to try and improve things further. At the very least, this can never
+                                // cause the route to be longer.
+                                UpdateStatus(0, 0, "", "Attempting smart rearrangement of waypoints", false);
+
+                                // Need to check to see if any waypoint systems occur more than once 
+                                // in the route. If they do then make sure the waypoint system is the
+                                // first occurance of the system.
+                                // If we make any changes to the route then run through the optimisation
+                                // process again.
+                                int changes = 0;
+                                int counter = 0;
+                                List<SystemData> completeRoute = GetCompleteRoute();
+                                WPRoute tmpRoute = new WPRoute(this, ref _nextFreeIndex, ref _jumps, _idMapper);
+                                foreach (int wp in tmpRoute)
+                                {
+                                    UpdateStatus(counter, tmpRoute.Count, "", 
+                                        "Attempting smart rearrangement of waypoints", false);
+                                    counter++;
+                                    int lastWPID = 0;
+                                    foreach (SystemData sys in completeRoute)
+                                    {
+                                        if (sys.IsWaypoint) { lastWPID = sys.ID; }
+                                        if (sys.ID == wp)
+                                        {
+                                            if (!sys.IsWaypoint)
+                                            {
+                                                // If the first occurance of this waypoint system ID is
+                                                // not actually marked as a waypoint then we need to move 
+                                                // the waypoint...
+                                                this.Remove(wp);
+                                                int insertPoint = lastWPID == 0 ? 0 : this.IndexOf(lastWPID) + 1;
+                                                this.Insert(insertPoint, wp);
+                                                changes++;
+                                            }
+                                            // Once we've found the first occurance of this system, we can bail
+                                            // from the inner for loop.
+                                            break;
+                                        }
+                                    }
+                                }
+                                UpdateStatus(0, 0, "", changes + " waypoints moved", false);
+                                improvement = true;
+                            }
                             if (generation == noImprovementGen + 6)
                             {
+                                // If we get no improvement for 6 consecutive generations then assume that
+                                // we've got the best route we are going to get and leave it at that.
                                 UpdateStatus(0, 0, "", "No further optimizations found", true);
                             }
                             else
@@ -697,15 +880,6 @@ namespace EveMarketMonitorApp.GUIElements
 
         }
 
-        private void btnAutopilotSettings_Click(object sender, EventArgs e)
-        {
-            RouteCalcSettings settings = new RouteCalcSettings();
-            settings.ShowDialog();
-        }
-
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            lstWaypoints.Items.Clear();
-        }
+        
     }
 }
