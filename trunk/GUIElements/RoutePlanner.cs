@@ -93,7 +93,7 @@ namespace EveMarketMonitorApp.GUIElements
                 cmbItem.AutoCompleteMode = AutoCompleteMode.Suggest;
                 cmbItem.KeyDown += new KeyEventHandler(cmbItem_KeyDown);
                 cmbItem.SelectedIndexChanged += new EventHandler(cmbItem_SelectedIndexChanged);
-                cmbItem.Tag = 0;
+                cmbItem.Tag = (short)0;
 
             }
             catch (Exception ex)
@@ -128,6 +128,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.Cursor = Cursors.WaitCursor;
             try
             {
+                if (cmbItem.Text.Length == 0) { cmbItem.Tag = (short)0; }
                 if (!cmbItem.Text.Equals(_lastItem))
                 {
                     cmbItem.Tag = (short)0;
@@ -192,6 +193,7 @@ namespace EveMarketMonitorApp.GUIElements
                 else if (field == txtStartSystem) { lastSystem = _lastStartSystem; }
                 else if (field == txtEndSystem) { lastSystem = _lastEndSystem; }
 
+                if (field.Text.Length == 0) { field.Tag = 0; }
                 if (!field.Text.Equals(lastSystem))
                 {
                     field.Tag = 0;
@@ -241,6 +243,7 @@ namespace EveMarketMonitorApp.GUIElements
                 if (UserAccount.CurrentGroup != null)
                 {
                     UserAccount.CurrentGroup.Settings.RecentSystems = _recentSystems;
+                    UserAccount.CurrentGroup.Settings.RecentItems = _recentItems;
                 }
                 UserAccount.Settings.StoreFormSizeLoc(this);
             }
