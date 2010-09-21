@@ -806,10 +806,10 @@ namespace EveMarketMonitorApp.GUIElements
             if (_maintMode)
             {
                 // If in maintentance mode then first delete the old contract.
-                Contracts.Delete(_contract);
+                Contracts.Delete(_contract, _maintMode);
             }
 
-            Contracts.Create(_contract);
+            Contracts.Create(_contract, _maintMode);
         }
 
         private void btnAuto_Click(object sender, EventArgs e)

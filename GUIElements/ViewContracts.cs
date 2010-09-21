@@ -612,7 +612,7 @@ namespace EveMarketMonitorApp.GUIElements
 
                     foreach (Contract contract in contractsToRemove)
                     {
-                        Contracts.Delete(contract);
+                        Contracts.Delete(contract, false);
                     }
                     RefreshList();
                 }

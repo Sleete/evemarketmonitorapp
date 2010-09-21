@@ -100,7 +100,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             EMMADataSet.ContractsDataTable contracts = new EMMADataSet.ContractsDataTable();
             contractsTableAdapter.FillByID(contracts, contract.ID);
 
-            MoveContractItems(contract, true, true);
+            MoveContractItems(contract, true, true, false);
 
             if (contracts.Count > 0)
             {
@@ -197,9 +197,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        static public void Delete(Contract contract)
+        static public void Delete(Contract contract, bool maintMode)
         {
-            MoveContractItems(contract, true, false);
+            MoveContractItems(contract, true, false, maintMode);
             if (contract.Type == ContractType.ItemExchange)
             {
                 DeleteTransactions(contract);
@@ -221,7 +221,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// For item exchange contract, remove items from 'forSaleViaContract' asset stack.
         /// </summary>
         /// <param name="contractID"></param>
-        static private void MoveContractItems(Contract contract, bool reverse, bool useItemsInMemory)
+        static private void MoveContractItems(Contract contract, bool reverse, bool useItemsInMemory,
+            bool maintMode)
         {
             if (contract.Type == ContractType.Courier)
             {
@@ -273,7 +274,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 // before the date of the contract (note 'IssueDate' = item exchange completed date)
                 // We also don't want to move the assets if we're not reversing.
                 // In that case, this will already have been done by 'UpdateExchangeAssets'.
-                if (assetsEffectiveDate.CompareTo(contract.IssueDate) < 0) { updateAssets = reverse; }
+                // If assets effective date is after the contract date then we might still want to update
+                // the assets, but only if this is a maintenance mode change (e.g. in contract maintenance,
+                // the contract is deleted and then created again. In this case we need to delete the
+                // assets and then create the new assets with any modified cost values, etc)
+                if (assetsEffectiveDate.CompareTo(contract.IssueDate) < 0 ||
+                    maintMode)
+                {
+                    updateAssets = reverse || maintMode;
+                }
 
                 foreach (ContractItem item in items)
                 {
@@ -331,7 +340,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="collateral"></param>
         /// <param name="reward"></param>
         /// <param name="items"></param>
-        static public void Create(Contract contract)
+        static public void Create(Contract contract, bool maintMode)
         {
             EMMADataSet.ContractsDataTable contracts = new EMMADataSet.ContractsDataTable();
 
@@ -356,7 +365,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 }
 
                 contractsTableAdapter.FillByID(contracts, ID);
-                MoveContractItems(new Contract(contracts[0]), false, true);
+                MoveContractItems(new Contract(contracts[0]), false, true, maintMode);
             }
         }
 
