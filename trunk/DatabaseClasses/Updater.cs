@@ -4,8 +4,11 @@ using System.Text;
 using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Data;
+using System.IO;
+using System.Xml;
 
 using EveMarketMonitorApp.Common;
+
 
 namespace EveMarketMonitorApp.DatabaseClasses
 {
@@ -8993,9 +8996,76 @@ AS
                         }
                         #endregion
                     }
-      
-       
-         
+
+ /*                   if (dbVersion.CompareTo(new Version("1.5.3.0")) < 0)
+                    {
+                        #region ---- MAJOR UPDATE ----
+                        // This update is a little unusual in that it actually runs tons of scripts.
+                        // The purpose is to update various fields, parameters, etc to 64 bit
+                        // integers.
+                        // This also involves updating the SQL CLR assembly with a new version that
+                        // can cope with 64 bit integers.
+
+                        // All the scripts are delivered to the user's machine via an XML file
+                        // that is downloaded through the normal update process.
+                        // The new SQL CLR assembly is also delviered in this way.
+                        // Consequently, at this point we should have the XML containing all
+                        // the SQL scripts and the SQL CLR assembly ready to go. First thing
+                        // to do is to check they are where they should be...
+                        if (!File.Exists(Globals.AppDataDir + "DatabaseUpdate_1_5_3_0.xml"))
+                        {
+                            throw new EMMAException(ExceptionSeverity.Critical, "Need to update database to version 1.5.3.0. However, the expected SQL script data file (" +
+                                Globals.AppDataDir + "DatabaseUpdate_1_5_3_0.xml) is missing. Unable to continue. If you have just updated EMMA, please update again and then retry.");
+                        }
+                        if (!File.Exists(Globals.AppDataDir + "CLRStoredProcs_1_5_3_0.dll"))
+                        {
+                            throw new EMMAException(ExceptionSeverity.Critical, "Need to update database to version 1.5.3.0. However, the expected SQL CLR functions assembly (" +
+                                Globals.AppDataDir + "CLRStoredProcs_1_5_3_0.dll) is missing. Unable to continue. If you have just updated EMMA, please update again and then retry.");
+                        }
+
+                        #region Update assembly 
+                        commandText = @"IF  EXISTS (SELECT * FROM sys.assemblies asms WHERE asms.name = N'CLRStoredProcs' and is_user_defined = 1)
+DROP ASSEMBLY [CLRStoredProcs]";
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try { adapter.SelectCommand.ExecuteNonQuery(); }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem removing old CLRStoredProcs assembly", ex);
+                        }
+
+                        commandText = @"CREATE ASSEMBLY CLRStoredProcs from '" + Globals.AppDataDir + "CLRStoredProcs_1_5_3_0.dll'";
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try { adapter.SelectCommand.ExecuteNonQuery(); }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem deploying new CLRStoredProcs assembly", ex);
+                        }
+                        #endregion
+
+                        Updater.ProcessUpdateXML(Globals.AppDataDir + "DatabaseUpdate_1_5_3_0.xml");
+                        try
+                        {
+                            string scriptDir = Globals.AppDataDir + "DatabaseUpdate_1_5_3_0";
+                            string[] scripts = Directory.GetFiles(scriptDir);
+
+                            /////// Execute scripts
+
+                            ///SetDBVersion(connection, new Version("1.5.3.0"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem running database update script", ex);
+                        }
+
+                        #endregion
+                    }
+    
+         */
                 }
 
             }
@@ -9570,6 +9640,35 @@ AS
             }
         }
 
+        private static void ProcessUpdateXML(string xmlFile)
+        {
+            try
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(xmlFile);
+
+                string scriptDir = Path.Combine(Path.GetDirectoryName(xmlFile),
+                    Path.GetFileNameWithoutExtension(xmlFile));
+                if (!Directory.Exists(scriptDir)) { Directory.CreateDirectory(scriptDir); }
+
+                XmlNodeList nodes = xmlDoc.SelectNodes("/EMMADatabaseUpdate/Script");
+                int counter = 0;
+                foreach (XmlNode node in nodes)
+                {
+                    string sqlScript = node.InnerText;
+                    string fileName = Path.Combine(scriptDir, "SQLScript" + counter.ToString("00000"));
+                    File.WriteAllText(fileName, sqlScript);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new EMMAException(ExceptionSeverity.Critical, 
+                    "Problem processing database update script XML file", ex);
+            }
+        }
+
+
+        #region old Stuff
         /*      public static void ClearTables()
                 {
                     SqlConnection connection = new SqlConnection(Properties.Settings.Default.EMMA_DatabaseConnectionString);
@@ -9803,5 +9902,7 @@ AS
                         }
 
         */
+
+        #endregion
     }
 }

@@ -20,6 +20,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             str = str.Trim();
         }
 
+
+
+
         [SqlFunction(FillRowMethodName = "IntlistFillRow", TableDefinition = "number int")]
         public static IEnumerable CLR_intlist_split(SqlString str)
         {
@@ -32,20 +35,38 @@ namespace EveMarketMonitorApp.DatabaseClasses
             n = Convert.ToInt32((string)row);
         }
 
-        [SqlFunction(FillRowMethodName = "BuildOwnerAccessRow", TableDefinition = "ownerID int, includePersonal bit, includeCorporate bit")]
+
+
+
+        [SqlFunction(FillRowMethodName = "BigIntlistFillRow", TableDefinition = "number bigint")]
+        public static IEnumerable CLR_bigintlist_split(SqlString str)
+        {
+            char[] delim = { '|', ' ', ',' };
+            return str.Value.Split(delim, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        public static void BigIntlistFillRow(object row, out long n)
+        {
+            n = Convert.ToInt64((string)row);
+        }
+
+
+
+
+        [SqlFunction(FillRowMethodName = "BuildOwnerAccessRow", TableDefinition = "ownerID bigint, includePersonal bit, includeCorporate bit")]
         public static IEnumerable CLR_accesslist_split(SqlString str)
         {
             char[] delim = { '|' };
             return str.Value.Split(delim, StringSplitOptions.RemoveEmptyEntries);
         }
 
-        public static void BuildOwnerAccessRow(object row, out int id, out bool personal, out bool corporate)
+        public static void BuildOwnerAccessRow(object row, out long id, out bool personal, out bool corporate)
         {
             char[] delim = { ',' };
             string[] values = ((string)row).Split(delim);
             if (values.Length == 3)
             {
-                id = int.Parse(values[0]);
+                id = long.Parse(values[0]);
                 personal = bool.Parse(values[1]);
                 corporate = bool.Parse(values[2]);
             }
@@ -55,20 +76,23 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        [SqlFunction(FillRowMethodName = "BuildFinanceAccessRow", TableDefinition = "ownerID int, walletID1 smallint, walletID2 smallint, walletID3 smallint, walletID4 smallint, walletID5 smallint, walletID6 smallint")]
+
+
+
+        [SqlFunction(FillRowMethodName = "BuildFinanceAccessRow", TableDefinition = "ownerID bigint, walletID1 smallint, walletID2 smallint, walletID3 smallint, walletID4 smallint, walletID5 smallint, walletID6 smallint")]
         public static IEnumerable CLR_financelist_split(SqlString str)
         {
             char[] delim = { '|' };
             return str.Value.Split(delim, StringSplitOptions.RemoveEmptyEntries);
         }
 
-        public static void BuildFinanceAccessRow(object row, out int id, out short walletID1, out short walletID2, out short walletID3, out short walletID4, out short walletID5, out short walletID6)
+        public static void BuildFinanceAccessRow(object row, out long id, out short walletID1, out short walletID2, out short walletID3, out short walletID4, out short walletID5, out short walletID6)
         {
             char[] delim = { ',' };
             string[] values = ((string)row).Split(delim);
             if (values.Length == 7)
             {
-                id = int.Parse(values[0]);
+                id = long.Parse(values[0]);
                 walletID1 = short.Parse(values[1]);
                 walletID2 = short.Parse(values[2]);
                 walletID3 = short.Parse(values[3]);

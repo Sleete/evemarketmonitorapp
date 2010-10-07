@@ -37,14 +37,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblBusy = new System.Windows.Forms.Label();
             this.gainedItemsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.busyProgress = new System.Windows.Forms.ProgressBar();
-            this.lostItemsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
-            this.grpMaterials = new System.Windows.Forms.GroupBox();
-            this.lstMaterials = new System.Windows.Forms.ListBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.chkMaterialsOnly = new System.Windows.Forms.CheckBox();
-            this.icons = new System.Windows.Forms.ImageList(this.components);
             this.GainedExpanderColumn = new System.Windows.Forms.DataGridViewImageColumn();
             this.GainedExpandedColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.GainedContainerColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -53,6 +45,9 @@
             this.GainedLocationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GainedQuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GainedReasonColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.busyProgress = new System.Windows.Forms.ProgressBar();
+            this.lostItemsGrid = new EveMarketMonitorApp.Common.MultisortDataGridView();
             this.LostExpanderColumn = new System.Windows.Forms.DataGridViewImageColumn();
             this.LostExpandedColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.LostContainerColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -61,6 +56,13 @@
             this.LostLocationColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostQuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LostReasonColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.grpMaterials = new System.Windows.Forms.GroupBox();
+            this.lstMaterials = new System.Windows.Forms.ListBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.chkMaterialsOnly = new System.Windows.Forms.CheckBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.cmbGainedLostReason = new System.Windows.Forms.ComboBox();
+            this.icons = new System.Windows.Forms.ImageList(this.components);
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -68,6 +70,7 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lostItemsGrid)).BeginInit();
             this.grpMaterials.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -112,16 +115,19 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.groupBox2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox3, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.grpMaterials, 2, 1);
-            this.tableLayoutPanel1.Controls.Add(this.btnOk, 2, 3);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox3, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.grpMaterials, 2, 2);
+            this.tableLayoutPanel1.Controls.Add(this.btnOk, 2, 5);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox4, 2, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowCount = 6;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 54F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 54F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1135, 556);
             this.tableLayoutPanel1.TabIndex = 2;
@@ -134,6 +140,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(3, 103);
             this.groupBox2.Name = "groupBox2";
+            this.tableLayoutPanel1.SetRowSpan(this.groupBox2, 2);
             this.groupBox2.Size = new System.Drawing.Size(928, 202);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
@@ -171,101 +178,8 @@
             this.gainedItemsGrid.Size = new System.Drawing.Size(922, 183);
             this.gainedItemsGrid.TabIndex = 0;
             this.gainedItemsGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gainedItemsGrid_CellFormatting);
+            this.gainedItemsGrid.SelectionChanged += new System.EventHandler(this.itemsGrid_SelectionChanged);
             this.gainedItemsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gainedItemsGrid_CellContentClick);
-            // 
-            // groupBox3
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.groupBox3, 2);
-            this.groupBox3.Controls.Add(this.busyProgress);
-            this.groupBox3.Controls.Add(this.lostItemsGrid);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(3, 311);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(928, 202);
-            this.groupBox3.TabIndex = 3;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Items Missing";
-            // 
-            // busyProgress
-            // 
-            this.busyProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.busyProgress.Location = new System.Drawing.Point(187, 82);
-            this.busyProgress.Name = "busyProgress";
-            this.busyProgress.Size = new System.Drawing.Size(555, 33);
-            this.busyProgress.TabIndex = 1;
-            // 
-            // lostItemsGrid
-            // 
-            this.lostItemsGrid.AllowUserToAddRows = false;
-            this.lostItemsGrid.AllowUserToDeleteRows = false;
-            this.lostItemsGrid.AllowUserToResizeRows = false;
-            this.lostItemsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.lostItemsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.LostExpanderColumn,
-            this.LostExpandedColumn,
-            this.LostContainerColumn,
-            this.LostOwnerColumn,
-            this.LostItemColumn,
-            this.LostLocationColumn,
-            this.LostQuantityColumn,
-            this.LostReasonColumn});
-            this.lostItemsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lostItemsGrid.Location = new System.Drawing.Point(3, 16);
-            this.lostItemsGrid.Name = "lostItemsGrid";
-            this.lostItemsGrid.RowHeadersVisible = false;
-            this.lostItemsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.lostItemsGrid.Size = new System.Drawing.Size(922, 183);
-            this.lostItemsGrid.TabIndex = 0;
-            this.lostItemsGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.lostItemsGrid_CellFormatting);
-            this.lostItemsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.lostItemsGrid_CellContentClick);
-            // 
-            // grpMaterials
-            // 
-            this.grpMaterials.Controls.Add(this.lstMaterials);
-            this.grpMaterials.Controls.Add(this.label2);
-            this.grpMaterials.Controls.Add(this.chkMaterialsOnly);
-            this.grpMaterials.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpMaterials.Location = new System.Drawing.Point(937, 103);
-            this.grpMaterials.Name = "grpMaterials";
-            this.tableLayoutPanel1.SetRowSpan(this.grpMaterials, 2);
-            this.grpMaterials.Size = new System.Drawing.Size(195, 410);
-            this.grpMaterials.TabIndex = 4;
-            this.grpMaterials.TabStop = false;
-            this.grpMaterials.Text = "Bill of Materials";
-            // 
-            // lstMaterials
-            // 
-            this.lstMaterials.FormattingEnabled = true;
-            this.lstMaterials.Location = new System.Drawing.Point(6, 147);
-            this.lstMaterials.Name = "lstMaterials";
-            this.lstMaterials.Size = new System.Drawing.Size(182, 225);
-            this.lstMaterials.TabIndex = 2;
-            // 
-            // label2
-            // 
-            this.label2.Location = new System.Drawing.Point(6, 16);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(182, 128);
-            this.label2.TabIndex = 1;
-            this.label2.Text = resources.GetString("label2.Text");
-            this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // chkMaterialsOnly
-            // 
-            this.chkMaterialsOnly.AutoSize = true;
-            this.chkMaterialsOnly.Location = new System.Drawing.Point(9, 387);
-            this.chkMaterialsOnly.Name = "chkMaterialsOnly";
-            this.chkMaterialsOnly.Size = new System.Drawing.Size(156, 17);
-            this.chkMaterialsOnly.TabIndex = 0;
-            this.chkMaterialsOnly.Text = "Show only missing materials";
-            this.chkMaterialsOnly.UseVisualStyleBackColor = true;
-            // 
-            // icons
-            // 
-            this.icons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("icons.ImageStream")));
-            this.icons.TransparentColor = System.Drawing.Color.Transparent;
-            this.icons.Images.SetKeyName(0, "expand.gif");
-            this.icons.Images.SetKeyName(1, "collapse.gif");
             // 
             // GainedExpanderColumn
             // 
@@ -324,6 +238,54 @@
             this.GainedReasonColumn.HeaderText = "Reason";
             this.GainedReasonColumn.Name = "GainedReasonColumn";
             this.GainedReasonColumn.Width = 160;
+            // 
+            // groupBox3
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.groupBox3, 2);
+            this.groupBox3.Controls.Add(this.busyProgress);
+            this.groupBox3.Controls.Add(this.lostItemsGrid);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Location = new System.Drawing.Point(3, 311);
+            this.groupBox3.Name = "groupBox3";
+            this.tableLayoutPanel1.SetRowSpan(this.groupBox3, 2);
+            this.groupBox3.Size = new System.Drawing.Size(928, 202);
+            this.groupBox3.TabIndex = 3;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Items Missing";
+            // 
+            // busyProgress
+            // 
+            this.busyProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.busyProgress.Location = new System.Drawing.Point(187, 82);
+            this.busyProgress.Name = "busyProgress";
+            this.busyProgress.Size = new System.Drawing.Size(555, 33);
+            this.busyProgress.TabIndex = 1;
+            // 
+            // lostItemsGrid
+            // 
+            this.lostItemsGrid.AllowUserToAddRows = false;
+            this.lostItemsGrid.AllowUserToDeleteRows = false;
+            this.lostItemsGrid.AllowUserToResizeRows = false;
+            this.lostItemsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.lostItemsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.LostExpanderColumn,
+            this.LostExpandedColumn,
+            this.LostContainerColumn,
+            this.LostOwnerColumn,
+            this.LostItemColumn,
+            this.LostLocationColumn,
+            this.LostQuantityColumn,
+            this.LostReasonColumn});
+            this.lostItemsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lostItemsGrid.Location = new System.Drawing.Point(3, 16);
+            this.lostItemsGrid.Name = "lostItemsGrid";
+            this.lostItemsGrid.RowHeadersVisible = false;
+            this.lostItemsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.lostItemsGrid.Size = new System.Drawing.Size(922, 183);
+            this.lostItemsGrid.TabIndex = 0;
+            this.lostItemsGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.lostItemsGrid_CellFormatting);
+            this.lostItemsGrid.SelectionChanged += new System.EventHandler(this.itemsGrid_SelectionChanged);
+            this.lostItemsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.lostItemsGrid_CellContentClick);
             // 
             // LostExpanderColumn
             // 
@@ -385,6 +347,78 @@
             this.LostReasonColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.LostReasonColumn.Width = 160;
             // 
+            // grpMaterials
+            // 
+            this.grpMaterials.Controls.Add(this.lstMaterials);
+            this.grpMaterials.Controls.Add(this.label2);
+            this.grpMaterials.Controls.Add(this.chkMaterialsOnly);
+            this.grpMaterials.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpMaterials.Location = new System.Drawing.Point(937, 157);
+            this.grpMaterials.Name = "grpMaterials";
+            this.tableLayoutPanel1.SetRowSpan(this.grpMaterials, 3);
+            this.grpMaterials.Size = new System.Drawing.Size(195, 356);
+            this.grpMaterials.TabIndex = 4;
+            this.grpMaterials.TabStop = false;
+            this.grpMaterials.Text = "Bill of Materials";
+            // 
+            // lstMaterials
+            // 
+            this.lstMaterials.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstMaterials.FormattingEnabled = true;
+            this.lstMaterials.Location = new System.Drawing.Point(6, 147);
+            this.lstMaterials.Name = "lstMaterials";
+            this.lstMaterials.Size = new System.Drawing.Size(182, 173);
+            this.lstMaterials.TabIndex = 2;
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(6, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(182, 128);
+            this.label2.TabIndex = 1;
+            this.label2.Text = resources.GetString("label2.Text");
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // chkMaterialsOnly
+            // 
+            this.chkMaterialsOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkMaterialsOnly.AutoSize = true;
+            this.chkMaterialsOnly.Location = new System.Drawing.Point(9, 335);
+            this.chkMaterialsOnly.Name = "chkMaterialsOnly";
+            this.chkMaterialsOnly.Size = new System.Drawing.Size(156, 17);
+            this.chkMaterialsOnly.TabIndex = 0;
+            this.chkMaterialsOnly.Text = "Show only missing materials";
+            this.chkMaterialsOnly.UseVisualStyleBackColor = true;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.cmbGainedLostReason);
+            this.groupBox4.Location = new System.Drawing.Point(937, 103);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(195, 48);
+            this.groupBox4.TabIndex = 5;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Gained/Lost Reason";
+            // 
+            // cmbGainedLostReason
+            // 
+            this.cmbGainedLostReason.Enabled = false;
+            this.cmbGainedLostReason.FormattingEnabled = true;
+            this.cmbGainedLostReason.Location = new System.Drawing.Point(6, 19);
+            this.cmbGainedLostReason.Name = "cmbGainedLostReason";
+            this.cmbGainedLostReason.Size = new System.Drawing.Size(180, 21);
+            this.cmbGainedLostReason.TabIndex = 0;
+            this.cmbGainedLostReason.SelectedIndexChanged += new System.EventHandler(this.cmbGainedLostReason_SelectedIndexChanged);
+            // 
+            // icons
+            // 
+            this.icons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("icons.ImageStream")));
+            this.icons.TransparentColor = System.Drawing.Color.Transparent;
+            this.icons.Images.SetKeyName(0, "expand.gif");
+            this.icons.Images.SetKeyName(1, "collapse.gif");
+            // 
             // ViewUnacknowledgedAssets
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -404,6 +438,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.lostItemsGrid)).EndInit();
             this.grpMaterials.ResumeLayout(false);
             this.grpMaterials.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -441,5 +476,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn LostLocationColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn LostQuantityColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn LostReasonColumn;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.ComboBox cmbGainedLostReason;
     }
 }

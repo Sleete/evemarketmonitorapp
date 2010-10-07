@@ -66,13 +66,25 @@ namespace AutoUpdater
 
                 foreach (ComponentData component in _components)
                 {
-                    if (!component.Exists)
+                    // Note if the component does not exist and we are comparing it to another component
+                    // then it is the OTHER component that does not exist.
+                    // We don't want to download the actual component until we know that the 'other'
+                    // component is definitely an older version.
+                    if (!component.Exists && !component.ComparingToOtherComponent)
                     {
                         _updateComponents.Add(component);
                     }
-                    else if (component.latestVersion.CompareTo(component.currentVersion) > 0)
+                    else if (component.Exists && component.latestVersion.CompareTo(component.currentVersion) > 0)
                     {
-                        _updateComponents.Add(component);
+                        if (component.Name.ToLower().Equals("autoupdater.exe"))
+                        {
+                            // If there is an update to the auto updater then just update it first
+                            // and then we'll update the other components next time the update runs.
+                            _updateComponents.Clear();
+                            _updateComponents.Add(component);
+                            break;
+                        }
+                        _updateComponents.Add(component);                        
                     }
                 }
             }
