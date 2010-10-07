@@ -112,15 +112,15 @@ namespace EveMarketMonitorApp.GUIElements
                     checkForUpdates = checkForUpdates && EveMarketMonitorApp.Properties.Settings.Default.AutoUpdate;
                     if (checkForUpdates)
                     {
-                        DateTime lastCheck = Properties.Settings.Default.LastEMMAUpdateCheck;
-                        if (lastCheck.AddHours(5).CompareTo(DateTime.UtcNow) < 0)
-                        {
+                        //DateTime lastCheck = Properties.Settings.Default.LastEMMAUpdateCheck;
+                        //if (lastCheck.AddHours(5).CompareTo(DateTime.UtcNow) < 0)
+                        //{
                             UpdateStatus(0, 0, "Checking for updates", "", false);
                             // Check for updates to EMMA components
                             AutoUpdate();
                             Properties.Settings.Default.LastEMMAUpdateCheck = DateTime.UtcNow;
                             Properties.Settings.Default.Save();
-                        }
+                        //}
                     }
                     Diagnostics.StopTimer("Updates");
                     UpdateStatus(0, 0, "Checking License", "", false);

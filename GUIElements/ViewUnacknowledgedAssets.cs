@@ -38,6 +38,8 @@ namespace EveMarketMonitorApp.GUIElements
 
         private static int _errorCount = 0;
 
+        private static bool _multiSelectGainedItems = false;
+
         #region IProvideStatus Members
         public event StatusChangeHandler StatusChange;
         #endregion
@@ -62,7 +64,7 @@ namespace EveMarketMonitorApp.GUIElements
                 label1.Text = label1.Text +
                     "Select what has happened to each item and EMMA will be able to show you more accurate " +
                     "reports in future. However, if you just wish to ignore this screen then you can click the " +
-                    "ok button right away. EMMA will try and match gained items against missing items elsewhere.";
+                    "ok button right away. EMMA will try and match gained items against missing items elsewhere.\r\n";
             }
             else
             {
@@ -70,8 +72,10 @@ namespace EveMarketMonitorApp.GUIElements
                     "Select what has happened to each item and EMMA will be able to show you more accurate " +
                     "reports in future. However, if you just wish to ignore this screen then you can click the " +
                     "ok button right away. By default, EMMA assumes that any added items have been found " +
-                    "(e.g. mission loot, mining, etc) and any lost items have been destroyed or used up.";
+                    "(e.g. mission loot, mining, etc) and any lost items have been destroyed or used up.\r\n";
             }
+            label1.Text = label1.Text + "Hold control to select multiple rows and set them all to the same " +
+                "gained/lost reason using the dropdown on the right.";
         }
 
         private void ViewUnacknowledgedAssets_Load(object sender, EventArgs e)
@@ -668,6 +672,13 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     _lostAssets.Remove(a);
                 }
+                if (assetChanges.Count > 0)
+                {
+                    // Put any items that have not actually been lost back into the database.
+                    // e.g. an item that is 'for sale via contract' will already have been removed from the
+                    // database by this point so we need to create a new record and put it back in.
+                    Assets.UpdateDatabase(assetChanges);    
+                }
 
                 if (UserAccount.Settings.ManufacturingMode)
                 {
@@ -707,13 +718,25 @@ namespace EveMarketMonitorApp.GUIElements
 
         void gainedItemsGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            // If the user has set a gained item to 'Made' then try and find the
-            // items that were used in it's construction and calculate it's cost
-            // accordingly.
             if (e.ColumnIndex >= 0 && e.RowIndex >= 0)
             {
-                //if (gainedItemsGrid.Columns[e.ColumnIndex].Equals(GainedReasonColumn))
-                //{
+                if (gainedItemsGrid.Columns[e.ColumnIndex].Equals(GainedReasonColumn))
+                {
+                    if (gainedItemsGrid.SelectedRows.Count > 1)
+                    {
+                        int newValue = (int)gainedItemsGrid[e.ColumnIndex, e.RowIndex].Value;
+                        // If there are other rows selected then also set those reasnos to whatever
+                        // the user has selected for this row.
+                        foreach (DataGridViewRow row in gainedItemsGrid.SelectedRows)
+                        {
+                            ((Asset)row.DataBoundItem).ChangeTypeIntID = newValue;
+                        }
+                    }
+
+                    // If the user has set a gained item to 'Made' then try and find the
+                    // items that were used in it's construction and calculate it's cost
+                    // accordingly.
+
                 //    this.Cursor = Cursors.WaitCursor;
 
                 //    try
@@ -763,7 +786,7 @@ namespace EveMarketMonitorApp.GUIElements
                 //    {
                 //        this.Cursor = Cursors.Default;
                 //    }
-                //}
+                }
             }
         }
 
@@ -911,6 +934,7 @@ namespace EveMarketMonitorApp.GUIElements
             //    SetContainerFilter();
             //}
         }
+        
 
         private void UpdateStatus(int progress, int maxprogress, string sectionName, string status, bool complete)
         {
@@ -992,6 +1016,40 @@ namespace EveMarketMonitorApp.GUIElements
                 g.DrawString(text, font, new SolidBrush(col), bounds);
             }
         }
+
+        private void itemsGrid_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridView grid = sender as DataGridView;
+            if (grid.SelectedRows.Count > 1)
+            {
+                _multiSelectGainedItems = grid.Equals(gainedItemsGrid);
+                cmbGainedLostReason.Enabled = true;
+                cmbGainedLostReason.DataSource = _multiSelectGainedItems ? _assetGainChangeTypes : _assetLossChangeTypes;
+                cmbGainedLostReason.ValueMember = "ID";
+                cmbGainedLostReason.DisplayMember = "Description";
+            }
+            else
+            {
+                cmbGainedLostReason.Enabled = false;
+            }
+        }
+
+        private void cmbGainedLostReason_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DataGridViewSelectedRowCollection rows = _multiSelectGainedItems ? gainedItemsGrid.SelectedRows : lostItemsGrid.SelectedRows;
+            if (rows.Count > 1)
+            {
+                int value = (int)cmbGainedLostReason.SelectedValue;
+                foreach (DataGridViewRow row in rows)
+                {
+                    ((Asset)row.DataBoundItem).ChangeTypeIntID = value;
+                }
+                if (_multiSelectGainedItems) { gainedItemsGrid.Refresh(); }
+                else { lostItemsGrid.Refresh(); }
+            }
+        }
+
+
 
 
 
