@@ -16,8 +16,8 @@ namespace EveMarketMonitorApp.Reporting
         private static string[] _allColumnNames = { "Total Units", "Average Buy Price", "Est. Sell Price",
             "Total Est. Value", "Total Est. Gross Profit", "Reprocess Value", "Best Gross Profit"};
         private int _valueRegionID = 0;
-        private List<int> _stationsIDs;
-        private List<int> _regionIDs;
+        private List<long> _stationsIDs;
+        private List<long> _regionIDs;
         private bool _includeInTransit = false;
         private bool _includeContainers = false;
 
@@ -138,8 +138,8 @@ namespace EveMarketMonitorApp.Reporting
                     paramsOk = paramsOk && parameters.TryGetValue(_expectedParams[i], out paramValue);
                     if (_expectedParams[i].Equals("ColumnsVisible")) columnsVisible = (bool[])paramValue;
                     if (_expectedParams[i].Equals("ValueRegion")) _valueRegionID = (int)paramValue;
-                    if (_expectedParams[i].Equals("StationIDs")) _stationsIDs = (List<int>)paramValue;
-                    if (_expectedParams[i].Equals("RegionIDs")) _regionIDs = (List<int>)paramValue;
+                    if (_expectedParams[i].Equals("StationIDs")) _stationsIDs = (List<long>)paramValue;
+                    if (_expectedParams[i].Equals("RegionIDs")) _regionIDs = (List<long>)paramValue;
                     if (_expectedParams[i].Equals("IncludeInTransit")) _includeInTransit = (bool)paramValue;
                     if (_expectedParams[i].Equals("IncludeContainers")) _includeContainers = (bool)paramValue;
                     if (_expectedParams[i].Equals("AssetAccessParams")) _assetAccessParams = 
@@ -242,7 +242,7 @@ namespace EveMarketMonitorApp.Reporting
 
                     decimal avgBuyPrice = 0, avgSellPrice = 0;
                     decimal marginAbs = 0, totalProfit = 0;
-                    decimal blank1 = 0, reproValue = 0;
+                    decimal reproValue = 0;
                     decimal bestProfit = 0;
 
                     List<int> itemIDs = new List<int>();

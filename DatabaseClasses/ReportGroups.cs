@@ -47,7 +47,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        public static void SetCharGroupSettings(int reportGroupID, int APICharID, bool included, bool autoTrans,
+        public static void SetCharGroupSettings(int reportGroupID, long APICharID, bool included, bool autoTrans,
             bool autoJournal, bool autoAssets, bool autoOrders, bool autoIndustryJobs)
         {
             lock (groupCharsTableAdapter)
@@ -56,8 +56,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     autoAssets, autoOrders, autoIndustryJobs);
             }
         }
-        public static void SetCorpGroupSettings(int reportGroupID, int APICorpID, bool included, bool autoTrans,
-            bool autoJournal, bool autoAssets, bool autoOrders, bool autoIndustryJobs, int APICharID)
+        public static void SetCorpGroupSettings(int reportGroupID, long APICorpID, bool included, bool autoTrans,
+            bool autoJournal, bool autoAssets, bool autoOrders, bool autoIndustryJobs, long APICharID)
         {
             lock (groupCorpsTableAdapter)
             {
@@ -76,7 +76,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="autoUpdateAssets"></param>
         /// <param name="autoUpdateOrders"></param>
         /// <returns>True if the char is in the report group, false otherwise</returns>
-        public static bool GroupCharSettings(int reportGroupID, int APICharID, ref bool autoUpdateTrans,
+        public static bool GroupCharSettings(int reportGroupID, long APICharID, ref bool autoUpdateTrans,
             ref bool autoUpdateJournal, ref bool autoUpdateAssets, ref bool autoUpdateOrders,
             ref bool autoUpdateIndustryJobs)
         {
@@ -112,9 +112,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="autoUpdateAssets"></param>
         /// <param name="autoUpdateOrders"></param>
         /// <returns>True if the corp is in the report group, false otherwise</returns>
-        public static bool GroupCorpSettings(int reportGroupID, int APICorpID, ref bool autoUpdateTrans,
+        public static bool GroupCorpSettings(int reportGroupID, long APICorpID, ref bool autoUpdateTrans,
             ref bool autoUpdateJournal, ref bool autoUpdateAssets, ref bool autoUpdateOrders,
-            ref bool autoUpdateIndustryJobs, int APICharID)
+            ref bool autoUpdateIndustryJobs, long APICharID)
         {
             bool retVal = true;
             EMMADataSet.RptGroupCorpsDataTable table = new EMMADataSet.RptGroupCorpsDataTable();

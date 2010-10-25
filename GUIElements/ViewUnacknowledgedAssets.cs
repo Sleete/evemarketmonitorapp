@@ -529,9 +529,9 @@ namespace EveMarketMonitorApp.GUIElements
                                 break;
                             case AssetChangeTypes.ChangeType.CancelledContract:
                                 List<AssetAccessParams> access = new List<AssetAccessParams>();
-                                bool corporate = false;
+                                //bool corporate = false;
                                 access.Add(new AssetAccessParams(assetRow.OwnerID));
-                                AssetList assets = Assets.LoadAssets(access, new List<int>(), assetRow.ItemID, 0, 0,
+                                AssetList assets = Assets.LoadAssets(access, new List<long>(), assetRow.ItemID, 0, 0,
                                     false, (int)AssetStatus.States.ForSaleViaContract, true, true);
                                 if (assets.Count > 0)
                                 {

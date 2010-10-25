@@ -520,11 +520,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
             }
         }
-        public int ReprocessCharacter
+        public long ReprocessCharacter
         {
             get
             {
-                return int.Parse(GetValue(Setting.reproc_reprocessor),
+                return long.Parse(GetValue(Setting.reproc_reprocessor),
                   System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             }
             set
@@ -736,11 +736,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
                   value.ToString(System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat));
             }
         }
-        public List<int> AutoAddBuyStations
+        public List<long> AutoAddBuyStations
         {
             get
             {
-                List<int> retVal = new List<int>();
+                List<long> retVal = new List<long>();
                 string textList = GetValue(Setting.autoAddBuyStations);
                 char[] delim = { '|' };
                 string[] stations = textList.Split(delim);
@@ -748,7 +748,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 {
                     if (station.Trim().Length > 0)
                     {
-                        retVal.Add(int.Parse(station,
+                        retVal.Add(long.Parse(station,
                             System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
                     }
                 }
@@ -757,7 +757,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set
             {
                 StringBuilder newList = new StringBuilder();
-                foreach (int station in value)
+                foreach (long station in value)
                 {
                     if (newList.ToString().Length != 0) { newList.Append("|"); }
                     newList.Append(station.ToString(
@@ -766,11 +766,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 SetValue(Setting.autoAddBuyStations, newList.ToString());
             }
         }
-        public List<int> AutoAddSellStations
+        public List<long> AutoAddSellStations
         {
             get
             {
-                List<int> retVal = new List<int>();
+                List<long> retVal = new List<long>();
                 string textList = GetValue(Setting.autoAddSellStations);
                 char[] delim = { '|' };
                 string[] stations = textList.Split(delim);
@@ -778,7 +778,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 {
                     if (station.Trim().Length > 0)
                     {
-                        retVal.Add(int.Parse(station,
+                        retVal.Add(long.Parse(station,
                             System.Globalization.CultureInfo.InvariantCulture.NumberFormat));
                     }
                 }
@@ -787,7 +787,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set
             {
                 StringBuilder newList = new StringBuilder();
-                foreach (int station in value)
+                foreach (long station in value)
                 {
                     if (newList.ToString().Length != 0) { newList.Append("|"); }
                     newList.Append(station.ToString(

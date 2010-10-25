@@ -252,7 +252,6 @@ namespace EveMarketMonitorApp.GUIElements
 
         public ComponentData(XmlNode xml, string homeDir)
         {
-            bool error = false;
             _name = xml.SelectSingleNode("@name").Value;
             XmlNode subpathnode = xml.SelectSingleNode("@subpath");
             _permenant = true;
@@ -265,7 +264,7 @@ namespace EveMarketMonitorApp.GUIElements
 
             string subpath = (subpathnode == null ? "" : subpathnode.Value + Path.DirectorySeparatorChar);
             _fullPath = homeDir + subpath + _name;
-            // Non-permenant files need to go in the user's applciation directory location instead.
+
             if (!_permenant)
             {
                 _fullPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
@@ -291,6 +290,30 @@ namespace EveMarketMonitorApp.GUIElements
                 _otherCompFullPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
                     Path.DirectorySeparatorChar + "EMMA" + Path.DirectorySeparatorChar + subpath + _otherComponent;
             }
+
+            Init();
+        }
+
+       public ComponentData(string name, string subpath, bool permenant, string homeDir)
+        {
+            _name = name;
+            _permenant = permenant;
+            _fullPath = Path.Combine(Path.Combine(homeDir, subpath), _name);
+
+            // Non-permenant files need to go in the user's applciation directory location instead.
+            if (!_permenant)
+            {
+                _fullPath = Path.Combine(Path.Combine(Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "EMMA"), subpath), _name);
+            }
+
+            Init();
+        }
+
+        private void Init()
+        {
+            bool error = false;
 
 
             // Work out what the version of the component on the users's machine is.

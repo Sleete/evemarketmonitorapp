@@ -11,11 +11,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
     {
         private int _id;
         private DateTime _date;
-        private int _stationID;
+        private long _stationID;
         private bool _gotStation = false;
         private string _stationName = "";
         private int _reportGroupID;
-        private int _ownerID;
+        private long _ownerID;
         private bool _gotOwner = false;
         private string _ownerName = "";
 
@@ -41,7 +41,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             _ownerID = data.OwnerID;
         }
 
-        public ReprocessJob(int stationID, int groupID, int ownerID)
+        public ReprocessJob(long stationID, int groupID, long ownerID)
         {
             _id = 0;
             _date = DateTime.UtcNow;
@@ -290,7 +290,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        public int StationID
+        public long StationID
         {
             get { return _stationID; }
             set
@@ -327,7 +327,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        public int OwnerID
+        public long OwnerID
         {
             get { return _ownerID; }
             set { _ownerID = value; }

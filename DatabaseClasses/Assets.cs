@@ -20,7 +20,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             new EveMarketMonitorApp.DatabaseClasses.EMMADataSetTableAdapters.IDTableTableAdapter();
 
 
-        public static void MigrateAssetsToCorpID(int charID, int corpID)
+        public static void MigrateAssetsToCorpID(long charID, long corpID)
         {
             lock (assetsTableAdapter)
             {
@@ -57,7 +57,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="changes">Contains changes in quantities of item stacks that were in the XML.</param>
         /// <param name="gained">A list of items that have been gained from 'nowhere'</param>
         /// <param name="lost">A list of items that have been totally lost from the owner's asset data.</param>
-        public static void AnalyseChanges(EMMADataSet.AssetsDataTable assetData, int ownerID,
+        public static void AnalyseChanges(EMMADataSet.AssetsDataTable assetData, long ownerID,
             AssetList changes, out AssetList gained, out AssetList lost)
         {
             // Note that 'changes' will only include items that exist in the XML from the API. i.e. Any
@@ -282,7 +282,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     if (change.Quantity > 0 && !zeroLossItemIDs.Contains(change.ItemID))
                     {
                         int itemID = change.ItemID;
-                        int locationID = change.LocationID;
+                        long locationID = change.LocationID;
 
                         changes2.ItemFilter = "ItemID = " + itemID + " AND Quantity < 0";
                         if (changes2.FiltredItems.Count == 0)
@@ -411,11 +411,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// the update is applied to the database.
         /// </summary>
         public static void ProcessSellOrders(EMMADataSet.AssetsDataTable assetData, AssetList changes,
-            int ownerID)
+            long ownerID)
         {
             List<int> itemIDs = new List<int>();
             itemIDs.Add(0);
-            List<int> stationIDs = new List<int>();
+            List<long> stationIDs = new List<long>();
             stationIDs.Add(0);
             List<AssetAccessParams> accessParams = new List<AssetAccessParams>();
             accessParams.Add(new AssetAccessParams(ownerID));
@@ -423,7 +423,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             OrdersList sellOrders = Orders.LoadOrders(accessParams, itemIDs, stationIDs, 999, "Sell");
             EMMADataSet.AssetsRow changedAsset = null;
             // Note that modifiedAssets is indexed first by itemID and second by stationID
-            Dictionary<int, Dictionary<int, AssetInfo>> modifiedAssets = new Dictionary<int, Dictionary<int, AssetInfo>>();
+            Dictionary<int, Dictionary<long, AssetInfo>> modifiedAssets = new Dictionary<int, Dictionary<long, AssetInfo>>();
 
             foreach (Order sellOrder in sellOrders)
             {
@@ -464,7 +464,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         // from the stack, the most likely cause is more than one sell order for 
                         // this item in this location and if we know how many units we've removed 
                         // We can make sure that the other order(s) quantity matches up.
-                        Dictionary<int, AssetInfo> itemDeltaVol = new Dictionary<int, AssetInfo>();
+                        Dictionary<long, AssetInfo> itemDeltaVol = new Dictionary<long, AssetInfo>();
                         if (modifiedAssets.ContainsKey(sellOrder.ItemID))
                         {
                             itemDeltaVol = modifiedAssets[sellOrder.ItemID];
@@ -523,7 +523,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     assetData.AddAssetsRow(changedAsset);
 
                     // Store the changes we are making to quantities
-                    Dictionary<int, AssetInfo> itemDeltaVol = new Dictionary<int, AssetInfo>();
+                    Dictionary<long, AssetInfo> itemDeltaVol = new Dictionary<long, AssetInfo>();
                     if (modifiedAssets.ContainsKey(sellOrder.ItemID))
                     {
                         itemDeltaVol = modifiedAssets[sellOrder.ItemID];
@@ -551,10 +551,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
 
             // Once we've finished processing all the orders, store the overall quantity changes. 
-            Dictionary<int, Dictionary<int, AssetInfo>>.Enumerator enumerator = modifiedAssets.GetEnumerator();
+            Dictionary<int, Dictionary<long, AssetInfo>>.Enumerator enumerator = modifiedAssets.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                Dictionary<int, AssetInfo>.Enumerator enumerator2 = enumerator.Current.Value.GetEnumerator();
+                Dictionary<long, AssetInfo>.Enumerator enumerator2 = enumerator.Current.Value.GetEnumerator();
                 while(enumerator2.MoveNext())
                 {
                     Asset change = new Asset();
@@ -613,11 +613,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public static decimal GetAssetsValue(int ownerID)
+        public static decimal GetAssetsValue(long ownerID)
         {
             return GetAssetsValue(ownerID, null);
         }
-        public static decimal GetAssetsValue(int ownerID, List<int> excludedStates)
+        public static decimal GetAssetsValue(long ownerID, List<int> excludedStates)
         {
             decimal retVal = 0;
             List<AssetAccessParams> accessParams = new List<AssetAccessParams>();
@@ -658,7 +658,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="minimumTransID"></param>
         /// <returns></returns>
         public static long UpdateFromTransactions(EMMADataSet.AssetsDataTable assetsData,
-            AssetList changes, int charID, int corpID, bool useCorp, long minimumTransID)
+            AssetList changes, long charID, long corpID, bool useCorp, long minimumTransID)
         {
             return UpdateFromTransactions(assetsData, changes, charID, corpID, useCorp, minimumTransID, DateTime.MaxValue);
         }
@@ -671,7 +671,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="includeTransAfter"></param>
         /// <returns></returns>
         public static long UpdateFromTransactions(EMMADataSet.AssetsDataTable assetsData,
-            AssetList changes, int charID, int corpID, bool useCorp, DateTime includeTransAfter)
+            AssetList changes, long charID, long corpID, bool useCorp, DateTime includeTransAfter)
         {
             return UpdateFromTransactions(assetsData, changes, charID, corpID, useCorp, -1, includeTransAfter);
         }
@@ -685,11 +685,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="includeTransAfter"></param>
         /// <returns></returns>
         private static long UpdateFromTransactions(EMMADataSet.AssetsDataTable assetsData,
-            AssetList changes, int charID, int corpID, bool useCorp, long minimumTransID,
+            AssetList changes, long charID, long corpID, bool useCorp, long minimumTransID,
             DateTime includeTransAfter)
         {
             long maxID = 0;
-            int ownerID = useCorp ? corpID : charID;
+            long ownerID = useCorp ? corpID : charID;
 
             EMMADataSet.TransactionsDataTable transactions = new EMMADataSet.TransactionsDataTable();
             transactions = GetTransactions(charID, corpID, useCorp, minimumTransID, includeTransAfter);
@@ -779,18 +779,18 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="minimumTransID"></param>
         /// <param name="includeTransAfter"></param>
         /// <returns></returns>
-        public static Dictionary<int, Dictionary<int, long>> GetQuantityChangesFromTransactions(
-            int charID, int corpID, bool useCorp, long minimumTransID, DateTime includeTransAfter)
+        public static Dictionary<long, Dictionary<int, long>> GetQuantityChangesFromTransactions(
+            long charID, long corpID, bool useCorp, long minimumTransID, DateTime includeTransAfter)
         {
-            Dictionary<int, Dictionary<int, long>> retVal = new Dictionary<int, Dictionary<int, long>>();
-            int ownerID = useCorp ? corpID : charID;
+            Dictionary<long, Dictionary<int, long>> retVal = new Dictionary<long, Dictionary<int, long>>();
+            long ownerID = useCorp ? corpID : charID;
 
             EMMADataSet.TransactionsDataTable transactions = new EMMADataSet.TransactionsDataTable();
             transactions = GetTransactions(charID, corpID, useCorp, minimumTransID, includeTransAfter);
 
             foreach (EMMADataSet.TransactionsRow trans in transactions)
             {
-                int stationID = trans.StationID;
+                long stationID = trans.StationID;
                 int itemID = trans.ItemID;
                 int deltaQuantity = trans.Quantity;
                 if (trans.SellerID == ownerID) { deltaQuantity *= -1; }
@@ -817,18 +817,20 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="minimumTransID"></param>
         /// <param name="includeTransAfter"></param>
         /// <returns></returns>
-        private static EMMADataSet.TransactionsDataTable GetTransactions(int charID, int corpID, bool useCorp,
+        private static EMMADataSet.TransactionsDataTable GetTransactions(long charID, long corpID, bool useCorp,
             long minimumTransID, DateTime includeTransAfter)
         {
-            int ownerID = useCorp ? corpID : charID;
+            long ownerID = useCorp ? corpID : charID;
             EMMADataSet.TransactionsDataTable transactions = new EMMADataSet.TransactionsDataTable();
             if (minimumTransID == -1)
             {
                 List<FinanceAccessParams> accessParams = new List<FinanceAccessParams>();
                 accessParams.Add(new FinanceAccessParams(ownerID, false));
-                List<int> ids = new List<int>();
+                List<long> ids = new List<long>();
                 ids.Add(0);
-                transactions = Transactions.GetTransData(accessParams, ids, ids, ids, includeTransAfter, DateTime.MaxValue, "");
+                List<int> itemIds = new List<int>();
+                itemIds.Add(0);
+                transactions = Transactions.GetTransData(accessParams, itemIds, ids, ids, includeTransAfter, DateTime.MaxValue, "");
             }
             else
             {
@@ -872,23 +874,23 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return table;
         }
 
-        public static EMMADataSet.IDTableDataTable GetInvolvedSystemIDs(int ownerID,
-            List<int> regionIDs, List<int> stationIDs, int itemID, int minimumQuantity,
+        public static EMMADataSet.IDTableDataTable GetInvolvedSystemIDs(long ownerID,
+            List<long> regionIDs, List<long> stationIDs, int itemID, int minimumQuantity,
             bool includeContainers, bool includeContents)
         {
             EMMADataSet.IDTableDataTable table = new EMMADataSet.IDTableDataTable();
-            if (regionIDs == null) { regionIDs = new List<int>(); }
-            if (stationIDs == null) { stationIDs = new List<int>(); }
+            if (regionIDs == null) { regionIDs = new List<long>(); }
+            if (stationIDs == null) { stationIDs = new List<long>(); }
             if (regionIDs.Count == 0) { regionIDs.Add(0); }
             if (stationIDs.Count == 0) { stationIDs.Add(0); }
             StringBuilder regionIDList = new StringBuilder();
             StringBuilder stationIDList = new StringBuilder();
-            foreach (int id in regionIDs)
+            foreach (long id in regionIDs)
             {
                 if (regionIDList.Length != 0) { regionIDList.Append(","); }
                 regionIDList.Append(id);
             }
-            foreach (int id in stationIDs)
+            foreach (long id in stationIDs)
             {
                 if (stationIDList.Length != 0) { stationIDList.Append(","); }
                 stationIDList.Append(id);
@@ -973,8 +975,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="itemID"></param>
         /// <param name="locationID"></param>
         /// <returns></returns>
-        public static AssetList LoadAssets(List<AssetAccessParams> accessParams, List<int> regionIDs,
-            int itemID, int locationID, int systemID, bool containersOnly, int status, bool excludeContainers,
+        public static AssetList LoadAssets(List<AssetAccessParams> accessParams, List<long> regionIDs,
+            int itemID, long locationID, long systemID, bool containersOnly, int status, bool excludeContainers,
             bool excludeContained)
         {
             AssetList retVal = new AssetList();
@@ -1012,8 +1014,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="itemID"></param>
         /// <param name="locationID"></param>
         /// <returns></returns>
-        public static AssetList LoadAssetsByItemAndContainersOfItem(List<AssetAccessParams> accessParams, 
-            List<int> regionIDs, int itemID, int locationID, int systemID, bool containersOnly)
+        public static AssetList LoadAssetsByItemAndContainersOfItem(List<AssetAccessParams> accessParams,
+            List<long> regionIDs, int itemID, long locationID, long systemID, bool containersOnly)
         {
             return LoadAssetsByItemAndContainersOfItem(accessParams, regionIDs, itemID, locationID, systemID, 
                 containersOnly, 0, false);
@@ -1028,8 +1030,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="itemID"></param>
         /// <param name="locationID"></param>
         /// <returns></returns>
-        public static AssetList LoadAssetsByItemAndContainersOfItem(List<AssetAccessParams> accessParams, 
-            List<int> regionIDs, int itemID, int locationID, int systemID, bool containersOnly, 
+        public static AssetList LoadAssetsByItemAndContainersOfItem(List<AssetAccessParams> accessParams,
+            List<long> regionIDs, int itemID, long locationID, long systemID, bool containersOnly, 
             int status, bool excludeContainers)
         {
             AssetList retVal = new AssetList();
@@ -1062,7 +1064,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <summary>
         /// Return a list of assets that meet the specified parameters.
         /// </summary>
-        public static AssetList LoadReprocessableAssets(int ownerID, int stationID,
+        public static AssetList LoadReprocessableAssets(long ownerID, long stationID,
             int status, bool includeContainers, bool includeNonContainers)
         {
             AssetList retVal = new AssetList();
@@ -1097,8 +1099,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="isContainer"></param>
         /// <param name="assetID"></param>
         /// <returns></returns>
-        public static bool AssetExists(EMMADataSet.AssetsDataTable table, int ownerID,
-            int locationID, int itemID, int status, bool isContained, long containerID, bool isContainer,
+        public static bool AssetExists(EMMADataSet.AssetsDataTable table, long ownerID,
+            long locationID, int itemID, int status, bool isContained, long containerID, bool isContainer,
             bool processed, bool ignoreProcessed, bool autoConExclude, bool ignoreAutoConEx,
             long eveItemInstanceID, ref long assetID)
         {
@@ -1186,7 +1188,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="itemID">The item ID of assets to set the processed flag for. If it's zero then any item.</param>
         /// <param name="processed"></param>
         /// <param name="corpAsset"></param>
-        public static void SetProcessedFlag(int ownerID, int status, bool processed)
+        public static void SetProcessedFlag(long ownerID, int status, bool processed)
         {
             lock (assetsTableAdapter)
             {
@@ -1209,18 +1211,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="stationID"></param>
         /// <param name="itemID"></param>
         /// <param name="exclude"></param>
-        public static void SetAutoConExcludeFlag(int charID, bool corpAsset, int stationID, int itemID, bool exclude)
+        public static void SetAutoConExcludeFlag(long ownerID, long stationID, int itemID, 
+            bool exclude)
         {
             lock (assetsTableAdapter)
             {
-                assetsTableAdapter.SetExcludeFlag(0, charID, stationID, itemID, 1, 0, exclude, corpAsset);
+                assetsTableAdapter.SetExcludeFlag(0, ownerID, stationID, itemID, 1, 0, exclude);
             }
         }
         public static void SetAutoConExcludeFlag(long assetID, bool exclude)
         {
             lock (assetsTableAdapter)
             {
-                assetsTableAdapter.SetExcludeFlag(assetID, 0, 0, 0, 1, 0, exclude, false);
+                assetsTableAdapter.SetExcludeFlag(assetID, 0, 0, 0, 1, 0, exclude);
             }
         }
 
@@ -1228,7 +1231,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             lock (assetsTableAdapter)
             {
-                assetsTableAdapter.SetReprocExclude(assetID, 0, 0, 0, 1, 0, exclude, false);
+                assetsTableAdapter.SetReprocExclude(assetID, 0, 0, 0, 1, 0, exclude);
             }
         }
 
@@ -1240,7 +1243,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="ownerID"></param>
         /// <param name="includePersonal"></param>
         /// <param name="includeCorporate"></param>
-        public static void ClearUnProcessed(int ownerID, bool onlyContainers)
+        public static void ClearUnProcessed(long ownerID, bool onlyContainers)
         {
             lock (assetsTableAdapter)
             {
@@ -1275,8 +1278,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="charIDs"></param>
         /// <param name="itemID"></param>
         /// <returns></returns>
-        static public long GetTotalQuantity(List<AssetAccessParams> accessParams, int itemID, List<int> stationIDs,
-            List<int> regionIDs, bool includeItemsInTransit, bool includeContainers)
+        static public long GetTotalQuantity(List<AssetAccessParams> accessParams, int itemID, List<long> stationIDs,
+            List<long> regionIDs, bool includeItemsInTransit, bool includeContainers)
         {
             long? retVal = 0;
             string stationList = "0";
@@ -1316,22 +1319,22 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             long quantityNow = GetTotalQuantity(accessParams, itemID);
             OrdersList sellOrders = Orders.LoadOrders(accessParams, itemIDList,
-                new List<int>(), (int)OrderState.Active, "sell");
+                new List<long>(), (int)OrderState.Active, "sell");
             foreach (Order sellOrder in sellOrders)
             {
                 quantityNow += sellOrder.RemainingVol;
             }
             retVal = quantityNow;
 
-            TransactionList transactions = Transactions.LoadTransactions(financeParams, 
-                itemIDList, new List<int>(), dateTime, DateTime.UtcNow, "buy");
+            TransactionList transactions = Transactions.LoadTransactions(financeParams,
+                itemIDList, new List<long>(), dateTime, DateTime.UtcNow, "buy");
             foreach (Transaction trans in transactions)
             {
                 retVal -= trans.Quantity;
             }
 
             transactions = Transactions.LoadTransactions(financeParams,
-                itemIDList, new List<int>(), dateTime, DateTime.UtcNow, "sell");
+                itemIDList, new List<long>(), dateTime, DateTime.UtcNow, "sell");
             foreach (Transaction trans in transactions)
             {
                 retVal += trans.Quantity;
@@ -1352,11 +1355,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="status"></param>
         /// <param name="autoConExclude"></param>
         /// <param name="deltaQuatnity"></param>
-        static public void BuyAssets(int ownerID, int stationID, int itemID,
+        static public void BuyAssets(long ownerID, long stationID, int itemID,
             long deltaQuantity, decimal addedItemsCost, DateTime assetsEffectiveDate, 
             DateTime transactionDate)
         {
-            int systemID = 0, regionID = 0;
+            long systemID = 0, regionID = 0;
 
             EveDataSet.staStationsRow station = Stations.GetStation(stationID);
             if (station != null)
@@ -1422,7 +1425,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 EMMADataSet.AssetsDataTable assetData = new EMMADataSet.AssetsDataTable();
                 List<AssetAccessParams> accessParams = new List<AssetAccessParams>();
                 accessParams.Add(new AssetAccessParams(ownerID));
-                AssetList assets = Assets.LoadAssets(accessParams, new List<int>(), itemID, 
+                AssetList assets = Assets.LoadAssets(accessParams, new List<long>(), itemID, 
                     0, 0, false, (int)AssetStatus.States.Normal, true, false);
                 foreach (Asset asset in assets)
                 {
@@ -1454,11 +1457,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="status"></param>
         /// <param name="autoConExclude"></param>
         /// <param name="deltaQuatnity"></param>
-        static public void ChangeAssets(int charID, int locationID, int itemID,
+        static public void ChangeAssets(long charID, long locationID, int itemID,
             long containerID, int status, bool autoConExclude, long deltaQuantity, decimal addedItemsCost,
             bool costCalculated)
         {
-            int systemID = 0, regionID = 0;
+            long systemID = 0, regionID = 0;
             try
             {
                 EveDataSet.staStationsRow station = Stations.GetStation(locationID);
@@ -1500,13 +1503,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }*/
 
 
-        static public AssetList GetAssets(List<AssetAccessParams> accessParams, int itemID, List<int> stationIDs,
-            List<int> regionIDs, bool includeInTransit, bool includeContainers)
+        static public AssetList GetAssets(List<AssetAccessParams> accessParams, int itemID, List<long> stationIDs,
+            List<long> regionIDs, bool includeInTransit, bool includeContainers)
         {
             AssetList retVal = new AssetList();
             EMMADataSet.AssetsDataTable data = new EMMADataSet.AssetsDataTable();
-            if (regionIDs == null || regionIDs.Count == 0) { regionIDs = new List<int>(); regionIDs.Add(0); }
-            if (stationIDs == null || stationIDs.Count == 0) { stationIDs = new List<int>(); stationIDs.Add(0); }
+            if (regionIDs == null || regionIDs.Count == 0) { regionIDs = new List<long>(); regionIDs.Add(0); }
+            if (stationIDs == null || stationIDs.Count == 0) { stationIDs = new List<long>(); stationIDs.Add(0); }
 
             StringBuilder regionString = new StringBuilder("");
             StringBuilder stationString = new StringBuilder("");
@@ -1560,8 +1563,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="accessParams"></param>
         /// <param name="locationID">If locationID = 0 then any location will be returned</param>
         /// <param name="itemID">If itemID = 0 then any item will be returned</param>
-        static public void GetAssets(EMMADataSet.AssetsDataTable table, 
-            List<AssetAccessParams> accessParams, int locationID, int systemID, int itemID)
+        static public void GetAssets(EMMADataSet.AssetsDataTable table,
+            List<AssetAccessParams> accessParams, long locationID, long systemID, int itemID)
         {
             lock (assetsTableAdapter)
             {
@@ -1581,7 +1584,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="status">If status = 0 then any item will be returned</param>
         /// <param name="processed"></param>
         static public void GetAssets(EMMADataSet.AssetsDataTable table,
-            List<AssetAccessParams> accessParams, int locationID, int systemID, int itemID, int status, 
+            List<AssetAccessParams> accessParams, long locationID, long systemID, int itemID, int status, 
             bool processed)
         {
             lock (assetsTableAdapter)
@@ -1601,7 +1604,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        static public EMMADataSet.AssetsDataTable GetAutoConAssets(int ownerID, int stationID,
+        static public EMMADataSet.AssetsDataTable GetAutoConAssets(long ownerID, long stationID,
             bool excludeContainers)
         {
             EMMADataSet.AssetsDataTable retVal = new EMMADataSet.AssetsDataTable();
@@ -1627,14 +1630,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return retVal;
         }
 
-        static public EMMADataSet.AssetsDataTable GetAutoConAssets(int ownerID, string locationName,
+        static public EMMADataSet.AssetsDataTable GetAutoConAssets(long ownerID, string locationName,
             bool excludeContainers)
         {
             GroupLocation location = GroupLocations.GetLocationDetail(locationName);
-            List<int> regionsIDs = location.Regions;
-            List<int> stationIDs = location.Stations;
-            if (regionsIDs == null || regionsIDs.Count == 0) { regionsIDs = new List<int>(); regionsIDs.Add(0); }
-            if (stationIDs == null || stationIDs.Count == 0) { stationIDs = new List<int>(); stationIDs.Add(0); }
+            List<long> regionsIDs = location.Regions;
+            List<long> stationIDs = location.Stations;
+            if (regionsIDs == null || regionsIDs.Count == 0) { regionsIDs = new List<long>(); regionsIDs.Add(0); }
+            if (stationIDs == null || stationIDs.Count == 0) { stationIDs = new List<long>(); stationIDs.Add(0); }
 
             StringBuilder regionsString = new StringBuilder("");
             StringBuilder stationsString = new StringBuilder("");

@@ -14,12 +14,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private static bool _initalised = false;
         private static Dictionary<RouteKey, int> _hitLevel = new Dictionary<RouteKey, int>();
 
-        public static void PopulateJumpsArray(List<int> fromSystemIDs, List<int> toSystemIDs, 
-            ref short[,] jumps, Dictionary<int, int> idMapper, ref int nextFreeIndex)
+        public static void PopulateJumpsArray(List<long> fromSystemIDs, List<long> toSystemIDs,
+            ref short[,] jumps, Dictionary<long, int> idMapper, ref int nextFreeIndex)
         {
             StringBuilder fromString = new StringBuilder("");
             StringBuilder toString = new StringBuilder("");
-            List<int> addedIds = new List<int>();
+            List<long> addedIds = new List<long>();
 
             foreach (int id in fromSystemIDs)
             {
@@ -30,7 +30,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     addedIds.Add(id);
                 }
             }
-            addedIds = new List<int>();
+            addedIds = new List<long>();
             foreach (int id in toSystemIDs)
             {
                 if (!addedIds.Contains(id))
@@ -90,11 +90,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="systemID"></param>
         /// <param name="range"></param>
         /// <returns></returns>
-        public static List<int> GetSystemsInRange(int systemID, int range)
+        public static List<long> GetSystemsInRange(long systemID, int range)
         {
-            List<int> retVal = new List<int>();
+            List<long> retVal = new List<long>();
             EveDataSet.SolarSystemDistancesDataTable table = new EveDataSet.SolarSystemDistancesDataTable();
-            tableAdapter.FillBySystemAndRange(table, systemID, range);
+            tableAdapter.FillBySystemAndRange(table, (int)systemID, range);
             foreach (EveDataSet.SolarSystemDistancesRow distance in table)
             {
                 retVal.Add(distance.ToSolarSystemID);
@@ -175,7 +175,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="startStationID"></param>
         /// <param name="endStationID"></param>
         /// <returns></returns>
-        public static int GetDistanceBetweenStations(int startStationID, int endStationID)
+        public static int GetDistanceBetweenStations(long startStationID, long endStationID)
         {
             EveDataSet.staStationsRow startStation = Stations.GetStation(startStationID);
             EveDataSet.staStationsRow endStation = Stations.GetStation(endStationID);

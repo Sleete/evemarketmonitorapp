@@ -18,7 +18,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
         public event SettingsUpdatedHandler SettingsUpdated;
 
-        public APICharSettings(int charID)
+        public APICharSettings(long charID)
         {
             BuildDefaultSettings(charID);
             _changed = true;
@@ -46,7 +46,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// Build a new settings file containing default data.
         /// </summary>
         /// <param name="keepAccountDetails"></param>
-        private void BuildDefaultSettings(int charID)
+        private void BuildDefaultSettings(long charID)
         {
             _xml = new XmlDocument();
 
@@ -256,9 +256,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set { SetValue(Setting.corpAssetsTransUpdateID, value.ToString(CultureInfo.InvariantCulture.NumberFormat)); }
         }
 
-        public int LastCourierDestination
+        public long LastCourierDestination
         {
-            get { return int.Parse(GetValue(Setting.lastCourierDest), System.Globalization.CultureInfo.InvariantCulture.NumberFormat); }
+            get { return long.Parse(GetValue(Setting.lastCourierDest), System.Globalization.CultureInfo.InvariantCulture.NumberFormat); }
             set { SetValue(Setting.lastCourierDest, value.ToString(CultureInfo.InvariantCulture.NumberFormat)); }
         }
 

@@ -82,9 +82,9 @@ namespace EveMarketMonitorApp.GUIElements
                 colsVisible[i] = chkColumns.CheckedItems.Contains(columnNames[i]);
             }
             _parameters.Add("ColumnsVisible", colsVisible);
-            _parameters.Add("ValueRegion", (int)cmbValueRegion.SelectedValue);
-            List<int> regions = new List<int>();
-            List<int> stations = new List<int>();
+            _parameters.Add("ValueRegion", (long)cmbValueRegion.SelectedValue);
+            List<long> regions = new List<long>();
+            List<long> stations = new List<long>();
             if (cmbLocation.Text.Equals("All Regions"))
             {
                 regions.Add(0);

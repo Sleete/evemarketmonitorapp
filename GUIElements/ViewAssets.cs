@@ -17,8 +17,8 @@ namespace EveMarketMonitorApp.GUIElements
     {
         private AssetList _assets;
         private BindingSource _assetsBindingSource;
-        private List<int> _personalOwners;
-        private List<int> _corporateOwners;
+        private List<long> _personalOwners;
+        private List<long> _corporateOwners;
         private List<AssetAccessParams> _accessParams;
         private int _itemID;
         private List<string> _recentItems;
@@ -91,8 +91,8 @@ namespace EveMarketMonitorApp.GUIElements
 
                 Diagnostics.StartTimer("ViewAssets.Part2");
                 List<CharCorpOption> charcorps = UserAccount.CurrentGroup.GetCharCorpOptions(APIDataType.Assets);
-                _corporateOwners = new List<int>(); 
-                _personalOwners = new List<int>();
+                _corporateOwners = new List<long>();
+                _personalOwners = new List<long>();
                 foreach (CharCorpOption chop in charcorps)
                 {
                     if (chop.Corp)
@@ -346,7 +346,7 @@ namespace EveMarketMonitorApp.GUIElements
 
                     _itemID = short.Parse(cmbItem.Tag.ToString());
                     int locationID = 0, systemID = 0;
-                    List<int> regionIDs = new List<int>();
+                    List<long> regionIDs = new List<long>();
                     Asset container = null;
 
                     BuildAccessList();
@@ -447,7 +447,7 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void BuildAccessList()
         {
-            int ownerID = 0;
+            long ownerID = 0;
             bool corpAssets = false;
             if (cmbOwner.SelectedValue != null && !chkIngoreOwner.Checked)
             {
@@ -539,7 +539,7 @@ namespace EveMarketMonitorApp.GUIElements
                     // Note the locationID param is the system ID and the systemID param is 0.
                     // This is because we only want assets that are in space in the system.
                     // NOT those in stations in the system.
-                    AssetList systemAssets = Assets.LoadAssets(_accessParams, new List<int>(), _itemID,
+                    AssetList systemAssets = Assets.LoadAssets(_accessParams, new List<long>(), _itemID,
                         (int)nodeData.Id, 0, true, 0, false, true);
                     foreach(Asset asset in systemAssets) 
                     {
@@ -552,7 +552,7 @@ namespace EveMarketMonitorApp.GUIElements
                     // This is a station level node so the next level will be any containers in
                     // the station that contain assets.
                     AssetList stationContainers = Assets.LoadAssetsByItemAndContainersOfItem(_accessParams,
-                        new List<int>(), _itemID, (int)nodeData.Id, 0, true);
+                        new List<long>(), _itemID, (int)nodeData.Id, 0, true);
                     foreach (Asset asset in stationContainers)
                     {
                         TreeNode cnode = new TreeNode(asset.Item);

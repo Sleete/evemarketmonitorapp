@@ -18,7 +18,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
     /// </summary>
     public static class EveAPI
     {
-        public const string URL_EveApiBase = "http://api.eve-online.com";
+        public static string URL_EveApiBase = "http://api.eve-online.com";
 
         public const string URL_CharsApi = "/account/Characters.xml.aspx";
 
@@ -242,7 +242,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static string GetName(int id)
+        public static string GetName(long id)
         {
             string retVal = "";
 

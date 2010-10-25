@@ -200,7 +200,7 @@ namespace EveMarketMonitorApp.GUIElements
                             }
                         }
                     }
-                    List<int> regionIDs = new List<int>();
+                    List<long> regionIDs = new List<long>();
 
                     foreach (object region in chkRegions.CheckedItems)
                     {
@@ -209,7 +209,7 @@ namespace EveMarketMonitorApp.GUIElements
                     }
                     _filterDetail.Regions = regionIDs;
 
-                    List<int> stationIDs = new List<int>();
+                    List<long> stationIDs = new List<long>();
                     if (_stations.Count > 1)
                     {
                         // If more than one station selected then simply add thier IDs to the filter
@@ -224,10 +224,10 @@ namespace EveMarketMonitorApp.GUIElements
                     {
                         // If only one station selected then we need to set the station ID list based upon
                         // the selected range.
-                        _filterDetail.Stations = new List<int>();
+                        _filterDetail.Stations = new List<long>();
                         _filterDetail.StationID = _stations[0].stationID;
                         int range = _filterDetail.Range;
-                        List<int> systemIDs = new List<int>();
+                        List<long> systemIDs = new List<long>();
                         if (range > 0)
                         {
                             // If range is greater than 0 then find the IDs of any systems within range.
@@ -239,7 +239,7 @@ namespace EveMarketMonitorApp.GUIElements
                             // If range is anything except -1 then add the stations in all of the solar systems
                             // in range to the list of stations in the filter.
                             systemIDs.Add(Stations.GetStation(_filterDetail.StationID).solarSystemID);
-                            foreach (int systemID in systemIDs)
+                            foreach (long systemID in systemIDs)
                             {
                                 stationIDs.AddRange(Stations.GetStationsInSystem(systemID));
                             }

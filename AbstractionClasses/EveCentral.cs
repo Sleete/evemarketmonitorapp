@@ -17,7 +17,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
     {
         public const string URL_PriceStats = @"http://eve-central.com/api/marketstat";
 
-        public static decimal GetPrice(int itemID, int regionID, bool buyPrice)
+        public static decimal GetPrice(int itemID, long regionID, bool buyPrice)
         {
             decimal retVal = 0;
             XmlDocument xml = GetXml(URL_PriceStats, "hours=144&typeid=" + 

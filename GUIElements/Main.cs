@@ -28,9 +28,9 @@ namespace EveMarketMonitorApp.GUIElements
         private static ControlPanel _controlPanel;
         private static UpdateStatus _updateStatus;
         private static SystemStatus _status;
-        private static Dictionary<APIDataType, List<int>> _updatesRunning;
-        private static List<int> _assetUpdatesAwaitingAcknowledgement = new List<int>();
-        private static Dictionary<int, short> _corpOrderUpdates = new Dictionary<int, short>();
+        private static Dictionary<APIDataType, List<long>> _updatesRunning;
+        private static List<long> _assetUpdatesAwaitingAcknowledgement = new List<long>();
+        private static Dictionary<long, short> _corpOrderUpdates = new Dictionary<long, short>();
         //private static bool _unackAssetsWaiting = false;
         private static SplashScreen splash;
         private static ViewUnacknowledgedOrders _unackOrders = null;
@@ -403,12 +403,12 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void InitaliseUpdatesRunning()
         {
-            _updatesRunning = new Dictionary<APIDataType, List<int>>();
-            _updatesRunning.Add(APIDataType.Assets, new List<int>());
-            _updatesRunning.Add(APIDataType.Journal, new List<int>());
-            _updatesRunning.Add(APIDataType.Orders, new List<int>());
-            _updatesRunning.Add(APIDataType.Transactions, new List<int>());
-            _updatesRunning.Add(APIDataType.IndustryJobs, new List<int>());
+            _updatesRunning = new Dictionary<APIDataType, List<long>>();
+            _updatesRunning.Add(APIDataType.Assets, new List<long>());
+            _updatesRunning.Add(APIDataType.Journal, new List<long>());
+            _updatesRunning.Add(APIDataType.Orders, new List<long>());
+            _updatesRunning.Add(APIDataType.Transactions, new List<long>());
+            _updatesRunning.Add(APIDataType.IndustryJobs, new List<long>());
         }
 
         private void AutoUpdate()
@@ -586,7 +586,7 @@ namespace EveMarketMonitorApp.GUIElements
             bool retVal = false;
             bool updatesInProg = false;
 
-            List<int> ids = _updatesRunning[APIDataType.Assets];
+            List<long> ids = _updatesRunning[APIDataType.Assets];
             if (ids.Count > 0) { updatesInProg = true; }
             ids = _updatesRunning[APIDataType.Journal];
             if (ids.Count > 0) { updatesInProg = true; }
@@ -731,7 +731,7 @@ namespace EveMarketMonitorApp.GUIElements
                         bool allEnabled = true;
                         Text = "EMMA - " + UserAccount.CurrentGroup.Name;
 
-                        List<int> ids = _updatesRunning[APIDataType.Assets];
+                        List<long> ids = _updatesRunning[APIDataType.Assets];
                         if (ids.Count == 0) { btnAssets.Enabled = true; }
                         else { btnAssets.Enabled = false; allEnabled = false; }
                         ids = _updatesRunning[APIDataType.Journal];
@@ -818,7 +818,7 @@ namespace EveMarketMonitorApp.GUIElements
                 if (_unackOrders == null || (!_unackOrders.Visible && this.Visible))
                 {
                     OrdersList unack = Orders.LoadOrders(UserAccount.CurrentGroup.GetAssetAccessParams(
-                        APIDataType.Orders), new List<int>(), new List<int>(),
+                        APIDataType.Orders), new List<int>(), new List<long>(),
                         (int)OrderState.ExpiredOrFilledAndUnacknowledged, "Any");
                     if (_unackOrders == null && unack.Count > 0)
                     {
@@ -883,7 +883,7 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 bool isCorp = false;
                 APICharacter character = UserAccount.CurrentGroup.GetCharacter(id, ref isCorp);
-                List<int> idsUpdating = _updatesRunning[APIDataType.Assets];
+                List<long> idsUpdating = _updatesRunning[APIDataType.Assets];
                 if (idsUpdating.Contains(id))
                 {
                     idsUpdating.Remove(id);
@@ -897,7 +897,7 @@ namespace EveMarketMonitorApp.GUIElements
 
         void UpdateStatus_UpdateEvent(object myObject, APIUpdateEventArgs args)
         {
-            List<int> idsUpdating;
+            List<long> idsUpdating;
             //bool isCorp = false;
             switch (args.EventType)
             {
@@ -995,9 +995,9 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 // Check if there are any assets updates either in progress or pending
                 // If there are none then show the 'AcknowledgeAssetChanges' screen
-                List<int> idsUpdating = _updatesRunning[APIDataType.Assets];
+                List<long> idsUpdating = _updatesRunning[APIDataType.Assets];
                 bool updatesStillRunning = false;
-                foreach (int id in idsUpdating)
+                foreach (long id in idsUpdating)
                 {
                     // If there are any ids in the 'updates running' list but NOT in the 
                     // 'updates awaiting acknowledgement' list then there must still be

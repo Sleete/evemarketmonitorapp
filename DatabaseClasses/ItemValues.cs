@@ -47,14 +47,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
         void PriceCache_DataUpdateNeeded(object myObject, DataUpdateNeededArgs<PriceCacheKey, decimal> args)
         {
             int itemID = args.Key.ItemID;
-            int regionID = args.Key.RegionID;
+            long regionID = args.Key.RegionID;
             DateTime valueDate = args.Key.ValueDate;
             bool buyPrice = myObject == _buyPriceCache;
 
             args.Data = GetItemValue(itemID, regionID, valueDate, buyPrice);
         }
 
-        public decimal GetItemValue(int itemID, int regionID, DateTime valueDate, bool buyPrice)
+        public decimal GetItemValue(int itemID, long regionID, DateTime valueDate, bool buyPrice)
         {
             decimal? value = 0;
             decimal? webValue = 0;
@@ -206,7 +206,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
                 List<int> itemIDs = new List<int>();
                 itemIDs.Add(itemID);
-                List<int> regionIDs = new List<int>();
+                List<long> regionIDs = new List<long>();
                 regionIDs.Add(regionID == -1 ? 0 : regionID);
                 if (buyPrice)
                 {
@@ -654,7 +654,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="itemID"></param>
         /// <param name="stationID"></param>
         /// <returns></returns>
-        public decimal GetItemValue(int itemID, int stationID)
+        public decimal GetItemValue(int itemID, long stationID)
         {
             decimal retVal = 0;
             int regionID = Stations.GetStation(stationID).regionID;
@@ -667,7 +667,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="itemID"></param>
         /// <param name="regionID"></param>
         /// <returns></returns>
-        public decimal GetItemValue(int itemID, int regionID, bool nothing)
+        public decimal GetItemValue(int itemID, long regionID, bool nothing)
         {
             decimal retVal = 0;
             retVal = GetItemValue(itemID, regionID, DateTime.UtcNow.Date);
@@ -691,7 +691,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="itemID"></param>
         /// <param name="stationID"></param>
         /// <returns></returns>
-        public decimal GetItemValue(int itemID, int regionID, DateTime date)
+        public decimal GetItemValue(int itemID, long regionID, DateTime date)
         {
             decimal retVal = 0;
             if (this.UseReprocessValGet(itemID))
@@ -718,7 +718,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="itemID"></param>
         /// <param name="stationID"></param>
         /// <returns></returns>
-        public decimal GetBuyPrice(int itemID, int stationID, bool nothing)
+        public decimal GetBuyPrice(int itemID, long stationID, bool nothing)
         {
             decimal retVal = 0;
             int regionID = Stations.GetStation(stationID).regionID;
@@ -731,7 +731,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="itemID"></param>
         /// <param name="stationID"></param>
         /// <returns></returns>
-        public decimal GetBuyPrice(int itemID, int regionID)
+        public decimal GetBuyPrice(int itemID, long regionID)
         {
             decimal retVal = 0;
             retVal = GetBuyPrice(itemID, regionID, DateTime.UtcNow.Date);
@@ -743,7 +743,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="itemID"></param>
         /// <param name="stationID"></param>
         /// <returns></returns>
-        public decimal GetBuyPrice(int itemID, int regionID, DateTime date)
+        public decimal GetBuyPrice(int itemID, long regionID, DateTime date)
         {
             decimal retVal = 0;
             if (regionID == 0) { regionID = -1; }
@@ -825,7 +825,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             AddItem(itemID, -1);
         }
-        private void AddItem(int itemID, int regionID)
+        private void AddItem(int itemID, long regionID)
         {
             EMMADataSet.ItemValuesRow item = table.FindByReportGroupIDItemIDRegionID(_reportGroupID, itemID, regionID);
             if (item == null)
@@ -918,7 +918,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             tradedItem.DefaultBuyPrice = newPrice;
         }
 
-        public decimal CalculatedSellPriceGet(int itemID, int regionID)
+        public decimal CalculatedSellPriceGet(int itemID, long regionID)
         {
             decimal retVal = 0;
             if (regionID == 0) { regionID = -1; }
@@ -927,7 +927,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             if (tradedItem != null) { retVal = tradedItem.CurrentSellPrice; }
             return retVal;
         }
-        public void CalculatedSellPriceSet(int itemID, int regionID, decimal newPrice)
+        public void CalculatedSellPriceSet(int itemID, long regionID, decimal newPrice)
         {
             if (regionID == 0) { regionID = -1; }
             EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
@@ -941,7 +941,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             tradedItem.CurrentSellPrice = newPrice;
         }
 
-        public DateTime CalculatedSellPriceLastUpdateGet(int itemID, int regionID)
+        public DateTime CalculatedSellPriceLastUpdateGet(int itemID, long regionID)
         {
             DateTime retVal= new DateTime(2000, 1, 1);
             if (regionID == 0) { regionID = -1; }
@@ -950,7 +950,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             if (tradedItem != null) { retVal = tradedItem.LastSellPriceCalc; }
             return retVal;
         }
-        public void CalculatedSellPriceLastUpdateSet(int itemID, int regionID, DateTime newDateTime)
+        public void CalculatedSellPriceLastUpdateSet(int itemID, long regionID, DateTime newDateTime)
         {
             if (regionID == 0) { regionID = -1; }
             EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
@@ -964,7 +964,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             tradedItem.LastSellPriceCalc = newDateTime;
         }
 
-        public decimal CalculatedBuyPriceGet(int itemID, int regionID)
+        public decimal CalculatedBuyPriceGet(int itemID, long regionID)
         {
             decimal retVal = 0;
             if (regionID == 0) { regionID = -1; }
@@ -973,7 +973,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             if (tradedItem != null) { retVal = tradedItem.CurrentBuyPrice; }
             return retVal;
         }
-        public void CalculatedBuyPriceSet(int itemID, int regionID, decimal newPrice)
+        public void CalculatedBuyPriceSet(int itemID, long regionID, decimal newPrice)
         {
             if (regionID == 0) { regionID = -1; }
             EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
@@ -987,7 +987,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             tradedItem.CurrentBuyPrice = newPrice;
         }
 
-        public DateTime CalculatedBuyPriceLastUpdateGet(int itemID, int regionID)
+        public DateTime CalculatedBuyPriceLastUpdateGet(int itemID, long regionID)
         {
             DateTime retVal = new DateTime(2000, 1, 1);
             if (regionID == 0) { regionID = -1; }
@@ -996,7 +996,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             if (tradedItem != null) { retVal = tradedItem.LastBuyPriceCalc; }
             return retVal;
         }
-        public void CalculatedBuyPriceLastUpdateSet(int itemID, int regionID, DateTime newDateTime)
+        public void CalculatedBuyPriceLastUpdateSet(int itemID, long regionID, DateTime newDateTime)
         {
             if (regionID == 0) { regionID = -1; }
             EMMADataSet.ItemValuesRow tradedItem = table.FindByReportGroupIDItemIDRegionID(
@@ -1078,11 +1078,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private class PriceCacheKey
         {
             private int _itemID;
-            private int _regionID;
+            private long _regionID;
             private DateTime _valueDate;
 
             //public PriceCacheKey(int itemID, int regionID)
-            public PriceCacheKey(int itemID, int regionID, DateTime valueDate)
+            public PriceCacheKey(int itemID, long regionID, DateTime valueDate)
             {
                 _itemID = itemID;
                 _regionID = regionID;
@@ -1095,7 +1095,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 set { _itemID = value; }
             }
 
-            public int RegionID
+            public long RegionID
             {
                 get { return _regionID; }
                 set { _regionID = value; }

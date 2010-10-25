@@ -20,7 +20,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
         private const string URL_PriceStats = @"http://www.eve-metrics.com/api/item.xml";
 
-        public static decimal GetPrice(int itemID, int regionID, bool buyPrice)
+        public static decimal GetPrice(int itemID, long regionID, bool buyPrice)
         {
             decimal retVal = 0;
             StringBuilder parameters = new StringBuilder();

@@ -16,7 +16,8 @@ namespace EveMarketMonitorApp.GUIElements
     public partial class ViewItemDetail : Form
     {
         private CharCorpOption _lastSelectedOwner;
-        private Dictionary<int, List<int>> _useDataFrom;
+        // Key is ownerID
+        private Dictionary<long, List<int>> _useDataFrom;
         private bool _selectAllOwners = false;
         private bool _selectAllItems = false;
 
@@ -57,7 +58,7 @@ namespace EveMarketMonitorApp.GUIElements
             UserAccount.Settings.GetColumnWidths(this.Name, transactionsView);
             this.FormClosing += new FormClosingEventHandler(ViewItemDetail_FormClosing);
 
-            _useDataFrom = new Dictionary<int, List<int>>();
+            _useDataFrom = new Dictionary<long, List<int>>();
 
             dtpStartDate.Value = UserAccount.Settings.UseLocalTimezone ? 
                 DateTime.Now.AddMonths(-1) : DateTime.UtcNow.AddMonths(-1);
@@ -200,7 +201,7 @@ namespace EveMarketMonitorApp.GUIElements
 
             if (selectedOwner != null)
             {
-                int id = selectedOwner.Corp ? selectedOwner.CharacterObj.CorpID : selectedOwner.CharacterObj.CharID;
+                long id = selectedOwner.Corp ? selectedOwner.CharacterObj.CorpID : selectedOwner.CharacterObj.CharID;
                 if (_useDataFrom.ContainsKey(id))
                 {
                     if (selectedOwner.Corp)
@@ -226,7 +227,7 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 if (_lastSelectedOwner.Corp && !_lastSelectedOwner.Equals((CharCorpOption)chkOwners.SelectedItem))
                 {
-                    int id = _lastSelectedOwner.Corp ?
+                    long id = _lastSelectedOwner.Corp ?
                         _lastSelectedOwner.CharacterObj.CorpID : _lastSelectedOwner.CharacterObj.CharID;
 
                     if (_useDataFrom.ContainsKey(id))
@@ -264,7 +265,7 @@ namespace EveMarketMonitorApp.GUIElements
             CharCorpOption item = (CharCorpOption)chkOwners.Items[e.Index];
             if (item != null)
             {
-                int id = item.Corp ? item.CharacterObj.CorpID : item.CharacterObj.CharID;
+                long id = item.Corp ? item.CharacterObj.CorpID : item.CharacterObj.CharID;
                 if (e.NewValue == CheckState.Unchecked && _useDataFrom.ContainsKey(id))
                 {
                     _useDataFrom.Remove(id);
@@ -381,7 +382,7 @@ namespace EveMarketMonitorApp.GUIElements
 
                 // Generate finance access parameters
                 _finParams = new List<FinanceAccessParams>();
-                Dictionary<int, List<int>>.Enumerator enumerator = _useDataFrom.GetEnumerator();
+                Dictionary<long, List<int>>.Enumerator enumerator = _useDataFrom.GetEnumerator();
                 while (enumerator.MoveNext())
                 {
                     // If we are accessing all wallets for a corp then no need to bether with this 
@@ -476,8 +477,8 @@ namespace EveMarketMonitorApp.GUIElements
             try
             {
                 // Retrieve data
-                _buyOrders = Orders.LoadOrders(_assetParams, _itemIDs, new List<int>(), (int)OrderState.Active, "buy");
-                _sellOrders = Orders.LoadOrders(_assetParams, _itemIDs, new List<int>(), (int)OrderState.Active, "sell");
+                _buyOrders = Orders.LoadOrders(_assetParams, _itemIDs, new List<long>(), (int)OrderState.Active, "buy");
+                _sellOrders = Orders.LoadOrders(_assetParams, _itemIDs, new List<long>(), (int)OrderState.Active, "sell");
 
                 // Now add placeholder rows for item/owner combos that do not exist in the retrieved data.
                 if (_generatePlaceholderOrders)
@@ -487,7 +488,7 @@ namespace EveMarketMonitorApp.GUIElements
                         foreach (object itemObj in chkItems.CheckedItems)
                         {
                             CharCorpOption owner = (CharCorpOption)ownerObj;
-                            int ownerID = owner.Data.ID;
+                            long ownerID = owner.Data.ID;
                             int itemID = ((ItemInfo)itemObj).ID;
 
                             _buyOrders.ItemFilter = "OwnerID = " + ownerID + " AND ItemID = " + itemID;

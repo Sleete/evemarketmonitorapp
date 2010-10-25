@@ -135,7 +135,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// Return the specified account row direct from the EMMA database
         /// </summary>
         /// <returns></returns>
-        private static EMMADataSet.EveAccountsRow LoadAccountFromDB(int userID)
+        private static EMMADataSet.EveAccountsRow LoadAccountFromDB(long userID)
         {
             EMMADataSet.EveAccountsRow retVal = null;
             EMMADataSet.EveAccountsDataTable accountsData = new EMMADataSet.EveAccountsDataTable();

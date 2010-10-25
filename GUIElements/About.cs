@@ -25,13 +25,13 @@ namespace EveMarketMonitorApp.GUIElements
         private void About_Load(object sender, EventArgs e)
         {
             _componentList = new List<ComponentData>();
-            _componentList.Add(new ComponentData("EveMarketMonitorApp.exe", ""));
-            _componentList.Add(new ComponentData("AutoUpdater.exe", ""));
-            _componentList.Add(new ComponentData("Enforcer.dll", ""));
-            _componentList.Add(new ComponentData("EMMA Database.mdf", "Data"));
-            _componentList.Add(new ComponentData("EveData.mdf", "Data"));
-            _componentList.Add(new ComponentData("Tutorial_default.xml", "Data"));
-            _componentList.Add(new ComponentData("Tutorial_en-GB.xml", "Data"));
+            _componentList.Add(new ComponentData("EveMarketMonitorApp.exe", "", true, Application.StartupPath));
+            _componentList.Add(new ComponentData("AutoUpdater.exe", "", true, Application.StartupPath));
+            _componentList.Add(new ComponentData("Enforcer.dll", "", true, Application.StartupPath));
+            _componentList.Add(new ComponentData("EMMA Database.mdf", "Data", false, Application.StartupPath));
+            _componentList.Add(new ComponentData("EveData.mdf", "Data", false, Application.StartupPath));
+            _componentList.Add(new ComponentData("Tutorial_default.xml", "Data", true, Application.StartupPath));
+            _componentList.Add(new ComponentData("Tutorial_en-GB.xml", "Data", true, Application.StartupPath));
 
             componentVersionsGrid.AutoGenerateColumns = false;
             componentVersionsGrid.DataSource = _componentList;
@@ -60,7 +60,7 @@ namespace EveMarketMonitorApp.GUIElements
             System.Diagnostics.Process.Start(target);
         }
 
-        private class ComponentData
+        /*private class ComponentData
         {
             private string _name;
             private string _fullPath;
@@ -172,7 +172,7 @@ namespace EveMarketMonitorApp.GUIElements
                 get { return _exists; }
                 set { _exists = value; }
             }
-        }
+        }*/
 
     }
 }

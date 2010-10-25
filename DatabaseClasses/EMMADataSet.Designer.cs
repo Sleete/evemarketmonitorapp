@@ -2708,7 +2708,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public EveAccountsRow AddEveAccountsRow(int UserID, string APIKey, System.DateTime LastCharListUpdate, string CharList) {
+            public EveAccountsRow AddEveAccountsRow(long UserID, string APIKey, System.DateTime LastCharListUpdate, string CharList) {
                 EveAccountsRow rowEveAccountsRow = ((EveAccountsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         UserID,
@@ -2721,7 +2721,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public EveAccountsRow FindByUserID(int UserID) {
+            public EveAccountsRow FindByUserID(long UserID) {
                 return ((EveAccountsRow)(this.Rows.Find(new object[] {
                             UserID})));
             }
@@ -2748,7 +2748,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             private void InitClass() {
-                this.columnUserID = new global::System.Data.DataColumn("UserID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnUserID = new global::System.Data.DataColumn("UserID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnUserID);
                 this.columnAPIKey = new global::System.Data.DataColumn("APIKey", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAPIKey);
@@ -2967,7 +2967,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public PortraitsRow AddPortraitsRow(int charID, byte[] portrait) {
+            public PortraitsRow AddPortraitsRow(long charID, byte[] portrait) {
                 PortraitsRow rowPortraitsRow = ((PortraitsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         charID,
@@ -2978,7 +2978,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public PortraitsRow FindBycharID(int charID) {
+            public PortraitsRow FindBycharID(long charID) {
                 return ((PortraitsRow)(this.Rows.Find(new object[] {
                             charID})));
             }
@@ -3003,7 +3003,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             private void InitClass() {
-                this.columncharID = new global::System.Data.DataColumn("charID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columncharID = new global::System.Data.DataColumn("charID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columncharID);
                 this.columnportrait = new global::System.Data.DataColumn("portrait", typeof(byte[]), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnportrait);
@@ -3504,7 +3504,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public NamesRow AddNamesRow(int ID, string Name) {
+            public NamesRow AddNamesRow(long ID, string Name) {
                 NamesRow rowNamesRow = ((NamesRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ID,
@@ -3515,7 +3515,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public NamesRow FindByID(int ID) {
+            public NamesRow FindByID(long ID) {
                 return ((NamesRow)(this.Rows.Find(new object[] {
                             ID})));
             }
@@ -3540,7 +3540,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             private void InitClass() {
-                this.columnID = new global::System.Data.DataColumn("ID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnID = new global::System.Data.DataColumn("ID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnID);
                 this.columnName = new global::System.Data.DataColumn("Name", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnName);
@@ -3992,7 +3992,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public IDTableRow AddIDTableRow(int ID) {
+            public IDTableRow AddIDTableRow(long ID) {
                 IDTableRow rowIDTableRow = ((IDTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ID};
@@ -4020,7 +4020,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             private void InitClass() {
-                this.columnID = new global::System.Data.DataColumn("ID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnID = new global::System.Data.DataColumn("ID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnID);
                 this.columnID.AllowDBNull = false;
             }
@@ -4364,20 +4364,20 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                         long ID, 
                         System.DateTime Date, 
                         short TypeID, 
-                        int SenderID, 
-                        int RecieverID, 
+                        long SenderID, 
+                        long RecieverID, 
                         string SArgName, 
-                        int SArgID, 
+                        long SArgID, 
                         string RArgName, 
-                        int RArgID, 
+                        long RArgID, 
                         decimal Amount, 
                         decimal SBalance, 
                         decimal RBalance, 
                         string Reason, 
                         short SWalletID, 
                         short RWalletID, 
-                        int SCorpID, 
-                        int RCorpID) {
+                        long SCorpID, 
+                        long RCorpID) {
                 JournalRow rowJournalRow = ((JournalRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ID,
@@ -4403,7 +4403,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public JournalRow FindByIDRecieverID(long ID, int RecieverID) {
+            public JournalRow FindByIDRecieverID(long ID, long RecieverID) {
                 return ((JournalRow)(this.Rows.Find(new object[] {
                             ID,
                             RecieverID})));
@@ -4450,17 +4450,17 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 base.Columns.Add(this.columnDate);
                 this.columnTypeID = new global::System.Data.DataColumn("TypeID", typeof(short), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTypeID);
-                this.columnSenderID = new global::System.Data.DataColumn("SenderID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnSenderID = new global::System.Data.DataColumn("SenderID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSenderID);
-                this.columnRecieverID = new global::System.Data.DataColumn("RecieverID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnRecieverID = new global::System.Data.DataColumn("RecieverID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRecieverID);
                 this.columnSArgName = new global::System.Data.DataColumn("SArgName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSArgName);
-                this.columnSArgID = new global::System.Data.DataColumn("SArgID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnSArgID = new global::System.Data.DataColumn("SArgID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSArgID);
                 this.columnRArgName = new global::System.Data.DataColumn("RArgName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRArgName);
-                this.columnRArgID = new global::System.Data.DataColumn("RArgID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnRArgID = new global::System.Data.DataColumn("RArgID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRArgID);
                 this.columnAmount = new global::System.Data.DataColumn("Amount", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAmount);
@@ -4474,9 +4474,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 base.Columns.Add(this.columnSWalletID);
                 this.columnRWalletID = new global::System.Data.DataColumn("RWalletID", typeof(short), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRWalletID);
-                this.columnSCorpID = new global::System.Data.DataColumn("SCorpID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnSCorpID = new global::System.Data.DataColumn("SCorpID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSCorpID);
-                this.columnRCorpID = new global::System.Data.DataColumn("RCorpID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnRCorpID = new global::System.Data.DataColumn("RCorpID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRCorpID);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnID,
@@ -5344,7 +5344,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             public APICharactersRow AddAPICharactersRow(
-                        int ID, 
+                        long ID, 
                         System.DateTime LastCharSheetUpdate, 
                         string CharSheet, 
                         System.DateTime LastCorpSheetUpdate, 
@@ -5388,7 +5388,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public APICharactersRow FindByID(int ID) {
+            public APICharactersRow FindByID(long ID) {
                 return ((APICharactersRow)(this.Rows.Find(new object[] {
                             ID})));
             }
@@ -5429,7 +5429,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             private void InitClass() {
-                this.columnID = new global::System.Data.DataColumn("ID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnID = new global::System.Data.DataColumn("ID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnID);
                 this.columnLastCharSheetUpdate = new global::System.Data.DataColumn("LastCharSheetUpdate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLastCharSheetUpdate);
@@ -5726,7 +5726,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public GroupLocationRow AddGroupLocationRow(int ReportGroupID, string LocationName, string RegionIDs, string StationIDs, int StationID, int Range) {
+            public GroupLocationRow AddGroupLocationRow(int ReportGroupID, string LocationName, string RegionIDs, string StationIDs, long StationID, int Range) {
                 GroupLocationRow rowGroupLocationRow = ((GroupLocationRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ReportGroupID,
@@ -5779,7 +5779,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 base.Columns.Add(this.columnRegionIDs);
                 this.columnStationIDs = new global::System.Data.DataColumn("StationIDs", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStationIDs);
-                this.columnStationID = new global::System.Data.DataColumn("StationID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnStationID = new global::System.Data.DataColumn("StationID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStationID);
                 this.columnRange = new global::System.Data.DataColumn("Range", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRange);
@@ -6006,7 +6006,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public StandingsRow AddStandingsRow(int toID, int fromID, decimal standing) {
+            public StandingsRow AddStandingsRow(long toID, long fromID, decimal standing) {
                 StandingsRow rowStandingsRow = ((StandingsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         toID,
@@ -6018,7 +6018,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public StandingsRow FindBytoIDfromID(int toID, int fromID) {
+            public StandingsRow FindBytoIDfromID(long toID, long fromID) {
                 return ((StandingsRow)(this.Rows.Find(new object[] {
                             toID,
                             fromID})));
@@ -6045,9 +6045,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             private void InitClass() {
-                this.columntoID = new global::System.Data.DataColumn("toID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columntoID = new global::System.Data.DataColumn("toID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columntoID);
-                this.columnfromID = new global::System.Data.DataColumn("fromID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnfromID = new global::System.Data.DataColumn("fromID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnfromID);
                 this.columnstanding = new global::System.Data.DataColumn("standing", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnstanding);
@@ -6259,7 +6259,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public APICharSettingsRow AddAPICharSettingsRow(int CharID, string Settings) {
+            public APICharSettingsRow AddAPICharSettingsRow(long CharID, string Settings) {
                 APICharSettingsRow rowAPICharSettingsRow = ((APICharSettingsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         CharID,
@@ -6270,7 +6270,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public APICharSettingsRow FindByCharID(int CharID) {
+            public APICharSettingsRow FindByCharID(long CharID) {
                 return ((APICharSettingsRow)(this.Rows.Find(new object[] {
                             CharID})));
             }
@@ -6295,7 +6295,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             private void InitClass() {
-                this.columnCharID = new global::System.Data.DataColumn("CharID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnCharID = new global::System.Data.DataColumn("CharID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCharID);
                 this.columnSettings = new global::System.Data.DataColumn("Settings", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSettings);
@@ -8133,7 +8133,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public AssetsHistoryRow AddAssetsHistoryRow(int OwnerID, bool Corp, System.DateTime Date, decimal Value) {
+            public AssetsHistoryRow AddAssetsHistoryRow(long OwnerID, bool Corp, System.DateTime Date, decimal Value) {
                 AssetsHistoryRow rowAssetsHistoryRow = ((AssetsHistoryRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         OwnerID,
@@ -8146,7 +8146,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public AssetsHistoryRow FindByOwnerIDCorpDate(int OwnerID, bool Corp, System.DateTime Date) {
+            public AssetsHistoryRow FindByOwnerIDCorpDate(long OwnerID, bool Corp, System.DateTime Date) {
                 return ((AssetsHistoryRow)(this.Rows.Find(new object[] {
                             OwnerID,
                             Corp,
@@ -8175,7 +8175,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             private void InitClass() {
-                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOwnerID);
                 this.columnCorp = new global::System.Data.DataColumn("Corp", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCorp);
@@ -10313,7 +10313,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public ReprocessJobRow AddReprocessJobRow(System.DateTime JobDate, int StationID, int GroupID, int OwnerID) {
+            public ReprocessJobRow AddReprocessJobRow(System.DateTime JobDate, long StationID, int GroupID, long OwnerID) {
                 ReprocessJobRow rowReprocessJobRow = ((ReprocessJobRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -10359,11 +10359,11 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 base.Columns.Add(this.columnID);
                 this.columnJobDate = new global::System.Data.DataColumn("JobDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnJobDate);
-                this.columnStationID = new global::System.Data.DataColumn("StationID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnStationID = new global::System.Data.DataColumn("StationID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStationID);
                 this.columnGroupID = new global::System.Data.DataColumn("GroupID", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGroupID);
-                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOwnerID);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnID}, true));
@@ -11652,7 +11652,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public BankAccountRow AddBankAccountRow(int PublicCorpID, int ReportGroupID, decimal Balance, int OwnerID) {
+            public BankAccountRow AddBankAccountRow(int PublicCorpID, int ReportGroupID, decimal Balance, long OwnerID) {
                 BankAccountRow rowBankAccountRow = ((BankAccountRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -11702,7 +11702,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 base.Columns.Add(this.columnReportGroupID);
                 this.columnBalance = new global::System.Data.DataColumn("Balance", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBalance);
-                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOwnerID);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnAccountID}, true));
@@ -12227,7 +12227,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public ContractsRow AddContractsRow(long ID, int OwnerID, short Status, int PickupStationID, int DestinationStationID, decimal Collateral, decimal Reward, System.DateTime DateTime, short Type) {
+            public ContractsRow AddContractsRow(long ID, long OwnerID, short Status, long PickupStationID, long DestinationStationID, decimal Collateral, decimal Reward, System.DateTime DateTime, short Type) {
                 ContractsRow rowContractsRow = ((ContractsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ID,
@@ -12279,13 +12279,13 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             private void InitClass() {
                 this.columnID = new global::System.Data.DataColumn("ID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnID);
-                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOwnerID);
                 this.columnStatus = new global::System.Data.DataColumn("Status", typeof(short), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStatus);
-                this.columnPickupStationID = new global::System.Data.DataColumn("PickupStationID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnPickupStationID = new global::System.Data.DataColumn("PickupStationID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPickupStationID);
-                this.columnDestinationStationID = new global::System.Data.DataColumn("DestinationStationID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnDestinationStationID = new global::System.Data.DataColumn("DestinationStationID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDestinationStationID);
                 this.columnCollateral = new global::System.Data.DataColumn("Collateral", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCollateral);
@@ -12931,7 +12931,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public ItemValuesRow AddItemValuesRow(int ReportGroupID, int ItemID, int RegionID, decimal DefaultSellPrice, decimal CurrentSellPrice, System.DateTime LastSellPriceCalc, decimal CurrentBuyPrice, System.DateTime LastBuyPriceCalc, decimal DefaultBuyPrice, bool UseReprocessVal, bool ForceDefaultSellPrice, bool ForceDefaultBuyPrice) {
+            public ItemValuesRow AddItemValuesRow(int ReportGroupID, int ItemID, long RegionID, decimal DefaultSellPrice, decimal CurrentSellPrice, System.DateTime LastSellPriceCalc, decimal CurrentBuyPrice, System.DateTime LastBuyPriceCalc, decimal DefaultBuyPrice, bool UseReprocessVal, bool ForceDefaultSellPrice, bool ForceDefaultBuyPrice) {
                 ItemValuesRow rowItemValuesRow = ((ItemValuesRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ReportGroupID,
@@ -12952,7 +12952,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public ItemValuesRow FindByReportGroupIDItemIDRegionID(int ReportGroupID, int ItemID, int RegionID) {
+            public ItemValuesRow FindByReportGroupIDItemIDRegionID(int ReportGroupID, int ItemID, long RegionID) {
                 return ((ItemValuesRow)(this.Rows.Find(new object[] {
                             ReportGroupID,
                             ItemID,
@@ -12993,7 +12993,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 base.Columns.Add(this.columnReportGroupID);
                 this.columnItemID = new global::System.Data.DataColumn("ItemID", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnItemID);
-                this.columnRegionID = new global::System.Data.DataColumn("RegionID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnRegionID = new global::System.Data.DataColumn("RegionID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRegionID);
                 this.columnDefaultSellPrice = new global::System.Data.DataColumn("DefaultSellPrice", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDefaultSellPrice);
@@ -13524,7 +13524,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public AssetsProducedRow AddAssetsProducedRow(long ID, int OwnerID, bool CorpAsset, int ItemID, System.DateTime ProductionDateTime, decimal Cost, long Quantity) {
+            public AssetsProducedRow AddAssetsProducedRow(long ID, long OwnerID, bool CorpAsset, int ItemID, System.DateTime ProductionDateTime, decimal Cost, long Quantity) {
                 AssetsProducedRow rowAssetsProducedRow = ((AssetsProducedRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ID,
@@ -13572,7 +13572,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             private void InitClass() {
                 this.columnID = new global::System.Data.DataColumn("ID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnID);
-                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOwnerID);
                 this.columnCorpAsset = new global::System.Data.DataColumn("CorpAsset", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCorpAsset);
@@ -13937,12 +13937,12 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                         int Quantity, 
                         int ItemID, 
                         decimal Price, 
-                        int BuyerID, 
-                        int SellerID, 
-                        int BuyerCharacterID, 
-                        int SellerCharacterID, 
-                        int StationID, 
-                        int RegionID, 
+                        long BuyerID, 
+                        long SellerID, 
+                        long BuyerCharacterID, 
+                        long SellerCharacterID, 
+                        long StationID, 
+                        long RegionID, 
                         bool BuyerForCorp, 
                         bool SellerForCorp, 
                         short BuyerWalletID, 
@@ -14024,17 +14024,17 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 base.Columns.Add(this.columnItemID);
                 this.columnPrice = new global::System.Data.DataColumn("Price", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPrice);
-                this.columnBuyerID = new global::System.Data.DataColumn("BuyerID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnBuyerID = new global::System.Data.DataColumn("BuyerID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBuyerID);
-                this.columnSellerID = new global::System.Data.DataColumn("SellerID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnSellerID = new global::System.Data.DataColumn("SellerID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSellerID);
-                this.columnBuyerCharacterID = new global::System.Data.DataColumn("BuyerCharacterID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnBuyerCharacterID = new global::System.Data.DataColumn("BuyerCharacterID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBuyerCharacterID);
-                this.columnSellerCharacterID = new global::System.Data.DataColumn("SellerCharacterID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnSellerCharacterID = new global::System.Data.DataColumn("SellerCharacterID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSellerCharacterID);
-                this.columnStationID = new global::System.Data.DataColumn("StationID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnStationID = new global::System.Data.DataColumn("StationID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStationID);
-                this.columnRegionID = new global::System.Data.DataColumn("RegionID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnRegionID = new global::System.Data.DataColumn("RegionID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRegionID);
                 this.columnBuyerForCorp = new global::System.Data.DataColumn("BuyerForCorp", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBuyerForCorp);
@@ -14415,9 +14415,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             public OrdersRow AddOrdersRow(
-                        int OwnerID, 
+                        long OwnerID, 
                         bool ForCorp, 
-                        int StationID, 
+                        long StationID, 
                         int TotalVol, 
                         int RemainingVol, 
                         int MinVolume, 
@@ -14501,11 +14501,11 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             private void InitClass() {
                 this.columnID = new global::System.Data.DataColumn("ID", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnID);
-                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOwnerID);
                 this.columnForCorp = new global::System.Data.DataColumn("ForCorp", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnForCorp);
-                this.columnStationID = new global::System.Data.DataColumn("StationID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnStationID = new global::System.Data.DataColumn("StationID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStationID);
                 this.columnTotalVol = new global::System.Data.DataColumn("TotalVol", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalVol);
@@ -14906,12 +14906,12 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             public AssetsRow AddAssetsRow(
-                        int OwnerID, 
+                        long OwnerID, 
                         bool CorpAsset, 
-                        int LocationID, 
+                        long LocationID, 
                         int ItemID, 
-                        int SystemID, 
-                        int RegionID, 
+                        long SystemID, 
+                        long RegionID, 
                         long ContainerID, 
                         long Quantity, 
                         int Status, 
@@ -14992,17 +14992,17 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             private void InitClass() {
                 this.columnID = new global::System.Data.DataColumn("ID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnID);
-                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOwnerID);
                 this.columnCorpAsset = new global::System.Data.DataColumn("CorpAsset", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCorpAsset);
-                this.columnLocationID = new global::System.Data.DataColumn("LocationID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnLocationID = new global::System.Data.DataColumn("LocationID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLocationID);
                 this.columnItemID = new global::System.Data.DataColumn("ItemID", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnItemID);
-                this.columnSystemID = new global::System.Data.DataColumn("SystemID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnSystemID = new global::System.Data.DataColumn("SystemID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSystemID);
-                this.columnRegionID = new global::System.Data.DataColumn("RegionID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnRegionID = new global::System.Data.DataColumn("RegionID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRegionID);
                 this.columnContainerID = new global::System.Data.DataColumn("ContainerID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnContainerID);
@@ -15306,7 +15306,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public AssetsLostRow AddAssetsLostRow(long ID, int OwnerID, bool CorpAsset, int ItemID, System.DateTime LossDatetime, long Quantity, decimal Cost, decimal Value) {
+            public AssetsLostRow AddAssetsLostRow(long ID, long OwnerID, bool CorpAsset, int ItemID, System.DateTime LossDatetime, long Quantity, decimal Cost, decimal Value) {
                 AssetsLostRow rowAssetsLostRow = ((AssetsLostRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ID,
@@ -15356,7 +15356,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             private void InitClass() {
                 this.columnID = new global::System.Data.DataColumn("ID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnID);
-                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnOwnerID = new global::System.Data.DataColumn("OwnerID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOwnerID);
                 this.columnCorpAsset = new global::System.Data.DataColumn("CorpAsset", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCorpAsset);
@@ -15846,16 +15846,16 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             public IndustryJobsRow AddIndustryJobsRow(
                         long ID, 
-                        int AssemblyLineID, 
-                        int ContainerID, 
-                        int InstalledItemID, 
-                        int InstalledItemLocationID, 
+                        long AssemblyLineID, 
+                        long ContainerID, 
+                        long InstalledItemID, 
+                        long InstalledItemLocationID, 
                         int InstalledItemQuantity, 
                         int InstalledItemPL, 
                         int InstalledItemME, 
                         int InstalledItemRunsRemaining, 
-                        int OutputLcoationID, 
-                        int InstallerID, 
+                        long OutputLcoationID, 
+                        long InstallerID, 
                         int JobRuns, 
                         int OutputRuns, 
                         double MaterialModifier, 
@@ -15971,13 +15971,13 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             private void InitClass() {
                 this.columnID = new global::System.Data.DataColumn("ID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnID);
-                this.columnAssemblyLineID = new global::System.Data.DataColumn("AssemblyLineID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnAssemblyLineID = new global::System.Data.DataColumn("AssemblyLineID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAssemblyLineID);
-                this.columnContainerID = new global::System.Data.DataColumn("ContainerID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnContainerID = new global::System.Data.DataColumn("ContainerID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnContainerID);
-                this.columnInstalledItemID = new global::System.Data.DataColumn("InstalledItemID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnInstalledItemID = new global::System.Data.DataColumn("InstalledItemID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnInstalledItemID);
-                this.columnInstalledItemLocationID = new global::System.Data.DataColumn("InstalledItemLocationID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnInstalledItemLocationID = new global::System.Data.DataColumn("InstalledItemLocationID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnInstalledItemLocationID);
                 this.columnInstalledItemQuantity = new global::System.Data.DataColumn("InstalledItemQuantity", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnInstalledItemQuantity);
@@ -15987,9 +15987,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 base.Columns.Add(this.columnInstalledItemME);
                 this.columnInstalledItemRunsRemaining = new global::System.Data.DataColumn("InstalledItemRunsRemaining", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnInstalledItemRunsRemaining);
-                this.columnOutputLcoationID = new global::System.Data.DataColumn("OutputLcoationID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnOutputLcoationID = new global::System.Data.DataColumn("OutputLcoationID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOutputLcoationID);
-                this.columnInstallerID = new global::System.Data.DataColumn("InstallerID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnInstallerID = new global::System.Data.DataColumn("InstallerID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnInstallerID);
                 this.columnJobRuns = new global::System.Data.DataColumn("JobRuns", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnJobRuns);
@@ -16312,7 +16312,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCharsRow AddRptGroupCharsRow(int ReportGroupID, int APICharID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, bool AutoUpdateIndustryJobs) {
+            public RptGroupCharsRow AddRptGroupCharsRow(int ReportGroupID, long APICharID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, bool AutoUpdateIndustryJobs) {
                 RptGroupCharsRow rowRptGroupCharsRow = ((RptGroupCharsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ReportGroupID,
@@ -16328,7 +16328,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCharsRow FindByReportGroupIDAPICharID(int ReportGroupID, int APICharID) {
+            public RptGroupCharsRow FindByReportGroupIDAPICharID(int ReportGroupID, long APICharID) {
                 return ((RptGroupCharsRow)(this.Rows.Find(new object[] {
                             ReportGroupID,
                             APICharID})));
@@ -16361,7 +16361,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             private void InitClass() {
                 this.columnReportGroupID = new global::System.Data.DataColumn("ReportGroupID", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnReportGroupID);
-                this.columnAPICharID = new global::System.Data.DataColumn("APICharID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnAPICharID = new global::System.Data.DataColumn("APICharID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAPICharID);
                 this.columnAutoUpdateTrans = new global::System.Data.DataColumn("AutoUpdateTrans", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAutoUpdateTrans);
@@ -16639,7 +16639,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCorpsRow AddRptGroupCorpsRow(int ReportGroupID, int APICorpID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, int APICharID, bool AutoUpdateIndustryJobs) {
+            public RptGroupCorpsRow AddRptGroupCorpsRow(int ReportGroupID, long APICorpID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, long APICharID, bool AutoUpdateIndustryJobs) {
                 RptGroupCorpsRow rowRptGroupCorpsRow = ((RptGroupCorpsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ReportGroupID,
@@ -16656,7 +16656,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public RptGroupCorpsRow FindByReportGroupIDAPICorpIDAPICharID(int ReportGroupID, int APICorpID, int APICharID) {
+            public RptGroupCorpsRow FindByReportGroupIDAPICorpIDAPICharID(int ReportGroupID, long APICorpID, long APICharID) {
                 return ((RptGroupCorpsRow)(this.Rows.Find(new object[] {
                             ReportGroupID,
                             APICorpID,
@@ -16691,7 +16691,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             private void InitClass() {
                 this.columnReportGroupID = new global::System.Data.DataColumn("ReportGroupID", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnReportGroupID);
-                this.columnAPICorpID = new global::System.Data.DataColumn("APICorpID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnAPICorpID = new global::System.Data.DataColumn("APICorpID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAPICorpID);
                 this.columnAutoUpdateTrans = new global::System.Data.DataColumn("AutoUpdateTrans", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAutoUpdateTrans);
@@ -16701,7 +16701,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 base.Columns.Add(this.columnAutoUpdateAssets);
                 this.columnAutoUpdateOrders = new global::System.Data.DataColumn("AutoUpdateOrders", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAutoUpdateOrders);
-                this.columnAPICharID = new global::System.Data.DataColumn("APICharID", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnAPICharID = new global::System.Data.DataColumn("APICharID", typeof(long), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAPICharID);
                 this.columnAutoUpdateIndustryJobs = new global::System.Data.DataColumn("AutoUpdateIndustryJobs", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAutoUpdateIndustryJobs);
@@ -17244,9 +17244,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int UserID {
+            public long UserID {
                 get {
-                    return ((int)(this[this.tableEveAccounts.UserIDColumn]));
+                    return ((long)(this[this.tableEveAccounts.UserIDColumn]));
                 }
                 set {
                     this[this.tableEveAccounts.UserIDColumn] = value;
@@ -17299,9 +17299,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int charID {
+            public long charID {
                 get {
-                    return ((int)(this[this.tablePortraits.charIDColumn]));
+                    return ((long)(this[this.tablePortraits.charIDColumn]));
                 }
                 set {
                     this[this.tablePortraits.charIDColumn] = value;
@@ -17399,9 +17399,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int ID {
+            public long ID {
                 get {
-                    return ((int)(this[this.tableNames.IDColumn]));
+                    return ((long)(this[this.tableNames.IDColumn]));
                 }
                 set {
                     this[this.tableNames.IDColumn] = value;
@@ -17469,9 +17469,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int ID {
+            public long ID {
                 get {
-                    return ((int)(this[this.tableIDTable.IDColumn]));
+                    return ((long)(this[this.tableIDTable.IDColumn]));
                 }
                 set {
                     this[this.tableIDTable.IDColumn] = value;
@@ -17524,9 +17524,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int SenderID {
+            public long SenderID {
                 get {
-                    return ((int)(this[this.tableJournal.SenderIDColumn]));
+                    return ((long)(this[this.tableJournal.SenderIDColumn]));
                 }
                 set {
                     this[this.tableJournal.SenderIDColumn] = value;
@@ -17534,9 +17534,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int RecieverID {
+            public long RecieverID {
                 get {
-                    return ((int)(this[this.tableJournal.RecieverIDColumn]));
+                    return ((long)(this[this.tableJournal.RecieverIDColumn]));
                 }
                 set {
                     this[this.tableJournal.RecieverIDColumn] = value;
@@ -17554,9 +17554,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int SArgID {
+            public long SArgID {
                 get {
-                    return ((int)(this[this.tableJournal.SArgIDColumn]));
+                    return ((long)(this[this.tableJournal.SArgIDColumn]));
                 }
                 set {
                     this[this.tableJournal.SArgIDColumn] = value;
@@ -17574,9 +17574,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int RArgID {
+            public long RArgID {
                 get {
-                    return ((int)(this[this.tableJournal.RArgIDColumn]));
+                    return ((long)(this[this.tableJournal.RArgIDColumn]));
                 }
                 set {
                     this[this.tableJournal.RArgIDColumn] = value;
@@ -17644,9 +17644,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int SCorpID {
+            public long SCorpID {
                 get {
-                    return ((int)(this[this.tableJournal.SCorpIDColumn]));
+                    return ((long)(this[this.tableJournal.SCorpIDColumn]));
                 }
                 set {
                     this[this.tableJournal.SCorpIDColumn] = value;
@@ -17654,9 +17654,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int RCorpID {
+            public long RCorpID {
                 get {
-                    return ((int)(this[this.tableJournal.RCorpIDColumn]));
+                    return ((long)(this[this.tableJournal.RCorpIDColumn]));
                 }
                 set {
                     this[this.tableJournal.RCorpIDColumn] = value;
@@ -17749,9 +17749,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int ID {
+            public long ID {
                 get {
-                    return ((int)(this[this.tableAPICharacters.IDColumn]));
+                    return ((long)(this[this.tableAPICharacters.IDColumn]));
                 }
                 set {
                     this[this.tableAPICharacters.IDColumn] = value;
@@ -17984,9 +17984,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int StationID {
+            public long StationID {
                 get {
-                    return ((int)(this[this.tableGroupLocation.StationIDColumn]));
+                    return ((long)(this[this.tableGroupLocation.StationIDColumn]));
                 }
                 set {
                     this[this.tableGroupLocation.StationIDColumn] = value;
@@ -18019,9 +18019,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int toID {
+            public long toID {
                 get {
-                    return ((int)(this[this.tableStandings.toIDColumn]));
+                    return ((long)(this[this.tableStandings.toIDColumn]));
                 }
                 set {
                     this[this.tableStandings.toIDColumn] = value;
@@ -18029,9 +18029,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int fromID {
+            public long fromID {
                 get {
-                    return ((int)(this[this.tableStandings.fromIDColumn]));
+                    return ((long)(this[this.tableStandings.fromIDColumn]));
                 }
                 set {
                     this[this.tableStandings.fromIDColumn] = value;
@@ -18064,9 +18064,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int CharID {
+            public long CharID {
                 get {
-                    return ((int)(this[this.tableAPICharSettings.CharIDColumn]));
+                    return ((long)(this[this.tableAPICharSettings.CharIDColumn]));
                 }
                 set {
                     this[this.tableAPICharSettings.CharIDColumn] = value;
@@ -18389,9 +18389,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int OwnerID {
+            public long OwnerID {
                 get {
-                    return ((int)(this[this.tableAssetsHistory.OwnerIDColumn]));
+                    return ((long)(this[this.tableAssetsHistory.OwnerIDColumn]));
                 }
                 set {
                     this[this.tableAssetsHistory.OwnerIDColumn] = value;
@@ -18834,9 +18834,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int StationID {
+            public long StationID {
                 get {
-                    return ((int)(this[this.tableReprocessJob.StationIDColumn]));
+                    return ((long)(this[this.tableReprocessJob.StationIDColumn]));
                 }
                 set {
                     this[this.tableReprocessJob.StationIDColumn] = value;
@@ -18854,9 +18854,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int OwnerID {
+            public long OwnerID {
                 get {
-                    return ((int)(this[this.tableReprocessJob.OwnerIDColumn]));
+                    return ((long)(this[this.tableReprocessJob.OwnerIDColumn]));
                 }
                 set {
                     this[this.tableReprocessJob.OwnerIDColumn] = value;
@@ -19249,9 +19249,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int OwnerID {
+            public long OwnerID {
                 get {
-                    return ((int)(this[this.tableBankAccount.OwnerIDColumn]));
+                    return ((long)(this[this.tableBankAccount.OwnerIDColumn]));
                 }
                 set {
                     this[this.tableBankAccount.OwnerIDColumn] = value;
@@ -19319,9 +19319,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int OwnerID {
+            public long OwnerID {
                 get {
-                    return ((int)(this[this.tableContracts.OwnerIDColumn]));
+                    return ((long)(this[this.tableContracts.OwnerIDColumn]));
                 }
                 set {
                     this[this.tableContracts.OwnerIDColumn] = value;
@@ -19339,9 +19339,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int PickupStationID {
+            public long PickupStationID {
                 get {
-                    return ((int)(this[this.tableContracts.PickupStationIDColumn]));
+                    return ((long)(this[this.tableContracts.PickupStationIDColumn]));
                 }
                 set {
                     this[this.tableContracts.PickupStationIDColumn] = value;
@@ -19349,9 +19349,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int DestinationStationID {
+            public long DestinationStationID {
                 get {
-                    return ((int)(this[this.tableContracts.DestinationStationIDColumn]));
+                    return ((long)(this[this.tableContracts.DestinationStationIDColumn]));
                 }
                 set {
                     this[this.tableContracts.DestinationStationIDColumn] = value;
@@ -19529,9 +19529,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int RegionID {
+            public long RegionID {
                 get {
-                    return ((int)(this[this.tableItemValues.RegionIDColumn]));
+                    return ((long)(this[this.tableItemValues.RegionIDColumn]));
                 }
                 set {
                     this[this.tableItemValues.RegionIDColumn] = value;
@@ -19689,9 +19689,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int OwnerID {
+            public long OwnerID {
                 get {
-                    return ((int)(this[this.tableAssetsProduced.OwnerIDColumn]));
+                    return ((long)(this[this.tableAssetsProduced.OwnerIDColumn]));
                 }
                 set {
                     this[this.tableAssetsProduced.OwnerIDColumn] = value;
@@ -19814,9 +19814,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int BuyerID {
+            public long BuyerID {
                 get {
-                    return ((int)(this[this.tableTransactions.BuyerIDColumn]));
+                    return ((long)(this[this.tableTransactions.BuyerIDColumn]));
                 }
                 set {
                     this[this.tableTransactions.BuyerIDColumn] = value;
@@ -19824,9 +19824,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int SellerID {
+            public long SellerID {
                 get {
-                    return ((int)(this[this.tableTransactions.SellerIDColumn]));
+                    return ((long)(this[this.tableTransactions.SellerIDColumn]));
                 }
                 set {
                     this[this.tableTransactions.SellerIDColumn] = value;
@@ -19834,9 +19834,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int BuyerCharacterID {
+            public long BuyerCharacterID {
                 get {
-                    return ((int)(this[this.tableTransactions.BuyerCharacterIDColumn]));
+                    return ((long)(this[this.tableTransactions.BuyerCharacterIDColumn]));
                 }
                 set {
                     this[this.tableTransactions.BuyerCharacterIDColumn] = value;
@@ -19844,9 +19844,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int SellerCharacterID {
+            public long SellerCharacterID {
                 get {
-                    return ((int)(this[this.tableTransactions.SellerCharacterIDColumn]));
+                    return ((long)(this[this.tableTransactions.SellerCharacterIDColumn]));
                 }
                 set {
                     this[this.tableTransactions.SellerCharacterIDColumn] = value;
@@ -19854,9 +19854,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int StationID {
+            public long StationID {
                 get {
-                    return ((int)(this[this.tableTransactions.StationIDColumn]));
+                    return ((long)(this[this.tableTransactions.StationIDColumn]));
                 }
                 set {
                     this[this.tableTransactions.StationIDColumn] = value;
@@ -19864,9 +19864,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int RegionID {
+            public long RegionID {
                 get {
-                    return ((int)(this[this.tableTransactions.RegionIDColumn]));
+                    return ((long)(this[this.tableTransactions.RegionIDColumn]));
                 }
                 set {
                     this[this.tableTransactions.RegionIDColumn] = value;
@@ -19959,9 +19959,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int OwnerID {
+            public long OwnerID {
                 get {
-                    return ((int)(this[this.tableOrders.OwnerIDColumn]));
+                    return ((long)(this[this.tableOrders.OwnerIDColumn]));
                 }
                 set {
                     this[this.tableOrders.OwnerIDColumn] = value;
@@ -19979,9 +19979,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int StationID {
+            public long StationID {
                 get {
-                    return ((int)(this[this.tableOrders.StationIDColumn]));
+                    return ((long)(this[this.tableOrders.StationIDColumn]));
                 }
                 set {
                     this[this.tableOrders.StationIDColumn] = value;
@@ -20154,9 +20154,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int OwnerID {
+            public long OwnerID {
                 get {
-                    return ((int)(this[this.tableAssets.OwnerIDColumn]));
+                    return ((long)(this[this.tableAssets.OwnerIDColumn]));
                 }
                 set {
                     this[this.tableAssets.OwnerIDColumn] = value;
@@ -20174,9 +20174,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int LocationID {
+            public long LocationID {
                 get {
-                    return ((int)(this[this.tableAssets.LocationIDColumn]));
+                    return ((long)(this[this.tableAssets.LocationIDColumn]));
                 }
                 set {
                     this[this.tableAssets.LocationIDColumn] = value;
@@ -20194,9 +20194,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int SystemID {
+            public long SystemID {
                 get {
-                    return ((int)(this[this.tableAssets.SystemIDColumn]));
+                    return ((long)(this[this.tableAssets.SystemIDColumn]));
                 }
                 set {
                     this[this.tableAssets.SystemIDColumn] = value;
@@ -20204,9 +20204,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int RegionID {
+            public long RegionID {
                 get {
-                    return ((int)(this[this.tableAssets.RegionIDColumn]));
+                    return ((long)(this[this.tableAssets.RegionIDColumn]));
                 }
                 set {
                     this[this.tableAssets.RegionIDColumn] = value;
@@ -20349,9 +20349,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int OwnerID {
+            public long OwnerID {
                 get {
-                    return ((int)(this[this.tableAssetsLost.OwnerIDColumn]));
+                    return ((long)(this[this.tableAssetsLost.OwnerIDColumn]));
                 }
                 set {
                     this[this.tableAssetsLost.OwnerIDColumn] = value;
@@ -20444,9 +20444,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int AssemblyLineID {
+            public long AssemblyLineID {
                 get {
-                    return ((int)(this[this.tableIndustryJobs.AssemblyLineIDColumn]));
+                    return ((long)(this[this.tableIndustryJobs.AssemblyLineIDColumn]));
                 }
                 set {
                     this[this.tableIndustryJobs.AssemblyLineIDColumn] = value;
@@ -20454,9 +20454,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int ContainerID {
+            public long ContainerID {
                 get {
-                    return ((int)(this[this.tableIndustryJobs.ContainerIDColumn]));
+                    return ((long)(this[this.tableIndustryJobs.ContainerIDColumn]));
                 }
                 set {
                     this[this.tableIndustryJobs.ContainerIDColumn] = value;
@@ -20464,9 +20464,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int InstalledItemID {
+            public long InstalledItemID {
                 get {
-                    return ((int)(this[this.tableIndustryJobs.InstalledItemIDColumn]));
+                    return ((long)(this[this.tableIndustryJobs.InstalledItemIDColumn]));
                 }
                 set {
                     this[this.tableIndustryJobs.InstalledItemIDColumn] = value;
@@ -20474,9 +20474,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int InstalledItemLocationID {
+            public long InstalledItemLocationID {
                 get {
-                    return ((int)(this[this.tableIndustryJobs.InstalledItemLocationIDColumn]));
+                    return ((long)(this[this.tableIndustryJobs.InstalledItemLocationIDColumn]));
                 }
                 set {
                     this[this.tableIndustryJobs.InstalledItemLocationIDColumn] = value;
@@ -20524,9 +20524,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int OutputLcoationID {
+            public long OutputLcoationID {
                 get {
-                    return ((int)(this[this.tableIndustryJobs.OutputLcoationIDColumn]));
+                    return ((long)(this[this.tableIndustryJobs.OutputLcoationIDColumn]));
                 }
                 set {
                     this[this.tableIndustryJobs.OutputLcoationIDColumn] = value;
@@ -20534,9 +20534,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int InstallerID {
+            public long InstallerID {
                 get {
-                    return ((int)(this[this.tableIndustryJobs.InstallerIDColumn]));
+                    return ((long)(this[this.tableIndustryJobs.InstallerIDColumn]));
                 }
                 set {
                     this[this.tableIndustryJobs.InstallerIDColumn] = value;
@@ -20769,9 +20769,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int APICharID {
+            public long APICharID {
                 get {
-                    return ((int)(this[this.tableRptGroupChars.APICharIDColumn]));
+                    return ((long)(this[this.tableRptGroupChars.APICharIDColumn]));
                 }
                 set {
                     this[this.tableRptGroupChars.APICharIDColumn] = value;
@@ -20854,9 +20854,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int APICorpID {
+            public long APICorpID {
                 get {
-                    return ((int)(this[this.tableRptGroupCorps.APICorpIDColumn]));
+                    return ((long)(this[this.tableRptGroupCorps.APICorpIDColumn]));
                 }
                 set {
                     this[this.tableRptGroupCorps.APICorpIDColumn] = value;
@@ -20904,9 +20904,9 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            public int APICharID {
+            public long APICharID {
                 get {
-                    return ((int)(this[this.tableRptGroupCorps.APICharIDColumn]));
+                    return ((long)(this[this.tableRptGroupCorps.APICharIDColumn]));
                 }
                 set {
                     this[this.tableRptGroupCorps.APICharIDColumn] = value;
@@ -23831,33 +23831,32 @@ SELECT Name, Password, Salt, Locked, Tries, LastReportGroup FROM UserAccounts WH
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[EveAccounts] WHERE (([UserID] = @Original_UserID) AND ([APIKey" +
-                "] = @Original_APIKey) AND ([LastCharListUpdate] = @Original_LastCharListUpdate))" +
-                "";
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [EveAccounts] WHERE (([UserID] = @Original_UserID) AND ([APIKey] = @O" +
+                "riginal_APIKey) AND ([LastCharListUpdate] = @Original_LastCharListUpdate))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_UserID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "UserID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_UserID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "UserID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APIKey", global::System.Data.SqlDbType.Char, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APIKey", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LastCharListUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCharListUpdate", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[EveAccounts] ([UserID], [APIKey], [LastCharListUpdate], [CharL" +
-                "ist]) VALUES (@UserID, @APIKey, @LastCharListUpdate, @CharList);\r\nSELECT UserID," +
-                " APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (UserID = @UserID)";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [EveAccounts] ([UserID], [APIKey], [LastCharListUpdate], [CharList]) " +
+                "VALUES (@UserID, @APIKey, @LastCharListUpdate, @CharList);\r\nSELECT UserID, APIKe" +
+                "y, LastCharListUpdate, CharList FROM EveAccounts WHERE (UserID = @UserID)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@UserID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "UserID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@UserID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "UserID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APIKey", global::System.Data.SqlDbType.Char, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APIKey", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharListUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCharListUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CharList", global::System.Data.SqlDbType.Xml, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharList", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[EveAccounts] SET [UserID] = @UserID, [APIKey] = @APIKey, [LastCharListUpdate] = @LastCharListUpdate, [CharList] = @CharList WHERE (([UserID] = @Original_UserID) AND ([APIKey] = @Original_APIKey) AND ([LastCharListUpdate] = @Original_LastCharListUpdate));
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [EveAccounts] SET [UserID] = @UserID, [APIKey] = @APIKey, [LastCharListUpdate] = @LastCharListUpdate, [CharList] = @CharList WHERE (([UserID] = @Original_UserID) AND ([APIKey] = @Original_APIKey) AND ([LastCharListUpdate] = @Original_LastCharListUpdate));
 SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (UserID = @UserID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@UserID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "UserID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@UserID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "UserID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APIKey", global::System.Data.SqlDbType.Char, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APIKey", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharListUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCharListUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CharList", global::System.Data.SqlDbType.Xml, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharList", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_UserID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "UserID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_UserID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "UserID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APIKey", global::System.Data.SqlDbType.Char, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APIKey", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LastCharListUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCharListUpdate", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
@@ -23873,14 +23872,15 @@ SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (User
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[4];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT UserID, APIKey, LastCharListUpdate, CharList FROM dbo.EveAccounts";
+            this._commandCollection[0].CommandText = "SELECT     UserID, APIKey, LastCharListUpdate, CharList\r\nFROM         EveAccounts" +
+                "";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.EveAccountGet";
+            this._commandCollection[1].CommandText = "EveAccountGet";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@userID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@userID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
             this._commandCollection[2].CommandText = "dbo.EveAccountsGetByRptGroup";
@@ -23921,10 +23921,10 @@ SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (User
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByID(EMMADataSet.EveAccountsDataTable dataTable, global::System.Nullable<int> userID) {
+        public virtual int FillByID(EMMADataSet.EveAccountsDataTable dataTable, global::System.Nullable<long> userID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((userID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(userID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(userID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -23939,10 +23939,10 @@ SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (User
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.EveAccountsDataTable GetDataByID(global::System.Nullable<int> userID) {
+        public virtual EMMADataSet.EveAccountsDataTable GetDataByID(global::System.Nullable<long> userID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((userID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(userID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(userID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -24014,8 +24014,8 @@ SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (User
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_UserID, string Original_APIKey, System.DateTime Original_LastCharListUpdate) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_UserID));
+        public virtual int Delete(long Original_UserID, string Original_APIKey, System.DateTime Original_LastCharListUpdate) {
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_UserID));
             if ((Original_APIKey == null)) {
                 throw new global::System.ArgumentNullException("Original_APIKey");
             }
@@ -24042,8 +24042,8 @@ SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (User
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int UserID, string APIKey, System.DateTime LastCharListUpdate, object CharList) {
-            this.Adapter.InsertCommand.Parameters[0].Value = ((int)(UserID));
+        public virtual int Insert(long UserID, string APIKey, System.DateTime LastCharListUpdate, object CharList) {
+            this.Adapter.InsertCommand.Parameters[0].Value = ((long)(UserID));
             if ((APIKey == null)) {
                 throw new global::System.ArgumentNullException("APIKey");
             }
@@ -24076,8 +24076,8 @@ SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (User
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int UserID, string APIKey, System.DateTime LastCharListUpdate, object CharList, int Original_UserID, string Original_APIKey, System.DateTime Original_LastCharListUpdate) {
-            this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(UserID));
+        public virtual int Update(long UserID, string APIKey, System.DateTime LastCharListUpdate, object CharList, long Original_UserID, string Original_APIKey, System.DateTime Original_LastCharListUpdate) {
+            this.Adapter.UpdateCommand.Parameters[0].Value = ((long)(UserID));
             if ((APIKey == null)) {
                 throw new global::System.ArgumentNullException("APIKey");
             }
@@ -24091,7 +24091,7 @@ SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (User
             else {
                 this.Adapter.UpdateCommand.Parameters[3].Value = ((object)(CharList));
             }
-            this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(Original_UserID));
+            this.Adapter.UpdateCommand.Parameters[4].Value = ((long)(Original_UserID));
             if ((Original_APIKey == null)) {
                 throw new global::System.ArgumentNullException("Original_APIKey");
             }
@@ -24118,7 +24118,7 @@ SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (User
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string APIKey, System.DateTime LastCharListUpdate, object CharList, int Original_UserID, string Original_APIKey, System.DateTime Original_LastCharListUpdate) {
+        public virtual int Update(string APIKey, System.DateTime LastCharListUpdate, object CharList, long Original_UserID, string Original_APIKey, System.DateTime Original_LastCharListUpdate) {
             return this.Update(Original_UserID, APIKey, LastCharListUpdate, CharList, Original_UserID, Original_APIKey, Original_LastCharListUpdate);
         }
         
@@ -24254,12 +24254,26 @@ SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (User
             tableMapping.ColumnMappings.Add("charID", "charID");
             tableMapping.ColumnMappings.Add("portrait", "portrait");
             this._adapter.TableMappings.Add(tableMapping);
+            this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.DeleteCommand.Connection = this.Connection;
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [Portraits] WHERE (([charID] = @Original_charID))";
+            this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_charID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "charID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[Portraits] ([charID], [portrait]) VALUES (@charID, @portrait)";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [Portraits] ([charID], [portrait]) VALUES (@charID, @portrait)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "charID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "charID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@portrait", global::System.Data.SqlDbType.VarBinary, 0, global::System.Data.ParameterDirection.Input, 0, 0, "portrait", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.UpdateCommand.Connection = this.Connection;
+            this._adapter.UpdateCommand.CommandText = "UPDATE [Portraits] SET [charID] = @charID, [portrait] = @portrait WHERE (([charID" +
+                "] = @Original_charID));\r\nSELECT charID, portrait FROM Portraits WHERE (charID = " +
+                "@charID)";
+            this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "charID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@portrait", global::System.Data.SqlDbType.VarBinary, 0, global::System.Data.ParameterDirection.Input, 0, 0, "portrait", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_charID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "charID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -24273,14 +24287,14 @@ SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (User
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT charID, portrait FROM dbo.Portraits";
+            this._commandCollection[0].CommandText = "SELECT     charID, portrait\r\nFROM         Portraits";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.PortraitGet";
+            this._commandCollection[1].CommandText = "PortraitGet";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -24308,10 +24322,10 @@ SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (User
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByID(EMMADataSet.PortraitsDataTable dataTable, global::System.Nullable<int> charID) {
+        public virtual int FillByID(EMMADataSet.PortraitsDataTable dataTable, global::System.Nullable<long> charID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((charID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(charID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(charID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -24326,10 +24340,10 @@ SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (User
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.PortraitsDataTable GetDataByID(global::System.Nullable<int> charID) {
+        public virtual EMMADataSet.PortraitsDataTable GetDataByID(global::System.Nullable<long> charID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((charID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(charID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(charID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -24366,9 +24380,30 @@ SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (User
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
+        public virtual int Delete(long Original_charID) {
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_charID));
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
+            if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.DeleteCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.DeleteCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.DeleteCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int charID, byte[] portrait) {
-            this.Adapter.InsertCommand.Parameters[0].Value = ((int)(charID));
+        public virtual int Insert(long charID, byte[] portrait) {
+            this.Adapter.InsertCommand.Parameters[0].Value = ((long)(charID));
             if ((portrait == null)) {
                 throw new global::System.ArgumentNullException("portrait");
             }
@@ -24389,6 +24424,41 @@ SELECT UserID, APIKey, LastCharListUpdate, CharList FROM EveAccounts WHERE (User
                     this.Adapter.InsertCommand.Connection.Close();
                 }
             }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
+        public virtual int Update(long charID, byte[] portrait, long Original_charID) {
+            this.Adapter.UpdateCommand.Parameters[0].Value = ((long)(charID));
+            if ((portrait == null)) {
+                throw new global::System.ArgumentNullException("portrait");
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[1].Value = ((byte[])(portrait));
+            }
+            this.Adapter.UpdateCommand.Parameters[2].Value = ((long)(Original_charID));
+            global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
+            if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
+                        != global::System.Data.ConnectionState.Open)) {
+                this.Adapter.UpdateCommand.Connection.Open();
+            }
+            try {
+                int returnValue = this.Adapter.UpdateCommand.ExecuteNonQuery();
+                return returnValue;
+            }
+            finally {
+                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
+                    this.Adapter.UpdateCommand.Connection.Close();
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
+        public virtual int Update(byte[] portrait, long Original_charID) {
+            return this.Update(Original_charID, portrait, Original_charID);
         }
     }
     
@@ -24769,26 +24839,25 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[Names] WHERE (([ID] = @Original_ID) AND ([Name] = @Original_Na" +
-                "me))";
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [Names] WHERE (([ID] = @Original_ID) AND ([Name] = @Original_Name))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Name", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[Names] ([ID], [Name]) VALUES (@ID, @Name);\r\nSELECT ID, Name FR" +
-                "OM Names WHERE (ID = @ID)";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [Names] ([ID], [Name]) VALUES (@ID, @Name);\r\nSELECT ID, Name FROM Nam" +
+                "es WHERE (ID = @ID)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Name", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[Names] SET [ID] = @ID, [Name] = @Name WHERE (([ID] = @Original_ID) " +
-                "AND ([Name] = @Original_Name));\r\nSELECT ID, Name FROM Names WHERE (ID = @ID)";
+            this._adapter.UpdateCommand.CommandText = "UPDATE [Names] SET [ID] = @ID, [Name] = @Name WHERE (([ID] = @Original_ID) AND ([" +
+                "Name] = @Original_Name));\r\nSELECT ID, Name FROM Names WHERE (ID = @ID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Name", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Name", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
@@ -24803,14 +24872,14 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ID, Name FROM dbo.Names";
+            this._commandCollection[0].CommandText = "SELECT     ID, Name\r\nFROM         Names";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.NameGet";
+            this._commandCollection[1].CommandText = "NameGet";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Name", global::System.Data.SqlDbType.VarChar, 100, global::System.Data.ParameterDirection.InputOutput, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
@@ -24864,8 +24933,8 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_ID, string Original_Name) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ID));
+        public virtual int Delete(long Original_ID, string Original_Name) {
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_ID));
             if ((Original_Name == null)) {
                 throw new global::System.ArgumentNullException("Original_Name");
             }
@@ -24891,8 +24960,8 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int ID, string Name) {
-            this.Adapter.InsertCommand.Parameters[0].Value = ((int)(ID));
+        public virtual int Insert(long ID, string Name) {
+            this.Adapter.InsertCommand.Parameters[0].Value = ((long)(ID));
             if ((Name == null)) {
                 throw new global::System.ArgumentNullException("Name");
             }
@@ -24918,15 +24987,15 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int ID, string Name, int Original_ID, string Original_Name) {
-            this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(ID));
+        public virtual int Update(long ID, string Name, long Original_ID, string Original_Name) {
+            this.Adapter.UpdateCommand.Parameters[0].Value = ((long)(ID));
             if ((Name == null)) {
                 throw new global::System.ArgumentNullException("Name");
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[1].Value = ((string)(Name));
             }
-            this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(Original_ID));
+            this.Adapter.UpdateCommand.Parameters[2].Value = ((long)(Original_ID));
             if ((Original_Name == null)) {
                 throw new global::System.ArgumentNullException("Original_Name");
             }
@@ -24952,16 +25021,16 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string Name, int Original_ID, string Original_Name) {
+        public virtual int Update(string Name, long Original_ID, string Original_Name) {
             return this.Update(Original_ID, Name, Original_ID, Original_Name);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int GetName(global::System.Nullable<decimal> ID, ref string Name) {
+        public virtual int GetName(global::System.Nullable<long> ID, ref string Name) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[1];
             if ((ID.HasValue == true)) {
-                command.Parameters[1].Value = ((decimal)(ID.Value));
+                command.Parameters[1].Value = ((long)(ID.Value));
             }
             else {
                 command.Parameters[1].Value = global::System.DBNull.Value;
@@ -25421,11 +25490,11 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[11];
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.AssetsGetItemIDs";
+            this._commandCollection[1].CommandText = "AssetsGetItemIDs";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
             this._commandCollection[2].CommandText = "TransGetItemIDs";
@@ -25446,7 +25515,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._commandCollection[4].CommandText = "AssetsGetLimitedSystemIDs";
             this._commandCollection[4].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -25455,19 +25524,19 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeContents", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[5].Connection = this.Connection;
-            this._commandCollection[5].CommandText = "dbo.AssetsGetRegionIDs";
+            this._commandCollection[5].CommandText = "AssetsGetRegionIDs";
             this._commandCollection[5].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[6].Connection = this.Connection;
-            this._commandCollection[6].CommandText = "dbo.AssetsGetStationIDs";
+            this._commandCollection[6].CommandText = "AssetsGetStationIDs";
             this._commandCollection[6].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@systemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@systemID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[7].Connection = this.Connection;
             this._commandCollection[7].CommandText = "dbo.ContractsGetDestStationIDs";
@@ -25488,18 +25557,18 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessParams", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[10] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[10].Connection = this.Connection;
-            this._commandCollection[10].CommandText = "dbo.AssetsGetSystemIDs";
+            this._commandCollection[10].CommandText = "AssetsGetSystemIDs";
             this._commandCollection[10].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[10].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[10].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[10].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[10].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[10].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillItemIDsByAssets(EMMADataSet.IDTableDataTable dataTable, string accessList, global::System.Nullable<int> locationID) {
+        public virtual int FillItemIDsByAssets(EMMADataSet.IDTableDataTable dataTable, string accessList, global::System.Nullable<long> locationID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((accessList == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -25508,7 +25577,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.SelectCommand.Parameters[1].Value = ((string)(accessList));
             }
             if ((locationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(locationID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(locationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -25523,7 +25592,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.IDTableDataTable GetItemIDsByAssets(string accessList, global::System.Nullable<int> locationID) {
+        public virtual EMMADataSet.IDTableDataTable GetItemIDsByAssets(string accessList, global::System.Nullable<long> locationID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((accessList == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -25532,7 +25601,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.SelectCommand.Parameters[1].Value = ((string)(accessList));
             }
             if ((locationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(locationID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(locationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -25649,10 +25718,10 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillLimitedSystemIDsByAssets(EMMADataSet.IDTableDataTable dataTable, global::System.Nullable<int> ownerID, string regionIDs, string stationIDs, global::System.Nullable<int> itemID, global::System.Nullable<int> minQuantity, global::System.Nullable<bool> includeContainers, global::System.Nullable<bool> includeContents) {
+        public virtual int FillLimitedSystemIDsByAssets(EMMADataSet.IDTableDataTable dataTable, global::System.Nullable<long> ownerID, string regionIDs, string stationIDs, global::System.Nullable<int> itemID, global::System.Nullable<int> minQuantity, global::System.Nullable<bool> includeContainers, global::System.Nullable<bool> includeContents) {
             this.Adapter.SelectCommand = this.CommandCollection[4];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -25703,10 +25772,10 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.IDTableDataTable GetLimitedSystemIDsByAssets(global::System.Nullable<int> ownerID, string regionIDs, string stationIDs, global::System.Nullable<int> itemID, global::System.Nullable<int> minQuantity, global::System.Nullable<bool> includeContainers, global::System.Nullable<bool> includeContents) {
+        public virtual EMMADataSet.IDTableDataTable GetLimitedSystemIDsByAssets(global::System.Nullable<long> ownerID, string regionIDs, string stationIDs, global::System.Nullable<int> itemID, global::System.Nullable<int> minQuantity, global::System.Nullable<bool> includeContainers, global::System.Nullable<bool> includeContents) {
             this.Adapter.SelectCommand = this.CommandCollection[4];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -25801,7 +25870,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillStationIDsByAssets(EMMADataSet.IDTableDataTable dataTable, string accessList, global::System.Nullable<int> itemID, global::System.Nullable<int> systemID) {
+        public virtual int FillStationIDsByAssets(EMMADataSet.IDTableDataTable dataTable, string accessList, global::System.Nullable<int> itemID, global::System.Nullable<long> systemID) {
             this.Adapter.SelectCommand = this.CommandCollection[6];
             if ((accessList == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -25816,7 +25885,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((systemID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(systemID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(systemID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -25831,7 +25900,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.IDTableDataTable GetStationIDsByAssets(string accessList, global::System.Nullable<int> itemID, global::System.Nullable<int> systemID) {
+        public virtual EMMADataSet.IDTableDataTable GetStationIDsByAssets(string accessList, global::System.Nullable<int> itemID, global::System.Nullable<long> systemID) {
             this.Adapter.SelectCommand = this.CommandCollection[6];
             if ((accessList == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -25846,7 +25915,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((systemID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(systemID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(systemID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -25961,7 +26030,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillSystemIDsByAssets(EMMADataSet.IDTableDataTable dataTable, string accessList, global::System.Nullable<int> itemID, global::System.Nullable<int> regionID) {
+        public virtual int FillSystemIDsByAssets(EMMADataSet.IDTableDataTable dataTable, string accessList, global::System.Nullable<int> itemID, global::System.Nullable<long> regionID) {
             this.Adapter.SelectCommand = this.CommandCollection[10];
             if ((accessList == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -25976,7 +26045,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(regionID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(regionID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -25991,7 +26060,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.IDTableDataTable GetSystemIDsByAssets(string accessList, global::System.Nullable<int> itemID, global::System.Nullable<int> regionID) {
+        public virtual EMMADataSet.IDTableDataTable GetSystemIDsByAssets(string accessList, global::System.Nullable<int> itemID, global::System.Nullable<long> regionID) {
             this.Adapter.SelectCommand = this.CommandCollection[10];
             if ((accessList == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -26006,7 +26075,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(regionID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(regionID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -26130,20 +26199,20 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Date", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Date", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_TypeID", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TypeID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SenderID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SenderID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RecieverID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RecieverID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SenderID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SenderID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RecieverID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RecieverID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SArgName", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SArgName", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SArgID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SArgID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SArgID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SArgID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RArgName", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RArgName", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RArgID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RArgID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RArgID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RArgID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Amount", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 14, 2, "Amount", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SBalance", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "SBalance", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RBalance", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "RBalance", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Reason", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Reason", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SWalletID", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SWalletID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RWalletID", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RWalletID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SCorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SCorpID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RCorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RCorpID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SCorpID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SCorpID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RCorpID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RCorpID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
             this._adapter.InsertCommand.CommandText = "JournalInsert";
@@ -26152,20 +26221,20 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Date", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "Date", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TypeID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "TypeID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SenderID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "SenderID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RecieverID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RecieverID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SenderID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "SenderID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RecieverID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "RecieverID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SArgName", global::System.Data.SqlDbType.VarChar, 100, global::System.Data.ParameterDirection.Input, 0, 0, "SArgName", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SArgID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "SArgID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SArgID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "SArgID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RArgName", global::System.Data.SqlDbType.VarChar, 100, global::System.Data.ParameterDirection.Input, 0, 0, "RArgName", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RArgID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RArgID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RArgID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "RArgID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Amount", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 14, 2, "Amount", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SBalance", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "SBalance", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RBalance", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "RBalance", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Reason", global::System.Data.SqlDbType.VarChar, 50, global::System.Data.ParameterDirection.Input, 0, 0, "Reason", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SWalletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "SWalletID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RWalletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "RWalletID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SCorpID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "SCorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RCorpID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RCorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SCorpID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "SCorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RCorpID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "RCorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
             this._adapter.UpdateCommand.CommandText = "JournalUpdate";
@@ -26174,22 +26243,22 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Date", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "Date", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TypeID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "TypeID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SenderID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "SenderID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RecieverID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RecieverID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SenderID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "SenderID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RecieverID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "RecieverID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SArgName", global::System.Data.SqlDbType.VarChar, 100, global::System.Data.ParameterDirection.Input, 0, 0, "SArgName", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SArgID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "SArgID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SArgID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "SArgID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RArgName", global::System.Data.SqlDbType.VarChar, 100, global::System.Data.ParameterDirection.Input, 0, 0, "RArgName", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RArgID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RArgID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RArgID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "RArgID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Amount", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 14, 2, "Amount", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SBalance", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "SBalance", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RBalance", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "RBalance", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Reason", global::System.Data.SqlDbType.VarChar, 50, global::System.Data.ParameterDirection.Input, 0, 0, "Reason", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SWalletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "SWalletID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RWalletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "RWalletID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SCorpID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "SCorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RCorpID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RCorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SCorpID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "SCorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RCorpID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "RCorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RecieverID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RecieverID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RecieverID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "RecieverID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -26203,13 +26272,13 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[9];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ID, Date, TypeID, SenderID, RecieverID, SArgName, SArgID, RArgName, RArgID" +
-                ", Amount, SBalance, RBalance, Reason, SWalletID, RWalletID, SCorpID, RCorpID FRO" +
-                "M dbo.Journal";
+            this._commandCollection[0].CommandText = "SELECT     ID, Date, TypeID, SenderID, RecieverID, SArgName, SArgID, RArgName, RA" +
+                "rgID, Amount, SBalance, RBalance, Reason, SWalletID, RWalletID, SCorpID, \r\n     " +
+                "                 RCorpID\r\nFROM         Journal";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.JournalGetAny";
+            this._commandCollection[1].CommandText = "JournalGetAny";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessParams", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -26218,7 +26287,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@endDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "dbo.JournalGetByInvName";
+            this._commandCollection[2].CommandText = "JournalGetByInvName";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessParams", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -26228,48 +26297,48 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@text", global::System.Data.SqlDbType.VarChar, 100, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[3].Connection = this.Connection;
-            this._commandCollection[3].CommandText = "dbo.JournalGetClosest";
+            this._commandCollection[3].CommandText = "JournalGetClosest";
             this._commandCollection[3].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@datetime", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[4].Connection = this.Connection;
-            this._commandCollection[4].CommandText = "dbo.JournalGetByRefTypeAndTime";
+            this._commandCollection[4].CommandText = "JournalGetByRefTypeAndTime";
             this._commandCollection[4].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@startDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@endDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@refTypeID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[5].Connection = this.Connection;
-            this._commandCollection[5].CommandText = "dbo.JournalGetUnprocessedDivs";
+            this._commandCollection[5].CommandText = "JournalGetUnprocessedDivs";
             this._commandCollection[5].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessParams", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[6].Connection = this.Connection;
-            this._commandCollection[6].CommandText = "dbo.JournalEntryExists";
+            this._commandCollection[6].CommandText = "JournalEntryExists";
             this._commandCollection[6].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@entryID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@recieverID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@recieverID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@exists", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.InputOutput, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[7].Connection = this.Connection;
-            this._commandCollection[7].CommandText = "dbo.JournalGetMatch";
+            this._commandCollection[7].CommandText = "JournalGetMatch";
             this._commandCollection[7].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@datetime", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@recieverID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@senderID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@recieverID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@senderID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@amount", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 14, 2, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[8] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[8].Connection = this.Connection;
-            this._commandCollection[8].CommandText = "dbo.JournalSumAmtByType";
+            this._commandCollection[8].CommandText = "JournalSumAmtByType";
             this._commandCollection[8].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessParams", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -26457,10 +26526,10 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByClosest(EMMADataSet.JournalDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<bool> corp, global::System.Nullable<short> walletID, global::System.Nullable<global::System.DateTime> datetime) {
+        public virtual int FillByClosest(EMMADataSet.JournalDataTable dataTable, global::System.Nullable<long> ownerID, global::System.Nullable<bool> corp, global::System.Nullable<short> walletID, global::System.Nullable<global::System.DateTime> datetime) {
             this.Adapter.SelectCommand = this.CommandCollection[3];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -26493,10 +26562,10 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.JournalDataTable GetDataByClosest(global::System.Nullable<int> ownerID, global::System.Nullable<bool> corp, global::System.Nullable<short> walletID, global::System.Nullable<global::System.DateTime> datetime) {
+        public virtual EMMADataSet.JournalDataTable GetDataByClosest(global::System.Nullable<long> ownerID, global::System.Nullable<bool> corp, global::System.Nullable<short> walletID, global::System.Nullable<global::System.DateTime> datetime) {
             this.Adapter.SelectCommand = this.CommandCollection[3];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -26527,10 +26596,10 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByRefTypeAndTime(EMMADataSet.JournalDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, global::System.Nullable<short> refTypeID) {
+        public virtual int FillByRefTypeAndTime(EMMADataSet.JournalDataTable dataTable, global::System.Nullable<long> ownerID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, global::System.Nullable<short> refTypeID) {
             this.Adapter.SelectCommand = this.CommandCollection[4];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -26563,10 +26632,10 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.JournalDataTable GetDataByRefTypeAndTime(global::System.Nullable<int> ownerID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, global::System.Nullable<short> refTypeID) {
+        public virtual EMMADataSet.JournalDataTable GetDataByRefTypeAndTime(global::System.Nullable<long> ownerID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, global::System.Nullable<short> refTypeID) {
             this.Adapter.SelectCommand = this.CommandCollection[4];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -26631,7 +26700,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillEntryExists(EMMADataSet.JournalDataTable dataTable, global::System.Nullable<long> entryID, global::System.Nullable<int> recieverID, ref global::System.Nullable<bool> exists) {
+        public virtual int FillEntryExists(EMMADataSet.JournalDataTable dataTable, global::System.Nullable<long> entryID, global::System.Nullable<long> recieverID, ref global::System.Nullable<bool> exists) {
             this.Adapter.SelectCommand = this.CommandCollection[6];
             if ((entryID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((long)(entryID.Value));
@@ -26640,7 +26709,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((recieverID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(recieverID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(recieverID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -26668,7 +26737,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.JournalDataTable GetEntryExists(global::System.Nullable<long> entryID, global::System.Nullable<int> recieverID, ref global::System.Nullable<bool> exists) {
+        public virtual EMMADataSet.JournalDataTable GetEntryExists(global::System.Nullable<long> entryID, global::System.Nullable<long> recieverID, ref global::System.Nullable<bool> exists) {
             this.Adapter.SelectCommand = this.CommandCollection[6];
             if ((entryID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((long)(entryID.Value));
@@ -26677,7 +26746,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((recieverID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(recieverID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(recieverID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -26703,7 +26772,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FindMatch(EMMADataSet.JournalDataTable dataTable, global::System.Nullable<global::System.DateTime> datetime, global::System.Nullable<int> recieverID, global::System.Nullable<int> senderID, global::System.Nullable<decimal> amount) {
+        public virtual int FindMatch(EMMADataSet.JournalDataTable dataTable, global::System.Nullable<global::System.DateTime> datetime, global::System.Nullable<long> recieverID, global::System.Nullable<long> senderID, global::System.Nullable<decimal> amount) {
             this.Adapter.SelectCommand = this.CommandCollection[7];
             if ((datetime.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((System.DateTime)(datetime.Value));
@@ -26712,13 +26781,13 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((recieverID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(recieverID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(recieverID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((senderID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(senderID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(senderID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -26739,7 +26808,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.JournalDataTable GetMatch(global::System.Nullable<global::System.DateTime> datetime, global::System.Nullable<int> recieverID, global::System.Nullable<int> senderID, global::System.Nullable<decimal> amount) {
+        public virtual EMMADataSet.JournalDataTable GetMatch(global::System.Nullable<global::System.DateTime> datetime, global::System.Nullable<long> recieverID, global::System.Nullable<long> senderID, global::System.Nullable<decimal> amount) {
             this.Adapter.SelectCommand = this.CommandCollection[7];
             if ((datetime.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((System.DateTime)(datetime.Value));
@@ -26748,13 +26817,13 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((recieverID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(recieverID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(recieverID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((senderID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(senderID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(senderID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -26802,39 +26871,39 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                     long Original_ID, 
                     System.DateTime Original_Date, 
                     short Original_TypeID, 
-                    int Original_SenderID, 
-                    int Original_RecieverID, 
+                    long Original_SenderID, 
+                    long Original_RecieverID, 
                     string Original_SArgName, 
-                    int Original_SArgID, 
+                    long Original_SArgID, 
                     string Original_RArgName, 
-                    int Original_RArgID, 
+                    long Original_RArgID, 
                     decimal Original_Amount, 
                     decimal Original_SBalance, 
                     decimal Original_RBalance, 
                     string Original_Reason, 
                     short Original_SWalletID, 
                     short Original_RWalletID, 
-                    int Original_SCorpID, 
-                    int Original_RCorpID) {
+                    long Original_SCorpID, 
+                    long Original_RCorpID) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_ID));
             this.Adapter.DeleteCommand.Parameters[1].Value = ((System.DateTime)(Original_Date));
             this.Adapter.DeleteCommand.Parameters[2].Value = ((short)(Original_TypeID));
-            this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_SenderID));
-            this.Adapter.DeleteCommand.Parameters[4].Value = ((int)(Original_RecieverID));
+            this.Adapter.DeleteCommand.Parameters[3].Value = ((long)(Original_SenderID));
+            this.Adapter.DeleteCommand.Parameters[4].Value = ((long)(Original_RecieverID));
             if ((Original_SArgName == null)) {
                 throw new global::System.ArgumentNullException("Original_SArgName");
             }
             else {
                 this.Adapter.DeleteCommand.Parameters[5].Value = ((string)(Original_SArgName));
             }
-            this.Adapter.DeleteCommand.Parameters[6].Value = ((int)(Original_SArgID));
+            this.Adapter.DeleteCommand.Parameters[6].Value = ((long)(Original_SArgID));
             if ((Original_RArgName == null)) {
                 throw new global::System.ArgumentNullException("Original_RArgName");
             }
             else {
                 this.Adapter.DeleteCommand.Parameters[7].Value = ((string)(Original_RArgName));
             }
-            this.Adapter.DeleteCommand.Parameters[8].Value = ((int)(Original_RArgID));
+            this.Adapter.DeleteCommand.Parameters[8].Value = ((long)(Original_RArgID));
             this.Adapter.DeleteCommand.Parameters[9].Value = ((decimal)(Original_Amount));
             this.Adapter.DeleteCommand.Parameters[10].Value = ((decimal)(Original_SBalance));
             this.Adapter.DeleteCommand.Parameters[11].Value = ((decimal)(Original_RBalance));
@@ -26846,8 +26915,8 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             }
             this.Adapter.DeleteCommand.Parameters[13].Value = ((short)(Original_SWalletID));
             this.Adapter.DeleteCommand.Parameters[14].Value = ((short)(Original_RWalletID));
-            this.Adapter.DeleteCommand.Parameters[15].Value = ((int)(Original_SCorpID));
-            this.Adapter.DeleteCommand.Parameters[16].Value = ((int)(Original_RCorpID));
+            this.Adapter.DeleteCommand.Parameters[15].Value = ((long)(Original_SCorpID));
+            this.Adapter.DeleteCommand.Parameters[16].Value = ((long)(Original_RCorpID));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -26871,20 +26940,20 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                     global::System.Nullable<long> ID, 
                     global::System.Nullable<global::System.DateTime> Date, 
                     global::System.Nullable<short> TypeID, 
-                    global::System.Nullable<int> SenderID, 
-                    global::System.Nullable<int> RecieverID, 
+                    global::System.Nullable<long> SenderID, 
+                    global::System.Nullable<long> RecieverID, 
                     string SArgName, 
-                    global::System.Nullable<int> SArgID, 
+                    global::System.Nullable<long> SArgID, 
                     string RArgName, 
-                    global::System.Nullable<int> RArgID, 
+                    global::System.Nullable<long> RArgID, 
                     global::System.Nullable<decimal> Amount, 
                     global::System.Nullable<decimal> SBalance, 
                     global::System.Nullable<decimal> RBalance, 
                     string Reason, 
                     global::System.Nullable<short> SWalletID, 
                     global::System.Nullable<short> RWalletID, 
-                    global::System.Nullable<int> SCorpID, 
-                    global::System.Nullable<int> RCorpID) {
+                    global::System.Nullable<long> SCorpID, 
+                    global::System.Nullable<long> RCorpID) {
             if ((ID.HasValue == true)) {
                 this.Adapter.InsertCommand.Parameters[1].Value = ((long)(ID.Value));
             }
@@ -26904,13 +26973,13 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.InsertCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((SenderID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[4].Value = ((int)(SenderID.Value));
+                this.Adapter.InsertCommand.Parameters[4].Value = ((long)(SenderID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
             if ((RecieverID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[5].Value = ((int)(RecieverID.Value));
+                this.Adapter.InsertCommand.Parameters[5].Value = ((long)(RecieverID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[5].Value = global::System.DBNull.Value;
@@ -26922,7 +26991,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.InsertCommand.Parameters[6].Value = ((string)(SArgName));
             }
             if ((SArgID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[7].Value = ((int)(SArgID.Value));
+                this.Adapter.InsertCommand.Parameters[7].Value = ((long)(SArgID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[7].Value = global::System.DBNull.Value;
@@ -26934,7 +27003,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.InsertCommand.Parameters[8].Value = ((string)(RArgName));
             }
             if ((RArgID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[9].Value = ((int)(RArgID.Value));
+                this.Adapter.InsertCommand.Parameters[9].Value = ((long)(RArgID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[9].Value = global::System.DBNull.Value;
@@ -26976,13 +27045,13 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.InsertCommand.Parameters[15].Value = global::System.DBNull.Value;
             }
             if ((SCorpID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[16].Value = ((int)(SCorpID.Value));
+                this.Adapter.InsertCommand.Parameters[16].Value = ((long)(SCorpID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[16].Value = global::System.DBNull.Value;
             }
             if ((RCorpID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[17].Value = ((int)(RCorpID.Value));
+                this.Adapter.InsertCommand.Parameters[17].Value = ((long)(RCorpID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[17].Value = global::System.DBNull.Value;
@@ -27010,22 +27079,22 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                     global::System.Nullable<long> ID, 
                     global::System.Nullable<global::System.DateTime> Date, 
                     global::System.Nullable<short> TypeID, 
-                    global::System.Nullable<int> SenderID, 
-                    global::System.Nullable<int> RecieverID, 
+                    global::System.Nullable<long> SenderID, 
+                    global::System.Nullable<long> RecieverID, 
                     string SArgName, 
-                    global::System.Nullable<int> SArgID, 
+                    global::System.Nullable<long> SArgID, 
                     string RArgName, 
-                    global::System.Nullable<int> RArgID, 
+                    global::System.Nullable<long> RArgID, 
                     global::System.Nullable<decimal> Amount, 
                     global::System.Nullable<decimal> SBalance, 
                     global::System.Nullable<decimal> RBalance, 
                     string Reason, 
                     global::System.Nullable<short> SWalletID, 
                     global::System.Nullable<short> RWalletID, 
-                    global::System.Nullable<int> SCorpID, 
-                    global::System.Nullable<int> RCorpID, 
+                    global::System.Nullable<long> SCorpID, 
+                    global::System.Nullable<long> RCorpID, 
                     global::System.Nullable<long> Original_ID, 
-                    global::System.Nullable<int> Original_RecieverID) {
+                    global::System.Nullable<long> Original_RecieverID) {
             if ((ID.HasValue == true)) {
                 this.Adapter.UpdateCommand.Parameters[1].Value = ((long)(ID.Value));
             }
@@ -27045,13 +27114,13 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.UpdateCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((SenderID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(SenderID.Value));
+                this.Adapter.UpdateCommand.Parameters[4].Value = ((long)(SenderID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
             if ((RecieverID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(RecieverID.Value));
+                this.Adapter.UpdateCommand.Parameters[5].Value = ((long)(RecieverID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[5].Value = global::System.DBNull.Value;
@@ -27063,7 +27132,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.UpdateCommand.Parameters[6].Value = ((string)(SArgName));
             }
             if ((SArgID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(SArgID.Value));
+                this.Adapter.UpdateCommand.Parameters[7].Value = ((long)(SArgID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[7].Value = global::System.DBNull.Value;
@@ -27075,7 +27144,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.UpdateCommand.Parameters[8].Value = ((string)(RArgName));
             }
             if ((RArgID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(RArgID.Value));
+                this.Adapter.UpdateCommand.Parameters[9].Value = ((long)(RArgID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[9].Value = global::System.DBNull.Value;
@@ -27117,13 +27186,13 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.UpdateCommand.Parameters[15].Value = global::System.DBNull.Value;
             }
             if ((SCorpID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[16].Value = ((int)(SCorpID.Value));
+                this.Adapter.UpdateCommand.Parameters[16].Value = ((long)(SCorpID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[16].Value = global::System.DBNull.Value;
             }
             if ((RCorpID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[17].Value = ((int)(RCorpID.Value));
+                this.Adapter.UpdateCommand.Parameters[17].Value = ((long)(RCorpID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[17].Value = global::System.DBNull.Value;
@@ -27135,7 +27204,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.UpdateCommand.Parameters[18].Value = global::System.DBNull.Value;
             }
             if ((Original_RecieverID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[19].Value = ((int)(Original_RecieverID.Value));
+                this.Adapter.UpdateCommand.Parameters[19].Value = ((long)(Original_RecieverID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[19].Value = global::System.DBNull.Value;
@@ -27162,21 +27231,21 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         public virtual int Update(
                     global::System.Nullable<global::System.DateTime> Date, 
                     global::System.Nullable<short> TypeID, 
-                    global::System.Nullable<int> SenderID, 
+                    global::System.Nullable<long> SenderID, 
                     string SArgName, 
-                    global::System.Nullable<int> SArgID, 
+                    global::System.Nullable<long> SArgID, 
                     string RArgName, 
-                    global::System.Nullable<int> RArgID, 
+                    global::System.Nullable<long> RArgID, 
                     global::System.Nullable<decimal> Amount, 
                     global::System.Nullable<decimal> SBalance, 
                     global::System.Nullable<decimal> RBalance, 
                     string Reason, 
                     global::System.Nullable<short> SWalletID, 
                     global::System.Nullable<short> RWalletID, 
-                    global::System.Nullable<int> SCorpID, 
-                    global::System.Nullable<int> RCorpID, 
+                    global::System.Nullable<long> SCorpID, 
+                    global::System.Nullable<long> RCorpID, 
                     global::System.Nullable<long> Original_ID, 
-                    global::System.Nullable<int> Original_RecieverID) {
+                    global::System.Nullable<long> Original_RecieverID) {
             return this.Update(Original_ID, Date, TypeID, SenderID, Original_RecieverID, SArgName, SArgID, RArgName, RArgID, Amount, SBalance, RBalance, Reason, SWalletID, RWalletID, SCorpID, RCorpID, Original_ID, Original_RecieverID);
         }
         
@@ -27932,9 +28001,9 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[APICharacters] WHERE (([ID] = @Original_ID) AND ([LastCharSheetUpdate] = @Original_LastCharSheetUpdate) AND ([LastCorpSheetUpdate] = @Original_LastCorpSheetUpdate) AND ([LastCharTransUpdate] = @Original_LastCharTransUpdate) AND ([LastCorpTransUpdate] = @Original_LastCorpTransUpdate) AND ([LastCharJournalUpdate] = @Original_LastCharJournalUpdate) AND ([LastCorpJournalUpdate] = @Original_LastCorpJournalUpdate) AND ([LastCharAssetsUpdate] = @Original_LastCharAssetsUpdate) AND ([LastCorpAssetsUpdate] = @Original_LastCorpAssetsUpdate) AND ([LastCharOrdersUpdate] = @Original_LastCharOrdersUpdate) AND ([LastCorpOrdersUpdate] = @Original_LastCorpOrdersUpdate) AND ([CorpFinanceAccess] = @Original_CorpFinanceAccess) AND ([HighestCharTransID] = @Original_HighestCharTransID) AND ([HighestCorpTransID] = @Original_HighestCorpTransID) AND ([HighestCharJournalID] = @Original_HighestCharJournalID) AND ([HighestCorpJournalID] = @Original_HighestCorpJournalID))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [APICharacters] WHERE (([ID] = @Original_ID) AND ([LastCharSheetUpdate] = @Original_LastCharSheetUpdate) AND ([LastCorpSheetUpdate] = @Original_LastCorpSheetUpdate) AND ([LastCharTransUpdate] = @Original_LastCharTransUpdate) AND ([LastCorpTransUpdate] = @Original_LastCorpTransUpdate) AND ([LastCharJournalUpdate] = @Original_LastCharJournalUpdate) AND ([LastCorpJournalUpdate] = @Original_LastCorpJournalUpdate) AND ([LastCharAssetsUpdate] = @Original_LastCharAssetsUpdate) AND ([LastCorpAssetsUpdate] = @Original_LastCorpAssetsUpdate) AND ([LastCharOrdersUpdate] = @Original_LastCharOrdersUpdate) AND ([LastCorpOrdersUpdate] = @Original_LastCorpOrdersUpdate) AND ([CorpFinanceAccess] = @Original_CorpFinanceAccess) AND ([HighestCharTransID] = @Original_HighestCharTransID) AND ([HighestCorpTransID] = @Original_HighestCorpTransID) AND ([HighestCharJournalID] = @Original_HighestCharJournalID) AND ([HighestCorpJournalID] = @Original_HighestCorpJournalID))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LastCharSheetUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCharSheetUpdate", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LastCorpSheetUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCorpSheetUpdate", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LastCharTransUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCharTransUpdate", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -27952,33 +28021,32 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_HighestCorpJournalID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "HighestCorpJournalID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "APICharInsert";
-            this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.StoredProcedure;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharSheetUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCharSheetUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CharSheet", global::System.Data.SqlDbType.Xml, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, "CharSheet", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCorpSheetUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCorpSheetUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpSheet", global::System.Data.SqlDbType.Xml, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, "CorpSheet", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharTransUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCharTransUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCorpTransUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCorpTransUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharJournalUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCharJournalUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCorpJournalUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCorpJournalUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharAssetsUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCharAssetsUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCorpAssetsUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCorpAssetsUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharOrdersUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCharOrdersUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCorpOrdersUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCorpOrdersUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpFinanceAccess", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "CorpFinanceAccess", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharTransID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCharTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpTransID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCorpTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharJournalID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCharJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpJournalID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCorpJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [APICharacters] ([ID], [LastCharSheetUpdate], [CharSheet], [LastCorpSheetUpdate], [CorpSheet], [LastCharTransUpdate], [LastCorpTransUpdate], [LastCharJournalUpdate], [LastCorpJournalUpdate], [LastCharAssetsUpdate], [LastCorpAssetsUpdate], [LastCharOrdersUpdate], [LastCorpOrdersUpdate], [CorpFinanceAccess], [HighestCharTransID], [HighestCorpTransID], [HighestCharJournalID], [HighestCorpJournalID]) VALUES (@ID, @LastCharSheetUpdate, @CharSheet, @LastCorpSheetUpdate, @CorpSheet, @LastCharTransUpdate, @LastCorpTransUpdate, @LastCharJournalUpdate, @LastCorpJournalUpdate, @LastCharAssetsUpdate, @LastCorpAssetsUpdate, @LastCharOrdersUpdate, @LastCorpOrdersUpdate, @CorpFinanceAccess, @HighestCharTransID, @HighestCorpTransID, @HighestCharJournalID, @HighestCorpJournalID)";
+            this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharSheetUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCharSheetUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CharSheet", global::System.Data.SqlDbType.Xml, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharSheet", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCorpSheetUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCorpSheetUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpSheet", global::System.Data.SqlDbType.Xml, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpSheet", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharTransUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCharTransUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCorpTransUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCorpTransUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharJournalUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCharJournalUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCorpJournalUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCorpJournalUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharAssetsUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCharAssetsUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCorpAssetsUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCorpAssetsUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharOrdersUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCharOrdersUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCorpOrdersUpdate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastCorpOrdersUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpFinanceAccess", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpFinanceAccess", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharTransID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "HighestCharTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpTransID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "HighestCorpTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharJournalID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "HighestCharJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpJournalID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "HighestCorpJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
             this._adapter.UpdateCommand.CommandText = "APICharUpdate";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.StoredProcedure;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharSheetUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCharSheetUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CharSheet", global::System.Data.SqlDbType.Xml, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, "CharSheet", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCorpSheetUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCorpSheetUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -27992,11 +28060,11 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCharOrdersUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCharOrdersUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastCorpOrdersUpdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, "LastCorpOrdersUpdate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpFinanceAccess", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "CorpFinanceAccess", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharTransID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCharTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpTransID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCorpTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharJournalID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCharJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpJournalID", global::System.Data.SqlDbType.BigInt, 4, global::System.Data.ParameterDirection.Input, 10, 0, "HighestCorpJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharTransID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "HighestCharTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpTransID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "HighestCorpTransID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCharJournalID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "HighestCharJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@HighestCorpJournalID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "HighestCorpJournalID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -28010,14 +28078,17 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = @"SELECT ID, LastCharSheetUpdate, CharSheet, LastCorpSheetUpdate, CorpSheet, LastCharTransUpdate, LastCorpTransUpdate, LastCharJournalUpdate, LastCorpJournalUpdate, LastCharAssetsUpdate, LastCorpAssetsUpdate, LastCharOrdersUpdate, LastCorpOrdersUpdate, CorpFinanceAccess, HighestCharTransID, HighestCorpTransID, HighestCharJournalID, HighestCorpJournalID FROM dbo.APICharacters";
+            this._commandCollection[0].CommandText = @"SELECT     ID, LastCharSheetUpdate, CharSheet, LastCorpSheetUpdate, CorpSheet, LastCharTransUpdate, LastCorpTransUpdate, LastCharJournalUpdate, 
+                      LastCorpJournalUpdate, LastCharAssetsUpdate, LastCorpAssetsUpdate, LastCharOrdersUpdate, LastCorpOrdersUpdate, CorpFinanceAccess, 
+                      HighestCharTransID, HighestCorpTransID, HighestCharJournalID, HighestCorpJournalID
+FROM         APICharacters";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.APICharGet";
+            this._commandCollection[1].CommandText = "APICharGet";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -28045,10 +28116,10 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByID(EMMADataSet.APICharactersDataTable dataTable, global::System.Nullable<int> charID) {
+        public virtual int FillByID(EMMADataSet.APICharactersDataTable dataTable, global::System.Nullable<long> charID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((charID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(charID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(charID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -28063,10 +28134,10 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.APICharactersDataTable GetDataByID(global::System.Nullable<int> charID) {
+        public virtual EMMADataSet.APICharactersDataTable GetDataByID(global::System.Nullable<long> charID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((charID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(charID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(charID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -28105,7 +28176,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
         public virtual int Delete(
-                    int Original_ID, 
+                    long Original_ID, 
                     System.DateTime Original_LastCharSheetUpdate, 
                     System.DateTime Original_LastCorpSheetUpdate, 
                     System.DateTime Original_LastCharTransUpdate, 
@@ -28121,7 +28192,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                     long Original_HighestCorpTransID, 
                     long Original_HighestCharJournalID, 
                     long Original_HighestCorpJournalID) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ID));
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_ID));
             this.Adapter.DeleteCommand.Parameters[1].Value = ((System.DateTime)(Original_LastCharSheetUpdate));
             this.Adapter.DeleteCommand.Parameters[2].Value = ((System.DateTime)(Original_LastCorpSheetUpdate));
             this.Adapter.DeleteCommand.Parameters[3].Value = ((System.DateTime)(Original_LastCharTransUpdate));
@@ -28157,132 +28228,52 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
         public virtual int Insert(
-                    global::System.Nullable<int> ID, 
-                    global::System.Nullable<global::System.DateTime> LastCharSheetUpdate, 
+                    long ID, 
+                    System.DateTime LastCharSheetUpdate, 
                     object CharSheet, 
-                    global::System.Nullable<global::System.DateTime> LastCorpSheetUpdate, 
+                    System.DateTime LastCorpSheetUpdate, 
                     object CorpSheet, 
-                    global::System.Nullable<global::System.DateTime> LastCharTransUpdate, 
-                    global::System.Nullable<global::System.DateTime> LastCorpTransUpdate, 
-                    global::System.Nullable<global::System.DateTime> LastCharJournalUpdate, 
-                    global::System.Nullable<global::System.DateTime> LastCorpJournalUpdate, 
-                    global::System.Nullable<global::System.DateTime> LastCharAssetsUpdate, 
-                    global::System.Nullable<global::System.DateTime> LastCorpAssetsUpdate, 
-                    global::System.Nullable<global::System.DateTime> LastCharOrdersUpdate, 
-                    global::System.Nullable<global::System.DateTime> LastCorpOrdersUpdate, 
-                    global::System.Nullable<bool> CorpFinanceAccess, 
-                    global::System.Nullable<long> HighestCharTransID, 
-                    global::System.Nullable<long> HighestCorpTransID, 
-                    global::System.Nullable<long> HighestCharJournalID, 
-                    global::System.Nullable<long> HighestCorpJournalID) {
-            if ((ID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[1].Value = ((int)(ID.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((LastCharSheetUpdate.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[2].Value = ((System.DateTime)(LastCharSheetUpdate.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
+                    System.DateTime LastCharTransUpdate, 
+                    System.DateTime LastCorpTransUpdate, 
+                    System.DateTime LastCharJournalUpdate, 
+                    System.DateTime LastCorpJournalUpdate, 
+                    System.DateTime LastCharAssetsUpdate, 
+                    System.DateTime LastCorpAssetsUpdate, 
+                    System.DateTime LastCharOrdersUpdate, 
+                    System.DateTime LastCorpOrdersUpdate, 
+                    bool CorpFinanceAccess, 
+                    long HighestCharTransID, 
+                    long HighestCorpTransID, 
+                    long HighestCharJournalID, 
+                    long HighestCorpJournalID) {
+            this.Adapter.InsertCommand.Parameters[0].Value = ((long)(ID));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((System.DateTime)(LastCharSheetUpdate));
             if ((CharSheet == null)) {
-                this.Adapter.InsertCommand.Parameters[3].Value = global::System.DBNull.Value;
+                throw new global::System.ArgumentNullException("CharSheet");
             }
             else {
-                this.Adapter.InsertCommand.Parameters[3].Value = ((object)(CharSheet));
+                this.Adapter.InsertCommand.Parameters[2].Value = ((object)(CharSheet));
             }
-            if ((LastCorpSheetUpdate.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[4].Value = ((System.DateTime)(LastCorpSheetUpdate.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
+            this.Adapter.InsertCommand.Parameters[3].Value = ((System.DateTime)(LastCorpSheetUpdate));
             if ((CorpSheet == null)) {
-                this.Adapter.InsertCommand.Parameters[5].Value = global::System.DBNull.Value;
+                throw new global::System.ArgumentNullException("CorpSheet");
             }
             else {
-                this.Adapter.InsertCommand.Parameters[5].Value = ((object)(CorpSheet));
+                this.Adapter.InsertCommand.Parameters[4].Value = ((object)(CorpSheet));
             }
-            if ((LastCharTransUpdate.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[6].Value = ((System.DateTime)(LastCharTransUpdate.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[6].Value = global::System.DBNull.Value;
-            }
-            if ((LastCorpTransUpdate.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[7].Value = ((System.DateTime)(LastCorpTransUpdate.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[7].Value = global::System.DBNull.Value;
-            }
-            if ((LastCharJournalUpdate.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[8].Value = ((System.DateTime)(LastCharJournalUpdate.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[8].Value = global::System.DBNull.Value;
-            }
-            if ((LastCorpJournalUpdate.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[9].Value = ((System.DateTime)(LastCorpJournalUpdate.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[9].Value = global::System.DBNull.Value;
-            }
-            if ((LastCharAssetsUpdate.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[10].Value = ((System.DateTime)(LastCharAssetsUpdate.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[10].Value = global::System.DBNull.Value;
-            }
-            if ((LastCorpAssetsUpdate.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[11].Value = ((System.DateTime)(LastCorpAssetsUpdate.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[11].Value = global::System.DBNull.Value;
-            }
-            if ((LastCharOrdersUpdate.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[12].Value = ((System.DateTime)(LastCharOrdersUpdate.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[12].Value = global::System.DBNull.Value;
-            }
-            if ((LastCorpOrdersUpdate.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[13].Value = ((System.DateTime)(LastCorpOrdersUpdate.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[13].Value = global::System.DBNull.Value;
-            }
-            if ((CorpFinanceAccess.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[14].Value = ((bool)(CorpFinanceAccess.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[14].Value = global::System.DBNull.Value;
-            }
-            if ((HighestCharTransID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[15].Value = ((long)(HighestCharTransID.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[15].Value = global::System.DBNull.Value;
-            }
-            if ((HighestCorpTransID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[16].Value = ((long)(HighestCorpTransID.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[16].Value = global::System.DBNull.Value;
-            }
-            if ((HighestCharJournalID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[17].Value = ((long)(HighestCharJournalID.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[17].Value = global::System.DBNull.Value;
-            }
-            if ((HighestCorpJournalID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[18].Value = ((long)(HighestCorpJournalID.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[18].Value = global::System.DBNull.Value;
-            }
+            this.Adapter.InsertCommand.Parameters[5].Value = ((System.DateTime)(LastCharTransUpdate));
+            this.Adapter.InsertCommand.Parameters[6].Value = ((System.DateTime)(LastCorpTransUpdate));
+            this.Adapter.InsertCommand.Parameters[7].Value = ((System.DateTime)(LastCharJournalUpdate));
+            this.Adapter.InsertCommand.Parameters[8].Value = ((System.DateTime)(LastCorpJournalUpdate));
+            this.Adapter.InsertCommand.Parameters[9].Value = ((System.DateTime)(LastCharAssetsUpdate));
+            this.Adapter.InsertCommand.Parameters[10].Value = ((System.DateTime)(LastCorpAssetsUpdate));
+            this.Adapter.InsertCommand.Parameters[11].Value = ((System.DateTime)(LastCharOrdersUpdate));
+            this.Adapter.InsertCommand.Parameters[12].Value = ((System.DateTime)(LastCorpOrdersUpdate));
+            this.Adapter.InsertCommand.Parameters[13].Value = ((bool)(CorpFinanceAccess));
+            this.Adapter.InsertCommand.Parameters[14].Value = ((long)(HighestCharTransID));
+            this.Adapter.InsertCommand.Parameters[15].Value = ((long)(HighestCorpTransID));
+            this.Adapter.InsertCommand.Parameters[16].Value = ((long)(HighestCharJournalID));
+            this.Adapter.InsertCommand.Parameters[17].Value = ((long)(HighestCorpJournalID));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -28303,7 +28294,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
         public virtual int Update(
-                    global::System.Nullable<int> ID, 
+                    global::System.Nullable<long> ID, 
                     global::System.Nullable<global::System.DateTime> LastCharSheetUpdate, 
                     object CharSheet, 
                     global::System.Nullable<global::System.DateTime> LastCorpSheetUpdate, 
@@ -28321,9 +28312,9 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                     global::System.Nullable<long> HighestCorpTransID, 
                     global::System.Nullable<long> HighestCharJournalID, 
                     global::System.Nullable<long> HighestCorpJournalID, 
-                    global::System.Nullable<int> Original_ID) {
+                    global::System.Nullable<long> Original_ID) {
             if ((ID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(ID.Value));
+                this.Adapter.UpdateCommand.Parameters[1].Value = ((long)(ID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -28431,7 +28422,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                 this.Adapter.UpdateCommand.Parameters[18].Value = global::System.DBNull.Value;
             }
             if ((Original_ID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[19].Value = ((int)(Original_ID.Value));
+                this.Adapter.UpdateCommand.Parameters[19].Value = ((long)(Original_ID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[19].Value = global::System.DBNull.Value;
@@ -28473,7 +28464,7 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
                     global::System.Nullable<long> HighestCorpTransID, 
                     global::System.Nullable<long> HighestCharJournalID, 
                     global::System.Nullable<long> HighestCorpJournalID, 
-                    global::System.Nullable<int> Original_ID) {
+                    global::System.Nullable<long> Original_ID) {
             return this.Update(Original_ID, LastCharSheetUpdate, CharSheet, LastCorpSheetUpdate, CorpSheet, LastCharTransUpdate, LastCorpTransUpdate, LastCharJournalUpdate, LastCorpJournalUpdate, LastCharAssetsUpdate, LastCorpAssetsUpdate, LastCharOrdersUpdate, LastCorpOrdersUpdate, CorpFinanceAccess, HighestCharTransID, HighestCorpTransID, HighestCharJournalID, HighestCorpJournalID, Original_ID);
         }
     }
@@ -28575,39 +28566,39 @@ SELECT ID, StartDate, EndDate, Offset, LargestID FROM JournalGenerations WHERE (
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[GroupLocation] WHERE (([ReportGroupID] = @Original_ReportGroup" +
-                "ID) AND ([LocationName] = @Original_LocationName) AND ([StationID] = @Original_S" +
-                "tationID) AND ([Range] = @Original_Range))";
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [GroupLocation] WHERE (([ReportGroupID] = @Original_ReportGroupID) AN" +
+                "D ([LocationName] = @Original_LocationName) AND ([StationID] = @Original_Station" +
+                "ID) AND ([Range] = @Original_Range))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LocationName", global::System.Data.SqlDbType.Char, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LocationName", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_StationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_StationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Range", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Range", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[GroupLocation] ([ReportGroupID], [LocationName], [RegionIDs], [StationIDs], [StationID], [Range]) VALUES (@ReportGroupID, @LocationName, @RegionIDs, @StationIDs, @StationID, @Range);
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [GroupLocation] ([ReportGroupID], [LocationName], [RegionIDs], [StationIDs], [StationID], [Range]) VALUES (@ReportGroupID, @LocationName, @RegionIDs, @StationIDs, @StationID, @Range);
 SELECT ReportGroupID, LocationName, RegionIDs, StationIDs, StationID, Range FROM GroupLocation WHERE (LocationName = @LocationName) AND (ReportGroupID = @ReportGroupID)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LocationName", global::System.Data.SqlDbType.Char, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LocationName", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RegionIDs", global::System.Data.SqlDbType.NText, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RegionIDs", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationIDs", global::System.Data.SqlDbType.NText, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationIDs", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Range", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Range", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[GroupLocation] SET [ReportGroupID] = @ReportGroupID, [LocationName] = @LocationName, [RegionIDs] = @RegionIDs, [StationIDs] = @StationIDs, [StationID] = @StationID, [Range] = @Range WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([LocationName] = @Original_LocationName) AND ([StationID] = @Original_StationID) AND ([Range] = @Original_Range));
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [GroupLocation] SET [ReportGroupID] = @ReportGroupID, [LocationName] = @LocationName, [RegionIDs] = @RegionIDs, [StationIDs] = @StationIDs, [StationID] = @StationID, [Range] = @Range WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([LocationName] = @Original_LocationName) AND ([StationID] = @Original_StationID) AND ([Range] = @Original_Range));
 SELECT ReportGroupID, LocationName, RegionIDs, StationIDs, StationID, Range FROM GroupLocation WHERE (LocationName = @LocationName) AND (ReportGroupID = @ReportGroupID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LocationName", global::System.Data.SqlDbType.Char, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LocationName", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RegionIDs", global::System.Data.SqlDbType.NText, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RegionIDs", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationIDs", global::System.Data.SqlDbType.NText, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationIDs", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Range", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Range", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LocationName", global::System.Data.SqlDbType.Char, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LocationName", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_StationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_StationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Range", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Range", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
@@ -28622,8 +28613,8 @@ SELECT ReportGroupID, LocationName, RegionIDs, StationIDs, StationID, Range FROM
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ReportGroupID, LocationName, RegionIDs, StationIDs, StationID, Range FROM " +
-                "dbo.GroupLocation";
+            this._commandCollection[0].CommandText = "SELECT     ReportGroupID, LocationName, RegionIDs, StationIDs, StationID, Range\r\n" +
+                "FROM         GroupLocation";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
@@ -28717,7 +28708,7 @@ SELECT ReportGroupID, LocationName, RegionIDs, StationIDs, StationID, Range FROM
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_ReportGroupID, string Original_LocationName, int Original_StationID, int Original_Range) {
+        public virtual int Delete(int Original_ReportGroupID, string Original_LocationName, long Original_StationID, int Original_Range) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ReportGroupID));
             if ((Original_LocationName == null)) {
                 throw new global::System.ArgumentNullException("Original_LocationName");
@@ -28725,7 +28716,7 @@ SELECT ReportGroupID, LocationName, RegionIDs, StationIDs, StationID, Range FROM
             else {
                 this.Adapter.DeleteCommand.Parameters[1].Value = ((string)(Original_LocationName));
             }
-            this.Adapter.DeleteCommand.Parameters[2].Value = ((int)(Original_StationID));
+            this.Adapter.DeleteCommand.Parameters[2].Value = ((long)(Original_StationID));
             this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_Range));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -28746,7 +28737,7 @@ SELECT ReportGroupID, LocationName, RegionIDs, StationIDs, StationID, Range FROM
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int ReportGroupID, string LocationName, string RegionIDs, string StationIDs, int StationID, int Range) {
+        public virtual int Insert(int ReportGroupID, string LocationName, string RegionIDs, string StationIDs, long StationID, int Range) {
             this.Adapter.InsertCommand.Parameters[0].Value = ((int)(ReportGroupID));
             if ((LocationName == null)) {
                 throw new global::System.ArgumentNullException("LocationName");
@@ -28766,7 +28757,7 @@ SELECT ReportGroupID, LocationName, RegionIDs, StationIDs, StationID, Range FROM
             else {
                 this.Adapter.InsertCommand.Parameters[3].Value = ((string)(StationIDs));
             }
-            this.Adapter.InsertCommand.Parameters[4].Value = ((int)(StationID));
+            this.Adapter.InsertCommand.Parameters[4].Value = ((long)(StationID));
             this.Adapter.InsertCommand.Parameters[5].Value = ((int)(Range));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -28787,7 +28778,7 @@ SELECT ReportGroupID, LocationName, RegionIDs, StationIDs, StationID, Range FROM
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int ReportGroupID, string LocationName, string RegionIDs, string StationIDs, int StationID, int Range, int Original_ReportGroupID, string Original_LocationName, int Original_StationID, int Original_Range) {
+        public virtual int Update(int ReportGroupID, string LocationName, string RegionIDs, string StationIDs, long StationID, int Range, int Original_ReportGroupID, string Original_LocationName, long Original_StationID, int Original_Range) {
             this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(ReportGroupID));
             if ((LocationName == null)) {
                 throw new global::System.ArgumentNullException("LocationName");
@@ -28807,7 +28798,7 @@ SELECT ReportGroupID, LocationName, RegionIDs, StationIDs, StationID, Range FROM
             else {
                 this.Adapter.UpdateCommand.Parameters[3].Value = ((string)(StationIDs));
             }
-            this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(StationID));
+            this.Adapter.UpdateCommand.Parameters[4].Value = ((long)(StationID));
             this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(Range));
             this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(Original_ReportGroupID));
             if ((Original_LocationName == null)) {
@@ -28816,7 +28807,7 @@ SELECT ReportGroupID, LocationName, RegionIDs, StationIDs, StationID, Range FROM
             else {
                 this.Adapter.UpdateCommand.Parameters[7].Value = ((string)(Original_LocationName));
             }
-            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_StationID));
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((long)(Original_StationID));
             this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(Original_Range));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -28837,7 +28828,7 @@ SELECT ReportGroupID, LocationName, RegionIDs, StationIDs, StationID, Range FROM
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string RegionIDs, string StationIDs, int StationID, int Range, int Original_ReportGroupID, string Original_LocationName, int Original_StationID, int Original_Range) {
+        public virtual int Update(string RegionIDs, string StationIDs, long StationID, int Range, int Original_ReportGroupID, string Original_LocationName, long Original_StationID, int Original_Range) {
             return this.Update(Original_ReportGroupID, Original_LocationName, RegionIDs, StationIDs, StationID, Range, Original_ReportGroupID, Original_LocationName, Original_StationID, Original_Range);
         }
     }
@@ -28936,31 +28927,31 @@ SELECT ReportGroupID, LocationName, RegionIDs, StationIDs, StationID, Range FROM
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[Standings] WHERE (([toID] = @Original_toID) AND ([fromID] = @O" +
-                "riginal_fromID) AND ([standing] = @Original_standing))";
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [Standings] WHERE (([toID] = @Original_toID) AND ([fromID] = @Origina" +
+                "l_fromID) AND ([standing] = @Original_standing))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_toID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "toID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_fromID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "fromID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_toID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "toID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_fromID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "fromID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_standing", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 10, 8, "standing", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[Standings] ([toID], [fromID], [standing]) VALUES (@toID, @from" +
-                "ID, @standing);\r\nSELECT toID, fromID, standing FROM Standings WHERE (fromID = @f" +
-                "romID) AND (toID = @toID)";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [Standings] ([toID], [fromID], [standing]) VALUES (@toID, @fromID, @s" +
+                "tanding);\r\nSELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID)" +
+                " AND (toID = @toID)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@toID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "toID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@fromID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "fromID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@toID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "toID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@fromID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "fromID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@standing", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 10, 8, "standing", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[Standings] SET [toID] = @toID, [fromID] = @fromID, [standing] = @standing WHERE (([toID] = @Original_toID) AND ([fromID] = @Original_fromID) AND ([standing] = @Original_standing));
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [Standings] SET [toID] = @toID, [fromID] = @fromID, [standing] = @standing WHERE (([toID] = @Original_toID) AND ([fromID] = @Original_fromID) AND ([standing] = @Original_standing));
 SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID = @toID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@toID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "toID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@fromID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "fromID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@toID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "toID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@fromID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "fromID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@standing", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 10, 8, "standing", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_toID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "toID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_fromID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "fromID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_toID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "toID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_fromID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "fromID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_standing", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 10, 8, "standing", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
@@ -28975,22 +28966,22 @@ SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID 
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[3];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT toID, fromID, standing FROM dbo.Standings";
+            this._commandCollection[0].CommandText = "SELECT     toID, fromID, standing\r\nFROM         Standings";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.StandingsClearByIDs";
+            this._commandCollection[1].CommandText = "StandingsClearByIDs";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@toID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@fromID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@toID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@fromID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "dbo.StandingsGetByIDs";
+            this._commandCollection[2].CommandText = "StandingsGetByIDs";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@toID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@fromID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@toID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@fromID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -29018,16 +29009,16 @@ SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByIDs(EMMADataSet.StandingsDataTable dataTable, global::System.Nullable<int> toID, global::System.Nullable<int> fromID) {
+        public virtual int FillByIDs(EMMADataSet.StandingsDataTable dataTable, global::System.Nullable<long> toID, global::System.Nullable<long> fromID) {
             this.Adapter.SelectCommand = this.CommandCollection[2];
             if ((toID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(toID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(toID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((fromID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(fromID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(fromID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -29042,16 +29033,16 @@ SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.StandingsDataTable GetDataByIDs(global::System.Nullable<int> toID, global::System.Nullable<int> fromID) {
+        public virtual EMMADataSet.StandingsDataTable GetDataByIDs(global::System.Nullable<long> toID, global::System.Nullable<long> fromID) {
             this.Adapter.SelectCommand = this.CommandCollection[2];
             if ((toID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(toID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(toID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((fromID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(fromID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(fromID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -29089,9 +29080,9 @@ SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_toID, int Original_fromID, decimal Original_standing) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_toID));
-            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_fromID));
+        public virtual int Delete(long Original_toID, long Original_fromID, decimal Original_standing) {
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_toID));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((long)(Original_fromID));
             this.Adapter.DeleteCommand.Parameters[2].Value = ((decimal)(Original_standing));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -29112,9 +29103,9 @@ SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int toID, int fromID, decimal standing) {
-            this.Adapter.InsertCommand.Parameters[0].Value = ((int)(toID));
-            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(fromID));
+        public virtual int Insert(long toID, long fromID, decimal standing) {
+            this.Adapter.InsertCommand.Parameters[0].Value = ((long)(toID));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((long)(fromID));
             this.Adapter.InsertCommand.Parameters[2].Value = ((decimal)(standing));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -29135,12 +29126,12 @@ SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int toID, int fromID, decimal standing, int Original_toID, int Original_fromID, decimal Original_standing) {
-            this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(toID));
-            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(fromID));
+        public virtual int Update(long toID, long fromID, decimal standing, long Original_toID, long Original_fromID, decimal Original_standing) {
+            this.Adapter.UpdateCommand.Parameters[0].Value = ((long)(toID));
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((long)(fromID));
             this.Adapter.UpdateCommand.Parameters[2].Value = ((decimal)(standing));
-            this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(Original_toID));
-            this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(Original_fromID));
+            this.Adapter.UpdateCommand.Parameters[3].Value = ((long)(Original_toID));
+            this.Adapter.UpdateCommand.Parameters[4].Value = ((long)(Original_fromID));
             this.Adapter.UpdateCommand.Parameters[5].Value = ((decimal)(Original_standing));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -29161,22 +29152,22 @@ SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(decimal standing, int Original_toID, int Original_fromID, decimal Original_standing) {
+        public virtual int Update(decimal standing, long Original_toID, long Original_fromID, decimal Original_standing) {
             return this.Update(Original_toID, Original_fromID, standing, Original_toID, Original_fromID, Original_standing);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int ClearByIDs(global::System.Nullable<int> toID, global::System.Nullable<int> fromID) {
+        public virtual int ClearByIDs(global::System.Nullable<long> toID, global::System.Nullable<long> fromID) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[1];
             if ((toID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(toID.Value));
+                command.Parameters[1].Value = ((long)(toID.Value));
             }
             else {
                 command.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((fromID.HasValue == true)) {
-                command.Parameters[2].Value = ((int)(fromID.Value));
+                command.Parameters[2].Value = ((long)(fromID.Value));
             }
             else {
                 command.Parameters[2].Value = global::System.DBNull.Value;
@@ -29292,25 +29283,25 @@ SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID 
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[APICharSettings] WHERE (([CharID] = @Original_CharID))";
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [APICharSettings] WHERE (([CharID] = @Original_CharID))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CharID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[APICharSettings] ([CharID], [Settings]) VALUES (@CharID, @Sett" +
-                "ings);\r\nSELECT CharID, Settings FROM APICharSettings WHERE (CharID = @CharID)";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [APICharSettings] ([CharID], [Settings]) VALUES (@CharID, @Settings);" +
+                "\r\nSELECT CharID, Settings FROM APICharSettings WHERE (CharID = @CharID)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CharID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Settings", global::System.Data.SqlDbType.Xml, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Settings", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[APICharSettings] SET [CharID] = @CharID, [Settings] = @Settings WHE" +
-                "RE (([CharID] = @Original_CharID));\r\nSELECT CharID, Settings FROM APICharSetting" +
-                "s WHERE (CharID = @CharID)";
+            this._adapter.UpdateCommand.CommandText = "UPDATE [APICharSettings] SET [CharID] = @CharID, [Settings] = @Settings WHERE (([" +
+                "CharID] = @Original_CharID));\r\nSELECT CharID, Settings FROM APICharSettings WHER" +
+                "E (CharID = @CharID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CharID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Settings", global::System.Data.SqlDbType.Xml, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Settings", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CharID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -29324,14 +29315,14 @@ SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID 
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT CharID, Settings FROM dbo.APICharSettings";
+            this._commandCollection[0].CommandText = "SELECT     CharID, Settings\r\nFROM         APICharSettings";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.APICharSettingsGet";
+            this._commandCollection[1].CommandText = "APICharSettingsGet";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -29359,10 +29350,10 @@ SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByChar(EMMADataSet.APICharSettingsDataTable dataTable, global::System.Nullable<int> charID) {
+        public virtual int FillByChar(EMMADataSet.APICharSettingsDataTable dataTable, global::System.Nullable<long> charID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((charID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(charID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(charID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -29377,10 +29368,10 @@ SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.APICharSettingsDataTable GetDataByChar(global::System.Nullable<int> charID) {
+        public virtual EMMADataSet.APICharSettingsDataTable GetDataByChar(global::System.Nullable<long> charID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((charID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(charID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(charID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -29418,8 +29409,8 @@ SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_CharID) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_CharID));
+        public virtual int Delete(long Original_CharID) {
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_CharID));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -29439,8 +29430,8 @@ SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int CharID, object Settings) {
-            this.Adapter.InsertCommand.Parameters[0].Value = ((int)(CharID));
+        public virtual int Insert(long CharID, object Settings) {
+            this.Adapter.InsertCommand.Parameters[0].Value = ((long)(CharID));
             if ((Settings == null)) {
                 throw new global::System.ArgumentNullException("Settings");
             }
@@ -29466,15 +29457,15 @@ SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int CharID, object Settings, int Original_CharID) {
-            this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(CharID));
+        public virtual int Update(long CharID, object Settings, long Original_CharID) {
+            this.Adapter.UpdateCommand.Parameters[0].Value = ((long)(CharID));
             if ((Settings == null)) {
                 throw new global::System.ArgumentNullException("Settings");
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[1].Value = ((object)(Settings));
             }
-            this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(Original_CharID));
+            this.Adapter.UpdateCommand.Parameters[2].Value = ((long)(Original_CharID));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -29494,7 +29485,7 @@ SELECT toID, fromID, standing FROM Standings WHERE (fromID = @fromID) AND (toID 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(object Settings, int Original_CharID) {
+        public virtual int Update(object Settings, long Original_CharID) {
             return this.Update(Original_CharID, Settings, Original_CharID);
         }
     }
@@ -31618,34 +31609,33 @@ SELECT JournalID, DividendID FROM JournalDividendLink WHERE (DividendID = @Divid
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[AssetsHistory] WHERE (([OwnerID] = @Original_OwnerID) AND ([Co" +
-                "rp] = @Original_Corp) AND ([Date] = @Original_Date) AND ([Value] = @Original_Val" +
-                "ue))";
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [AssetsHistory] WHERE (([OwnerID] = @Original_OwnerID) AND ([Corp] = " +
+                "@Original_Corp) AND ([Date] = @Original_Date) AND ([Value] = @Original_Value))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Corp", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Corp", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Date", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Date", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Value", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 0, "Value", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[AssetsHistory] ([OwnerID], [Corp], [Date], [Value]) VALUES (@O" +
-                "wnerID, @Corp, @Date, @Value);\r\nSELECT OwnerID, Corp, Date, Value FROM AssetsHis" +
-                "tory WHERE (Corp = @Corp) AND (Date = @Date) AND (OwnerID = @OwnerID)";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [AssetsHistory] ([OwnerID], [Corp], [Date], [Value]) VALUES (@OwnerID" +
+                ", @Corp, @Date, @Value);\r\nSELECT OwnerID, Corp, Date, Value FROM AssetsHistory W" +
+                "HERE (Corp = @Corp) AND (Date = @Date) AND (OwnerID = @OwnerID)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Corp", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Corp", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Date", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Date", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Value", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 0, "Value", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[AssetsHistory] SET [OwnerID] = @OwnerID, [Corp] = @Corp, [Date] = @Date, [Value] = @Value WHERE (([OwnerID] = @Original_OwnerID) AND ([Corp] = @Original_Corp) AND ([Date] = @Original_Date) AND ([Value] = @Original_Value));
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [AssetsHistory] SET [OwnerID] = @OwnerID, [Corp] = @Corp, [Date] = @Date, [Value] = @Value WHERE (([OwnerID] = @Original_OwnerID) AND ([Corp] = @Original_Corp) AND ([Date] = @Original_Date) AND ([Value] = @Original_Value));
 SELECT OwnerID, Corp, Date, Value FROM AssetsHistory WHERE (Corp = @Corp) AND (Date = @Date) AND (OwnerID = @OwnerID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Corp", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Corp", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Date", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Date", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Value", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 0, "Value", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Corp", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Corp", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Date", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Date", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Value", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 0, "Value", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -31662,14 +31652,14 @@ SELECT OwnerID, Corp, Date, Value FROM AssetsHistory WHERE (Corp = @Corp) AND (D
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT OwnerID, Corp, Date, Value FROM dbo.AssetsHistory";
+            this._commandCollection[0].CommandText = "SELECT     OwnerID, Corp, Date, Value\r\nFROM         AssetsHistory";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.AssetsHistoryGetClosest";
+            this._commandCollection[1].CommandText = "AssetsHistoryGetClosest";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@datetime", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
@@ -31698,10 +31688,10 @@ SELECT OwnerID, Corp, Date, Value FROM AssetsHistory WHERE (Corp = @Corp) AND (D
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByClosest(EMMADataSet.AssetsHistoryDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<global::System.DateTime> datetime) {
+        public virtual int FillByClosest(EMMADataSet.AssetsHistoryDataTable dataTable, global::System.Nullable<long> ownerID, global::System.Nullable<global::System.DateTime> datetime) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -31722,10 +31712,10 @@ SELECT OwnerID, Corp, Date, Value FROM AssetsHistory WHERE (Corp = @Corp) AND (D
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.AssetsHistoryDataTable GetDataByClosest(global::System.Nullable<int> ownerID, global::System.Nullable<global::System.DateTime> datetime) {
+        public virtual EMMADataSet.AssetsHistoryDataTable GetDataByClosest(global::System.Nullable<long> ownerID, global::System.Nullable<global::System.DateTime> datetime) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -31769,8 +31759,8 @@ SELECT OwnerID, Corp, Date, Value FROM AssetsHistory WHERE (Corp = @Corp) AND (D
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_OwnerID, bool Original_Corp, System.DateTime Original_Date, decimal Original_Value) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_OwnerID));
+        public virtual int Delete(long Original_OwnerID, bool Original_Corp, System.DateTime Original_Date, decimal Original_Value) {
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_OwnerID));
             this.Adapter.DeleteCommand.Parameters[1].Value = ((bool)(Original_Corp));
             this.Adapter.DeleteCommand.Parameters[2].Value = ((System.DateTime)(Original_Date));
             this.Adapter.DeleteCommand.Parameters[3].Value = ((decimal)(Original_Value));
@@ -31793,8 +31783,8 @@ SELECT OwnerID, Corp, Date, Value FROM AssetsHistory WHERE (Corp = @Corp) AND (D
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int OwnerID, bool Corp, System.DateTime Date, decimal Value) {
-            this.Adapter.InsertCommand.Parameters[0].Value = ((int)(OwnerID));
+        public virtual int Insert(long OwnerID, bool Corp, System.DateTime Date, decimal Value) {
+            this.Adapter.InsertCommand.Parameters[0].Value = ((long)(OwnerID));
             this.Adapter.InsertCommand.Parameters[1].Value = ((bool)(Corp));
             this.Adapter.InsertCommand.Parameters[2].Value = ((System.DateTime)(Date));
             this.Adapter.InsertCommand.Parameters[3].Value = ((decimal)(Value));
@@ -31817,12 +31807,12 @@ SELECT OwnerID, Corp, Date, Value FROM AssetsHistory WHERE (Corp = @Corp) AND (D
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int OwnerID, bool Corp, System.DateTime Date, decimal Value, int Original_OwnerID, bool Original_Corp, System.DateTime Original_Date, decimal Original_Value) {
-            this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(OwnerID));
+        public virtual int Update(long OwnerID, bool Corp, System.DateTime Date, decimal Value, long Original_OwnerID, bool Original_Corp, System.DateTime Original_Date, decimal Original_Value) {
+            this.Adapter.UpdateCommand.Parameters[0].Value = ((long)(OwnerID));
             this.Adapter.UpdateCommand.Parameters[1].Value = ((bool)(Corp));
             this.Adapter.UpdateCommand.Parameters[2].Value = ((System.DateTime)(Date));
             this.Adapter.UpdateCommand.Parameters[3].Value = ((decimal)(Value));
-            this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(Original_OwnerID));
+            this.Adapter.UpdateCommand.Parameters[4].Value = ((long)(Original_OwnerID));
             this.Adapter.UpdateCommand.Parameters[5].Value = ((bool)(Original_Corp));
             this.Adapter.UpdateCommand.Parameters[6].Value = ((System.DateTime)(Original_Date));
             this.Adapter.UpdateCommand.Parameters[7].Value = ((decimal)(Original_Value));
@@ -31845,7 +31835,7 @@ SELECT OwnerID, Corp, Date, Value FROM AssetsHistory WHERE (Corp = @Corp) AND (D
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(decimal Value, int Original_OwnerID, bool Original_Corp, System.DateTime Original_Date, decimal Original_Value) {
+        public virtual int Update(decimal Value, long Original_OwnerID, bool Original_Corp, System.DateTime Original_Date, decimal Original_Value) {
             return this.Update(Original_OwnerID, Original_Corp, Original_Date, Value, Original_OwnerID, Original_Corp, Original_Date, Original_Value);
         }
     }
@@ -34572,39 +34562,39 @@ SELECT JobID, ItemID, JobDate, Quantity, EffectiveBuyPrice, EstSellPrice FROM Re
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[ReprocessJob] WHERE (([ID] = @Original_ID) AND ([JobDate] = @O" +
-                "riginal_JobDate) AND ([StationID] = @Original_StationID) AND ([GroupID] = @Origi" +
-                "nal_GroupID) AND ([OwnerID] = @Original_OwnerID))";
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [ReprocessJob] WHERE (([ID] = @Original_ID) AND ([JobDate] = @Origina" +
+                "l_JobDate) AND ([StationID] = @Original_StationID) AND ([GroupID] = @Original_Gr" +
+                "oupID) AND ([OwnerID] = @Original_OwnerID))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_JobDate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "JobDate", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_StationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_StationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_GroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "GroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[ReprocessJob] ([JobDate], [StationID], [GroupID], [OwnerID]) V" +
-                "ALUES (@JobDate, @StationID, @GroupID, @OwnerID);\r\nSELECT ID, JobDate, StationID" +
-                ", GroupID, OwnerID FROM ReprocessJob WHERE (ID = SCOPE_IDENTITY())";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [ReprocessJob] ([JobDate], [StationID], [GroupID], [OwnerID]) VALUES " +
+                "(@JobDate, @StationID, @GroupID, @OwnerID);\r\nSELECT ID, JobDate, StationID, Grou" +
+                "pID, OwnerID FROM ReprocessJob WHERE (ID = SCOPE_IDENTITY())";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@JobDate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "JobDate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@GroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "GroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[ReprocessJob] SET [JobDate] = @JobDate, [StationID] = @StationID, [GroupID] = @GroupID, [OwnerID] = @OwnerID WHERE (([ID] = @Original_ID) AND ([JobDate] = @Original_JobDate) AND ([StationID] = @Original_StationID) AND ([GroupID] = @Original_GroupID) AND ([OwnerID] = @Original_OwnerID));
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [ReprocessJob] SET [JobDate] = @JobDate, [StationID] = @StationID, [GroupID] = @GroupID, [OwnerID] = @OwnerID WHERE (([ID] = @Original_ID) AND ([JobDate] = @Original_JobDate) AND ([StationID] = @Original_StationID) AND ([GroupID] = @Original_GroupID) AND ([OwnerID] = @Original_OwnerID));
 SELECT ID, JobDate, StationID, GroupID, OwnerID FROM ReprocessJob WHERE (ID = @ID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@JobDate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "JobDate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@GroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "GroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_JobDate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "JobDate", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_StationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_StationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_GroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "GroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
@@ -34619,7 +34609,7 @@ SELECT ID, JobDate, StationID, GroupID, OwnerID FROM ReprocessJob WHERE (ID = @I
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[4];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ID, JobDate, StationID, GroupID, OwnerID FROM dbo.ReprocessJob";
+            this._commandCollection[0].CommandText = "SELECT     ID, JobDate, StationID, GroupID, OwnerID\r\nFROM         ReprocessJob";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
@@ -34639,9 +34629,9 @@ SELECT ID, JobDate, StationID, GroupID, OwnerID FROM ReprocessJob WHERE (ID = @I
             this._commandCollection[3].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@jobDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@groupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@newID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.InputOutput, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
@@ -34763,12 +34753,12 @@ SELECT ID, JobDate, StationID, GroupID, OwnerID FROM ReprocessJob WHERE (ID = @I
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_ID, System.DateTime Original_JobDate, int Original_StationID, int Original_GroupID, int Original_OwnerID) {
+        public virtual int Delete(int Original_ID, System.DateTime Original_JobDate, long Original_StationID, int Original_GroupID, long Original_OwnerID) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ID));
             this.Adapter.DeleteCommand.Parameters[1].Value = ((System.DateTime)(Original_JobDate));
-            this.Adapter.DeleteCommand.Parameters[2].Value = ((int)(Original_StationID));
+            this.Adapter.DeleteCommand.Parameters[2].Value = ((long)(Original_StationID));
             this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_GroupID));
-            this.Adapter.DeleteCommand.Parameters[4].Value = ((int)(Original_OwnerID));
+            this.Adapter.DeleteCommand.Parameters[4].Value = ((long)(Original_OwnerID));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -34788,11 +34778,11 @@ SELECT ID, JobDate, StationID, GroupID, OwnerID FROM ReprocessJob WHERE (ID = @I
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(System.DateTime JobDate, int StationID, int GroupID, int OwnerID) {
+        public virtual int Insert(System.DateTime JobDate, long StationID, int GroupID, long OwnerID) {
             this.Adapter.InsertCommand.Parameters[0].Value = ((System.DateTime)(JobDate));
-            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(StationID));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((long)(StationID));
             this.Adapter.InsertCommand.Parameters[2].Value = ((int)(GroupID));
-            this.Adapter.InsertCommand.Parameters[3].Value = ((int)(OwnerID));
+            this.Adapter.InsertCommand.Parameters[3].Value = ((long)(OwnerID));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -34812,16 +34802,16 @@ SELECT ID, JobDate, StationID, GroupID, OwnerID FROM ReprocessJob WHERE (ID = @I
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(System.DateTime JobDate, int StationID, int GroupID, int OwnerID, int Original_ID, System.DateTime Original_JobDate, int Original_StationID, int Original_GroupID, int Original_OwnerID, int ID) {
+        public virtual int Update(System.DateTime JobDate, long StationID, int GroupID, long OwnerID, int Original_ID, System.DateTime Original_JobDate, long Original_StationID, int Original_GroupID, long Original_OwnerID, int ID) {
             this.Adapter.UpdateCommand.Parameters[0].Value = ((System.DateTime)(JobDate));
-            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(StationID));
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((long)(StationID));
             this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(GroupID));
-            this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(OwnerID));
+            this.Adapter.UpdateCommand.Parameters[3].Value = ((long)(OwnerID));
             this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(Original_ID));
             this.Adapter.UpdateCommand.Parameters[5].Value = ((System.DateTime)(Original_JobDate));
-            this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(Original_StationID));
+            this.Adapter.UpdateCommand.Parameters[6].Value = ((long)(Original_StationID));
             this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(Original_GroupID));
-            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_OwnerID));
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((long)(Original_OwnerID));
             this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(ID));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -34842,13 +34832,13 @@ SELECT ID, JobDate, StationID, GroupID, OwnerID FROM ReprocessJob WHERE (ID = @I
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(System.DateTime JobDate, int StationID, int GroupID, int OwnerID, int Original_ID, System.DateTime Original_JobDate, int Original_StationID, int Original_GroupID, int Original_OwnerID) {
+        public virtual int Update(System.DateTime JobDate, long StationID, int GroupID, long OwnerID, int Original_ID, System.DateTime Original_JobDate, long Original_StationID, int Original_GroupID, long Original_OwnerID) {
             return this.Update(JobDate, StationID, GroupID, OwnerID, Original_ID, Original_JobDate, Original_StationID, Original_GroupID, Original_OwnerID, Original_ID);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int StoreNew(global::System.Nullable<global::System.DateTime> jobDate, global::System.Nullable<int> stationID, global::System.Nullable<int> groupID, global::System.Nullable<int> ownerID, ref global::System.Nullable<int> newID) {
+        public virtual int StoreNew(global::System.Nullable<global::System.DateTime> jobDate, global::System.Nullable<long> stationID, global::System.Nullable<int> groupID, global::System.Nullable<long> ownerID, ref global::System.Nullable<int> newID) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[3];
             if ((jobDate.HasValue == true)) {
                 command.Parameters[1].Value = ((System.DateTime)(jobDate.Value));
@@ -34857,7 +34847,7 @@ SELECT ID, JobDate, StationID, GroupID, OwnerID FROM ReprocessJob WHERE (ID = @I
                 command.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                command.Parameters[2].Value = ((int)(stationID.Value));
+                command.Parameters[2].Value = ((long)(stationID.Value));
             }
             else {
                 command.Parameters[2].Value = global::System.DBNull.Value;
@@ -34869,7 +34859,7 @@ SELECT ID, JobDate, StationID, GroupID, OwnerID FROM ReprocessJob WHERE (ID = @I
                 command.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((ownerID.HasValue == true)) {
-                command.Parameters[4].Value = ((int)(ownerID.Value));
+                command.Parameters[4].Value = ((long)(ownerID.Value));
             }
             else {
                 command.Parameters[4].Value = global::System.DBNull.Value;
@@ -36073,39 +36063,38 @@ SELECT CorpID, CorpName, Ticker, Description, EstimatedNAV, NAVTakenAt, ValuePer
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[BankAccount] WHERE (([AccountID] = @Original_AccountID) AND ([" +
-                "PublicCorpID] = @Original_PublicCorpID) AND ([ReportGroupID] = @Original_ReportG" +
-                "roupID) AND ([Balance] = @Original_Balance) AND ([OwnerID] = @Original_OwnerID))" +
-                "";
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [BankAccount] WHERE (([AccountID] = @Original_AccountID) AND ([Public" +
+                "CorpID] = @Original_PublicCorpID) AND ([ReportGroupID] = @Original_ReportGroupID" +
+                ") AND ([Balance] = @Original_Balance) AND ([OwnerID] = @Original_OwnerID))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AccountID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AccountID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_PublicCorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PublicCorpID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Balance", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Balance", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[BankAccount] ([PublicCorpID], [ReportGroupID], [Balance], [OwnerID]) VALUES (@PublicCorpID, @ReportGroupID, @Balance, @OwnerID);
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [BankAccount] ([PublicCorpID], [ReportGroupID], [Balance], [OwnerID]) VALUES (@PublicCorpID, @ReportGroupID, @Balance, @OwnerID);
 SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount WHERE (AccountID = SCOPE_IDENTITY())";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PublicCorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PublicCorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Balance", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Balance", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[BankAccount] SET [PublicCorpID] = @PublicCorpID, [ReportGroupID] = @ReportGroupID, [Balance] = @Balance, [OwnerID] = @OwnerID WHERE (([AccountID] = @Original_AccountID) AND ([PublicCorpID] = @Original_PublicCorpID) AND ([ReportGroupID] = @Original_ReportGroupID) AND ([Balance] = @Original_Balance) AND ([OwnerID] = @Original_OwnerID));
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [BankAccount] SET [PublicCorpID] = @PublicCorpID, [ReportGroupID] = @ReportGroupID, [Balance] = @Balance, [OwnerID] = @OwnerID WHERE (([AccountID] = @Original_AccountID) AND ([PublicCorpID] = @Original_PublicCorpID) AND ([ReportGroupID] = @Original_ReportGroupID) AND ([Balance] = @Original_Balance) AND ([OwnerID] = @Original_OwnerID));
 SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount WHERE (AccountID = @AccountID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PublicCorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PublicCorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Balance", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Balance", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AccountID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AccountID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_PublicCorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PublicCorpID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Balance", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Balance", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AccountID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "AccountID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
@@ -36120,17 +36109,17 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[3];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM dbo.BankAcco" +
-                "unt";
+            this._commandCollection[0].CommandText = "SELECT     AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID\r\nFROM        " +
+                " BankAccount";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.BankAccountGetByID";
+            this._commandCollection[1].CommandText = "BankAccountGetByID";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@publicCorpID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@reportGroupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
             this._commandCollection[2].CommandText = "dbo.BankAccountGetByAccountID";
@@ -36164,7 +36153,7 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByCorpAndOwner(EMMADataSet.BankAccountDataTable dataTable, global::System.Nullable<int> publicCorpID, global::System.Nullable<int> reportGroupID, global::System.Nullable<int> ownerID) {
+        public virtual int FillByCorpAndOwner(EMMADataSet.BankAccountDataTable dataTable, global::System.Nullable<int> publicCorpID, global::System.Nullable<int> reportGroupID, global::System.Nullable<long> ownerID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((publicCorpID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(publicCorpID.Value));
@@ -36179,7 +36168,7 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -36194,7 +36183,7 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.BankAccountDataTable GetDataByCorpAndOwner(global::System.Nullable<int> publicCorpID, global::System.Nullable<int> reportGroupID, global::System.Nullable<int> ownerID) {
+        public virtual EMMADataSet.BankAccountDataTable GetDataByCorpAndOwner(global::System.Nullable<int> publicCorpID, global::System.Nullable<int> reportGroupID, global::System.Nullable<long> ownerID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((publicCorpID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(publicCorpID.Value));
@@ -36209,7 +36198,7 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -36281,12 +36270,12 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_AccountID, int Original_PublicCorpID, int Original_ReportGroupID, decimal Original_Balance, int Original_OwnerID) {
+        public virtual int Delete(int Original_AccountID, int Original_PublicCorpID, int Original_ReportGroupID, decimal Original_Balance, long Original_OwnerID) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_AccountID));
             this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_PublicCorpID));
             this.Adapter.DeleteCommand.Parameters[2].Value = ((int)(Original_ReportGroupID));
             this.Adapter.DeleteCommand.Parameters[3].Value = ((decimal)(Original_Balance));
-            this.Adapter.DeleteCommand.Parameters[4].Value = ((int)(Original_OwnerID));
+            this.Adapter.DeleteCommand.Parameters[4].Value = ((long)(Original_OwnerID));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -36306,11 +36295,11 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int PublicCorpID, int ReportGroupID, decimal Balance, int OwnerID) {
+        public virtual int Insert(int PublicCorpID, int ReportGroupID, decimal Balance, long OwnerID) {
             this.Adapter.InsertCommand.Parameters[0].Value = ((int)(PublicCorpID));
             this.Adapter.InsertCommand.Parameters[1].Value = ((int)(ReportGroupID));
             this.Adapter.InsertCommand.Parameters[2].Value = ((decimal)(Balance));
-            this.Adapter.InsertCommand.Parameters[3].Value = ((int)(OwnerID));
+            this.Adapter.InsertCommand.Parameters[3].Value = ((long)(OwnerID));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -36330,16 +36319,16 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int PublicCorpID, int ReportGroupID, decimal Balance, int OwnerID, int Original_AccountID, int Original_PublicCorpID, int Original_ReportGroupID, decimal Original_Balance, int Original_OwnerID, int AccountID) {
+        public virtual int Update(int PublicCorpID, int ReportGroupID, decimal Balance, long OwnerID, int Original_AccountID, int Original_PublicCorpID, int Original_ReportGroupID, decimal Original_Balance, long Original_OwnerID, int AccountID) {
             this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(PublicCorpID));
             this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(ReportGroupID));
             this.Adapter.UpdateCommand.Parameters[2].Value = ((decimal)(Balance));
-            this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(OwnerID));
+            this.Adapter.UpdateCommand.Parameters[3].Value = ((long)(OwnerID));
             this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(Original_AccountID));
             this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(Original_PublicCorpID));
             this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(Original_ReportGroupID));
             this.Adapter.UpdateCommand.Parameters[7].Value = ((decimal)(Original_Balance));
-            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_OwnerID));
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((long)(Original_OwnerID));
             this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(AccountID));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -36360,7 +36349,7 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int PublicCorpID, int ReportGroupID, decimal Balance, int OwnerID, int Original_AccountID, int Original_PublicCorpID, int Original_ReportGroupID, decimal Original_Balance, int Original_OwnerID) {
+        public virtual int Update(int PublicCorpID, int ReportGroupID, decimal Balance, long OwnerID, int Original_AccountID, int Original_PublicCorpID, int Original_ReportGroupID, decimal Original_Balance, long Original_OwnerID) {
             return this.Update(PublicCorpID, ReportGroupID, Balance, OwnerID, Original_AccountID, Original_PublicCorpID, Original_ReportGroupID, Original_Balance, Original_OwnerID, Original_AccountID);
         }
     }
@@ -36787,50 +36776,50 @@ SELECT AccountID, PublicCorpID, ReportGroupID, Balance, OwnerID FROM BankAccount
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[Contracts] WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([Status] = @Original_Status) AND ([PickupStationID] = @Original_PickupStationID) AND ([DestinationStationID] = @Original_DestinationStationID) AND ([Collateral] = @Original_Collateral) AND ([Reward] = @Original_Reward) AND ([DateTime] = @Original_DateTime) AND ([Type] = @Original_Type))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [Contracts] WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([Status] = @Original_Status) AND ([PickupStationID] = @Original_PickupStationID) AND ([DestinationStationID] = @Original_DestinationStationID) AND ([Collateral] = @Original_Collateral) AND ([Reward] = @Original_Reward) AND ([DateTime] = @Original_DateTime) AND ([Type] = @Original_Type))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Status", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Status", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_PickupStationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PickupStationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_DestinationStationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "DestinationStationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_PickupStationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PickupStationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_DestinationStationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "DestinationStationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Collateral", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Collateral", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Reward", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Reward", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_DateTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "DateTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Type", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Type", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[Contracts] ([ID], [OwnerID], [Status], [PickupStationID], [DestinationStationID], [Collateral], [Reward], [DateTime], [Type]) VALUES (@ID, @OwnerID, @Status, @PickupStationID, @DestinationStationID, @Collateral, @Reward, @DateTime, @Type);
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [Contracts] ([ID], [OwnerID], [Status], [PickupStationID], [DestinationStationID], [Collateral], [Reward], [DateTime], [Type]) VALUES (@ID, @OwnerID, @Status, @PickupStationID, @DestinationStationID, @Collateral, @Reward, @DateTime, @Type);
 SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, Reward, DateTime, Type FROM Contracts WHERE (ID = @ID)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Status", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Status", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PickupStationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PickupStationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DestinationStationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "DestinationStationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PickupStationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PickupStationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DestinationStationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "DestinationStationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Collateral", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Collateral", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Reward", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Reward", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DateTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "DateTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Type", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Type", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[Contracts] SET [ID] = @ID, [OwnerID] = @OwnerID, [Status] = @Status, [PickupStationID] = @PickupStationID, [DestinationStationID] = @DestinationStationID, [Collateral] = @Collateral, [Reward] = @Reward, [DateTime] = @DateTime, [Type] = @Type WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([Status] = @Original_Status) AND ([PickupStationID] = @Original_PickupStationID) AND ([DestinationStationID] = @Original_DestinationStationID) AND ([Collateral] = @Original_Collateral) AND ([Reward] = @Original_Reward) AND ([DateTime] = @Original_DateTime) AND ([Type] = @Original_Type));
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [Contracts] SET [ID] = @ID, [OwnerID] = @OwnerID, [Status] = @Status, [PickupStationID] = @PickupStationID, [DestinationStationID] = @DestinationStationID, [Collateral] = @Collateral, [Reward] = @Reward, [DateTime] = @DateTime, [Type] = @Type WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([Status] = @Original_Status) AND ([PickupStationID] = @Original_PickupStationID) AND ([DestinationStationID] = @Original_DestinationStationID) AND ([Collateral] = @Original_Collateral) AND ([Reward] = @Original_Reward) AND ([DateTime] = @Original_DateTime) AND ([Type] = @Original_Type));
 SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, Reward, DateTime, Type FROM Contracts WHERE (ID = @ID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Status", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Status", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PickupStationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PickupStationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DestinationStationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "DestinationStationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PickupStationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PickupStationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DestinationStationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "DestinationStationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Collateral", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Collateral", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Reward", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Reward", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DateTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "DateTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Type", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Type", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Status", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Status", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_PickupStationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PickupStationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_DestinationStationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "DestinationStationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_PickupStationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PickupStationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_DestinationStationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "DestinationStationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Collateral", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Collateral", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Reward", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Reward", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_DateTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "DateTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -36848,8 +36837,8 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[6];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, Re" +
-                "ward, DateTime, Type FROM dbo.Contracts";
+            this._commandCollection[0].CommandText = "SELECT     ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral" +
+                ", Reward, DateTime, Type\r\nFROM         Contracts";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
@@ -36859,13 +36848,13 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@contractID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "dbo.ContractsNew";
+            this._commandCollection[2].CommandText = "ContractsNew";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@pickupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@destID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@pickupID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@destID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@collateral", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@reward", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@datetime", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -36877,8 +36866,8 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
             this._commandCollection[3].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@pickupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@destID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@pickupID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@destID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@type", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4] = new global::System.Data.SqlClient.SqlCommand();
@@ -36893,7 +36882,7 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
             this._commandCollection[5].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@destinationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@destinationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@minDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@type", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
@@ -36923,7 +36912,7 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByAny(EMMADataSet.ContractsDataTable dataTable, string ownerIDs, global::System.Nullable<int> pickupID, global::System.Nullable<int> destID, global::System.Nullable<short> status, global::System.Nullable<short> type) {
+        public virtual int FillByAny(EMMADataSet.ContractsDataTable dataTable, string ownerIDs, global::System.Nullable<long> pickupID, global::System.Nullable<long> destID, global::System.Nullable<short> status, global::System.Nullable<short> type) {
             this.Adapter.SelectCommand = this.CommandCollection[3];
             if ((ownerIDs == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -36932,13 +36921,13 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
                 this.Adapter.SelectCommand.Parameters[1].Value = ((string)(ownerIDs));
             }
             if ((pickupID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(pickupID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(pickupID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((destID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(destID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(destID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -36965,7 +36954,7 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.ContractsDataTable GetDataByAny(string ownerIDs, global::System.Nullable<int> pickupID, global::System.Nullable<int> destID, global::System.Nullable<short> status, global::System.Nullable<short> type) {
+        public virtual EMMADataSet.ContractsDataTable GetDataByAny(string ownerIDs, global::System.Nullable<long> pickupID, global::System.Nullable<long> destID, global::System.Nullable<short> status, global::System.Nullable<short> type) {
             this.Adapter.SelectCommand = this.CommandCollection[3];
             if ((ownerIDs == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -36974,13 +36963,13 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
                 this.Adapter.SelectCommand.Parameters[1].Value = ((string)(ownerIDs));
             }
             if ((pickupID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(pickupID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(pickupID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((destID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(destID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(destID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -37039,7 +37028,7 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByItem(EMMADataSet.ContractsDataTable dataTable, global::System.Nullable<int> itemID, global::System.Nullable<int> destinationID, global::System.Nullable<global::System.DateTime> minDate, global::System.Nullable<short> type) {
+        public virtual int FillByItem(EMMADataSet.ContractsDataTable dataTable, global::System.Nullable<int> itemID, global::System.Nullable<long> destinationID, global::System.Nullable<global::System.DateTime> minDate, global::System.Nullable<short> type) {
             this.Adapter.SelectCommand = this.CommandCollection[5];
             if ((itemID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(itemID.Value));
@@ -37048,7 +37037,7 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((destinationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(destinationID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(destinationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -37075,7 +37064,7 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.ContractsDataTable GetDataByItem(global::System.Nullable<int> itemID, global::System.Nullable<int> destinationID, global::System.Nullable<global::System.DateTime> minDate, global::System.Nullable<short> type) {
+        public virtual EMMADataSet.ContractsDataTable GetDataByItem(global::System.Nullable<int> itemID, global::System.Nullable<long> destinationID, global::System.Nullable<global::System.DateTime> minDate, global::System.Nullable<short> type) {
             this.Adapter.SelectCommand = this.CommandCollection[5];
             if ((itemID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(itemID.Value));
@@ -37084,7 +37073,7 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((destinationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(destinationID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(destinationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -37134,12 +37123,12 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(long Original_ID, int Original_OwnerID, short Original_Status, int Original_PickupStationID, int Original_DestinationStationID, decimal Original_Collateral, decimal Original_Reward, System.DateTime Original_DateTime, short Original_Type) {
+        public virtual int Delete(long Original_ID, long Original_OwnerID, short Original_Status, long Original_PickupStationID, long Original_DestinationStationID, decimal Original_Collateral, decimal Original_Reward, System.DateTime Original_DateTime, short Original_Type) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_ID));
-            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_OwnerID));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((long)(Original_OwnerID));
             this.Adapter.DeleteCommand.Parameters[2].Value = ((short)(Original_Status));
-            this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_PickupStationID));
-            this.Adapter.DeleteCommand.Parameters[4].Value = ((int)(Original_DestinationStationID));
+            this.Adapter.DeleteCommand.Parameters[3].Value = ((long)(Original_PickupStationID));
+            this.Adapter.DeleteCommand.Parameters[4].Value = ((long)(Original_DestinationStationID));
             this.Adapter.DeleteCommand.Parameters[5].Value = ((decimal)(Original_Collateral));
             this.Adapter.DeleteCommand.Parameters[6].Value = ((decimal)(Original_Reward));
             this.Adapter.DeleteCommand.Parameters[7].Value = ((System.DateTime)(Original_DateTime));
@@ -37163,12 +37152,12 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(long ID, int OwnerID, short Status, int PickupStationID, int DestinationStationID, decimal Collateral, decimal Reward, System.DateTime DateTime, short Type) {
+        public virtual int Insert(long ID, long OwnerID, short Status, long PickupStationID, long DestinationStationID, decimal Collateral, decimal Reward, System.DateTime DateTime, short Type) {
             this.Adapter.InsertCommand.Parameters[0].Value = ((long)(ID));
-            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(OwnerID));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((long)(OwnerID));
             this.Adapter.InsertCommand.Parameters[2].Value = ((short)(Status));
-            this.Adapter.InsertCommand.Parameters[3].Value = ((int)(PickupStationID));
-            this.Adapter.InsertCommand.Parameters[4].Value = ((int)(DestinationStationID));
+            this.Adapter.InsertCommand.Parameters[3].Value = ((long)(PickupStationID));
+            this.Adapter.InsertCommand.Parameters[4].Value = ((long)(DestinationStationID));
             this.Adapter.InsertCommand.Parameters[5].Value = ((decimal)(Collateral));
             this.Adapter.InsertCommand.Parameters[6].Value = ((decimal)(Reward));
             this.Adapter.InsertCommand.Parameters[7].Value = ((System.DateTime)(DateTime));
@@ -37194,37 +37183,37 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
         public virtual int Update(
                     long ID, 
-                    int OwnerID, 
+                    long OwnerID, 
                     short Status, 
-                    int PickupStationID, 
-                    int DestinationStationID, 
+                    long PickupStationID, 
+                    long DestinationStationID, 
                     decimal Collateral, 
                     decimal Reward, 
                     System.DateTime DateTime, 
                     short Type, 
                     long Original_ID, 
-                    int Original_OwnerID, 
+                    long Original_OwnerID, 
                     short Original_Status, 
-                    int Original_PickupStationID, 
-                    int Original_DestinationStationID, 
+                    long Original_PickupStationID, 
+                    long Original_DestinationStationID, 
                     decimal Original_Collateral, 
                     decimal Original_Reward, 
                     System.DateTime Original_DateTime, 
                     short Original_Type) {
             this.Adapter.UpdateCommand.Parameters[0].Value = ((long)(ID));
-            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(OwnerID));
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((long)(OwnerID));
             this.Adapter.UpdateCommand.Parameters[2].Value = ((short)(Status));
-            this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(PickupStationID));
-            this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(DestinationStationID));
+            this.Adapter.UpdateCommand.Parameters[3].Value = ((long)(PickupStationID));
+            this.Adapter.UpdateCommand.Parameters[4].Value = ((long)(DestinationStationID));
             this.Adapter.UpdateCommand.Parameters[5].Value = ((decimal)(Collateral));
             this.Adapter.UpdateCommand.Parameters[6].Value = ((decimal)(Reward));
             this.Adapter.UpdateCommand.Parameters[7].Value = ((System.DateTime)(DateTime));
             this.Adapter.UpdateCommand.Parameters[8].Value = ((short)(Type));
             this.Adapter.UpdateCommand.Parameters[9].Value = ((long)(Original_ID));
-            this.Adapter.UpdateCommand.Parameters[10].Value = ((int)(Original_OwnerID));
+            this.Adapter.UpdateCommand.Parameters[10].Value = ((long)(Original_OwnerID));
             this.Adapter.UpdateCommand.Parameters[11].Value = ((short)(Original_Status));
-            this.Adapter.UpdateCommand.Parameters[12].Value = ((int)(Original_PickupStationID));
-            this.Adapter.UpdateCommand.Parameters[13].Value = ((int)(Original_DestinationStationID));
+            this.Adapter.UpdateCommand.Parameters[12].Value = ((long)(Original_PickupStationID));
+            this.Adapter.UpdateCommand.Parameters[13].Value = ((long)(Original_DestinationStationID));
             this.Adapter.UpdateCommand.Parameters[14].Value = ((decimal)(Original_Collateral));
             this.Adapter.UpdateCommand.Parameters[15].Value = ((decimal)(Original_Reward));
             this.Adapter.UpdateCommand.Parameters[16].Value = ((System.DateTime)(Original_DateTime));
@@ -37249,19 +37238,19 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
         public virtual int Update(
-                    int OwnerID, 
+                    long OwnerID, 
                     short Status, 
-                    int PickupStationID, 
-                    int DestinationStationID, 
+                    long PickupStationID, 
+                    long DestinationStationID, 
                     decimal Collateral, 
                     decimal Reward, 
                     System.DateTime DateTime, 
                     short Type, 
                     long Original_ID, 
-                    int Original_OwnerID, 
+                    long Original_OwnerID, 
                     short Original_Status, 
-                    int Original_PickupStationID, 
-                    int Original_DestinationStationID, 
+                    long Original_PickupStationID, 
+                    long Original_DestinationStationID, 
                     decimal Original_Collateral, 
                     decimal Original_Reward, 
                     System.DateTime Original_DateTime, 
@@ -37298,10 +37287,10 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int CreateNew(global::System.Nullable<int> ownerID, global::System.Nullable<int> status, global::System.Nullable<int> pickupID, global::System.Nullable<int> destID, global::System.Nullable<decimal> collateral, global::System.Nullable<decimal> reward, global::System.Nullable<global::System.DateTime> datetime, global::System.Nullable<short> type, ref global::System.Nullable<long> newID) {
+        public virtual int CreateNew(global::System.Nullable<long> ownerID, global::System.Nullable<int> status, global::System.Nullable<long> pickupID, global::System.Nullable<long> destID, global::System.Nullable<decimal> collateral, global::System.Nullable<decimal> reward, global::System.Nullable<global::System.DateTime> datetime, global::System.Nullable<short> type, ref global::System.Nullable<long> newID) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[2];
             if ((ownerID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(ownerID.Value));
+                command.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 command.Parameters[1].Value = global::System.DBNull.Value;
@@ -37313,13 +37302,13 @@ SELECT ID, OwnerID, Status, PickupStationID, DestinationStationID, Collateral, R
                 command.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((pickupID.HasValue == true)) {
-                command.Parameters[3].Value = ((int)(pickupID.Value));
+                command.Parameters[3].Value = ((long)(pickupID.Value));
             }
             else {
                 command.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((destID.HasValue == true)) {
-                command.Parameters[4].Value = ((int)(destID.Value));
+                command.Parameters[4].Value = ((long)(destID.Value));
             }
             else {
                 command.Parameters[4].Value = global::System.DBNull.Value;
@@ -37928,11 +37917,11 @@ SELECT ContractID, ItemID, Quantity, BuyPrice, SellPrice, DateTime, ForcePrice, 
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[ItemValues] WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([ItemID] = @Original_ItemID) AND ([RegionID] = @Original_RegionID) AND ([DefaultSellPrice] = @Original_DefaultSellPrice) AND ([CurrentSellPrice] = @Original_CurrentSellPrice) AND ([LastSellPriceCalc] = @Original_LastSellPriceCalc) AND ([CurrentBuyPrice] = @Original_CurrentBuyPrice) AND ([LastBuyPriceCalc] = @Original_LastBuyPriceCalc) AND ([DefaultBuyPrice] = @Original_DefaultBuyPrice) AND ([UseReprocessVal] = @Original_UseReprocessVal) AND ([ForceDefaultSellPrice] = @Original_ForceDefaultSellPrice) AND ([ForceDefaultBuyPrice] = @Original_ForceDefaultBuyPrice))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [ItemValues] WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([ItemID] = @Original_ItemID) AND ([RegionID] = @Original_RegionID) AND ([DefaultSellPrice] = @Original_DefaultSellPrice) AND ([CurrentSellPrice] = @Original_CurrentSellPrice) AND ([LastSellPriceCalc] = @Original_LastSellPriceCalc) AND ([CurrentBuyPrice] = @Original_CurrentBuyPrice) AND ([LastBuyPriceCalc] = @Original_LastBuyPriceCalc) AND ([DefaultBuyPrice] = @Original_DefaultBuyPrice) AND ([UseReprocessVal] = @Original_UseReprocessVal) AND ([ForceDefaultSellPrice] = @Original_ForceDefaultSellPrice) AND ([ForceDefaultBuyPrice] = @Original_ForceDefaultBuyPrice))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RegionID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RegionID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RegionID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RegionID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_DefaultSellPrice", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "DefaultSellPrice", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CurrentSellPrice", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "CurrentSellPrice", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LastSellPriceCalc", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastSellPriceCalc", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -37944,12 +37933,12 @@ SELECT ContractID, ItemID, Quantity, BuyPrice, SellPrice, DateTime, ForcePrice, 
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ForceDefaultBuyPrice", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ForceDefaultBuyPrice", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[ItemValues] ([ReportGroupID], [ItemID], [RegionID], [DefaultSellPrice], [CurrentSellPrice], [LastSellPriceCalc], [CurrentBuyPrice], [LastBuyPriceCalc], [DefaultBuyPrice], [UseReprocessVal], [ForceDefaultSellPrice], [ForceDefaultBuyPrice]) VALUES (@ReportGroupID, @ItemID, @RegionID, @DefaultSellPrice, @CurrentSellPrice, @LastSellPriceCalc, @CurrentBuyPrice, @LastBuyPriceCalc, @DefaultBuyPrice, @UseReprocessVal, @ForceDefaultSellPrice, @ForceDefaultBuyPrice);
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [ItemValues] ([ReportGroupID], [ItemID], [RegionID], [DefaultSellPrice], [CurrentSellPrice], [LastSellPriceCalc], [CurrentBuyPrice], [LastBuyPriceCalc], [DefaultBuyPrice], [UseReprocessVal], [ForceDefaultSellPrice], [ForceDefaultBuyPrice]) VALUES (@ReportGroupID, @ItemID, @RegionID, @DefaultSellPrice, @CurrentSellPrice, @LastSellPriceCalc, @CurrentBuyPrice, @LastBuyPriceCalc, @DefaultBuyPrice, @UseReprocessVal, @ForceDefaultSellPrice, @ForceDefaultBuyPrice);
 SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, LastSellPriceCalc, CurrentBuyPrice, LastBuyPriceCalc, DefaultBuyPrice, UseReprocessVal, ForceDefaultSellPrice, ForceDefaultBuyPrice FROM ItemValues WHERE (ItemID = @ItemID) AND (RegionID = @RegionID) AND (ReportGroupID = @ReportGroupID)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RegionID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RegionID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RegionID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RegionID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DefaultSellPrice", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "DefaultSellPrice", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CurrentSellPrice", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "CurrentSellPrice", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastSellPriceCalc", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastSellPriceCalc", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -37961,12 +37950,12 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ForceDefaultBuyPrice", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ForceDefaultBuyPrice", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[ItemValues] SET [ReportGroupID] = @ReportGroupID, [ItemID] = @ItemID, [RegionID] = @RegionID, [DefaultSellPrice] = @DefaultSellPrice, [CurrentSellPrice] = @CurrentSellPrice, [LastSellPriceCalc] = @LastSellPriceCalc, [CurrentBuyPrice] = @CurrentBuyPrice, [LastBuyPriceCalc] = @LastBuyPriceCalc, [DefaultBuyPrice] = @DefaultBuyPrice, [UseReprocessVal] = @UseReprocessVal, [ForceDefaultSellPrice] = @ForceDefaultSellPrice, [ForceDefaultBuyPrice] = @ForceDefaultBuyPrice WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([ItemID] = @Original_ItemID) AND ([RegionID] = @Original_RegionID) AND ([DefaultSellPrice] = @Original_DefaultSellPrice) AND ([CurrentSellPrice] = @Original_CurrentSellPrice) AND ([LastSellPriceCalc] = @Original_LastSellPriceCalc) AND ([CurrentBuyPrice] = @Original_CurrentBuyPrice) AND ([LastBuyPriceCalc] = @Original_LastBuyPriceCalc) AND ([DefaultBuyPrice] = @Original_DefaultBuyPrice) AND ([UseReprocessVal] = @Original_UseReprocessVal) AND ([ForceDefaultSellPrice] = @Original_ForceDefaultSellPrice) AND ([ForceDefaultBuyPrice] = @Original_ForceDefaultBuyPrice));
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [ItemValues] SET [ReportGroupID] = @ReportGroupID, [ItemID] = @ItemID, [RegionID] = @RegionID, [DefaultSellPrice] = @DefaultSellPrice, [CurrentSellPrice] = @CurrentSellPrice, [LastSellPriceCalc] = @LastSellPriceCalc, [CurrentBuyPrice] = @CurrentBuyPrice, [LastBuyPriceCalc] = @LastBuyPriceCalc, [DefaultBuyPrice] = @DefaultBuyPrice, [UseReprocessVal] = @UseReprocessVal, [ForceDefaultSellPrice] = @ForceDefaultSellPrice, [ForceDefaultBuyPrice] = @ForceDefaultBuyPrice WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([ItemID] = @Original_ItemID) AND ([RegionID] = @Original_RegionID) AND ([DefaultSellPrice] = @Original_DefaultSellPrice) AND ([CurrentSellPrice] = @Original_CurrentSellPrice) AND ([LastSellPriceCalc] = @Original_LastSellPriceCalc) AND ([CurrentBuyPrice] = @Original_CurrentBuyPrice) AND ([LastBuyPriceCalc] = @Original_LastBuyPriceCalc) AND ([DefaultBuyPrice] = @Original_DefaultBuyPrice) AND ([UseReprocessVal] = @Original_UseReprocessVal) AND ([ForceDefaultSellPrice] = @Original_ForceDefaultSellPrice) AND ([ForceDefaultBuyPrice] = @Original_ForceDefaultBuyPrice));
 SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, LastSellPriceCalc, CurrentBuyPrice, LastBuyPriceCalc, DefaultBuyPrice, UseReprocessVal, ForceDefaultSellPrice, ForceDefaultBuyPrice FROM ItemValues WHERE (ItemID = @ItemID) AND (RegionID = @RegionID) AND (ReportGroupID = @ReportGroupID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RegionID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RegionID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RegionID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RegionID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DefaultSellPrice", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "DefaultSellPrice", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CurrentSellPrice", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "CurrentSellPrice", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LastSellPriceCalc", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastSellPriceCalc", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -37978,7 +37967,7 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ForceDefaultBuyPrice", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ForceDefaultBuyPrice", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RegionID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RegionID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RegionID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RegionID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_DefaultSellPrice", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "DefaultSellPrice", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CurrentSellPrice", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "CurrentSellPrice", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LastSellPriceCalc", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LastSellPriceCalc", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -38001,9 +37990,9 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[5];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, LastS" +
-                "ellPriceCalc, CurrentBuyPrice, LastBuyPriceCalc, DefaultBuyPrice, UseReprocessVa" +
-                "l, ForceDefaultSellPrice, ForceDefaultBuyPrice FROM dbo.ItemValues";
+            this._commandCollection[0].CommandText = @"SELECT     ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, LastSellPriceCalc, CurrentBuyPrice, LastBuyPriceCalc, DefaultBuyPrice, 
+                      UseReprocessVal, ForceDefaultSellPrice, ForceDefaultBuyPrice
+FROM         ItemValues";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
@@ -38013,20 +38002,20 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@reportGroupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "dbo.ItemValueGetData";
+            this._commandCollection[2].CommandText = "ItemValueGetData";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@reportGroupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[3].Connection = this.Connection;
-            this._commandCollection[3].CommandText = "dbo.ItemValueGet";
+            this._commandCollection[3].CommandText = "ItemValueGet";
             this._commandCollection[3].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@valueDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@reportGroupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@buyPrice", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@webPrice", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -38034,12 +38023,12 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@trueDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.InputOutput, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[4].Connection = this.Connection;
-            this._commandCollection[4].CommandText = "dbo.ItemValueSet";
+            this._commandCollection[4].CommandText = "ItemValueSet";
             this._commandCollection[4].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@valueDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@reportGroupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@buyPrice", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@webPrice", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -38071,7 +38060,7 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByID(EMMADataSet.ItemValuesDataTable dataTable, global::System.Nullable<int> reportGroupID, global::System.Nullable<int> regionID, global::System.Nullable<int> itemID) {
+        public virtual int FillByID(EMMADataSet.ItemValuesDataTable dataTable, global::System.Nullable<int> reportGroupID, global::System.Nullable<long> regionID, global::System.Nullable<int> itemID) {
             this.Adapter.SelectCommand = this.CommandCollection[2];
             if ((reportGroupID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(reportGroupID.Value));
@@ -38080,7 +38069,7 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(regionID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(regionID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -38101,7 +38090,7 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.ItemValuesDataTable GetDataByID(global::System.Nullable<int> reportGroupID, global::System.Nullable<int> regionID, global::System.Nullable<int> itemID) {
+        public virtual EMMADataSet.ItemValuesDataTable GetDataByID(global::System.Nullable<int> reportGroupID, global::System.Nullable<long> regionID, global::System.Nullable<int> itemID) {
             this.Adapter.SelectCommand = this.CommandCollection[2];
             if ((reportGroupID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(reportGroupID.Value));
@@ -38110,7 +38099,7 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(regionID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(regionID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -38154,10 +38143,10 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_ReportGroupID, int Original_ItemID, int Original_RegionID, decimal Original_DefaultSellPrice, decimal Original_CurrentSellPrice, System.DateTime Original_LastSellPriceCalc, decimal Original_CurrentBuyPrice, System.DateTime Original_LastBuyPriceCalc, decimal Original_DefaultBuyPrice, bool Original_UseReprocessVal, bool Original_ForceDefaultSellPrice, bool Original_ForceDefaultBuyPrice) {
+        public virtual int Delete(int Original_ReportGroupID, int Original_ItemID, long Original_RegionID, decimal Original_DefaultSellPrice, decimal Original_CurrentSellPrice, System.DateTime Original_LastSellPriceCalc, decimal Original_CurrentBuyPrice, System.DateTime Original_LastBuyPriceCalc, decimal Original_DefaultBuyPrice, bool Original_UseReprocessVal, bool Original_ForceDefaultSellPrice, bool Original_ForceDefaultBuyPrice) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ReportGroupID));
             this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_ItemID));
-            this.Adapter.DeleteCommand.Parameters[2].Value = ((int)(Original_RegionID));
+            this.Adapter.DeleteCommand.Parameters[2].Value = ((long)(Original_RegionID));
             this.Adapter.DeleteCommand.Parameters[3].Value = ((decimal)(Original_DefaultSellPrice));
             this.Adapter.DeleteCommand.Parameters[4].Value = ((decimal)(Original_CurrentSellPrice));
             this.Adapter.DeleteCommand.Parameters[5].Value = ((System.DateTime)(Original_LastSellPriceCalc));
@@ -38186,10 +38175,10 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int ReportGroupID, int ItemID, int RegionID, decimal DefaultSellPrice, decimal CurrentSellPrice, System.DateTime LastSellPriceCalc, decimal CurrentBuyPrice, System.DateTime LastBuyPriceCalc, decimal DefaultBuyPrice, bool UseReprocessVal, bool ForceDefaultSellPrice, bool ForceDefaultBuyPrice) {
+        public virtual int Insert(int ReportGroupID, int ItemID, long RegionID, decimal DefaultSellPrice, decimal CurrentSellPrice, System.DateTime LastSellPriceCalc, decimal CurrentBuyPrice, System.DateTime LastBuyPriceCalc, decimal DefaultBuyPrice, bool UseReprocessVal, bool ForceDefaultSellPrice, bool ForceDefaultBuyPrice) {
             this.Adapter.InsertCommand.Parameters[0].Value = ((int)(ReportGroupID));
             this.Adapter.InsertCommand.Parameters[1].Value = ((int)(ItemID));
-            this.Adapter.InsertCommand.Parameters[2].Value = ((int)(RegionID));
+            this.Adapter.InsertCommand.Parameters[2].Value = ((long)(RegionID));
             this.Adapter.InsertCommand.Parameters[3].Value = ((decimal)(DefaultSellPrice));
             this.Adapter.InsertCommand.Parameters[4].Value = ((decimal)(CurrentSellPrice));
             this.Adapter.InsertCommand.Parameters[5].Value = ((System.DateTime)(LastSellPriceCalc));
@@ -38221,7 +38210,7 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
         public virtual int Update(
                     int ReportGroupID, 
                     int ItemID, 
-                    int RegionID, 
+                    long RegionID, 
                     decimal DefaultSellPrice, 
                     decimal CurrentSellPrice, 
                     System.DateTime LastSellPriceCalc, 
@@ -38233,7 +38222,7 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
                     bool ForceDefaultBuyPrice, 
                     int Original_ReportGroupID, 
                     int Original_ItemID, 
-                    int Original_RegionID, 
+                    long Original_RegionID, 
                     decimal Original_DefaultSellPrice, 
                     decimal Original_CurrentSellPrice, 
                     System.DateTime Original_LastSellPriceCalc, 
@@ -38245,7 +38234,7 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
                     bool Original_ForceDefaultBuyPrice) {
             this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(ReportGroupID));
             this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(ItemID));
-            this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(RegionID));
+            this.Adapter.UpdateCommand.Parameters[2].Value = ((long)(RegionID));
             this.Adapter.UpdateCommand.Parameters[3].Value = ((decimal)(DefaultSellPrice));
             this.Adapter.UpdateCommand.Parameters[4].Value = ((decimal)(CurrentSellPrice));
             this.Adapter.UpdateCommand.Parameters[5].Value = ((System.DateTime)(LastSellPriceCalc));
@@ -38257,7 +38246,7 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
             this.Adapter.UpdateCommand.Parameters[11].Value = ((bool)(ForceDefaultBuyPrice));
             this.Adapter.UpdateCommand.Parameters[12].Value = ((int)(Original_ReportGroupID));
             this.Adapter.UpdateCommand.Parameters[13].Value = ((int)(Original_ItemID));
-            this.Adapter.UpdateCommand.Parameters[14].Value = ((int)(Original_RegionID));
+            this.Adapter.UpdateCommand.Parameters[14].Value = ((long)(Original_RegionID));
             this.Adapter.UpdateCommand.Parameters[15].Value = ((decimal)(Original_DefaultSellPrice));
             this.Adapter.UpdateCommand.Parameters[16].Value = ((decimal)(Original_CurrentSellPrice));
             this.Adapter.UpdateCommand.Parameters[17].Value = ((System.DateTime)(Original_LastSellPriceCalc));
@@ -38298,7 +38287,7 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
                     bool ForceDefaultBuyPrice, 
                     int Original_ReportGroupID, 
                     int Original_ItemID, 
-                    int Original_RegionID, 
+                    long Original_RegionID, 
                     decimal Original_DefaultSellPrice, 
                     decimal Original_CurrentSellPrice, 
                     System.DateTime Original_LastSellPriceCalc, 
@@ -38340,7 +38329,7 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int ItemValueGet(global::System.Nullable<global::System.DateTime> valueDate, global::System.Nullable<int> itemID, global::System.Nullable<int> regionID, global::System.Nullable<int> reportGroupID, global::System.Nullable<bool> buyPrice, global::System.Nullable<bool> webPrice, ref global::System.Nullable<decimal> value, ref global::System.Nullable<global::System.DateTime> trueDate) {
+        public virtual int ItemValueGet(global::System.Nullable<global::System.DateTime> valueDate, global::System.Nullable<int> itemID, global::System.Nullable<long> regionID, global::System.Nullable<int> reportGroupID, global::System.Nullable<bool> buyPrice, global::System.Nullable<bool> webPrice, ref global::System.Nullable<decimal> value, ref global::System.Nullable<global::System.DateTime> trueDate) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[3];
             if ((valueDate.HasValue == true)) {
                 command.Parameters[1].Value = ((System.DateTime)(valueDate.Value));
@@ -38355,7 +38344,7 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
                 command.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                command.Parameters[3].Value = ((int)(regionID.Value));
+                command.Parameters[3].Value = ((long)(regionID.Value));
             }
             else {
                 command.Parameters[3].Value = global::System.DBNull.Value;
@@ -38423,7 +38412,7 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int ItemValueSet(global::System.Nullable<global::System.DateTime> valueDate, global::System.Nullable<int> itemID, global::System.Nullable<int> regionID, global::System.Nullable<int> reportGroupID, global::System.Nullable<bool> buyPrice, global::System.Nullable<bool> webPrice, global::System.Nullable<decimal> value) {
+        public virtual int ItemValueSet(global::System.Nullable<global::System.DateTime> valueDate, global::System.Nullable<int> itemID, global::System.Nullable<long> regionID, global::System.Nullable<int> reportGroupID, global::System.Nullable<bool> buyPrice, global::System.Nullable<bool> webPrice, global::System.Nullable<decimal> value) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[4];
             if ((valueDate.HasValue == true)) {
                 command.Parameters[1].Value = ((System.DateTime)(valueDate.Value));
@@ -38438,7 +38427,7 @@ SELECT ReportGroupID, ItemID, RegionID, DefaultSellPrice, CurrentSellPrice, Last
                 command.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                command.Parameters[3].Value = ((int)(regionID.Value));
+                command.Parameters[3].Value = ((long)(regionID.Value));
             }
             else {
                 command.Parameters[3].Value = global::System.DBNull.Value;
@@ -38924,10 +38913,10 @@ SELECT ReportGroupID, ItemID FROM TradedItems WHERE (ItemID = @ItemID) AND (Repo
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[AssetsProduced] WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([CorpAsset] = @Original_CorpAsset) AND ([ItemID] = @Original_ItemID) AND ([ProductionDateTime] = @Original_ProductionDateTime) AND ([Cost] = @Original_Cost) AND ([Quantity] = @Original_Quantity))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [AssetsProduced] WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([CorpAsset] = @Original_CorpAsset) AND ([ItemID] = @Original_ItemID) AND ([ProductionDateTime] = @Original_ProductionDateTime) AND ([Cost] = @Original_Cost) AND ([Quantity] = @Original_Quantity))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ProductionDateTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ProductionDateTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -38935,11 +38924,11 @@ SELECT ReportGroupID, ItemID FROM TradedItems WHERE (ItemID = @ItemID) AND (Repo
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Quantity", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Quantity", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[AssetsProduced] ([ID], [OwnerID], [CorpAsset], [ItemID], [ProductionDateTime], [Cost], [Quantity]) VALUES (@ID, @OwnerID, @CorpAsset, @ItemID, @ProductionDateTime, @Cost, @Quantity);
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [AssetsProduced] ([ID], [OwnerID], [CorpAsset], [ItemID], [ProductionDateTime], [Cost], [Quantity]) VALUES (@ID, @OwnerID, @CorpAsset, @ItemID, @ProductionDateTime, @Cost, @Quantity);
 SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM AssetsProduced WHERE (ID = @ID)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ProductionDateTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ProductionDateTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -38947,18 +38936,18 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Quantity", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Quantity", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[AssetsProduced] SET [ID] = @ID, [OwnerID] = @OwnerID, [CorpAsset] = @CorpAsset, [ItemID] = @ItemID, [ProductionDateTime] = @ProductionDateTime, [Cost] = @Cost, [Quantity] = @Quantity WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([CorpAsset] = @Original_CorpAsset) AND ([ItemID] = @Original_ItemID) AND ([ProductionDateTime] = @Original_ProductionDateTime) AND ([Cost] = @Original_Cost) AND ([Quantity] = @Original_Quantity));
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [AssetsProduced] SET [ID] = @ID, [OwnerID] = @OwnerID, [CorpAsset] = @CorpAsset, [ItemID] = @ItemID, [ProductionDateTime] = @ProductionDateTime, [Cost] = @Cost, [Quantity] = @Quantity WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([CorpAsset] = @Original_CorpAsset) AND ([ItemID] = @Original_ItemID) AND ([ProductionDateTime] = @Original_ProductionDateTime) AND ([Cost] = @Original_Cost) AND ([Quantity] = @Original_Quantity));
 SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM AssetsProduced WHERE (ID = @ID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ProductionDateTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ProductionDateTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Cost", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Cost", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Quantity", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Quantity", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ProductionDateTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ProductionDateTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -38977,23 +38966,23 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[3];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM db" +
-                "o.AssetsProduced";
+            this._commandCollection[0].CommandText = "SELECT     ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity\r\nFR" +
+                "OM         AssetsProduced";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.AssetsProducedGetByDate";
+            this._commandCollection[1].CommandText = "AssetsProducedGetByDate";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@startDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@endDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "dbo.AssetsProducedNew";
+            this._commandCollection[2].CommandText = "AssetsProducedNew";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ProductionDateTime", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -39027,10 +39016,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByDate(EMMADataSet.AssetsProducedDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate) {
+        public virtual int FillByDate(EMMADataSet.AssetsProducedDataTable dataTable, global::System.Nullable<long> ownerID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -39057,10 +39046,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.AssetsProducedDataTable GetDataByDate(global::System.Nullable<int> ownerID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate) {
+        public virtual EMMADataSet.AssetsProducedDataTable GetDataByDate(global::System.Nullable<long> ownerID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -39110,9 +39099,9 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(long Original_ID, int Original_OwnerID, bool Original_CorpAsset, int Original_ItemID, System.DateTime Original_ProductionDateTime, decimal Original_Cost, long Original_Quantity) {
+        public virtual int Delete(long Original_ID, long Original_OwnerID, bool Original_CorpAsset, int Original_ItemID, System.DateTime Original_ProductionDateTime, decimal Original_Cost, long Original_Quantity) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_ID));
-            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_OwnerID));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((long)(Original_OwnerID));
             this.Adapter.DeleteCommand.Parameters[2].Value = ((bool)(Original_CorpAsset));
             this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_ItemID));
             this.Adapter.DeleteCommand.Parameters[4].Value = ((System.DateTime)(Original_ProductionDateTime));
@@ -39137,9 +39126,9 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(long ID, int OwnerID, bool CorpAsset, int ItemID, System.DateTime ProductionDateTime, decimal Cost, long Quantity) {
+        public virtual int Insert(long ID, long OwnerID, bool CorpAsset, int ItemID, System.DateTime ProductionDateTime, decimal Cost, long Quantity) {
             this.Adapter.InsertCommand.Parameters[0].Value = ((long)(ID));
-            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(OwnerID));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((long)(OwnerID));
             this.Adapter.InsertCommand.Parameters[2].Value = ((bool)(CorpAsset));
             this.Adapter.InsertCommand.Parameters[3].Value = ((int)(ItemID));
             this.Adapter.InsertCommand.Parameters[4].Value = ((System.DateTime)(ProductionDateTime));
@@ -39164,16 +39153,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(long ID, int OwnerID, bool CorpAsset, int ItemID, System.DateTime ProductionDateTime, decimal Cost, long Quantity, long Original_ID, int Original_OwnerID, bool Original_CorpAsset, int Original_ItemID, System.DateTime Original_ProductionDateTime, decimal Original_Cost, long Original_Quantity) {
+        public virtual int Update(long ID, long OwnerID, bool CorpAsset, int ItemID, System.DateTime ProductionDateTime, decimal Cost, long Quantity, long Original_ID, long Original_OwnerID, bool Original_CorpAsset, int Original_ItemID, System.DateTime Original_ProductionDateTime, decimal Original_Cost, long Original_Quantity) {
             this.Adapter.UpdateCommand.Parameters[0].Value = ((long)(ID));
-            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(OwnerID));
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((long)(OwnerID));
             this.Adapter.UpdateCommand.Parameters[2].Value = ((bool)(CorpAsset));
             this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(ItemID));
             this.Adapter.UpdateCommand.Parameters[4].Value = ((System.DateTime)(ProductionDateTime));
             this.Adapter.UpdateCommand.Parameters[5].Value = ((decimal)(Cost));
             this.Adapter.UpdateCommand.Parameters[6].Value = ((long)(Quantity));
             this.Adapter.UpdateCommand.Parameters[7].Value = ((long)(Original_ID));
-            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_OwnerID));
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((long)(Original_OwnerID));
             this.Adapter.UpdateCommand.Parameters[9].Value = ((bool)(Original_CorpAsset));
             this.Adapter.UpdateCommand.Parameters[10].Value = ((int)(Original_ItemID));
             this.Adapter.UpdateCommand.Parameters[11].Value = ((System.DateTime)(Original_ProductionDateTime));
@@ -39198,16 +39187,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int OwnerID, bool CorpAsset, int ItemID, System.DateTime ProductionDateTime, decimal Cost, long Quantity, long Original_ID, int Original_OwnerID, bool Original_CorpAsset, int Original_ItemID, System.DateTime Original_ProductionDateTime, decimal Original_Cost, long Original_Quantity) {
+        public virtual int Update(long OwnerID, bool CorpAsset, int ItemID, System.DateTime ProductionDateTime, decimal Cost, long Quantity, long Original_ID, long Original_OwnerID, bool Original_CorpAsset, int Original_ItemID, System.DateTime Original_ProductionDateTime, decimal Original_Cost, long Original_Quantity) {
             return this.Update(Original_ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity, Original_ID, Original_OwnerID, Original_CorpAsset, Original_ItemID, Original_ProductionDateTime, Original_Cost, Original_Quantity);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int New(global::System.Nullable<int> OwnerID, global::System.Nullable<bool> CorpAsset, global::System.Nullable<int> ItemID, global::System.Nullable<global::System.DateTime> ProductionDateTime, global::System.Nullable<decimal> Cost, global::System.Nullable<long> Quantity, ref global::System.Nullable<long> newID) {
+        public virtual int New(global::System.Nullable<long> OwnerID, global::System.Nullable<bool> CorpAsset, global::System.Nullable<int> ItemID, global::System.Nullable<global::System.DateTime> ProductionDateTime, global::System.Nullable<decimal> Cost, global::System.Nullable<long> Quantity, ref global::System.Nullable<long> newID) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[2];
             if ((OwnerID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(OwnerID.Value));
+                command.Parameters[1].Value = ((long)(OwnerID.Value));
             }
             else {
                 command.Parameters[1].Value = global::System.DBNull.Value;
@@ -39366,40 +39355,40 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             tableMapping.ColumnMappings.Add("Quantity", "Quantity");
             tableMapping.ColumnMappings.Add("ItemID", "ItemID");
             tableMapping.ColumnMappings.Add("Price", "Price");
-            tableMapping.ColumnMappings.Add("BuyerID", "BuyerID");
-            tableMapping.ColumnMappings.Add("SellerID", "SellerID");
-            tableMapping.ColumnMappings.Add("BuyerCharacterID", "BuyerCharacterID");
-            tableMapping.ColumnMappings.Add("SellerCharacterID", "SellerCharacterID");
-            tableMapping.ColumnMappings.Add("StationID", "StationID");
-            tableMapping.ColumnMappings.Add("RegionID", "RegionID");
             tableMapping.ColumnMappings.Add("BuyerForCorp", "BuyerForCorp");
             tableMapping.ColumnMappings.Add("SellerForCorp", "SellerForCorp");
             tableMapping.ColumnMappings.Add("BuyerWalletID", "BuyerWalletID");
             tableMapping.ColumnMappings.Add("SellerWalletID", "SellerWalletID");
             tableMapping.ColumnMappings.Add("SellerUnitProfit", "SellerUnitProfit");
             tableMapping.ColumnMappings.Add("CalcProfitFromAssets", "CalcProfitFromAssets");
+            tableMapping.ColumnMappings.Add("RegionID", "RegionID");
+            tableMapping.ColumnMappings.Add("StationID", "StationID");
+            tableMapping.ColumnMappings.Add("SellerCharacterID", "SellerCharacterID");
+            tableMapping.ColumnMappings.Add("BuyerCharacterID", "BuyerCharacterID");
+            tableMapping.ColumnMappings.Add("SellerID", "SellerID");
+            tableMapping.ColumnMappings.Add("BuyerID", "BuyerID");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[Transactions] WHERE (([ID] = @Original_ID) AND ([DateTime] = @Original_DateTime) AND ([Quantity] = @Original_Quantity) AND ([ItemID] = @Original_ItemID) AND ([Price] = @Original_Price) AND ([BuyerID] = @Original_BuyerID) AND ([SellerID] = @Original_SellerID) AND ([BuyerCharacterID] = @Original_BuyerCharacterID) AND ([SellerCharacterID] = @Original_SellerCharacterID) AND ([StationID] = @Original_StationID) AND ([RegionID] = @Original_RegionID) AND ([BuyerForCorp] = @Original_BuyerForCorp) AND ([SellerForCorp] = @Original_SellerForCorp) AND ([BuyerWalletID] = @Original_BuyerWalletID) AND ([SellerWalletID] = @Original_SellerWalletID) AND ([SellerUnitProfit] = @Original_SellerUnitProfit) AND ([CalcProfitFromAssets] = @Original_CalcProfitFromAssets))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [Transactions] WHERE (([ID] = @Original_ID) AND ([DateTime] = @Original_DateTime) AND ([Quantity] = @Original_Quantity) AND ([ItemID] = @Original_ItemID) AND ([Price] = @Original_Price) AND ([BuyerForCorp] = @Original_BuyerForCorp) AND ([SellerForCorp] = @Original_SellerForCorp) AND ([BuyerWalletID] = @Original_BuyerWalletID) AND ([SellerWalletID] = @Original_SellerWalletID) AND ([SellerUnitProfit] = @Original_SellerUnitProfit) AND ([CalcProfitFromAssets] = @Original_CalcProfitFromAssets) AND ([RegionID] = @Original_RegionID) AND ([StationID] = @Original_StationID) AND ([SellerCharacterID] = @Original_SellerCharacterID) AND ([BuyerCharacterID] = @Original_BuyerCharacterID) AND ([SellerID] = @Original_SellerID) AND ([BuyerID] = @Original_BuyerID))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_DateTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "DateTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Quantity", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Quantity", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Price", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Price", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_BuyerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "BuyerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SellerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SellerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_BuyerCharacterID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "BuyerCharacterID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SellerCharacterID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SellerCharacterID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_StationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RegionID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RegionID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_BuyerForCorp", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "BuyerForCorp", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SellerForCorp", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SellerForCorp", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_BuyerWalletID", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "BuyerWalletID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SellerWalletID", global::System.Data.SqlDbType.SmallInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SellerWalletID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SellerUnitProfit", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "SellerUnitProfit", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CalcProfitFromAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CalcProfitFromAssets", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RegionID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RegionID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_StationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SellerCharacterID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SellerCharacterID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_BuyerCharacterID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "BuyerCharacterID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SellerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SellerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_BuyerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "BuyerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
             this._adapter.InsertCommand.CommandText = "TransInsert";
@@ -39410,12 +39399,12 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Quantity", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "Quantity", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Price", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "Price", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "BuyerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SellerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "SellerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyerCharacterID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "BuyerCharacterID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SellerCharacterID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "SellerCharacterID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RegionID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RegionID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "BuyerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SellerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "SellerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyerCharacterID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "BuyerCharacterID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SellerCharacterID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "SellerCharacterID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RegionID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "RegionID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyerForCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "BuyerForCorp", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SellerForCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "SellerForCorp", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyerWalletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "BuyerWalletID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -39432,12 +39421,12 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Quantity", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "Quantity", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Price", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, "Price", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "BuyerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SellerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "SellerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyerCharacterID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "BuyerCharacterID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SellerCharacterID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "SellerCharacterID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RegionID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RegionID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "BuyerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SellerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "SellerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyerCharacterID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "BuyerCharacterID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SellerCharacterID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "SellerCharacterID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RegionID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "RegionID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyerForCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "BuyerForCorp", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SellerForCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "SellerForCorp", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BuyerWalletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, "BuyerWalletID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -39458,14 +39447,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[12];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ID, DateTime, Quantity, ItemID, Price, BuyerID, SellerID, BuyerCharacterID" +
-                ", SellerCharacterID, StationID, RegionID, BuyerForCorp, SellerForCorp, BuyerWall" +
-                "etID, SellerWalletID, SellerUnitProfit, CalcProfitFromAssets FROM dbo.Transactio" +
-                "ns";
+            this._commandCollection[0].CommandText = @"SELECT     ID, DateTime, Quantity, ItemID, Price, BuyerForCorp, SellerForCorp, BuyerWalletID, SellerWalletID, SellerUnitProfit, CalcProfitFromAssets, RegionID, 
+                      StationID, SellerCharacterID, BuyerCharacterID, SellerID, BuyerID
+FROM         Transactions";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.TransBuildResults";
+            this._commandCollection[1].CommandText = "TransBuildResults";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessParams", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -39477,7 +39465,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@transType", global::System.Data.SqlDbType.Char, 4, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "dbo.TransGetByAny";
+            this._commandCollection[2].CommandText = "TransGetByAny";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessParams", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -39489,32 +39477,32 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@transType", global::System.Data.SqlDbType.Char, 4, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[3].Connection = this.Connection;
-            this._commandCollection[3].CommandText = "dbo.TransGetBySingle";
+            this._commandCollection[3].CommandText = "TransGetBySingle";
             this._commandCollection[3].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@characterID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@characterID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@startDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@endDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@transType", global::System.Data.SqlDbType.Char, 4, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[4].Connection = this.Connection;
-            this._commandCollection[4].CommandText = "dbo.TransGetBySingleAndID";
+            this._commandCollection[4].CommandText = "TransGetBySingleAndID";
             this._commandCollection[4].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@characterID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@characterID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@minID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@transType", global::System.Data.SqlDbType.Char, 4, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[5].Connection = this.Connection;
-            this._commandCollection[5].CommandText = "dbo.TransGetByCalcProfitFromAssets";
+            this._commandCollection[5].CommandText = "TransGetByCalcProfitFromAssets";
             this._commandCollection[5].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessParams", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -39522,35 +39510,35 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@calcProfitFromAssets", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[6].Connection = this.Connection;
-            this._commandCollection[6].CommandText = "dbo.TransGetByID";
+            this._commandCollection[6].CommandText = "TransGetByID";
             this._commandCollection[6].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@transID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[7].Connection = this.Connection;
-            this._commandCollection[7].CommandText = "dbo.TransGetByOwnersAndSingle";
+            this._commandCollection[7].CommandText = "TransGetByOwnersAndSingle";
             this._commandCollection[7].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessParams", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@startDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@endDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@transType", global::System.Data.SqlDbType.Char, 4, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[8] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[8].Connection = this.Connection;
-            this._commandCollection[8].CommandText = "dbo.TransGetResultsPage";
+            this._commandCollection[8].CommandText = "TransGetResultsPage";
             this._commandCollection[8].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@startRow", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@pageSize", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[9] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[9].Connection = this.Connection;
-            this._commandCollection[9].CommandText = "dbo.TransGetBySingleAndWallets";
+            this._commandCollection[9].CommandText = "TransGetBySingleAndWallets";
             this._commandCollection[9].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@characterID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@characterID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID1", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID2", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID3", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -39558,33 +39546,33 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID5", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID6", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@startDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@endDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@transType", global::System.Data.SqlDbType.Char, 4, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[10] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[10].Connection = this.Connection;
-            this._commandCollection[10].CommandText = "dbo.TransExists";
+            this._commandCollection[10].CommandText = "TransExists";
             this._commandCollection[10].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[10].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[10].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@transID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[10].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@exists", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.InputOutput, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[11] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[11].Connection = this.Connection;
-            this._commandCollection[11].CommandText = "dbo.TransNew";
+            this._commandCollection[11].CommandText = "TransNew";
             this._commandCollection[11].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@datetime", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@quantity", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@price", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 2, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@buyerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@sellerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@buyerCharID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@sellerCharID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@buyerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@sellerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@buyerCharID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@sellerCharID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@buyerForCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@sellerForCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@buyerWalletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -39725,10 +39713,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByAnySingle(EMMADataSet.TransactionsDataTable dataTable, global::System.Nullable<int> characterID, global::System.Nullable<bool> includeCorp, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> regionID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, string transType) {
+        public virtual int FillByAnySingle(EMMADataSet.TransactionsDataTable dataTable, global::System.Nullable<long> characterID, global::System.Nullable<bool> includeCorp, global::System.Nullable<int> itemID, global::System.Nullable<long> stationID, global::System.Nullable<long> regionID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, string transType) {
             this.Adapter.SelectCommand = this.CommandCollection[3];
             if ((characterID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(characterID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(characterID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -39746,13 +39734,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[4].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(regionID.Value));
+                this.Adapter.SelectCommand.Parameters[5].Value = ((long)(regionID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
@@ -39785,10 +39773,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.TransactionsDataTable GetDataByAnySingle(global::System.Nullable<int> characterID, global::System.Nullable<bool> includeCorp, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> regionID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, string transType) {
+        public virtual EMMADataSet.TransactionsDataTable GetDataByAnySingle(global::System.Nullable<long> characterID, global::System.Nullable<bool> includeCorp, global::System.Nullable<int> itemID, global::System.Nullable<long> stationID, global::System.Nullable<long> regionID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, string transType) {
             this.Adapter.SelectCommand = this.CommandCollection[3];
             if ((characterID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(characterID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(characterID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -39806,13 +39794,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[4].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(regionID.Value));
+                this.Adapter.SelectCommand.Parameters[5].Value = ((long)(regionID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
@@ -39843,10 +39831,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByAnySingleAndID(EMMADataSet.TransactionsDataTable dataTable, global::System.Nullable<int> characterID, global::System.Nullable<bool> includeCorp, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> regionID, global::System.Nullable<long> minID, string transType) {
+        public virtual int FillByAnySingleAndID(EMMADataSet.TransactionsDataTable dataTable, global::System.Nullable<long> characterID, global::System.Nullable<bool> includeCorp, global::System.Nullable<int> itemID, global::System.Nullable<long> stationID, global::System.Nullable<long> regionID, global::System.Nullable<long> minID, string transType) {
             this.Adapter.SelectCommand = this.CommandCollection[4];
             if ((characterID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(characterID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(characterID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -39864,13 +39852,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[4].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(regionID.Value));
+                this.Adapter.SelectCommand.Parameters[5].Value = ((long)(regionID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
@@ -39897,10 +39885,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.TransactionsDataTable GetDataByAnySingleAndID(global::System.Nullable<int> characterID, global::System.Nullable<bool> includeCorp, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> regionID, global::System.Nullable<long> minID, string transType) {
+        public virtual EMMADataSet.TransactionsDataTable GetDataByAnySingleAndID(global::System.Nullable<long> characterID, global::System.Nullable<bool> includeCorp, global::System.Nullable<int> itemID, global::System.Nullable<long> stationID, global::System.Nullable<long> regionID, global::System.Nullable<long> minID, string transType) {
             this.Adapter.SelectCommand = this.CommandCollection[4];
             if ((characterID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(characterID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(characterID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -39918,13 +39906,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[4].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[5].Value = ((int)(regionID.Value));
+                this.Adapter.SelectCommand.Parameters[5].Value = ((long)(regionID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
@@ -40041,7 +40029,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByOwnersAndSingle(EMMADataSet.TransactionsDataTable dataTable, string accessParams, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> regionID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, string transType) {
+        public virtual int FillByOwnersAndSingle(EMMADataSet.TransactionsDataTable dataTable, string accessParams, global::System.Nullable<int> itemID, global::System.Nullable<long> stationID, global::System.Nullable<long> regionID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, string transType) {
             this.Adapter.SelectCommand = this.CommandCollection[7];
             if ((accessParams == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -40056,13 +40044,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(regionID.Value));
+                this.Adapter.SelectCommand.Parameters[4].Value = ((long)(regionID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
@@ -40095,7 +40083,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.TransactionsDataTable GetDataByOwnersAndSingle(string accessParams, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> regionID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, string transType) {
+        public virtual EMMADataSet.TransactionsDataTable GetDataByOwnersAndSingle(string accessParams, global::System.Nullable<int> itemID, global::System.Nullable<long> stationID, global::System.Nullable<long> regionID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, string transType) {
             this.Adapter.SelectCommand = this.CommandCollection[7];
             if ((accessParams == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -40110,13 +40098,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(regionID.Value));
+                this.Adapter.SelectCommand.Parameters[4].Value = ((long)(regionID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
@@ -40193,10 +40181,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillBySingleAndWallets(EMMADataSet.TransactionsDataTable dataTable, global::System.Nullable<int> characterID, global::System.Nullable<short> walletID1, global::System.Nullable<short> walletID2, global::System.Nullable<short> walletID3, global::System.Nullable<short> walletID4, global::System.Nullable<short> walletID5, global::System.Nullable<short> walletID6, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> regionID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, string transType) {
+        public virtual int FillBySingleAndWallets(EMMADataSet.TransactionsDataTable dataTable, global::System.Nullable<long> characterID, global::System.Nullable<short> walletID1, global::System.Nullable<short> walletID2, global::System.Nullable<short> walletID3, global::System.Nullable<short> walletID4, global::System.Nullable<short> walletID5, global::System.Nullable<short> walletID6, global::System.Nullable<int> itemID, global::System.Nullable<long> stationID, global::System.Nullable<long> regionID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, string transType) {
             this.Adapter.SelectCommand = this.CommandCollection[9];
             if ((characterID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(characterID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(characterID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -40244,13 +40232,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[8].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[9].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[9].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[9].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[10].Value = ((int)(regionID.Value));
+                this.Adapter.SelectCommand.Parameters[10].Value = ((long)(regionID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[10].Value = global::System.DBNull.Value;
@@ -40283,10 +40271,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.TransactionsDataTable GetDataBySingleAndWallets(global::System.Nullable<int> characterID, global::System.Nullable<short> walletID1, global::System.Nullable<short> walletID2, global::System.Nullable<short> walletID3, global::System.Nullable<short> walletID4, global::System.Nullable<short> walletID5, global::System.Nullable<short> walletID6, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> regionID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, string transType) {
+        public virtual EMMADataSet.TransactionsDataTable GetDataBySingleAndWallets(global::System.Nullable<long> characterID, global::System.Nullable<short> walletID1, global::System.Nullable<short> walletID2, global::System.Nullable<short> walletID3, global::System.Nullable<short> walletID4, global::System.Nullable<short> walletID5, global::System.Nullable<short> walletID6, global::System.Nullable<int> itemID, global::System.Nullable<long> stationID, global::System.Nullable<long> regionID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate, string transType) {
             this.Adapter.SelectCommand = this.CommandCollection[9];
             if ((characterID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(characterID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(characterID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -40334,13 +40322,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[8].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[9].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[9].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[9].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[10].Value = ((int)(regionID.Value));
+                this.Adapter.SelectCommand.Parameters[10].Value = ((long)(regionID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[10].Value = global::System.DBNull.Value;
@@ -40462,35 +40450,35 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                     int Original_Quantity, 
                     int Original_ItemID, 
                     decimal Original_Price, 
-                    int Original_BuyerID, 
-                    int Original_SellerID, 
-                    int Original_BuyerCharacterID, 
-                    int Original_SellerCharacterID, 
-                    int Original_StationID, 
-                    int Original_RegionID, 
                     bool Original_BuyerForCorp, 
                     bool Original_SellerForCorp, 
                     short Original_BuyerWalletID, 
                     short Original_SellerWalletID, 
                     decimal Original_SellerUnitProfit, 
-                    bool Original_CalcProfitFromAssets) {
+                    bool Original_CalcProfitFromAssets, 
+                    long Original_RegionID, 
+                    long Original_StationID, 
+                    long Original_SellerCharacterID, 
+                    long Original_BuyerCharacterID, 
+                    long Original_SellerID, 
+                    long Original_BuyerID) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_ID));
             this.Adapter.DeleteCommand.Parameters[1].Value = ((System.DateTime)(Original_DateTime));
             this.Adapter.DeleteCommand.Parameters[2].Value = ((int)(Original_Quantity));
             this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_ItemID));
             this.Adapter.DeleteCommand.Parameters[4].Value = ((decimal)(Original_Price));
-            this.Adapter.DeleteCommand.Parameters[5].Value = ((int)(Original_BuyerID));
-            this.Adapter.DeleteCommand.Parameters[6].Value = ((int)(Original_SellerID));
-            this.Adapter.DeleteCommand.Parameters[7].Value = ((int)(Original_BuyerCharacterID));
-            this.Adapter.DeleteCommand.Parameters[8].Value = ((int)(Original_SellerCharacterID));
-            this.Adapter.DeleteCommand.Parameters[9].Value = ((int)(Original_StationID));
-            this.Adapter.DeleteCommand.Parameters[10].Value = ((int)(Original_RegionID));
-            this.Adapter.DeleteCommand.Parameters[11].Value = ((bool)(Original_BuyerForCorp));
-            this.Adapter.DeleteCommand.Parameters[12].Value = ((bool)(Original_SellerForCorp));
-            this.Adapter.DeleteCommand.Parameters[13].Value = ((short)(Original_BuyerWalletID));
-            this.Adapter.DeleteCommand.Parameters[14].Value = ((short)(Original_SellerWalletID));
-            this.Adapter.DeleteCommand.Parameters[15].Value = ((decimal)(Original_SellerUnitProfit));
-            this.Adapter.DeleteCommand.Parameters[16].Value = ((bool)(Original_CalcProfitFromAssets));
+            this.Adapter.DeleteCommand.Parameters[5].Value = ((bool)(Original_BuyerForCorp));
+            this.Adapter.DeleteCommand.Parameters[6].Value = ((bool)(Original_SellerForCorp));
+            this.Adapter.DeleteCommand.Parameters[7].Value = ((short)(Original_BuyerWalletID));
+            this.Adapter.DeleteCommand.Parameters[8].Value = ((short)(Original_SellerWalletID));
+            this.Adapter.DeleteCommand.Parameters[9].Value = ((decimal)(Original_SellerUnitProfit));
+            this.Adapter.DeleteCommand.Parameters[10].Value = ((bool)(Original_CalcProfitFromAssets));
+            this.Adapter.DeleteCommand.Parameters[11].Value = ((long)(Original_RegionID));
+            this.Adapter.DeleteCommand.Parameters[12].Value = ((long)(Original_StationID));
+            this.Adapter.DeleteCommand.Parameters[13].Value = ((long)(Original_SellerCharacterID));
+            this.Adapter.DeleteCommand.Parameters[14].Value = ((long)(Original_BuyerCharacterID));
+            this.Adapter.DeleteCommand.Parameters[15].Value = ((long)(Original_SellerID));
+            this.Adapter.DeleteCommand.Parameters[16].Value = ((long)(Original_BuyerID));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -40516,12 +40504,12 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                     global::System.Nullable<int> Quantity, 
                     global::System.Nullable<int> ItemID, 
                     global::System.Nullable<decimal> Price, 
-                    global::System.Nullable<int> BuyerID, 
-                    global::System.Nullable<int> SellerID, 
-                    global::System.Nullable<int> BuyerCharacterID, 
-                    global::System.Nullable<int> SellerCharacterID, 
-                    global::System.Nullable<int> StationID, 
-                    global::System.Nullable<int> RegionID, 
+                    global::System.Nullable<long> BuyerID, 
+                    global::System.Nullable<long> SellerID, 
+                    global::System.Nullable<long> BuyerCharacterID, 
+                    global::System.Nullable<long> SellerCharacterID, 
+                    global::System.Nullable<long> StationID, 
+                    global::System.Nullable<long> RegionID, 
                     global::System.Nullable<bool> BuyerForCorp, 
                     global::System.Nullable<bool> SellerForCorp, 
                     global::System.Nullable<short> BuyerWalletID, 
@@ -40559,37 +40547,37 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.InsertCommand.Parameters[5].Value = global::System.DBNull.Value;
             }
             if ((BuyerID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[6].Value = ((int)(BuyerID.Value));
+                this.Adapter.InsertCommand.Parameters[6].Value = ((long)(BuyerID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[6].Value = global::System.DBNull.Value;
             }
             if ((SellerID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[7].Value = ((int)(SellerID.Value));
+                this.Adapter.InsertCommand.Parameters[7].Value = ((long)(SellerID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[7].Value = global::System.DBNull.Value;
             }
             if ((BuyerCharacterID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[8].Value = ((int)(BuyerCharacterID.Value));
+                this.Adapter.InsertCommand.Parameters[8].Value = ((long)(BuyerCharacterID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[8].Value = global::System.DBNull.Value;
             }
             if ((SellerCharacterID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[9].Value = ((int)(SellerCharacterID.Value));
+                this.Adapter.InsertCommand.Parameters[9].Value = ((long)(SellerCharacterID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[9].Value = global::System.DBNull.Value;
             }
             if ((StationID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[10].Value = ((int)(StationID.Value));
+                this.Adapter.InsertCommand.Parameters[10].Value = ((long)(StationID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[10].Value = global::System.DBNull.Value;
             }
             if ((RegionID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[11].Value = ((int)(RegionID.Value));
+                this.Adapter.InsertCommand.Parameters[11].Value = ((long)(RegionID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[11].Value = global::System.DBNull.Value;
@@ -40655,12 +40643,12 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                     global::System.Nullable<int> Quantity, 
                     global::System.Nullable<int> ItemID, 
                     global::System.Nullable<decimal> Price, 
-                    global::System.Nullable<int> BuyerID, 
-                    global::System.Nullable<int> SellerID, 
-                    global::System.Nullable<int> BuyerCharacterID, 
-                    global::System.Nullable<int> SellerCharacterID, 
-                    global::System.Nullable<int> StationID, 
-                    global::System.Nullable<int> RegionID, 
+                    global::System.Nullable<long> BuyerID, 
+                    global::System.Nullable<long> SellerID, 
+                    global::System.Nullable<long> BuyerCharacterID, 
+                    global::System.Nullable<long> SellerCharacterID, 
+                    global::System.Nullable<long> StationID, 
+                    global::System.Nullable<long> RegionID, 
                     global::System.Nullable<bool> BuyerForCorp, 
                     global::System.Nullable<bool> SellerForCorp, 
                     global::System.Nullable<short> BuyerWalletID, 
@@ -40699,37 +40687,37 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.UpdateCommand.Parameters[5].Value = global::System.DBNull.Value;
             }
             if ((BuyerID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(BuyerID.Value));
+                this.Adapter.UpdateCommand.Parameters[6].Value = ((long)(BuyerID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[6].Value = global::System.DBNull.Value;
             }
             if ((SellerID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(SellerID.Value));
+                this.Adapter.UpdateCommand.Parameters[7].Value = ((long)(SellerID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[7].Value = global::System.DBNull.Value;
             }
             if ((BuyerCharacterID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(BuyerCharacterID.Value));
+                this.Adapter.UpdateCommand.Parameters[8].Value = ((long)(BuyerCharacterID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[8].Value = global::System.DBNull.Value;
             }
             if ((SellerCharacterID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(SellerCharacterID.Value));
+                this.Adapter.UpdateCommand.Parameters[9].Value = ((long)(SellerCharacterID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[9].Value = global::System.DBNull.Value;
             }
             if ((StationID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[10].Value = ((int)(StationID.Value));
+                this.Adapter.UpdateCommand.Parameters[10].Value = ((long)(StationID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[10].Value = global::System.DBNull.Value;
             }
             if ((RegionID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[11].Value = ((int)(RegionID.Value));
+                this.Adapter.UpdateCommand.Parameters[11].Value = ((long)(RegionID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[11].Value = global::System.DBNull.Value;
@@ -40800,12 +40788,12 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                     global::System.Nullable<int> Quantity, 
                     global::System.Nullable<int> ItemID, 
                     global::System.Nullable<decimal> Price, 
-                    global::System.Nullable<int> BuyerID, 
-                    global::System.Nullable<int> SellerID, 
-                    global::System.Nullable<int> BuyerCharacterID, 
-                    global::System.Nullable<int> SellerCharacterID, 
-                    global::System.Nullable<int> StationID, 
-                    global::System.Nullable<int> RegionID, 
+                    global::System.Nullable<long> BuyerID, 
+                    global::System.Nullable<long> SellerID, 
+                    global::System.Nullable<long> BuyerCharacterID, 
+                    global::System.Nullable<long> SellerCharacterID, 
+                    global::System.Nullable<long> StationID, 
+                    global::System.Nullable<long> RegionID, 
                     global::System.Nullable<bool> BuyerForCorp, 
                     global::System.Nullable<bool> SellerForCorp, 
                     global::System.Nullable<short> BuyerWalletID, 
@@ -40886,12 +40874,12 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                     global::System.Nullable<int> quantity, 
                     global::System.Nullable<int> itemID, 
                     global::System.Nullable<decimal> price, 
-                    global::System.Nullable<int> buyerID, 
-                    global::System.Nullable<int> sellerID, 
-                    global::System.Nullable<int> buyerCharID, 
-                    global::System.Nullable<int> sellerCharID, 
-                    global::System.Nullable<int> stationID, 
-                    global::System.Nullable<int> regionID, 
+                    global::System.Nullable<long> buyerID, 
+                    global::System.Nullable<long> sellerID, 
+                    global::System.Nullable<long> buyerCharID, 
+                    global::System.Nullable<long> sellerCharID, 
+                    global::System.Nullable<long> stationID, 
+                    global::System.Nullable<long> regionID, 
                     global::System.Nullable<bool> buyerForCorp, 
                     global::System.Nullable<bool> sellerForCorp, 
                     global::System.Nullable<short> buyerWalletID, 
@@ -40925,37 +40913,37 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 command.Parameters[4].Value = global::System.DBNull.Value;
             }
             if ((buyerID.HasValue == true)) {
-                command.Parameters[5].Value = ((int)(buyerID.Value));
+                command.Parameters[5].Value = ((long)(buyerID.Value));
             }
             else {
                 command.Parameters[5].Value = global::System.DBNull.Value;
             }
             if ((sellerID.HasValue == true)) {
-                command.Parameters[6].Value = ((int)(sellerID.Value));
+                command.Parameters[6].Value = ((long)(sellerID.Value));
             }
             else {
                 command.Parameters[6].Value = global::System.DBNull.Value;
             }
             if ((buyerCharID.HasValue == true)) {
-                command.Parameters[7].Value = ((int)(buyerCharID.Value));
+                command.Parameters[7].Value = ((long)(buyerCharID.Value));
             }
             else {
                 command.Parameters[7].Value = global::System.DBNull.Value;
             }
             if ((sellerCharID.HasValue == true)) {
-                command.Parameters[8].Value = ((int)(sellerCharID.Value));
+                command.Parameters[8].Value = ((long)(sellerCharID.Value));
             }
             else {
                 command.Parameters[8].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                command.Parameters[9].Value = ((int)(stationID.Value));
+                command.Parameters[9].Value = ((long)(stationID.Value));
             }
             else {
                 command.Parameters[9].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                command.Parameters[10].Value = ((int)(regionID.Value));
+                command.Parameters[10].Value = ((long)(regionID.Value));
             }
             else {
                 command.Parameters[10].Value = global::System.DBNull.Value;
@@ -41136,12 +41124,12 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[Orders] WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([ForCorp] = @Original_ForCorp) AND ([StationID] = @Original_StationID) AND ([TotalVol] = @Original_TotalVol) AND ([RemainingVol] = @Original_RemainingVol) AND ([MinVolume] = @Original_MinVolume) AND ([OrderState] = @Original_OrderState) AND ([ItemID] = @Original_ItemID) AND ([Range] = @Original_Range) AND ([WalletID] = @Original_WalletID) AND ([Duration] = @Original_Duration) AND ([Escrow] = @Original_Escrow) AND ([Price] = @Original_Price) AND ([BuyOrder] = @Original_BuyOrder) AND ([Issued] = @Original_Issued) AND ([Processed] = @Original_Processed) AND ([EveOrderID] = @Original_EveOrderID))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [Orders] WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([ForCorp] = @Original_ForCorp) AND ([StationID] = @Original_StationID) AND ([TotalVol] = @Original_TotalVol) AND ([RemainingVol] = @Original_RemainingVol) AND ([MinVolume] = @Original_MinVolume) AND ([OrderState] = @Original_OrderState) AND ([ItemID] = @Original_ItemID) AND ([Range] = @Original_Range) AND ([WalletID] = @Original_WalletID) AND ([Duration] = @Original_Duration) AND ([Escrow] = @Original_Escrow) AND ([Price] = @Original_Price) AND ([BuyOrder] = @Original_BuyOrder) AND ([Issued] = @Original_Issued) AND ([Processed] = @Original_Processed) AND ([EveOrderID] = @Original_EveOrderID))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ForCorp", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ForCorp", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_StationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_StationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_TotalVol", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TotalVol", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RemainingVol", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RemainingVol", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_MinVolume", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "MinVolume", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -41161,9 +41149,9 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._adapter.InsertCommand.CommandText = "OrdersInsert";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.StoredProcedure;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ForCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "ForCorp", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TotalVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "TotalVol", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RemainingVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RemainingVol", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@MinVolume", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "MinVolume", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -41184,9 +41172,9 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.StoredProcedure;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ForCorp", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "ForCorp", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "StationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TotalVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "TotalVol", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RemainingVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RemainingVol", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@MinVolume", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "MinVolume", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -41215,13 +41203,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[10];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ID, OwnerID, ForCorp, StationID, TotalVol, RemainingVol, MinVolume, OrderS" +
-                "tate, ItemID, Range, WalletID, Duration, Escrow, Price, BuyOrder, Issued, Proces" +
-                "sed, EveOrderID FROM dbo.Orders";
+            this._commandCollection[0].CommandText = "SELECT     ID, OwnerID, ForCorp, StationID, TotalVol, RemainingVol, MinVolume, Or" +
+                "derState, ItemID, Range, WalletID, Duration, Escrow, Price, BuyOrder, Issued, \r\n" +
+                "                      Processed, EveOrderID\r\nFROM         Orders";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.OrderGetAny";
+            this._commandCollection[1].CommandText = "OrderGetAny";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -41231,38 +41219,38 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@type", global::System.Data.SqlDbType.VarChar, 4, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "dbo.OrderGetByAnySingle";
+            this._commandCollection[2].CommandText = "OrderGetByAnySingle";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@state", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@type", global::System.Data.SqlDbType.VarChar, 4, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[3].Connection = this.Connection;
-            this._commandCollection[3].CommandText = "dbo.OrdersGetByID";
+            this._commandCollection[3].CommandText = "OrdersGetByID";
             this._commandCollection[3].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@orderID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[4].Connection = this.Connection;
-            this._commandCollection[4].CommandText = "dbo.OrdersGetByDate";
+            this._commandCollection[4].CommandText = "OrdersGetByDate";
             this._commandCollection[4].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@earliestIssueDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@latestIssueDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[5].Connection = this.Connection;
-            this._commandCollection[5].CommandText = "dbo.OrderExists";
+            this._commandCollection[5].CommandText = "OrderExists";
             this._commandCollection[5].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@walletID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@totalVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@remainingVol", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -41275,26 +41263,26 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@orderID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.InputOutput, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[6].Connection = this.Connection;
-            this._commandCollection[6].CommandText = "dbo.OrdersFinishUnProcessed";
+            this._commandCollection[6].CommandText = "OrdersFinishUnProcessed";
             this._commandCollection[6].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@notify", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@notifyBuy", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@notifySell", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[7].Connection = this.Connection;
-            this._commandCollection[7].CommandText = "dbo.OrdersMigrateToCorpID";
+            this._commandCollection[7].CommandText = "OrdersMigrateToCorpID";
             this._commandCollection[7].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[8] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[8].Connection = this.Connection;
-            this._commandCollection[8].CommandText = "dbo.OrdersSetProcessed";
+            this._commandCollection[8].CommandText = "OrdersSetProcessed";
             this._commandCollection[8].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[9] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[9].Connection = this.Connection;
@@ -41412,10 +41400,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByAnySingle(EMMADataSet.OrdersDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<short> walletID, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> state, string type) {
+        public virtual int FillByAnySingle(EMMADataSet.OrdersDataTable dataTable, global::System.Nullable<long> ownerID, global::System.Nullable<short> walletID, global::System.Nullable<int> itemID, global::System.Nullable<long> stationID, global::System.Nullable<int> state, string type) {
             this.Adapter.SelectCommand = this.CommandCollection[2];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -41433,7 +41421,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[4].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
@@ -41460,10 +41448,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.OrdersDataTable GetDataByAnySingle(global::System.Nullable<int> ownerID, global::System.Nullable<short> walletID, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> state, string type) {
+        public virtual EMMADataSet.OrdersDataTable GetDataByAnySingle(global::System.Nullable<long> ownerID, global::System.Nullable<short> walletID, global::System.Nullable<int> itemID, global::System.Nullable<long> stationID, global::System.Nullable<int> state, string type) {
             this.Adapter.SelectCommand = this.CommandCollection[2];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -41481,7 +41469,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[4].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
@@ -41540,10 +41528,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByIssueDate(EMMADataSet.OrdersDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<short> walletID, global::System.Nullable<global::System.DateTime> earliestIssueDate, global::System.Nullable<global::System.DateTime> latestIssueDate) {
+        public virtual int FillByIssueDate(EMMADataSet.OrdersDataTable dataTable, global::System.Nullable<long> ownerID, global::System.Nullable<short> walletID, global::System.Nullable<global::System.DateTime> earliestIssueDate, global::System.Nullable<global::System.DateTime> latestIssueDate) {
             this.Adapter.SelectCommand = this.CommandCollection[4];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -41576,10 +41564,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.OrdersDataTable GetDataByIssueDate(global::System.Nullable<int> ownerID, global::System.Nullable<short> walletID, global::System.Nullable<global::System.DateTime> earliestIssueDate, global::System.Nullable<global::System.DateTime> latestIssueDate) {
+        public virtual EMMADataSet.OrdersDataTable GetDataByIssueDate(global::System.Nullable<long> ownerID, global::System.Nullable<short> walletID, global::System.Nullable<global::System.DateTime> earliestIssueDate, global::System.Nullable<global::System.DateTime> latestIssueDate) {
             this.Adapter.SelectCommand = this.CommandCollection[4];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -41610,10 +41598,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillOrderExists(EMMADataSet.OrdersDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<short> walletID, global::System.Nullable<int> stationID, global::System.Nullable<int> itemID, global::System.Nullable<int> totalVol, global::System.Nullable<int> remainingVol, global::System.Nullable<short> range, global::System.Nullable<short> orderState, global::System.Nullable<bool> buyOrder, global::System.Nullable<decimal> price, global::System.Nullable<long> eveOrderID, ref global::System.Nullable<bool> exists, ref global::System.Nullable<int> orderID) {
+        public virtual int FillOrderExists(EMMADataSet.OrdersDataTable dataTable, global::System.Nullable<long> ownerID, global::System.Nullable<short> walletID, global::System.Nullable<long> stationID, global::System.Nullable<int> itemID, global::System.Nullable<int> totalVol, global::System.Nullable<int> remainingVol, global::System.Nullable<short> range, global::System.Nullable<short> orderState, global::System.Nullable<bool> buyOrder, global::System.Nullable<decimal> price, global::System.Nullable<long> eveOrderID, ref global::System.Nullable<bool> exists, ref global::System.Nullable<int> orderID) {
             this.Adapter.SelectCommand = this.CommandCollection[5];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -41625,7 +41613,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -41714,10 +41702,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.OrdersDataTable GetOrderExists(global::System.Nullable<int> ownerID, global::System.Nullable<short> walletID, global::System.Nullable<int> stationID, global::System.Nullable<int> itemID, global::System.Nullable<int> totalVol, global::System.Nullable<int> remainingVol, global::System.Nullable<short> range, global::System.Nullable<short> orderState, global::System.Nullable<bool> buyOrder, global::System.Nullable<decimal> price, global::System.Nullable<long> eveOrderID, ref global::System.Nullable<bool> exists, ref global::System.Nullable<int> orderID) {
+        public virtual EMMADataSet.OrdersDataTable GetOrderExists(global::System.Nullable<long> ownerID, global::System.Nullable<short> walletID, global::System.Nullable<long> stationID, global::System.Nullable<int> itemID, global::System.Nullable<int> totalVol, global::System.Nullable<int> remainingVol, global::System.Nullable<short> range, global::System.Nullable<short> orderState, global::System.Nullable<bool> buyOrder, global::System.Nullable<decimal> price, global::System.Nullable<long> eveOrderID, ref global::System.Nullable<bool> exists, ref global::System.Nullable<int> orderID) {
             this.Adapter.SelectCommand = this.CommandCollection[5];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -41729,7 +41717,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -41843,9 +41831,9 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
         public virtual int Delete(
                     int Original_ID, 
-                    int Original_OwnerID, 
+                    long Original_OwnerID, 
                     bool Original_ForCorp, 
-                    int Original_StationID, 
+                    long Original_StationID, 
                     int Original_TotalVol, 
                     int Original_RemainingVol, 
                     int Original_MinVolume, 
@@ -41861,9 +41849,9 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                     bool Original_Processed, 
                     long Original_EveOrderID) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ID));
-            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_OwnerID));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((long)(Original_OwnerID));
             this.Adapter.DeleteCommand.Parameters[2].Value = ((bool)(Original_ForCorp));
-            this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_StationID));
+            this.Adapter.DeleteCommand.Parameters[3].Value = ((long)(Original_StationID));
             this.Adapter.DeleteCommand.Parameters[4].Value = ((int)(Original_TotalVol));
             this.Adapter.DeleteCommand.Parameters[5].Value = ((int)(Original_RemainingVol));
             this.Adapter.DeleteCommand.Parameters[6].Value = ((int)(Original_MinVolume));
@@ -41898,9 +41886,9 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
         public virtual int Insert(
-                    global::System.Nullable<int> OwnerID, 
+                    global::System.Nullable<long> OwnerID, 
                     global::System.Nullable<bool> ForCorp, 
-                    global::System.Nullable<int> StationID, 
+                    global::System.Nullable<long> StationID, 
                     global::System.Nullable<int> TotalVol, 
                     global::System.Nullable<int> RemainingVol, 
                     global::System.Nullable<int> MinVolume, 
@@ -41916,7 +41904,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                     global::System.Nullable<bool> Processed, 
                     global::System.Nullable<long> EveOrderID) {
             if ((OwnerID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[1].Value = ((int)(OwnerID.Value));
+                this.Adapter.InsertCommand.Parameters[1].Value = ((long)(OwnerID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -41928,7 +41916,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.InsertCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((StationID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[3].Value = ((int)(StationID.Value));
+                this.Adapter.InsertCommand.Parameters[3].Value = ((long)(StationID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -42038,9 +42026,9 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
         public virtual int Update(
                     global::System.Nullable<int> ID, 
-                    global::System.Nullable<int> OwnerID, 
+                    global::System.Nullable<long> OwnerID, 
                     global::System.Nullable<bool> ForCorp, 
-                    global::System.Nullable<int> StationID, 
+                    global::System.Nullable<long> StationID, 
                     global::System.Nullable<int> TotalVol, 
                     global::System.Nullable<int> RemainingVol, 
                     global::System.Nullable<int> MinVolume, 
@@ -42063,7 +42051,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.UpdateCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((OwnerID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(OwnerID.Value));
+                this.Adapter.UpdateCommand.Parameters[2].Value = ((long)(OwnerID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -42075,7 +42063,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.UpdateCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((StationID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(StationID.Value));
+                this.Adapter.UpdateCommand.Parameters[4].Value = ((long)(StationID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[4].Value = global::System.DBNull.Value;
@@ -42190,9 +42178,9 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
         public virtual int Update(
-                    global::System.Nullable<int> OwnerID, 
+                    global::System.Nullable<long> OwnerID, 
                     global::System.Nullable<bool> ForCorp, 
-                    global::System.Nullable<int> StationID, 
+                    global::System.Nullable<long> StationID, 
                     global::System.Nullable<int> TotalVol, 
                     global::System.Nullable<int> RemainingVol, 
                     global::System.Nullable<int> MinVolume, 
@@ -42213,10 +42201,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int FinishUnProcessed(global::System.Nullable<int> ownerID, global::System.Nullable<bool> notify, global::System.Nullable<bool> notifyBuy, global::System.Nullable<bool> notifySell) {
+        public virtual int FinishUnProcessed(global::System.Nullable<long> ownerID, global::System.Nullable<bool> notify, global::System.Nullable<bool> notifyBuy, global::System.Nullable<bool> notifySell) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[6];
             if ((ownerID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(ownerID.Value));
+                command.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 command.Parameters[1].Value = global::System.DBNull.Value;
@@ -42258,16 +42246,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int OrdersMigrateToCorpID(global::System.Nullable<int> charID, global::System.Nullable<int> corpID) {
+        public virtual int OrdersMigrateToCorpID(global::System.Nullable<long> charID, global::System.Nullable<long> corpID) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[7];
             if ((charID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(charID.Value));
+                command.Parameters[1].Value = ((long)(charID.Value));
             }
             else {
                 command.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((corpID.HasValue == true)) {
-                command.Parameters[2].Value = ((int)(corpID.Value));
+                command.Parameters[2].Value = ((long)(corpID.Value));
             }
             else {
                 command.Parameters[2].Value = global::System.DBNull.Value;
@@ -42291,10 +42279,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int SetProcessed(global::System.Nullable<int> ownerID, global::System.Nullable<bool> processed) {
+        public virtual int SetProcessed(global::System.Nullable<long> ownerID, global::System.Nullable<bool> processed) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[8];
             if ((ownerID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(ownerID.Value));
+                command.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 command.Parameters[1].Value = global::System.DBNull.Value;
@@ -42465,15 +42453,15 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[Assets] WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([CorpAsset] = @Original_CorpAsset) AND ([LocationID] = @Original_LocationID) AND ([ItemID] = @Original_ItemID) AND ([SystemID] = @Original_SystemID) AND ([RegionID] = @Original_RegionID) AND ([ContainerID] = @Original_ContainerID) AND ([Quantity] = @Original_Quantity) AND ([Status] = @Original_Status) AND ([AutoConExclude] = @Original_AutoConExclude) AND ([Processed] = @Original_Processed) AND ([IsContainer] = @Original_IsContainer) AND ([ReprocExclude] = @Original_ReprocExclude) AND ([Cost] = @Original_Cost) AND ([CostCalc] = @Original_CostCalc) AND ([EveItemID] = @Original_EveItemID) AND ([BoughtViaContract] = @Original_BoughtViaContract))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [Assets] WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([CorpAsset] = @Original_CorpAsset) AND ([LocationID] = @Original_LocationID) AND ([ItemID] = @Original_ItemID) AND ([SystemID] = @Original_SystemID) AND ([RegionID] = @Original_RegionID) AND ([ContainerID] = @Original_ContainerID) AND ([Quantity] = @Original_Quantity) AND ([Status] = @Original_Status) AND ([AutoConExclude] = @Original_AutoConExclude) AND ([Processed] = @Original_Processed) AND ([IsContainer] = @Original_IsContainer) AND ([ReprocExclude] = @Original_ReprocExclude) AND ([Cost] = @Original_Cost) AND ([CostCalc] = @Original_CostCalc) AND ([EveItemID] = @Original_EveItemID) AND ([BoughtViaContract] = @Original_BoughtViaContract))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LocationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LocationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LocationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LocationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SystemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SystemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RegionID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RegionID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SystemID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SystemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RegionID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RegionID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ContainerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Quantity", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Quantity", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Status", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Status", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -42490,12 +42478,12 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._adapter.InsertCommand.CommandText = "AssetsInsert";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.StoredProcedure;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "CorpAsset", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LocationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "LocationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LocationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "LocationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SystemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "SystemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RegionID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RegionID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SystemID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "SystemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RegionID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "RegionID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ContainerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "ContainerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Quantity", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "Quantity", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "Status", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -42507,19 +42495,19 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CostCalc", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "CostCalc", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@EveItemID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "EveItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BoughtViaContract", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "BoughtViaContract", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@newID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Output, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@newID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Output, 19, 0, "", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
             this._adapter.UpdateCommand.CommandText = "AssetsUpdate";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.StoredProcedure;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, "CorpAsset", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LocationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "LocationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LocationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "LocationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SystemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "SystemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RegionID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "RegionID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SystemID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "SystemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RegionID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "RegionID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ContainerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "ContainerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Quantity", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, "Quantity", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, "Status", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -42545,20 +42533,21 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[21];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ID, OwnerID, CorpAsset, LocationID, ItemID, SystemID, RegionID, ContainerI" +
-                "D, Quantity, Status, AutoConExclude, Processed, IsContainer, ReprocExclude, Cost" +
-                ", CostCalc, EveItemID, BoughtViaContract FROM dbo.Assets";
+            this._commandCollection[0].CommandText = "SELECT     ID, OwnerID, CorpAsset, LocationID, ItemID, SystemID, RegionID, Contai" +
+                "nerID, Quantity, Status, AutoConExclude, Processed, IsContainer, \r\n             " +
+                "         ReprocExclude, Cost, CostCalc, EveItemID, BoughtViaContract\r\nFROM      " +
+                "   Assets";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.AssetsAddQuantity";
+            this._commandCollection[1].CommandText = "AssetsAddQuantity";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@systemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@systemID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@containerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoConExclude", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -42567,14 +42556,14 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@costCalc", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "dbo.AssetsMigrateToCorpID";
+            this._commandCollection[2].CommandText = "AssetsMigrateToCorpID";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[3].Connection = this.Connection;
-            this._commandCollection[3].CommandText = "dbo.AssetsBuildResults";
+            this._commandCollection[3].CommandText = "AssetsBuildResults";
             this._commandCollection[3].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -42583,18 +42572,18 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@groupBy", global::System.Data.SqlDbType.VarChar, 50, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[4].Connection = this.Connection;
-            this._commandCollection[4].CommandText = "dbo.AssetsClearUnProc";
+            this._commandCollection[4].CommandText = "AssetsClearUnProc";
             this._commandCollection[4].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@onlyContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[5].Connection = this.Connection;
-            this._commandCollection[5].CommandText = "dbo.AssetExists";
+            this._commandCollection[5].CommandText = "AssetExists";
             this._commandCollection[5].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@isContained", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -42609,59 +42598,59 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@assetID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.InputOutput, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[6].Connection = this.Connection;
-            this._commandCollection[6].CommandText = "dbo.AssetsGetByLocationAndItem";
+            this._commandCollection[6].CommandText = "AssetsGetByLocationAndItem";
             this._commandCollection[6].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@systemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@systemID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@containersOnly", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@getContained", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[6].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[7].Connection = this.Connection;
-            this._commandCollection[7].CommandText = "dbo.AssetsGetAutoConByOwner";
+            this._commandCollection[7].CommandText = "AssetsGetAutoConByOwner";
             this._commandCollection[7].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[7].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@excludeContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[8] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[8].Connection = this.Connection;
-            this._commandCollection[8].CommandText = "dbo.AssetsGetAutoConByAny";
+            this._commandCollection[8].CommandText = "AssetsGetAutoConByAny";
             this._commandCollection[8].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[8].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@excludeContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[9] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[9].Connection = this.Connection;
-            this._commandCollection[9].CommandText = "dbo.AssetsGetBoughtViaContract";
+            this._commandCollection[9].CommandText = "AssetsGetBoughtViaContract";
             this._commandCollection[9].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[10] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[10].Connection = this.Connection;
-            this._commandCollection[10].CommandText = "dbo.AssetsGetContained";
+            this._commandCollection[10].CommandText = "AssetsGetContained";
             this._commandCollection[10].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[10].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[10].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@containerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[10].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[11] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[11].Connection = this.Connection;
-            this._commandCollection[11].CommandText = "dbo.AssetsGetByID";
+            this._commandCollection[11].CommandText = "AssetsGetByID";
             this._commandCollection[11].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@assetID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[12] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[12].Connection = this.Connection;
-            this._commandCollection[12].CommandText = "dbo.AssetsGetByItem";
+            this._commandCollection[12].CommandText = "AssetsGetByItem";
             this._commandCollection[12].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[12].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[12].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -42672,83 +42661,81 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._commandCollection[12].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[13] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[13].Connection = this.Connection;
-            this._commandCollection[13].CommandText = "dbo.AssetsGetItemAndContainersOfItem";
+            this._commandCollection[13].CommandText = "AssetsGetItemAndContainersOfItem";
             this._commandCollection[13].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@regionIDs", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@systemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@systemID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@containersOnly", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@getContained", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[14] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[14].Connection = this.Connection;
-            this._commandCollection[14].CommandText = "dbo.AssetsGetByProcessed";
+            this._commandCollection[14].CommandText = "AssetsGetByProcessed";
             this._commandCollection[14].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@systemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@systemID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[15] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[15].Connection = this.Connection;
-            this._commandCollection[15].CommandText = "dbo.AssetsGetReproc";
+            this._commandCollection[15].CommandText = "AssetsGetReproc";
             this._commandCollection[15].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[15].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@includeNonContainers", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[16] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[16].Connection = this.Connection;
-            this._commandCollection[16].CommandText = "dbo.AssetsGetResultsPage";
+            this._commandCollection[16].CommandText = "AssetsGetResultsPage";
             this._commandCollection[16].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[16].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[16].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@startRow", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[16].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@pageSize", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[17] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[17].Connection = this.Connection;
-            this._commandCollection[17].CommandText = "dbo.AssetsSetExcludeFlag";
+            this._commandCollection[17].CommandText = "AssetsSetExcludeFlag";
             this._commandCollection[17].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@assetID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@containerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@exclude", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[17].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[18] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[18].Connection = this.Connection;
-            this._commandCollection[18].CommandText = "dbo.AssetsSetProcFlag";
+            this._commandCollection[18].CommandText = "AssetsSetProcFlag";
             this._commandCollection[18].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@assetID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[18].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@processed", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[19] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[19].Connection = this.Connection;
-            this._commandCollection[19].CommandText = "dbo.AssetsSetReprocExclude";
+            this._commandCollection[19].CommandText = "AssetsSetReprocExclude";
             this._commandCollection[19].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@assetID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@locationID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@itemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@containerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@exclude", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[20] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[20].Connection = this.Connection;
-            this._commandCollection[20].CommandText = "dbo.AssetsTotalQuantityByAny";
+            this._commandCollection[20].CommandText = "AssetsTotalQuantityByAny";
             this._commandCollection[20].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[20].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[20].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@accessList", global::System.Data.SqlDbType.VarChar, 2147483647, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -42785,16 +42772,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillAssetExists(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<bool> isContained, global::System.Nullable<long> containerID, global::System.Nullable<bool> isContainer, global::System.Nullable<bool> processed, global::System.Nullable<bool> ignoreProcessed, global::System.Nullable<bool> autoConExclude, global::System.Nullable<bool> ignoreAutoConEx, global::System.Nullable<long> eveItemID, ref global::System.Nullable<bool> exists, ref global::System.Nullable<long> assetID) {
+        public virtual int FillAssetExists(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<long> ownerID, global::System.Nullable<long> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<bool> isContained, global::System.Nullable<long> containerID, global::System.Nullable<bool> isContainer, global::System.Nullable<bool> processed, global::System.Nullable<bool> ignoreProcessed, global::System.Nullable<bool> autoConExclude, global::System.Nullable<bool> ignoreAutoConEx, global::System.Nullable<long> eveItemID, ref global::System.Nullable<bool> exists, ref global::System.Nullable<long> assetID) {
             this.Adapter.SelectCommand = this.CommandCollection[5];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((locationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(locationID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(locationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -42895,16 +42882,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.AssetsDataTable GetAssetExists(global::System.Nullable<int> ownerID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<bool> isContained, global::System.Nullable<long> containerID, global::System.Nullable<bool> isContainer, global::System.Nullable<bool> processed, global::System.Nullable<bool> ignoreProcessed, global::System.Nullable<bool> autoConExclude, global::System.Nullable<bool> ignoreAutoConEx, global::System.Nullable<long> eveItemID, ref global::System.Nullable<bool> exists, ref global::System.Nullable<long> assetID) {
+        public virtual EMMADataSet.AssetsDataTable GetAssetExists(global::System.Nullable<long> ownerID, global::System.Nullable<long> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<bool> isContained, global::System.Nullable<long> containerID, global::System.Nullable<bool> isContainer, global::System.Nullable<bool> processed, global::System.Nullable<bool> ignoreProcessed, global::System.Nullable<bool> autoConExclude, global::System.Nullable<bool> ignoreAutoConEx, global::System.Nullable<long> eveItemID, ref global::System.Nullable<bool> exists, ref global::System.Nullable<long> assetID) {
             this.Adapter.SelectCommand = this.CommandCollection[5];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((locationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(locationID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(locationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -43003,7 +42990,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByAny(EMMADataSet.AssetsDataTable dataTable, string accessList, string regionIDs, global::System.Nullable<int> systemID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<bool> containersOnly, global::System.Nullable<bool> getContained, global::System.Nullable<int> status) {
+        public virtual int FillByAny(EMMADataSet.AssetsDataTable dataTable, string accessList, string regionIDs, global::System.Nullable<long> systemID, global::System.Nullable<long> locationID, global::System.Nullable<int> itemID, global::System.Nullable<bool> containersOnly, global::System.Nullable<bool> getContained, global::System.Nullable<int> status) {
             this.Adapter.SelectCommand = this.CommandCollection[6];
             if ((accessList == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -43018,13 +43005,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[2].Value = ((string)(regionIDs));
             }
             if ((systemID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(systemID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(systemID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((locationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(locationID.Value));
+                this.Adapter.SelectCommand.Parameters[4].Value = ((long)(locationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
@@ -43063,7 +43050,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.AssetsDataTable GetDataByAny(string accessList, string regionIDs, global::System.Nullable<int> systemID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<bool> containersOnly, global::System.Nullable<bool> getContained, global::System.Nullable<int> status) {
+        public virtual EMMADataSet.AssetsDataTable GetDataByAny(string accessList, string regionIDs, global::System.Nullable<long> systemID, global::System.Nullable<long> locationID, global::System.Nullable<int> itemID, global::System.Nullable<bool> containersOnly, global::System.Nullable<bool> getContained, global::System.Nullable<int> status) {
             this.Adapter.SelectCommand = this.CommandCollection[6];
             if ((accessList == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -43078,13 +43065,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[2].Value = ((string)(regionIDs));
             }
             if ((systemID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(systemID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(systemID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((locationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(locationID.Value));
+                this.Adapter.SelectCommand.Parameters[4].Value = ((long)(locationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
@@ -43121,16 +43108,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByAutoCon(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<int> stationID, string itemIDs, global::System.Nullable<bool> excludeContainers) {
+        public virtual int FillByAutoCon(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<long> ownerID, global::System.Nullable<long> stationID, string itemIDs, global::System.Nullable<bool> excludeContainers) {
             this.Adapter.SelectCommand = this.CommandCollection[7];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -43157,16 +43144,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.AssetsDataTable GetDataByAutoCon(global::System.Nullable<int> ownerID, global::System.Nullable<int> stationID, string itemIDs, global::System.Nullable<bool> excludeContainers) {
+        public virtual EMMADataSet.AssetsDataTable GetDataByAutoCon(global::System.Nullable<long> ownerID, global::System.Nullable<long> stationID, string itemIDs, global::System.Nullable<bool> excludeContainers) {
             this.Adapter.SelectCommand = this.CommandCollection[7];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -43191,10 +43178,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByAutoConAny(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<int> ownerID, string stationIDs, string regionIDs, string itemIDs, global::System.Nullable<bool> excludeContainers) {
+        public virtual int FillByAutoConAny(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<long> ownerID, string stationIDs, string regionIDs, string itemIDs, global::System.Nullable<bool> excludeContainers) {
             this.Adapter.SelectCommand = this.CommandCollection[8];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -43233,10 +43220,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.AssetsDataTable GetDataByAutoConAny(global::System.Nullable<int> ownerID, string stationIDs, string regionIDs, string itemIDs, global::System.Nullable<bool> excludeContainers) {
+        public virtual EMMADataSet.AssetsDataTable GetDataByAutoConAny(global::System.Nullable<long> ownerID, string stationIDs, string regionIDs, string itemIDs, global::System.Nullable<bool> excludeContainers) {
             this.Adapter.SelectCommand = this.CommandCollection[8];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -43493,7 +43480,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByItemAndContainersOfItem(EMMADataSet.AssetsDataTable dataTable, string accessList, string regionIDs, global::System.Nullable<int> systemID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<bool> containersOnly, global::System.Nullable<bool> getContained, global::System.Nullable<int> status) {
+        public virtual int FillByItemAndContainersOfItem(EMMADataSet.AssetsDataTable dataTable, string accessList, string regionIDs, global::System.Nullable<long> systemID, global::System.Nullable<long> locationID, global::System.Nullable<int> itemID, global::System.Nullable<bool> containersOnly, global::System.Nullable<bool> getContained, global::System.Nullable<int> status) {
             this.Adapter.SelectCommand = this.CommandCollection[13];
             if ((accessList == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -43508,13 +43495,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[2].Value = ((string)(regionIDs));
             }
             if ((systemID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(systemID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(systemID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((locationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(locationID.Value));
+                this.Adapter.SelectCommand.Parameters[4].Value = ((long)(locationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
@@ -43553,7 +43540,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.AssetsDataTable GetDataByItemAndContainersOfItem(string accessList, string regionIDs, global::System.Nullable<int> systemID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<bool> containersOnly, global::System.Nullable<bool> getContained, global::System.Nullable<int> status) {
+        public virtual EMMADataSet.AssetsDataTable GetDataByItemAndContainersOfItem(string accessList, string regionIDs, global::System.Nullable<long> systemID, global::System.Nullable<long> locationID, global::System.Nullable<int> itemID, global::System.Nullable<bool> containersOnly, global::System.Nullable<bool> getContained, global::System.Nullable<int> status) {
             this.Adapter.SelectCommand = this.CommandCollection[13];
             if ((accessList == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -43568,13 +43555,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[2].Value = ((string)(regionIDs));
             }
             if ((systemID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(systemID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(systemID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((locationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(locationID.Value));
+                this.Adapter.SelectCommand.Parameters[4].Value = ((long)(locationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
@@ -43611,7 +43598,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByProcessed(EMMADataSet.AssetsDataTable dataTable, string accessList, global::System.Nullable<int> systemID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<bool> processed) {
+        public virtual int FillByProcessed(EMMADataSet.AssetsDataTable dataTable, string accessList, global::System.Nullable<long> systemID, global::System.Nullable<long> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<bool> processed) {
             this.Adapter.SelectCommand = this.CommandCollection[14];
             if ((accessList == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -43620,13 +43607,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[1].Value = ((string)(accessList));
             }
             if ((systemID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(systemID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(systemID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((locationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(locationID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(locationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -43659,7 +43646,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.AssetsDataTable GetDataByProcessed(string accessList, global::System.Nullable<int> systemID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<bool> processed) {
+        public virtual EMMADataSet.AssetsDataTable GetDataByProcessed(string accessList, global::System.Nullable<long> systemID, global::System.Nullable<long> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<bool> processed) {
             this.Adapter.SelectCommand = this.CommandCollection[14];
             if ((accessList == null)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -43668,13 +43655,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.SelectCommand.Parameters[1].Value = ((string)(accessList));
             }
             if ((systemID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(systemID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(systemID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((locationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(locationID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(locationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -43705,16 +43692,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByReprocessables(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<int> stationID, global::System.Nullable<int> status, global::System.Nullable<bool> includeContainers, global::System.Nullable<bool> includeNonContainers) {
+        public virtual int FillByReprocessables(EMMADataSet.AssetsDataTable dataTable, global::System.Nullable<long> ownerID, global::System.Nullable<long> stationID, global::System.Nullable<int> status, global::System.Nullable<bool> includeContainers, global::System.Nullable<bool> includeNonContainers) {
             this.Adapter.SelectCommand = this.CommandCollection[15];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -43747,16 +43734,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.AssetsDataTable GetDataByReprocessables(global::System.Nullable<int> ownerID, global::System.Nullable<int> stationID, global::System.Nullable<int> status, global::System.Nullable<bool> includeContainers, global::System.Nullable<bool> includeNonContainers) {
+        public virtual EMMADataSet.AssetsDataTable GetDataByReprocessables(global::System.Nullable<long> ownerID, global::System.Nullable<long> stationID, global::System.Nullable<int> status, global::System.Nullable<bool> includeContainers, global::System.Nullable<bool> includeNonContainers) {
             this.Adapter.SelectCommand = this.CommandCollection[15];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(stationID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(stationID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -43860,12 +43847,12 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
         public virtual int Delete(
                     long Original_ID, 
-                    int Original_OwnerID, 
+                    long Original_OwnerID, 
                     bool Original_CorpAsset, 
-                    int Original_LocationID, 
+                    long Original_LocationID, 
                     int Original_ItemID, 
-                    int Original_SystemID, 
-                    int Original_RegionID, 
+                    long Original_SystemID, 
+                    long Original_RegionID, 
                     long Original_ContainerID, 
                     long Original_Quantity, 
                     int Original_Status, 
@@ -43878,12 +43865,12 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                     long Original_EveItemID, 
                     bool Original_BoughtViaContract) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_ID));
-            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_OwnerID));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((long)(Original_OwnerID));
             this.Adapter.DeleteCommand.Parameters[2].Value = ((bool)(Original_CorpAsset));
-            this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_LocationID));
+            this.Adapter.DeleteCommand.Parameters[3].Value = ((long)(Original_LocationID));
             this.Adapter.DeleteCommand.Parameters[4].Value = ((int)(Original_ItemID));
-            this.Adapter.DeleteCommand.Parameters[5].Value = ((int)(Original_SystemID));
-            this.Adapter.DeleteCommand.Parameters[6].Value = ((int)(Original_RegionID));
+            this.Adapter.DeleteCommand.Parameters[5].Value = ((long)(Original_SystemID));
+            this.Adapter.DeleteCommand.Parameters[6].Value = ((long)(Original_RegionID));
             this.Adapter.DeleteCommand.Parameters[7].Value = ((long)(Original_ContainerID));
             this.Adapter.DeleteCommand.Parameters[8].Value = ((long)(Original_Quantity));
             this.Adapter.DeleteCommand.Parameters[9].Value = ((int)(Original_Status));
@@ -43915,12 +43902,12 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
         public virtual int Insert(
-                    global::System.Nullable<int> OwnerID, 
+                    global::System.Nullable<long> OwnerID, 
                     global::System.Nullable<bool> CorpAsset, 
-                    global::System.Nullable<int> LocationID, 
+                    global::System.Nullable<long> LocationID, 
                     global::System.Nullable<int> ItemID, 
-                    global::System.Nullable<int> SystemID, 
-                    global::System.Nullable<int> RegionID, 
+                    global::System.Nullable<long> SystemID, 
+                    global::System.Nullable<long> RegionID, 
                     global::System.Nullable<long> ContainerID, 
                     global::System.Nullable<long> Quantity, 
                     global::System.Nullable<int> Status, 
@@ -43934,7 +43921,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                     global::System.Nullable<bool> BoughtViaContract, 
                     out global::System.Nullable<long> newID) {
             if ((OwnerID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[1].Value = ((int)(OwnerID.Value));
+                this.Adapter.InsertCommand.Parameters[1].Value = ((long)(OwnerID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -43946,7 +43933,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.InsertCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((LocationID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[3].Value = ((int)(LocationID.Value));
+                this.Adapter.InsertCommand.Parameters[3].Value = ((long)(LocationID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -43958,13 +43945,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.InsertCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
             if ((SystemID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[5].Value = ((int)(SystemID.Value));
+                this.Adapter.InsertCommand.Parameters[5].Value = ((long)(SystemID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[5].Value = global::System.DBNull.Value;
             }
             if ((RegionID.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[6].Value = ((int)(RegionID.Value));
+                this.Adapter.InsertCommand.Parameters[6].Value = ((long)(RegionID.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[6].Value = global::System.DBNull.Value;
@@ -44063,12 +44050,12 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
         public virtual int Update(
                     global::System.Nullable<long> ID, 
-                    global::System.Nullable<int> OwnerID, 
+                    global::System.Nullable<long> OwnerID, 
                     global::System.Nullable<bool> CorpAsset, 
-                    global::System.Nullable<int> LocationID, 
+                    global::System.Nullable<long> LocationID, 
                     global::System.Nullable<int> ItemID, 
-                    global::System.Nullable<int> SystemID, 
-                    global::System.Nullable<int> RegionID, 
+                    global::System.Nullable<long> SystemID, 
+                    global::System.Nullable<long> RegionID, 
                     global::System.Nullable<long> ContainerID, 
                     global::System.Nullable<long> Quantity, 
                     global::System.Nullable<int> Status, 
@@ -44088,7 +44075,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.UpdateCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((OwnerID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(OwnerID.Value));
+                this.Adapter.UpdateCommand.Parameters[2].Value = ((long)(OwnerID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -44100,7 +44087,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.UpdateCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((LocationID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(LocationID.Value));
+                this.Adapter.UpdateCommand.Parameters[4].Value = ((long)(LocationID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[4].Value = global::System.DBNull.Value;
@@ -44112,13 +44099,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 this.Adapter.UpdateCommand.Parameters[5].Value = global::System.DBNull.Value;
             }
             if ((SystemID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(SystemID.Value));
+                this.Adapter.UpdateCommand.Parameters[6].Value = ((long)(SystemID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[6].Value = global::System.DBNull.Value;
             }
             if ((RegionID.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(RegionID.Value));
+                this.Adapter.UpdateCommand.Parameters[7].Value = ((long)(RegionID.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[7].Value = global::System.DBNull.Value;
@@ -44215,12 +44202,12 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
         public virtual int Update(
-                    global::System.Nullable<int> OwnerID, 
+                    global::System.Nullable<long> OwnerID, 
                     global::System.Nullable<bool> CorpAsset, 
-                    global::System.Nullable<int> LocationID, 
+                    global::System.Nullable<long> LocationID, 
                     global::System.Nullable<int> ItemID, 
-                    global::System.Nullable<int> SystemID, 
-                    global::System.Nullable<int> RegionID, 
+                    global::System.Nullable<long> SystemID, 
+                    global::System.Nullable<long> RegionID, 
                     global::System.Nullable<long> ContainerID, 
                     global::System.Nullable<long> Quantity, 
                     global::System.Nullable<int> Status, 
@@ -44238,10 +44225,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int AddQuantity(global::System.Nullable<int> ownerID, global::System.Nullable<int> itemID, global::System.Nullable<int> stationID, global::System.Nullable<int> systemID, global::System.Nullable<int> regionID, global::System.Nullable<int> status, global::System.Nullable<long> containerID, global::System.Nullable<bool> autoConExclude, global::System.Nullable<long> deltaQuantity, global::System.Nullable<decimal> addedItemsCost, global::System.Nullable<bool> costCalc) {
+        public virtual int AddQuantity(global::System.Nullable<long> ownerID, global::System.Nullable<int> itemID, global::System.Nullable<long> stationID, global::System.Nullable<long> systemID, global::System.Nullable<long> regionID, global::System.Nullable<int> status, global::System.Nullable<long> containerID, global::System.Nullable<bool> autoConExclude, global::System.Nullable<long> deltaQuantity, global::System.Nullable<decimal> addedItemsCost, global::System.Nullable<bool> costCalc) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[1];
             if ((ownerID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(ownerID.Value));
+                command.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 command.Parameters[1].Value = global::System.DBNull.Value;
@@ -44253,19 +44240,19 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 command.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((stationID.HasValue == true)) {
-                command.Parameters[3].Value = ((int)(stationID.Value));
+                command.Parameters[3].Value = ((long)(stationID.Value));
             }
             else {
                 command.Parameters[3].Value = global::System.DBNull.Value;
             }
             if ((systemID.HasValue == true)) {
-                command.Parameters[4].Value = ((int)(systemID.Value));
+                command.Parameters[4].Value = ((long)(systemID.Value));
             }
             else {
                 command.Parameters[4].Value = global::System.DBNull.Value;
             }
             if ((regionID.HasValue == true)) {
-                command.Parameters[5].Value = ((int)(regionID.Value));
+                command.Parameters[5].Value = ((long)(regionID.Value));
             }
             else {
                 command.Parameters[5].Value = global::System.DBNull.Value;
@@ -44325,16 +44312,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int AssetsMigrateToCorpID(global::System.Nullable<int> charID, global::System.Nullable<int> corpID) {
+        public virtual int AssetsMigrateToCorpID(global::System.Nullable<long> charID, global::System.Nullable<long> corpID) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[2];
             if ((charID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(charID.Value));
+                command.Parameters[1].Value = ((long)(charID.Value));
             }
             else {
                 command.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((corpID.HasValue == true)) {
-                command.Parameters[2].Value = ((int)(corpID.Value));
+                command.Parameters[2].Value = ((long)(corpID.Value));
             }
             else {
                 command.Parameters[2].Value = global::System.DBNull.Value;
@@ -44403,10 +44390,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int ClearUnProc(global::System.Nullable<int> ownerID, global::System.Nullable<bool> onlyContainers) {
+        public virtual int ClearUnProc(global::System.Nullable<long> ownerID, global::System.Nullable<bool> onlyContainers) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[4];
             if ((ownerID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(ownerID.Value));
+                command.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 command.Parameters[1].Value = global::System.DBNull.Value;
@@ -44436,7 +44423,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int SetExcludeFlag(global::System.Nullable<long> assetID, global::System.Nullable<int> ownerID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<long> containerID, global::System.Nullable<bool> exclude, global::System.Nullable<bool> corpAsset) {
+        public virtual int SetExcludeFlag(global::System.Nullable<long> assetID, global::System.Nullable<long> ownerID, global::System.Nullable<long> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<long> containerID, global::System.Nullable<bool> exclude) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[17];
             if ((assetID.HasValue == true)) {
                 command.Parameters[1].Value = ((long)(assetID.Value));
@@ -44445,13 +44432,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 command.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((ownerID.HasValue == true)) {
-                command.Parameters[2].Value = ((int)(ownerID.Value));
+                command.Parameters[2].Value = ((long)(ownerID.Value));
             }
             else {
                 command.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((locationID.HasValue == true)) {
-                command.Parameters[3].Value = ((int)(locationID.Value));
+                command.Parameters[3].Value = ((long)(locationID.Value));
             }
             else {
                 command.Parameters[3].Value = global::System.DBNull.Value;
@@ -44480,12 +44467,6 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             else {
                 command.Parameters[7].Value = global::System.DBNull.Value;
             }
-            if ((corpAsset.HasValue == true)) {
-                command.Parameters[8].Value = ((bool)(corpAsset.Value));
-            }
-            else {
-                command.Parameters[8].Value = global::System.DBNull.Value;
-            }
             global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
             if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -44505,7 +44486,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int SetProcFlag(global::System.Nullable<long> assetID, global::System.Nullable<int> ownerID, global::System.Nullable<int> status, global::System.Nullable<bool> processed) {
+        public virtual int SetProcFlag(global::System.Nullable<long> assetID, global::System.Nullable<long> ownerID, global::System.Nullable<int> status, global::System.Nullable<bool> processed) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[18];
             if ((assetID.HasValue == true)) {
                 command.Parameters[1].Value = ((long)(assetID.Value));
@@ -44514,7 +44495,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 command.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((ownerID.HasValue == true)) {
-                command.Parameters[2].Value = ((int)(ownerID.Value));
+                command.Parameters[2].Value = ((long)(ownerID.Value));
             }
             else {
                 command.Parameters[2].Value = global::System.DBNull.Value;
@@ -44550,7 +44531,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int SetReprocExclude(global::System.Nullable<long> assetID, global::System.Nullable<int> ownerID, global::System.Nullable<int> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<long> containerID, global::System.Nullable<bool> exclude, global::System.Nullable<bool> corpAsset) {
+        public virtual int SetReprocExclude(global::System.Nullable<long> assetID, global::System.Nullable<long> ownerID, global::System.Nullable<long> locationID, global::System.Nullable<int> itemID, global::System.Nullable<int> status, global::System.Nullable<long> containerID, global::System.Nullable<bool> exclude) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[19];
             if ((assetID.HasValue == true)) {
                 command.Parameters[1].Value = ((long)(assetID.Value));
@@ -44559,13 +44540,13 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
                 command.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((ownerID.HasValue == true)) {
-                command.Parameters[2].Value = ((int)(ownerID.Value));
+                command.Parameters[2].Value = ((long)(ownerID.Value));
             }
             else {
                 command.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((locationID.HasValue == true)) {
-                command.Parameters[3].Value = ((int)(locationID.Value));
+                command.Parameters[3].Value = ((long)(locationID.Value));
             }
             else {
                 command.Parameters[3].Value = global::System.DBNull.Value;
@@ -44593,12 +44574,6 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             }
             else {
                 command.Parameters[7].Value = global::System.DBNull.Value;
-            }
-            if ((corpAsset.HasValue == true)) {
-                command.Parameters[8].Value = ((bool)(corpAsset.Value));
-            }
-            else {
-                command.Parameters[8].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
             if (((command.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -44787,10 +44762,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[AssetsLost] WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([CorpAsset] = @Original_CorpAsset) AND ([ItemID] = @Original_ItemID) AND ([LossDatetime] = @Original_LossDatetime) AND ([Quantity] = @Original_Quantity) AND ([Cost] = @Original_Cost) AND ([Value] = @Original_Value))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [AssetsLost] WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([CorpAsset] = @Original_CorpAsset) AND ([ItemID] = @Original_ItemID) AND ([LossDatetime] = @Original_LossDatetime) AND ([Quantity] = @Original_Quantity) AND ([Cost] = @Original_Cost) AND ([Value] = @Original_Value))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LossDatetime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LossDatetime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -44799,11 +44774,11 @@ SELECT ID, OwnerID, CorpAsset, ItemID, ProductionDateTime, Cost, Quantity FROM A
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Value", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Value", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[AssetsLost] ([ID], [OwnerID], [CorpAsset], [ItemID], [LossDatetime], [Quantity], [Cost], [Value]) VALUES (@ID, @OwnerID, @CorpAsset, @ItemID, @LossDatetime, @Quantity, @Cost, @Value);
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [AssetsLost] ([ID], [OwnerID], [CorpAsset], [ItemID], [LossDatetime], [Quantity], [Cost], [Value]) VALUES (@ID, @OwnerID, @CorpAsset, @ItemID, @LossDatetime, @Quantity, @Cost, @Value);
 SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM AssetsLost WHERE (ID = @ID)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LossDatetime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LossDatetime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -44812,11 +44787,11 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Value", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Value", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[AssetsLost] SET [ID] = @ID, [OwnerID] = @OwnerID, [CorpAsset] = @CorpAsset, [ItemID] = @ItemID, [LossDatetime] = @LossDatetime, [Quantity] = @Quantity, [Cost] = @Cost, [Value] = @Value WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([CorpAsset] = @Original_CorpAsset) AND ([ItemID] = @Original_ItemID) AND ([LossDatetime] = @Original_LossDatetime) AND ([Quantity] = @Original_Quantity) AND ([Cost] = @Original_Cost) AND ([Value] = @Original_Value));
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [AssetsLost] SET [ID] = @ID, [OwnerID] = @OwnerID, [CorpAsset] = @CorpAsset, [ItemID] = @ItemID, [LossDatetime] = @LossDatetime, [Quantity] = @Quantity, [Cost] = @Cost, [Value] = @Value WHERE (([ID] = @Original_ID) AND ([OwnerID] = @Original_OwnerID) AND ([CorpAsset] = @Original_CorpAsset) AND ([ItemID] = @Original_ItemID) AND ([LossDatetime] = @Original_LossDatetime) AND ([Quantity] = @Original_Quantity) AND ([Cost] = @Original_Cost) AND ([Value] = @Original_Value));
 SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM AssetsLost WHERE (ID = @ID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LossDatetime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LossDatetime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -44824,7 +44799,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Cost", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Cost", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Value", global::System.Data.SqlDbType.Decimal, 0, global::System.Data.ParameterDirection.Input, 18, 2, "Value", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OwnerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OwnerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CorpAsset", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CorpAsset", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_LossDatetime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LossDatetime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -44844,23 +44819,23 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[3];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM d" +
-                "bo.AssetsLost";
+            this._commandCollection[0].CommandText = "SELECT     ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value\r\nF" +
+                "ROM         AssetsLost";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.AssetsLostGetByDate";
+            this._commandCollection[1].CommandText = "AssetsLostGetByDate";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ownerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@startDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@endDate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "dbo.AssetsLostNew";
+            this._commandCollection[2].CommandText = "AssetsLostNew";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OwnerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CorpAsset", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ItemID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LossDateTime", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -44895,10 +44870,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByDate(EMMADataSet.AssetsLostDataTable dataTable, global::System.Nullable<int> ownerID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate) {
+        public virtual int FillByDate(EMMADataSet.AssetsLostDataTable dataTable, global::System.Nullable<long> ownerID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -44925,10 +44900,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.AssetsLostDataTable GetDataByDate(global::System.Nullable<int> ownerID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate) {
+        public virtual EMMADataSet.AssetsLostDataTable GetDataByDate(global::System.Nullable<long> ownerID, global::System.Nullable<global::System.DateTime> startDate, global::System.Nullable<global::System.DateTime> endDate) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((ownerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(ownerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(ownerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -44978,9 +44953,9 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(long Original_ID, int Original_OwnerID, bool Original_CorpAsset, int Original_ItemID, System.DateTime Original_LossDatetime, long Original_Quantity, decimal Original_Cost, decimal Original_Value) {
+        public virtual int Delete(long Original_ID, long Original_OwnerID, bool Original_CorpAsset, int Original_ItemID, System.DateTime Original_LossDatetime, long Original_Quantity, decimal Original_Cost, decimal Original_Value) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_ID));
-            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_OwnerID));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((long)(Original_OwnerID));
             this.Adapter.DeleteCommand.Parameters[2].Value = ((bool)(Original_CorpAsset));
             this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_ItemID));
             this.Adapter.DeleteCommand.Parameters[4].Value = ((System.DateTime)(Original_LossDatetime));
@@ -45006,9 +44981,9 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(long ID, int OwnerID, bool CorpAsset, int ItemID, System.DateTime LossDatetime, long Quantity, decimal Cost, decimal Value) {
+        public virtual int Insert(long ID, long OwnerID, bool CorpAsset, int ItemID, System.DateTime LossDatetime, long Quantity, decimal Cost, decimal Value) {
             this.Adapter.InsertCommand.Parameters[0].Value = ((long)(ID));
-            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(OwnerID));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((long)(OwnerID));
             this.Adapter.InsertCommand.Parameters[2].Value = ((bool)(CorpAsset));
             this.Adapter.InsertCommand.Parameters[3].Value = ((int)(ItemID));
             this.Adapter.InsertCommand.Parameters[4].Value = ((System.DateTime)(LossDatetime));
@@ -45036,7 +45011,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
         public virtual int Update(
                     long ID, 
-                    int OwnerID, 
+                    long OwnerID, 
                     bool CorpAsset, 
                     int ItemID, 
                     System.DateTime LossDatetime, 
@@ -45044,7 +45019,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
                     decimal Cost, 
                     decimal Value, 
                     long Original_ID, 
-                    int Original_OwnerID, 
+                    long Original_OwnerID, 
                     bool Original_CorpAsset, 
                     int Original_ItemID, 
                     System.DateTime Original_LossDatetime, 
@@ -45052,7 +45027,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
                     decimal Original_Cost, 
                     decimal Original_Value) {
             this.Adapter.UpdateCommand.Parameters[0].Value = ((long)(ID));
-            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(OwnerID));
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((long)(OwnerID));
             this.Adapter.UpdateCommand.Parameters[2].Value = ((bool)(CorpAsset));
             this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(ItemID));
             this.Adapter.UpdateCommand.Parameters[4].Value = ((System.DateTime)(LossDatetime));
@@ -45060,7 +45035,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
             this.Adapter.UpdateCommand.Parameters[6].Value = ((decimal)(Cost));
             this.Adapter.UpdateCommand.Parameters[7].Value = ((decimal)(Value));
             this.Adapter.UpdateCommand.Parameters[8].Value = ((long)(Original_ID));
-            this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(Original_OwnerID));
+            this.Adapter.UpdateCommand.Parameters[9].Value = ((long)(Original_OwnerID));
             this.Adapter.UpdateCommand.Parameters[10].Value = ((bool)(Original_CorpAsset));
             this.Adapter.UpdateCommand.Parameters[11].Value = ((int)(Original_ItemID));
             this.Adapter.UpdateCommand.Parameters[12].Value = ((System.DateTime)(Original_LossDatetime));
@@ -45086,16 +45061,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int OwnerID, bool CorpAsset, int ItemID, System.DateTime LossDatetime, long Quantity, decimal Cost, decimal Value, long Original_ID, int Original_OwnerID, bool Original_CorpAsset, int Original_ItemID, System.DateTime Original_LossDatetime, long Original_Quantity, decimal Original_Cost, decimal Original_Value) {
+        public virtual int Update(long OwnerID, bool CorpAsset, int ItemID, System.DateTime LossDatetime, long Quantity, decimal Cost, decimal Value, long Original_ID, long Original_OwnerID, bool Original_CorpAsset, int Original_ItemID, System.DateTime Original_LossDatetime, long Original_Quantity, decimal Original_Cost, decimal Original_Value) {
             return this.Update(Original_ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value, Original_ID, Original_OwnerID, Original_CorpAsset, Original_ItemID, Original_LossDatetime, Original_Quantity, Original_Cost, Original_Value);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int New(global::System.Nullable<int> OwnerID, global::System.Nullable<bool> CorpAsset, global::System.Nullable<int> ItemID, global::System.Nullable<global::System.DateTime> LossDateTime, global::System.Nullable<long> Quantity, global::System.Nullable<decimal> Cost, global::System.Nullable<decimal> Value, ref global::System.Nullable<long> newID) {
+        public virtual int New(global::System.Nullable<long> OwnerID, global::System.Nullable<bool> CorpAsset, global::System.Nullable<int> ItemID, global::System.Nullable<global::System.DateTime> LossDateTime, global::System.Nullable<long> Quantity, global::System.Nullable<decimal> Cost, global::System.Nullable<decimal> Value, ref global::System.Nullable<long> newID) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[2];
             if ((OwnerID.HasValue == true)) {
-                command.Parameters[1].Value = ((int)(OwnerID.Value));
+                command.Parameters[1].Value = ((long)(OwnerID.Value));
             }
             else {
                 command.Parameters[1].Value = global::System.DBNull.Value;
@@ -45289,39 +45264,39 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[IndustryJobs] WHERE (([ID] = @Original_ID) AND ([AssemblyLineI" +
-                "D] = @Original_AssemblyLineID) AND ([ContainerID] = @Original_ContainerID) AND (" +
-                "[InstalledItemID] = @Original_InstalledItemID) AND ([InstalledItemLocationID] = " +
-                "@Original_InstalledItemLocationID) AND ([InstalledItemQuantity] = @Original_Inst" +
-                "alledItemQuantity) AND ([InstalledItemPL] = @Original_InstalledItemPL) AND ([Ins" +
-                "talledItemME] = @Original_InstalledItemME) AND ([InstalledItemRunsRemaining] = @" +
-                "Original_InstalledItemRunsRemaining) AND ([OutputLcoationID] = @Original_OutputL" +
-                "coationID) AND ([InstallerID] = @Original_InstallerID) AND ([JobRuns] = @Origina" +
-                "l_JobRuns) AND ([OutputRuns] = @Original_OutputRuns) AND ([MaterialModifier] = @" +
-                "Original_MaterialModifier) AND ([CharMaterialModifier] = @Original_CharMaterialM" +
-                "odifier) AND ([TimeMultiplier] = @Original_TimeMultiplier) AND ([CharTimeMultipl" +
-                "ier] = @Original_CharTimeMultiplier) AND ([InstalledItemTypeID] = @Original_Inst" +
-                "alledItemTypeID) AND ([OutputTypeID] = @Original_OutputTypeID) AND ([ContainerTy" +
-                "peID] = @Original_ContainerTypeID) AND ([InstalledItemCopy] = @Original_Installe" +
-                "dItemCopy) AND ([Completed] = @Original_Completed) AND ([CompletedSuccessfully] " +
-                "= @Original_CompletedSuccessfully) AND ([InstalledItemFlag] = @Original_Installe" +
-                "dItemFlag) AND ([OutputFlag] = @Original_OutputFlag) AND ([ActivityID] = @Origin" +
-                "al_ActivityID) AND ([CompletedStatus] = @Original_CompletedStatus) AND ([Install" +
-                "Time] = @Original_InstallTime) AND ([BeginProductionTime] = @Original_BeginProdu" +
-                "ctionTime) AND ([EndProductionTime] = @Original_EndProductionTime) AND ([PausePr" +
-                "oductionTime] = @Original_PauseProductionTime))";
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [IndustryJobs] WHERE (([ID] = @Original_ID) AND ([AssemblyLineID] = @" +
+                "Original_AssemblyLineID) AND ([ContainerID] = @Original_ContainerID) AND ([Insta" +
+                "lledItemID] = @Original_InstalledItemID) AND ([InstalledItemLocationID] = @Origi" +
+                "nal_InstalledItemLocationID) AND ([InstalledItemQuantity] = @Original_InstalledI" +
+                "temQuantity) AND ([InstalledItemPL] = @Original_InstalledItemPL) AND ([Installed" +
+                "ItemME] = @Original_InstalledItemME) AND ([InstalledItemRunsRemaining] = @Origin" +
+                "al_InstalledItemRunsRemaining) AND ([OutputLcoationID] = @Original_OutputLcoatio" +
+                "nID) AND ([InstallerID] = @Original_InstallerID) AND ([JobRuns] = @Original_JobR" +
+                "uns) AND ([OutputRuns] = @Original_OutputRuns) AND ([MaterialModifier] = @Origin" +
+                "al_MaterialModifier) AND ([CharMaterialModifier] = @Original_CharMaterialModifie" +
+                "r) AND ([TimeMultiplier] = @Original_TimeMultiplier) AND ([CharTimeMultiplier] =" +
+                " @Original_CharTimeMultiplier) AND ([InstalledItemTypeID] = @Original_InstalledI" +
+                "temTypeID) AND ([OutputTypeID] = @Original_OutputTypeID) AND ([ContainerTypeID] " +
+                "= @Original_ContainerTypeID) AND ([InstalledItemCopy] = @Original_InstalledItemC" +
+                "opy) AND ([Completed] = @Original_Completed) AND ([CompletedSuccessfully] = @Ori" +
+                "ginal_CompletedSuccessfully) AND ([InstalledItemFlag] = @Original_InstalledItemF" +
+                "lag) AND ([OutputFlag] = @Original_OutputFlag) AND ([ActivityID] = @Original_Act" +
+                "ivityID) AND ([CompletedStatus] = @Original_CompletedStatus) AND ([InstallTime] " +
+                "= @Original_InstallTime) AND ([BeginProductionTime] = @Original_BeginProductionT" +
+                "ime) AND ([EndProductionTime] = @Original_EndProductionTime) AND ([PauseProducti" +
+                "onTime] = @Original_PauseProductionTime))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AssemblyLineID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AssemblyLineID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ContainerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemLocationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemLocationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AssemblyLineID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AssemblyLineID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ContainerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemLocationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemLocationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemQuantity", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemQuantity", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemPL", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemPL", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemME", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemME", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemRunsRemaining", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemRunsRemaining", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OutputLcoationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputLcoationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstallerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OutputLcoationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputLcoationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstallerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_JobRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "JobRuns", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OutputRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputRuns", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_MaterialModifier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "MaterialModifier", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -45344,40 +45319,40 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_PauseProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PauseProductionTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[IndustryJobs] ([ID], [AssemblyLineID], [ContainerID], [Install" +
-                "edItemID], [InstalledItemLocationID], [InstalledItemQuantity], [InstalledItemPL]" +
-                ", [InstalledItemME], [InstalledItemRunsRemaining], [OutputLcoationID], [Installe" +
-                "rID], [JobRuns], [OutputRuns], [MaterialModifier], [CharMaterialModifier], [Time" +
-                "Multiplier], [CharTimeMultiplier], [InstalledItemTypeID], [OutputTypeID], [Conta" +
-                "inerTypeID], [InstalledItemCopy], [Completed], [CompletedSuccessfully], [Install" +
-                "edItemFlag], [OutputFlag], [ActivityID], [CompletedStatus], [InstallTime], [Begi" +
-                "nProductionTime], [EndProductionTime], [PauseProductionTime]) VALUES (@ID, @Asse" +
-                "mblyLineID, @ContainerID, @InstalledItemID, @InstalledItemLocationID, @Installed" +
-                "ItemQuantity, @InstalledItemPL, @InstalledItemME, @InstalledItemRunsRemaining, @" +
-                "OutputLcoationID, @InstallerID, @JobRuns, @OutputRuns, @MaterialModifier, @CharM" +
-                "aterialModifier, @TimeMultiplier, @CharTimeMultiplier, @InstalledItemTypeID, @Ou" +
-                "tputTypeID, @ContainerTypeID, @InstalledItemCopy, @Completed, @CompletedSuccessf" +
-                "ully, @InstalledItemFlag, @OutputFlag, @ActivityID, @CompletedStatus, @InstallTi" +
-                "me, @BeginProductionTime, @EndProductionTime, @PauseProductionTime);\r\nSELECT ID," +
-                " AssemblyLineID, ContainerID, InstalledItemID, InstalledItemLocationID, Installe" +
-                "dItemQuantity, InstalledItemPL, InstalledItemME, InstalledItemRunsRemaining, Out" +
-                "putLcoationID, InstallerID, JobRuns, OutputRuns, MaterialModifier, CharMaterialM" +
-                "odifier, TimeMultiplier, CharTimeMultiplier, InstalledItemTypeID, OutputTypeID, " +
-                "ContainerTypeID, InstalledItemCopy, Completed, CompletedSuccessfully, InstalledI" +
-                "temFlag, OutputFlag, ActivityID, CompletedStatus, InstallTime, BeginProductionTi" +
-                "me, EndProductionTime, PauseProductionTime FROM IndustryJobs WHERE (ID = @ID)";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [IndustryJobs] ([ID], [AssemblyLineID], [ContainerID], [InstalledItem" +
+                "ID], [InstalledItemLocationID], [InstalledItemQuantity], [InstalledItemPL], [Ins" +
+                "talledItemME], [InstalledItemRunsRemaining], [OutputLcoationID], [InstallerID], " +
+                "[JobRuns], [OutputRuns], [MaterialModifier], [CharMaterialModifier], [TimeMultip" +
+                "lier], [CharTimeMultiplier], [InstalledItemTypeID], [OutputTypeID], [ContainerTy" +
+                "peID], [InstalledItemCopy], [Completed], [CompletedSuccessfully], [InstalledItem" +
+                "Flag], [OutputFlag], [ActivityID], [CompletedStatus], [InstallTime], [BeginProdu" +
+                "ctionTime], [EndProductionTime], [PauseProductionTime]) VALUES (@ID, @AssemblyLi" +
+                "neID, @ContainerID, @InstalledItemID, @InstalledItemLocationID, @InstalledItemQu" +
+                "antity, @InstalledItemPL, @InstalledItemME, @InstalledItemRunsRemaining, @Output" +
+                "LcoationID, @InstallerID, @JobRuns, @OutputRuns, @MaterialModifier, @CharMateria" +
+                "lModifier, @TimeMultiplier, @CharTimeMultiplier, @InstalledItemTypeID, @OutputTy" +
+                "peID, @ContainerTypeID, @InstalledItemCopy, @Completed, @CompletedSuccessfully, " +
+                "@InstalledItemFlag, @OutputFlag, @ActivityID, @CompletedStatus, @InstallTime, @B" +
+                "eginProductionTime, @EndProductionTime, @PauseProductionTime);\r\nSELECT ID, Assem" +
+                "blyLineID, ContainerID, InstalledItemID, InstalledItemLocationID, InstalledItemQ" +
+                "uantity, InstalledItemPL, InstalledItemME, InstalledItemRunsRemaining, OutputLco" +
+                "ationID, InstallerID, JobRuns, OutputRuns, MaterialModifier, CharMaterialModifie" +
+                "r, TimeMultiplier, CharTimeMultiplier, InstalledItemTypeID, OutputTypeID, Contai" +
+                "nerTypeID, InstalledItemCopy, Completed, CompletedSuccessfully, InstalledItemFla" +
+                "g, OutputFlag, ActivityID, CompletedStatus, InstallTime, BeginProductionTime, En" +
+                "dProductionTime, PauseProductionTime FROM IndustryJobs WHERE (ID = @ID)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AssemblyLineID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AssemblyLineID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ContainerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemLocationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemLocationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AssemblyLineID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AssemblyLineID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ContainerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemLocationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemLocationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemQuantity", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemQuantity", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemPL", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemPL", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemME", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemME", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemRunsRemaining", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemRunsRemaining", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OutputLcoationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputLcoationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstallerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OutputLcoationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputLcoationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstallerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@JobRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "JobRuns", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OutputRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputRuns", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@MaterialModifier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "MaterialModifier", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -45400,61 +45375,61 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PauseProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PauseProductionTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[IndustryJobs] SET [ID] = @ID, [AssemblyLineID] = @AssemblyLineID, [" +
-                "ContainerID] = @ContainerID, [InstalledItemID] = @InstalledItemID, [InstalledIte" +
-                "mLocationID] = @InstalledItemLocationID, [InstalledItemQuantity] = @InstalledIte" +
-                "mQuantity, [InstalledItemPL] = @InstalledItemPL, [InstalledItemME] = @InstalledI" +
-                "temME, [InstalledItemRunsRemaining] = @InstalledItemRunsRemaining, [OutputLcoati" +
-                "onID] = @OutputLcoationID, [InstallerID] = @InstallerID, [JobRuns] = @JobRuns, [" +
-                "OutputRuns] = @OutputRuns, [MaterialModifier] = @MaterialModifier, [CharMaterial" +
-                "Modifier] = @CharMaterialModifier, [TimeMultiplier] = @TimeMultiplier, [CharTime" +
-                "Multiplier] = @CharTimeMultiplier, [InstalledItemTypeID] = @InstalledItemTypeID," +
-                " [OutputTypeID] = @OutputTypeID, [ContainerTypeID] = @ContainerTypeID, [Installe" +
-                "dItemCopy] = @InstalledItemCopy, [Completed] = @Completed, [CompletedSuccessfull" +
-                "y] = @CompletedSuccessfully, [InstalledItemFlag] = @InstalledItemFlag, [OutputFl" +
-                "ag] = @OutputFlag, [ActivityID] = @ActivityID, [CompletedStatus] = @CompletedSta" +
-                "tus, [InstallTime] = @InstallTime, [BeginProductionTime] = @BeginProductionTime," +
-                " [EndProductionTime] = @EndProductionTime, [PauseProductionTime] = @PauseProduct" +
-                "ionTime WHERE (([ID] = @Original_ID) AND ([AssemblyLineID] = @Original_AssemblyL" +
-                "ineID) AND ([ContainerID] = @Original_ContainerID) AND ([InstalledItemID] = @Ori" +
-                "ginal_InstalledItemID) AND ([InstalledItemLocationID] = @Original_InstalledItemL" +
-                "ocationID) AND ([InstalledItemQuantity] = @Original_InstalledItemQuantity) AND (" +
-                "[InstalledItemPL] = @Original_InstalledItemPL) AND ([InstalledItemME] = @Origina" +
-                "l_InstalledItemME) AND ([InstalledItemRunsRemaining] = @Original_InstalledItemRu" +
-                "nsRemaining) AND ([OutputLcoationID] = @Original_OutputLcoationID) AND ([Install" +
-                "erID] = @Original_InstallerID) AND ([JobRuns] = @Original_JobRuns) AND ([OutputR" +
-                "uns] = @Original_OutputRuns) AND ([MaterialModifier] = @Original_MaterialModifie" +
-                "r) AND ([CharMaterialModifier] = @Original_CharMaterialModifier) AND ([TimeMulti" +
-                "plier] = @Original_TimeMultiplier) AND ([CharTimeMultiplier] = @Original_CharTim" +
-                "eMultiplier) AND ([InstalledItemTypeID] = @Original_InstalledItemTypeID) AND ([O" +
-                "utputTypeID] = @Original_OutputTypeID) AND ([ContainerTypeID] = @Original_Contai" +
-                "nerTypeID) AND ([InstalledItemCopy] = @Original_InstalledItemCopy) AND ([Complet" +
-                "ed] = @Original_Completed) AND ([CompletedSuccessfully] = @Original_CompletedSuc" +
-                "cessfully) AND ([InstalledItemFlag] = @Original_InstalledItemFlag) AND ([OutputF" +
-                "lag] = @Original_OutputFlag) AND ([ActivityID] = @Original_ActivityID) AND ([Com" +
-                "pletedStatus] = @Original_CompletedStatus) AND ([InstallTime] = @Original_Instal" +
-                "lTime) AND ([BeginProductionTime] = @Original_BeginProductionTime) AND ([EndProd" +
-                "uctionTime] = @Original_EndProductionTime) AND ([PauseProductionTime] = @Origina" +
-                "l_PauseProductionTime));\r\nSELECT ID, AssemblyLineID, ContainerID, InstalledItemI" +
-                "D, InstalledItemLocationID, InstalledItemQuantity, InstalledItemPL, InstalledIte" +
-                "mME, InstalledItemRunsRemaining, OutputLcoationID, InstallerID, JobRuns, OutputR" +
-                "uns, MaterialModifier, CharMaterialModifier, TimeMultiplier, CharTimeMultiplier," +
-                " InstalledItemTypeID, OutputTypeID, ContainerTypeID, InstalledItemCopy, Complete" +
-                "d, CompletedSuccessfully, InstalledItemFlag, OutputFlag, ActivityID, CompletedSt" +
-                "atus, InstallTime, BeginProductionTime, EndProductionTime, PauseProductionTime F" +
-                "ROM IndustryJobs WHERE (ID = @ID)";
+            this._adapter.UpdateCommand.CommandText = "UPDATE [IndustryJobs] SET [ID] = @ID, [AssemblyLineID] = @AssemblyLineID, [Contai" +
+                "nerID] = @ContainerID, [InstalledItemID] = @InstalledItemID, [InstalledItemLocat" +
+                "ionID] = @InstalledItemLocationID, [InstalledItemQuantity] = @InstalledItemQuant" +
+                "ity, [InstalledItemPL] = @InstalledItemPL, [InstalledItemME] = @InstalledItemME," +
+                " [InstalledItemRunsRemaining] = @InstalledItemRunsRemaining, [OutputLcoationID] " +
+                "= @OutputLcoationID, [InstallerID] = @InstallerID, [JobRuns] = @JobRuns, [Output" +
+                "Runs] = @OutputRuns, [MaterialModifier] = @MaterialModifier, [CharMaterialModifi" +
+                "er] = @CharMaterialModifier, [TimeMultiplier] = @TimeMultiplier, [CharTimeMultip" +
+                "lier] = @CharTimeMultiplier, [InstalledItemTypeID] = @InstalledItemTypeID, [Outp" +
+                "utTypeID] = @OutputTypeID, [ContainerTypeID] = @ContainerTypeID, [InstalledItemC" +
+                "opy] = @InstalledItemCopy, [Completed] = @Completed, [CompletedSuccessfully] = @" +
+                "CompletedSuccessfully, [InstalledItemFlag] = @InstalledItemFlag, [OutputFlag] = " +
+                "@OutputFlag, [ActivityID] = @ActivityID, [CompletedStatus] = @CompletedStatus, [" +
+                "InstallTime] = @InstallTime, [BeginProductionTime] = @BeginProductionTime, [EndP" +
+                "roductionTime] = @EndProductionTime, [PauseProductionTime] = @PauseProductionTim" +
+                "e WHERE (([ID] = @Original_ID) AND ([AssemblyLineID] = @Original_AssemblyLineID)" +
+                " AND ([ContainerID] = @Original_ContainerID) AND ([InstalledItemID] = @Original_" +
+                "InstalledItemID) AND ([InstalledItemLocationID] = @Original_InstalledItemLocatio" +
+                "nID) AND ([InstalledItemQuantity] = @Original_InstalledItemQuantity) AND ([Insta" +
+                "lledItemPL] = @Original_InstalledItemPL) AND ([InstalledItemME] = @Original_Inst" +
+                "alledItemME) AND ([InstalledItemRunsRemaining] = @Original_InstalledItemRunsRema" +
+                "ining) AND ([OutputLcoationID] = @Original_OutputLcoationID) AND ([InstallerID] " +
+                "= @Original_InstallerID) AND ([JobRuns] = @Original_JobRuns) AND ([OutputRuns] =" +
+                " @Original_OutputRuns) AND ([MaterialModifier] = @Original_MaterialModifier) AND" +
+                " ([CharMaterialModifier] = @Original_CharMaterialModifier) AND ([TimeMultiplier]" +
+                " = @Original_TimeMultiplier) AND ([CharTimeMultiplier] = @Original_CharTimeMulti" +
+                "plier) AND ([InstalledItemTypeID] = @Original_InstalledItemTypeID) AND ([OutputT" +
+                "ypeID] = @Original_OutputTypeID) AND ([ContainerTypeID] = @Original_ContainerTyp" +
+                "eID) AND ([InstalledItemCopy] = @Original_InstalledItemCopy) AND ([Completed] = " +
+                "@Original_Completed) AND ([CompletedSuccessfully] = @Original_CompletedSuccessfu" +
+                "lly) AND ([InstalledItemFlag] = @Original_InstalledItemFlag) AND ([OutputFlag] =" +
+                " @Original_OutputFlag) AND ([ActivityID] = @Original_ActivityID) AND ([Completed" +
+                "Status] = @Original_CompletedStatus) AND ([InstallTime] = @Original_InstallTime)" +
+                " AND ([BeginProductionTime] = @Original_BeginProductionTime) AND ([EndProduction" +
+                "Time] = @Original_EndProductionTime) AND ([PauseProductionTime] = @Original_Paus" +
+                "eProductionTime));\r\nSELECT ID, AssemblyLineID, ContainerID, InstalledItemID, Ins" +
+                "talledItemLocationID, InstalledItemQuantity, InstalledItemPL, InstalledItemME, I" +
+                "nstalledItemRunsRemaining, OutputLcoationID, InstallerID, JobRuns, OutputRuns, M" +
+                "aterialModifier, CharMaterialModifier, TimeMultiplier, CharTimeMultiplier, Insta" +
+                "lledItemTypeID, OutputTypeID, ContainerTypeID, InstalledItemCopy, Completed, Com" +
+                "pletedSuccessfully, InstalledItemFlag, OutputFlag, ActivityID, CompletedStatus, " +
+                "InstallTime, BeginProductionTime, EndProductionTime, PauseProductionTime FROM In" +
+                "dustryJobs WHERE (ID = @ID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AssemblyLineID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AssemblyLineID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ContainerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemLocationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemLocationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AssemblyLineID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AssemblyLineID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ContainerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemLocationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemLocationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemQuantity", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemQuantity", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemPL", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemPL", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemME", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemME", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstalledItemRunsRemaining", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemRunsRemaining", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OutputLcoationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputLcoationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstallerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OutputLcoationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputLcoationID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InstallerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallerID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@JobRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "JobRuns", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@OutputRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputRuns", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@MaterialModifier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "MaterialModifier", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -45476,16 +45451,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@EndProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "EndProductionTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PauseProductionTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PauseProductionTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AssemblyLineID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AssemblyLineID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ContainerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemLocationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemLocationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AssemblyLineID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AssemblyLineID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ContainerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ContainerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemLocationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemLocationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemQuantity", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemQuantity", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemPL", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemPL", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemME", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemME", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstalledItemRunsRemaining", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstalledItemRunsRemaining", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OutputLcoationID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputLcoationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstallerID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OutputLcoationID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputLcoationID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_InstallerID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InstallerID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_JobRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "JobRuns", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_OutputRuns", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "OutputRuns", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_MaterialModifier", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "MaterialModifier", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -45519,16 +45494,20 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[4];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = @"SELECT ID, AssemblyLineID, ContainerID, InstalledItemID, InstalledItemLocationID, InstalledItemQuantity, InstalledItemPL, InstalledItemME, InstalledItemRunsRemaining, OutputLcoationID, InstallerID, JobRuns, OutputRuns, MaterialModifier, CharMaterialModifier, TimeMultiplier, CharTimeMultiplier, InstalledItemTypeID, OutputTypeID, ContainerTypeID, InstalledItemCopy, Completed, CompletedSuccessfully, InstalledItemFlag, OutputFlag, ActivityID, CompletedStatus, InstallTime, BeginProductionTime, EndProductionTime, PauseProductionTime FROM dbo.IndustryJobs";
+            this._commandCollection[0].CommandText = @"SELECT     ID, AssemblyLineID, ContainerID, InstalledItemID, InstalledItemLocationID, InstalledItemQuantity, InstalledItemPL, InstalledItemME, 
+                      InstalledItemRunsRemaining, OutputLcoationID, InstallerID, JobRuns, OutputRuns, MaterialModifier, CharMaterialModifier, TimeMultiplier, 
+                      CharTimeMultiplier, InstalledItemTypeID, OutputTypeID, ContainerTypeID, InstalledItemCopy, Completed, CompletedSuccessfully, InstalledItemFlag, 
+                      OutputFlag, ActivityID, CompletedStatus, InstallTime, BeginProductionTime, EndProductionTime, PauseProductionTime
+FROM         IndustryJobs";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.IndustryJobsGetByBlueprint";
+            this._commandCollection[1].CommandText = "IndustryJobsGetByBlueprint";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@installerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@installerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@blueprintTypeID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@blueprintEveAssetID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@blueprintEveAssetID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@jobStartDateAfter", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@jobEndDateBefore", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
@@ -45539,10 +45518,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@jobID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[3].Connection = this.Connection;
-            this._commandCollection[3].CommandText = "dbo.IndustryJobsGetByProduct";
+            this._commandCollection[3].CommandText = "IndustryJobsGetByProduct";
             this._commandCollection[3].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@installerID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@installerID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@productTypeID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@jobCompletedAfter", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 23, 3, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
@@ -45572,10 +45551,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByBlueprint(EMMADataSet.IndustryJobsDataTable dataTable, global::System.Nullable<int> installerID, global::System.Nullable<int> blueprintTypeID, global::System.Nullable<int> blueprintEveAssetID, global::System.Nullable<global::System.DateTime> jobStartDateAfter, global::System.Nullable<global::System.DateTime> jobEndDateBefore) {
+        public virtual int FillByBlueprint(EMMADataSet.IndustryJobsDataTable dataTable, global::System.Nullable<long> installerID, global::System.Nullable<int> blueprintTypeID, global::System.Nullable<long> blueprintEveAssetID, global::System.Nullable<global::System.DateTime> jobStartDateAfter, global::System.Nullable<global::System.DateTime> jobEndDateBefore) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((installerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(installerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(installerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -45587,7 +45566,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((blueprintEveAssetID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(blueprintEveAssetID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(blueprintEveAssetID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -45614,10 +45593,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.IndustryJobsDataTable GetDataByBlueprint(global::System.Nullable<int> installerID, global::System.Nullable<int> blueprintTypeID, global::System.Nullable<int> blueprintEveAssetID, global::System.Nullable<global::System.DateTime> jobStartDateAfter, global::System.Nullable<global::System.DateTime> jobEndDateBefore) {
+        public virtual EMMADataSet.IndustryJobsDataTable GetDataByBlueprint(global::System.Nullable<long> installerID, global::System.Nullable<int> blueprintTypeID, global::System.Nullable<long> blueprintEveAssetID, global::System.Nullable<global::System.DateTime> jobStartDateAfter, global::System.Nullable<global::System.DateTime> jobEndDateBefore) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((installerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(installerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(installerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -45629,7 +45608,7 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((blueprintEveAssetID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(blueprintEveAssetID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(blueprintEveAssetID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -45688,10 +45667,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByProduct(EMMADataSet.IndustryJobsDataTable dataTable, global::System.Nullable<int> installerID, global::System.Nullable<int> productTypeID, global::System.Nullable<global::System.DateTime> jobCompletedAfter) {
+        public virtual int FillByProduct(EMMADataSet.IndustryJobsDataTable dataTable, global::System.Nullable<long> installerID, global::System.Nullable<int> productTypeID, global::System.Nullable<global::System.DateTime> jobCompletedAfter) {
             this.Adapter.SelectCommand = this.CommandCollection[3];
             if ((installerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(installerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(installerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -45718,10 +45697,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.IndustryJobsDataTable GetDataByProduct(global::System.Nullable<int> installerID, global::System.Nullable<int> productTypeID, global::System.Nullable<global::System.DateTime> jobCompletedAfter) {
+        public virtual EMMADataSet.IndustryJobsDataTable GetDataByProduct(global::System.Nullable<long> installerID, global::System.Nullable<int> productTypeID, global::System.Nullable<global::System.DateTime> jobCompletedAfter) {
             this.Adapter.SelectCommand = this.CommandCollection[3];
             if ((installerID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(installerID.Value));
+                this.Adapter.SelectCommand.Parameters[1].Value = ((long)(installerID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
@@ -45773,16 +45752,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
         public virtual int Delete(
                     long Original_ID, 
-                    int Original_AssemblyLineID, 
-                    int Original_ContainerID, 
-                    int Original_InstalledItemID, 
-                    int Original_InstalledItemLocationID, 
+                    long Original_AssemblyLineID, 
+                    long Original_ContainerID, 
+                    long Original_InstalledItemID, 
+                    long Original_InstalledItemLocationID, 
                     int Original_InstalledItemQuantity, 
                     int Original_InstalledItemPL, 
                     int Original_InstalledItemME, 
                     int Original_InstalledItemRunsRemaining, 
-                    int Original_OutputLcoationID, 
-                    int Original_InstallerID, 
+                    long Original_OutputLcoationID, 
+                    long Original_InstallerID, 
                     int Original_JobRuns, 
                     int Original_OutputRuns, 
                     double Original_MaterialModifier, 
@@ -45804,16 +45783,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
                     System.DateTime Original_EndProductionTime, 
                     System.DateTime Original_PauseProductionTime) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((long)(Original_ID));
-            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_AssemblyLineID));
-            this.Adapter.DeleteCommand.Parameters[2].Value = ((int)(Original_ContainerID));
-            this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_InstalledItemID));
-            this.Adapter.DeleteCommand.Parameters[4].Value = ((int)(Original_InstalledItemLocationID));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((long)(Original_AssemblyLineID));
+            this.Adapter.DeleteCommand.Parameters[2].Value = ((long)(Original_ContainerID));
+            this.Adapter.DeleteCommand.Parameters[3].Value = ((long)(Original_InstalledItemID));
+            this.Adapter.DeleteCommand.Parameters[4].Value = ((long)(Original_InstalledItemLocationID));
             this.Adapter.DeleteCommand.Parameters[5].Value = ((int)(Original_InstalledItemQuantity));
             this.Adapter.DeleteCommand.Parameters[6].Value = ((int)(Original_InstalledItemPL));
             this.Adapter.DeleteCommand.Parameters[7].Value = ((int)(Original_InstalledItemME));
             this.Adapter.DeleteCommand.Parameters[8].Value = ((int)(Original_InstalledItemRunsRemaining));
-            this.Adapter.DeleteCommand.Parameters[9].Value = ((int)(Original_OutputLcoationID));
-            this.Adapter.DeleteCommand.Parameters[10].Value = ((int)(Original_InstallerID));
+            this.Adapter.DeleteCommand.Parameters[9].Value = ((long)(Original_OutputLcoationID));
+            this.Adapter.DeleteCommand.Parameters[10].Value = ((long)(Original_InstallerID));
             this.Adapter.DeleteCommand.Parameters[11].Value = ((int)(Original_JobRuns));
             this.Adapter.DeleteCommand.Parameters[12].Value = ((int)(Original_OutputRuns));
             this.Adapter.DeleteCommand.Parameters[13].Value = ((double)(Original_MaterialModifier));
@@ -45855,16 +45834,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
         public virtual int Insert(
                     long ID, 
-                    int AssemblyLineID, 
-                    int ContainerID, 
-                    int InstalledItemID, 
-                    int InstalledItemLocationID, 
+                    long AssemblyLineID, 
+                    long ContainerID, 
+                    long InstalledItemID, 
+                    long InstalledItemLocationID, 
                     int InstalledItemQuantity, 
                     int InstalledItemPL, 
                     int InstalledItemME, 
                     int InstalledItemRunsRemaining, 
-                    int OutputLcoationID, 
-                    int InstallerID, 
+                    long OutputLcoationID, 
+                    long InstallerID, 
                     int JobRuns, 
                     int OutputRuns, 
                     double MaterialModifier, 
@@ -45886,16 +45865,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
                     System.DateTime EndProductionTime, 
                     System.DateTime PauseProductionTime) {
             this.Adapter.InsertCommand.Parameters[0].Value = ((long)(ID));
-            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(AssemblyLineID));
-            this.Adapter.InsertCommand.Parameters[2].Value = ((int)(ContainerID));
-            this.Adapter.InsertCommand.Parameters[3].Value = ((int)(InstalledItemID));
-            this.Adapter.InsertCommand.Parameters[4].Value = ((int)(InstalledItemLocationID));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((long)(AssemblyLineID));
+            this.Adapter.InsertCommand.Parameters[2].Value = ((long)(ContainerID));
+            this.Adapter.InsertCommand.Parameters[3].Value = ((long)(InstalledItemID));
+            this.Adapter.InsertCommand.Parameters[4].Value = ((long)(InstalledItemLocationID));
             this.Adapter.InsertCommand.Parameters[5].Value = ((int)(InstalledItemQuantity));
             this.Adapter.InsertCommand.Parameters[6].Value = ((int)(InstalledItemPL));
             this.Adapter.InsertCommand.Parameters[7].Value = ((int)(InstalledItemME));
             this.Adapter.InsertCommand.Parameters[8].Value = ((int)(InstalledItemRunsRemaining));
-            this.Adapter.InsertCommand.Parameters[9].Value = ((int)(OutputLcoationID));
-            this.Adapter.InsertCommand.Parameters[10].Value = ((int)(InstallerID));
+            this.Adapter.InsertCommand.Parameters[9].Value = ((long)(OutputLcoationID));
+            this.Adapter.InsertCommand.Parameters[10].Value = ((long)(InstallerID));
             this.Adapter.InsertCommand.Parameters[11].Value = ((int)(JobRuns));
             this.Adapter.InsertCommand.Parameters[12].Value = ((int)(OutputRuns));
             this.Adapter.InsertCommand.Parameters[13].Value = ((double)(MaterialModifier));
@@ -45937,16 +45916,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
         public virtual int Update(
                     long ID, 
-                    int AssemblyLineID, 
-                    int ContainerID, 
-                    int InstalledItemID, 
-                    int InstalledItemLocationID, 
+                    long AssemblyLineID, 
+                    long ContainerID, 
+                    long InstalledItemID, 
+                    long InstalledItemLocationID, 
                     int InstalledItemQuantity, 
                     int InstalledItemPL, 
                     int InstalledItemME, 
                     int InstalledItemRunsRemaining, 
-                    int OutputLcoationID, 
-                    int InstallerID, 
+                    long OutputLcoationID, 
+                    long InstallerID, 
                     int JobRuns, 
                     int OutputRuns, 
                     double MaterialModifier, 
@@ -45968,16 +45947,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
                     System.DateTime EndProductionTime, 
                     System.DateTime PauseProductionTime, 
                     long Original_ID, 
-                    int Original_AssemblyLineID, 
-                    int Original_ContainerID, 
-                    int Original_InstalledItemID, 
-                    int Original_InstalledItemLocationID, 
+                    long Original_AssemblyLineID, 
+                    long Original_ContainerID, 
+                    long Original_InstalledItemID, 
+                    long Original_InstalledItemLocationID, 
                     int Original_InstalledItemQuantity, 
                     int Original_InstalledItemPL, 
                     int Original_InstalledItemME, 
                     int Original_InstalledItemRunsRemaining, 
-                    int Original_OutputLcoationID, 
-                    int Original_InstallerID, 
+                    long Original_OutputLcoationID, 
+                    long Original_InstallerID, 
                     int Original_JobRuns, 
                     int Original_OutputRuns, 
                     double Original_MaterialModifier, 
@@ -45999,16 +45978,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
                     System.DateTime Original_EndProductionTime, 
                     System.DateTime Original_PauseProductionTime) {
             this.Adapter.UpdateCommand.Parameters[0].Value = ((long)(ID));
-            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(AssemblyLineID));
-            this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(ContainerID));
-            this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(InstalledItemID));
-            this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(InstalledItemLocationID));
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((long)(AssemblyLineID));
+            this.Adapter.UpdateCommand.Parameters[2].Value = ((long)(ContainerID));
+            this.Adapter.UpdateCommand.Parameters[3].Value = ((long)(InstalledItemID));
+            this.Adapter.UpdateCommand.Parameters[4].Value = ((long)(InstalledItemLocationID));
             this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(InstalledItemQuantity));
             this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(InstalledItemPL));
             this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(InstalledItemME));
             this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(InstalledItemRunsRemaining));
-            this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(OutputLcoationID));
-            this.Adapter.UpdateCommand.Parameters[10].Value = ((int)(InstallerID));
+            this.Adapter.UpdateCommand.Parameters[9].Value = ((long)(OutputLcoationID));
+            this.Adapter.UpdateCommand.Parameters[10].Value = ((long)(InstallerID));
             this.Adapter.UpdateCommand.Parameters[11].Value = ((int)(JobRuns));
             this.Adapter.UpdateCommand.Parameters[12].Value = ((int)(OutputRuns));
             this.Adapter.UpdateCommand.Parameters[13].Value = ((double)(MaterialModifier));
@@ -46030,16 +46009,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
             this.Adapter.UpdateCommand.Parameters[29].Value = ((System.DateTime)(EndProductionTime));
             this.Adapter.UpdateCommand.Parameters[30].Value = ((System.DateTime)(PauseProductionTime));
             this.Adapter.UpdateCommand.Parameters[31].Value = ((long)(Original_ID));
-            this.Adapter.UpdateCommand.Parameters[32].Value = ((int)(Original_AssemblyLineID));
-            this.Adapter.UpdateCommand.Parameters[33].Value = ((int)(Original_ContainerID));
-            this.Adapter.UpdateCommand.Parameters[34].Value = ((int)(Original_InstalledItemID));
-            this.Adapter.UpdateCommand.Parameters[35].Value = ((int)(Original_InstalledItemLocationID));
+            this.Adapter.UpdateCommand.Parameters[32].Value = ((long)(Original_AssemblyLineID));
+            this.Adapter.UpdateCommand.Parameters[33].Value = ((long)(Original_ContainerID));
+            this.Adapter.UpdateCommand.Parameters[34].Value = ((long)(Original_InstalledItemID));
+            this.Adapter.UpdateCommand.Parameters[35].Value = ((long)(Original_InstalledItemLocationID));
             this.Adapter.UpdateCommand.Parameters[36].Value = ((int)(Original_InstalledItemQuantity));
             this.Adapter.UpdateCommand.Parameters[37].Value = ((int)(Original_InstalledItemPL));
             this.Adapter.UpdateCommand.Parameters[38].Value = ((int)(Original_InstalledItemME));
             this.Adapter.UpdateCommand.Parameters[39].Value = ((int)(Original_InstalledItemRunsRemaining));
-            this.Adapter.UpdateCommand.Parameters[40].Value = ((int)(Original_OutputLcoationID));
-            this.Adapter.UpdateCommand.Parameters[41].Value = ((int)(Original_InstallerID));
+            this.Adapter.UpdateCommand.Parameters[40].Value = ((long)(Original_OutputLcoationID));
+            this.Adapter.UpdateCommand.Parameters[41].Value = ((long)(Original_InstallerID));
             this.Adapter.UpdateCommand.Parameters[42].Value = ((int)(Original_JobRuns));
             this.Adapter.UpdateCommand.Parameters[43].Value = ((int)(Original_OutputRuns));
             this.Adapter.UpdateCommand.Parameters[44].Value = ((double)(Original_MaterialModifier));
@@ -46080,16 +46059,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
         public virtual int Update(
-                    int AssemblyLineID, 
-                    int ContainerID, 
-                    int InstalledItemID, 
-                    int InstalledItemLocationID, 
+                    long AssemblyLineID, 
+                    long ContainerID, 
+                    long InstalledItemID, 
+                    long InstalledItemLocationID, 
                     int InstalledItemQuantity, 
                     int InstalledItemPL, 
                     int InstalledItemME, 
                     int InstalledItemRunsRemaining, 
-                    int OutputLcoationID, 
-                    int InstallerID, 
+                    long OutputLcoationID, 
+                    long InstallerID, 
                     int JobRuns, 
                     int OutputRuns, 
                     double MaterialModifier, 
@@ -46111,16 +46090,16 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
                     System.DateTime EndProductionTime, 
                     System.DateTime PauseProductionTime, 
                     long Original_ID, 
-                    int Original_AssemblyLineID, 
-                    int Original_ContainerID, 
-                    int Original_InstalledItemID, 
-                    int Original_InstalledItemLocationID, 
+                    long Original_AssemblyLineID, 
+                    long Original_ContainerID, 
+                    long Original_InstalledItemID, 
+                    long Original_InstalledItemLocationID, 
                     int Original_InstalledItemQuantity, 
                     int Original_InstalledItemPL, 
                     int Original_InstalledItemME, 
                     int Original_InstalledItemRunsRemaining, 
-                    int Original_OutputLcoationID, 
-                    int Original_InstallerID, 
+                    long Original_OutputLcoationID, 
+                    long Original_InstallerID, 
                     int Original_JobRuns, 
                     int Original_OutputRuns, 
                     double Original_MaterialModifier, 
@@ -46243,10 +46222,10 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[RptGroupChars] WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICharID] = @Original_APICharID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders) AND ([AutoUpdateIndustryJobs] = @Original_AutoUpdateIndustryJobs))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [RptGroupChars] WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICharID] = @Original_APICharID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders) AND ([AutoUpdateIndustryJobs] = @Original_AutoUpdateIndustryJobs))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -46254,11 +46233,11 @@ SELECT ID, OwnerID, CorpAsset, ItemID, LossDatetime, Quantity, Cost, Value FROM 
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateIndustryJobs", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateIndustryJobs", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[RptGroupChars] ([ReportGroupID], [APICharID], [AutoUpdateTrans], [AutoUpdateJournal], [AutoUpdateAssets], [AutoUpdateOrders], [AutoUpdateIndustryJobs]) VALUES (@ReportGroupID, @APICharID, @AutoUpdateTrans, @AutoUpdateJournal, @AutoUpdateAssets, @AutoUpdateOrders, @AutoUpdateIndustryJobs);
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [RptGroupChars] ([ReportGroupID], [APICharID], [AutoUpdateTrans], [AutoUpdateJournal], [AutoUpdateAssets], [AutoUpdateOrders], [AutoUpdateIndustryJobs]) VALUES (@ReportGroupID, @APICharID, @AutoUpdateTrans, @AutoUpdateJournal, @AutoUpdateAssets, @AutoUpdateOrders, @AutoUpdateIndustryJobs);
 SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, AutoUpdateIndustryJobs FROM RptGroupChars WHERE (APICharID = @APICharID) AND (ReportGroupID = @ReportGroupID)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -46266,18 +46245,18 @@ SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateIndustryJobs", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateIndustryJobs", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[RptGroupChars] SET [ReportGroupID] = @ReportGroupID, [APICharID] = @APICharID, [AutoUpdateTrans] = @AutoUpdateTrans, [AutoUpdateJournal] = @AutoUpdateJournal, [AutoUpdateAssets] = @AutoUpdateAssets, [AutoUpdateOrders] = @AutoUpdateOrders, [AutoUpdateIndustryJobs] = @AutoUpdateIndustryJobs WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICharID] = @Original_APICharID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders) AND ([AutoUpdateIndustryJobs] = @Original_AutoUpdateIndustryJobs));
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [RptGroupChars] SET [ReportGroupID] = @ReportGroupID, [APICharID] = @APICharID, [AutoUpdateTrans] = @AutoUpdateTrans, [AutoUpdateJournal] = @AutoUpdateJournal, [AutoUpdateAssets] = @AutoUpdateAssets, [AutoUpdateOrders] = @AutoUpdateOrders, [AutoUpdateIndustryJobs] = @AutoUpdateIndustryJobs WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICharID] = @Original_APICharID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders) AND ([AutoUpdateIndustryJobs] = @Original_AutoUpdateIndustryJobs));
 SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, AutoUpdateIndustryJobs FROM RptGroupChars WHERE (APICharID = @APICharID) AND (ReportGroupID = @ReportGroupID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateIndustryJobs", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateIndustryJobs", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -46296,23 +46275,23 @@ SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[3];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAs" +
-                "sets, AutoUpdateOrders, AutoUpdateIndustryJobs FROM dbo.RptGroupChars";
+            this._commandCollection[0].CommandText = "SELECT     ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpda" +
+                "teAssets, AutoUpdateOrders, AutoUpdateIndustryJobs\r\nFROM         RptGroupChars";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.RptGroupCharSettings";
+            this._commandCollection[1].CommandText = "RptGroupCharSettings";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@groupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "dbo.RptGroupSetHasChar";
+            this._commandCollection[2].CommandText = "RptGroupSetHasChar";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@rptGroupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@apiCharID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@apiCharID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@included", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoTrans", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoJournal", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -46346,7 +46325,7 @@ SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByIDs(EMMADataSet.RptGroupCharsDataTable dataTable, global::System.Nullable<int> groupID, global::System.Nullable<int> charID) {
+        public virtual int FillByIDs(EMMADataSet.RptGroupCharsDataTable dataTable, global::System.Nullable<int> groupID, global::System.Nullable<long> charID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((groupID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(groupID.Value));
@@ -46355,7 +46334,7 @@ SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((charID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(charID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(charID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -46370,7 +46349,7 @@ SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.RptGroupCharsDataTable GetDataByIDs(global::System.Nullable<int> groupID, global::System.Nullable<int> charID) {
+        public virtual EMMADataSet.RptGroupCharsDataTable GetDataByIDs(global::System.Nullable<int> groupID, global::System.Nullable<long> charID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((groupID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(groupID.Value));
@@ -46379,7 +46358,7 @@ SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((charID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(charID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(charID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
@@ -46417,9 +46396,9 @@ SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_ReportGroupID, int Original_APICharID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, bool Original_AutoUpdateIndustryJobs) {
+        public virtual int Delete(int Original_ReportGroupID, long Original_APICharID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, bool Original_AutoUpdateIndustryJobs) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ReportGroupID));
-            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_APICharID));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((long)(Original_APICharID));
             this.Adapter.DeleteCommand.Parameters[2].Value = ((bool)(Original_AutoUpdateTrans));
             this.Adapter.DeleteCommand.Parameters[3].Value = ((bool)(Original_AutoUpdateJournal));
             this.Adapter.DeleteCommand.Parameters[4].Value = ((bool)(Original_AutoUpdateAssets));
@@ -46444,9 +46423,9 @@ SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int ReportGroupID, int APICharID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, bool AutoUpdateIndustryJobs) {
+        public virtual int Insert(int ReportGroupID, long APICharID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, bool AutoUpdateIndustryJobs) {
             this.Adapter.InsertCommand.Parameters[0].Value = ((int)(ReportGroupID));
-            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(APICharID));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((long)(APICharID));
             this.Adapter.InsertCommand.Parameters[2].Value = ((bool)(AutoUpdateTrans));
             this.Adapter.InsertCommand.Parameters[3].Value = ((bool)(AutoUpdateJournal));
             this.Adapter.InsertCommand.Parameters[4].Value = ((bool)(AutoUpdateAssets));
@@ -46471,16 +46450,16 @@ SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int ReportGroupID, int APICharID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, bool AutoUpdateIndustryJobs, int Original_ReportGroupID, int Original_APICharID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, bool Original_AutoUpdateIndustryJobs) {
+        public virtual int Update(int ReportGroupID, long APICharID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, bool AutoUpdateIndustryJobs, int Original_ReportGroupID, long Original_APICharID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, bool Original_AutoUpdateIndustryJobs) {
             this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(ReportGroupID));
-            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(APICharID));
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((long)(APICharID));
             this.Adapter.UpdateCommand.Parameters[2].Value = ((bool)(AutoUpdateTrans));
             this.Adapter.UpdateCommand.Parameters[3].Value = ((bool)(AutoUpdateJournal));
             this.Adapter.UpdateCommand.Parameters[4].Value = ((bool)(AutoUpdateAssets));
             this.Adapter.UpdateCommand.Parameters[5].Value = ((bool)(AutoUpdateOrders));
             this.Adapter.UpdateCommand.Parameters[6].Value = ((bool)(AutoUpdateIndustryJobs));
             this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(Original_ReportGroupID));
-            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_APICharID));
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((long)(Original_APICharID));
             this.Adapter.UpdateCommand.Parameters[9].Value = ((bool)(Original_AutoUpdateTrans));
             this.Adapter.UpdateCommand.Parameters[10].Value = ((bool)(Original_AutoUpdateJournal));
             this.Adapter.UpdateCommand.Parameters[11].Value = ((bool)(Original_AutoUpdateAssets));
@@ -46505,13 +46484,13 @@ SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, bool AutoUpdateIndustryJobs, int Original_ReportGroupID, int Original_APICharID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, bool Original_AutoUpdateIndustryJobs) {
+        public virtual int Update(bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, bool AutoUpdateIndustryJobs, int Original_ReportGroupID, long Original_APICharID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, bool Original_AutoUpdateIndustryJobs) {
             return this.Update(Original_ReportGroupID, Original_APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, AutoUpdateIndustryJobs, Original_ReportGroupID, Original_APICharID, Original_AutoUpdateTrans, Original_AutoUpdateJournal, Original_AutoUpdateAssets, Original_AutoUpdateOrders, Original_AutoUpdateIndustryJobs);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Store(global::System.Nullable<int> rptGroupID, global::System.Nullable<int> apiCharID, global::System.Nullable<bool> included, global::System.Nullable<bool> autoTrans, global::System.Nullable<bool> autoJournal, global::System.Nullable<bool> autoAssets, global::System.Nullable<bool> autoOrders, global::System.Nullable<bool> autoIndustry) {
+        public virtual int Store(global::System.Nullable<int> rptGroupID, global::System.Nullable<long> apiCharID, global::System.Nullable<bool> included, global::System.Nullable<bool> autoTrans, global::System.Nullable<bool> autoJournal, global::System.Nullable<bool> autoAssets, global::System.Nullable<bool> autoOrders, global::System.Nullable<bool> autoIndustry) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[2];
             if ((rptGroupID.HasValue == true)) {
                 command.Parameters[1].Value = ((int)(rptGroupID.Value));
@@ -46520,7 +46499,7 @@ SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
                 command.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((apiCharID.HasValue == true)) {
-                command.Parameters[2].Value = ((int)(apiCharID.Value));
+                command.Parameters[2].Value = ((long)(apiCharID.Value));
             }
             else {
                 command.Parameters[2].Value = global::System.DBNull.Value;
@@ -46678,49 +46657,49 @@ SELECT ReportGroupID, APICharID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[RptGroupCorps] WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICorpID] = @Original_APICorpID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders) AND ([APICharID] = @Original_APICharID) AND ([AutoUpdateIndustryJobs] = @Original_AutoUpdateIndustryJobs))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [RptGroupCorps] WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICorpID] = @Original_APICorpID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders) AND ([APICharID] = @Original_APICharID) AND ([AutoUpdateIndustryJobs] = @Original_AutoUpdateIndustryJobs))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICorpID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateIndustryJobs", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateIndustryJobs", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[RptGroupCorps] ([ReportGroupID], [APICorpID], [AutoUpdateTrans], [AutoUpdateJournal], [AutoUpdateAssets], [AutoUpdateOrders], [APICharID], [AutoUpdateIndustryJobs]) VALUES (@ReportGroupID, @APICorpID, @AutoUpdateTrans, @AutoUpdateJournal, @AutoUpdateAssets, @AutoUpdateOrders, @APICharID, @AutoUpdateIndustryJobs);
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [RptGroupCorps] ([ReportGroupID], [APICorpID], [AutoUpdateTrans], [AutoUpdateJournal], [AutoUpdateAssets], [AutoUpdateOrders], [APICharID], [AutoUpdateIndustryJobs]) VALUES (@ReportGroupID, @APICorpID, @AutoUpdateTrans, @AutoUpdateJournal, @AutoUpdateAssets, @AutoUpdateOrders, @APICharID, @AutoUpdateIndustryJobs);
 SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, APICharID, AutoUpdateIndustryJobs FROM RptGroupCorps WHERE (APICharID = @APICharID) AND (APICorpID = @APICorpID) AND (ReportGroupID = @ReportGroupID)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICorpID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateIndustryJobs", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateIndustryJobs", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[RptGroupCorps] SET [ReportGroupID] = @ReportGroupID, [APICorpID] = @APICorpID, [AutoUpdateTrans] = @AutoUpdateTrans, [AutoUpdateJournal] = @AutoUpdateJournal, [AutoUpdateAssets] = @AutoUpdateAssets, [AutoUpdateOrders] = @AutoUpdateOrders, [APICharID] = @APICharID, [AutoUpdateIndustryJobs] = @AutoUpdateIndustryJobs WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICorpID] = @Original_APICorpID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders) AND ([APICharID] = @Original_APICharID) AND ([AutoUpdateIndustryJobs] = @Original_AutoUpdateIndustryJobs));
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [RptGroupCorps] SET [ReportGroupID] = @ReportGroupID, [APICorpID] = @APICorpID, [AutoUpdateTrans] = @AutoUpdateTrans, [AutoUpdateJournal] = @AutoUpdateJournal, [AutoUpdateAssets] = @AutoUpdateAssets, [AutoUpdateOrders] = @AutoUpdateOrders, [APICharID] = @APICharID, [AutoUpdateIndustryJobs] = @AutoUpdateIndustryJobs WHERE (([ReportGroupID] = @Original_ReportGroupID) AND ([APICorpID] = @Original_APICorpID) AND ([AutoUpdateTrans] = @Original_AutoUpdateTrans) AND ([AutoUpdateJournal] = @Original_AutoUpdateJournal) AND ([AutoUpdateAssets] = @Original_AutoUpdateAssets) AND ([AutoUpdateOrders] = @Original_AutoUpdateOrders) AND ([APICharID] = @Original_APICharID) AND ([AutoUpdateIndustryJobs] = @Original_AutoUpdateIndustryJobs));
 SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, APICharID, AutoUpdateIndustryJobs FROM RptGroupCorps WHERE (APICharID = @APICharID) AND (APICorpID = @APICorpID) AND (ReportGroupID = @ReportGroupID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICorpID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@APICharID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AutoUpdateIndustryJobs", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateIndustryJobs", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_ReportGroupID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "ReportGroupID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICorpID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICorpID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICorpID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateTrans", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateTrans", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateJournal", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateJournal", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateAssets", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateAssets", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateOrders", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateOrders", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_APICharID", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "APICharID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AutoUpdateIndustryJobs", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AutoUpdateIndustryJobs", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
@@ -46735,32 +46714,32 @@ SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[3];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAs" +
-                "sets, AutoUpdateOrders, APICharID, AutoUpdateIndustryJobs FROM dbo.RptGroupCorps" +
-                "";
+            this._commandCollection[0].CommandText = "SELECT     ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpda" +
+                "teAssets, AutoUpdateOrders, APICharID, AutoUpdateIndustryJobs\r\nFROM         RptG" +
+                "roupCorps";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "dbo.RptGroupCorpSettings";
+            this._commandCollection[1].CommandText = "RptGroupCorpSettings";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@groupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@corpID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@charID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "dbo.RptGroupSetHasCorp";
+            this._commandCollection[2].CommandText = "RptGroupSetHasCorp";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.StoredProcedure;
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RETURN_VALUE", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.ReturnValue, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@rptGroupID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@apiCorpID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@apiCorpID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@included", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoTrans", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoJournal", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoAssets", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoOrders", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@autoIndustry", global::System.Data.SqlDbType.Bit, 1, global::System.Data.ParameterDirection.Input, 1, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@apiCharID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@apiCharID", global::System.Data.SqlDbType.BigInt, 8, global::System.Data.ParameterDirection.Input, 19, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -46788,7 +46767,7 @@ SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByIDs(EMMADataSet.RptGroupCorpsDataTable dataTable, global::System.Nullable<int> groupID, global::System.Nullable<int> corpID, global::System.Nullable<int> charID) {
+        public virtual int FillByIDs(EMMADataSet.RptGroupCorpsDataTable dataTable, global::System.Nullable<int> groupID, global::System.Nullable<long> corpID, global::System.Nullable<long> charID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((groupID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(groupID.Value));
@@ -46797,13 +46776,13 @@ SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((corpID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(corpID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(corpID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((charID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(charID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(charID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -46818,7 +46797,7 @@ SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual EMMADataSet.RptGroupCorpsDataTable GetDataByIDs(global::System.Nullable<int> groupID, global::System.Nullable<int> corpID, global::System.Nullable<int> charID) {
+        public virtual EMMADataSet.RptGroupCorpsDataTable GetDataByIDs(global::System.Nullable<int> groupID, global::System.Nullable<long> corpID, global::System.Nullable<long> charID) {
             this.Adapter.SelectCommand = this.CommandCollection[1];
             if ((groupID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(groupID.Value));
@@ -46827,13 +46806,13 @@ SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((corpID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[2].Value = ((int)(corpID.Value));
+                this.Adapter.SelectCommand.Parameters[2].Value = ((long)(corpID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             if ((charID.HasValue == true)) {
-                this.Adapter.SelectCommand.Parameters[3].Value = ((int)(charID.Value));
+                this.Adapter.SelectCommand.Parameters[3].Value = ((long)(charID.Value));
             }
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
@@ -46871,14 +46850,14 @@ SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_ReportGroupID, int Original_APICorpID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, int Original_APICharID, bool Original_AutoUpdateIndustryJobs) {
+        public virtual int Delete(int Original_ReportGroupID, long Original_APICorpID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, long Original_APICharID, bool Original_AutoUpdateIndustryJobs) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_ReportGroupID));
-            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_APICorpID));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((long)(Original_APICorpID));
             this.Adapter.DeleteCommand.Parameters[2].Value = ((bool)(Original_AutoUpdateTrans));
             this.Adapter.DeleteCommand.Parameters[3].Value = ((bool)(Original_AutoUpdateJournal));
             this.Adapter.DeleteCommand.Parameters[4].Value = ((bool)(Original_AutoUpdateAssets));
             this.Adapter.DeleteCommand.Parameters[5].Value = ((bool)(Original_AutoUpdateOrders));
-            this.Adapter.DeleteCommand.Parameters[6].Value = ((int)(Original_APICharID));
+            this.Adapter.DeleteCommand.Parameters[6].Value = ((long)(Original_APICharID));
             this.Adapter.DeleteCommand.Parameters[7].Value = ((bool)(Original_AutoUpdateIndustryJobs));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -46899,14 +46878,14 @@ SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int ReportGroupID, int APICorpID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, int APICharID, bool AutoUpdateIndustryJobs) {
+        public virtual int Insert(int ReportGroupID, long APICorpID, bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, long APICharID, bool AutoUpdateIndustryJobs) {
             this.Adapter.InsertCommand.Parameters[0].Value = ((int)(ReportGroupID));
-            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(APICorpID));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((long)(APICorpID));
             this.Adapter.InsertCommand.Parameters[2].Value = ((bool)(AutoUpdateTrans));
             this.Adapter.InsertCommand.Parameters[3].Value = ((bool)(AutoUpdateJournal));
             this.Adapter.InsertCommand.Parameters[4].Value = ((bool)(AutoUpdateAssets));
             this.Adapter.InsertCommand.Parameters[5].Value = ((bool)(AutoUpdateOrders));
-            this.Adapter.InsertCommand.Parameters[6].Value = ((int)(APICharID));
+            this.Adapter.InsertCommand.Parameters[6].Value = ((long)(APICharID));
             this.Adapter.InsertCommand.Parameters[7].Value = ((bool)(AutoUpdateIndustryJobs));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -46929,36 +46908,36 @@ SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
         public virtual int Update(
                     int ReportGroupID, 
-                    int APICorpID, 
+                    long APICorpID, 
                     bool AutoUpdateTrans, 
                     bool AutoUpdateJournal, 
                     bool AutoUpdateAssets, 
                     bool AutoUpdateOrders, 
-                    int APICharID, 
+                    long APICharID, 
                     bool AutoUpdateIndustryJobs, 
                     int Original_ReportGroupID, 
-                    int Original_APICorpID, 
+                    long Original_APICorpID, 
                     bool Original_AutoUpdateTrans, 
                     bool Original_AutoUpdateJournal, 
                     bool Original_AutoUpdateAssets, 
                     bool Original_AutoUpdateOrders, 
-                    int Original_APICharID, 
+                    long Original_APICharID, 
                     bool Original_AutoUpdateIndustryJobs) {
             this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(ReportGroupID));
-            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(APICorpID));
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((long)(APICorpID));
             this.Adapter.UpdateCommand.Parameters[2].Value = ((bool)(AutoUpdateTrans));
             this.Adapter.UpdateCommand.Parameters[3].Value = ((bool)(AutoUpdateJournal));
             this.Adapter.UpdateCommand.Parameters[4].Value = ((bool)(AutoUpdateAssets));
             this.Adapter.UpdateCommand.Parameters[5].Value = ((bool)(AutoUpdateOrders));
-            this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(APICharID));
+            this.Adapter.UpdateCommand.Parameters[6].Value = ((long)(APICharID));
             this.Adapter.UpdateCommand.Parameters[7].Value = ((bool)(AutoUpdateIndustryJobs));
             this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_ReportGroupID));
-            this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(Original_APICorpID));
+            this.Adapter.UpdateCommand.Parameters[9].Value = ((long)(Original_APICorpID));
             this.Adapter.UpdateCommand.Parameters[10].Value = ((bool)(Original_AutoUpdateTrans));
             this.Adapter.UpdateCommand.Parameters[11].Value = ((bool)(Original_AutoUpdateJournal));
             this.Adapter.UpdateCommand.Parameters[12].Value = ((bool)(Original_AutoUpdateAssets));
             this.Adapter.UpdateCommand.Parameters[13].Value = ((bool)(Original_AutoUpdateOrders));
-            this.Adapter.UpdateCommand.Parameters[14].Value = ((int)(Original_APICharID));
+            this.Adapter.UpdateCommand.Parameters[14].Value = ((long)(Original_APICharID));
             this.Adapter.UpdateCommand.Parameters[15].Value = ((bool)(Original_AutoUpdateIndustryJobs));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -46979,13 +46958,13 @@ SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, bool AutoUpdateIndustryJobs, int Original_ReportGroupID, int Original_APICorpID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, int Original_APICharID, bool Original_AutoUpdateIndustryJobs) {
+        public virtual int Update(bool AutoUpdateTrans, bool AutoUpdateJournal, bool AutoUpdateAssets, bool AutoUpdateOrders, bool AutoUpdateIndustryJobs, int Original_ReportGroupID, long Original_APICorpID, bool Original_AutoUpdateTrans, bool Original_AutoUpdateJournal, bool Original_AutoUpdateAssets, bool Original_AutoUpdateOrders, long Original_APICharID, bool Original_AutoUpdateIndustryJobs) {
             return this.Update(Original_ReportGroupID, Original_APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateAssets, AutoUpdateOrders, Original_APICharID, AutoUpdateIndustryJobs, Original_ReportGroupID, Original_APICorpID, Original_AutoUpdateTrans, Original_AutoUpdateJournal, Original_AutoUpdateAssets, Original_AutoUpdateOrders, Original_APICharID, Original_AutoUpdateIndustryJobs);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Store(global::System.Nullable<int> rptGroupID, global::System.Nullable<int> apiCorpID, global::System.Nullable<bool> included, global::System.Nullable<bool> autoTrans, global::System.Nullable<bool> autoJournal, global::System.Nullable<bool> autoAssets, global::System.Nullable<bool> autoOrders, global::System.Nullable<bool> autoIndustry, global::System.Nullable<int> apiCharID) {
+        public virtual int Store(global::System.Nullable<int> rptGroupID, global::System.Nullable<long> apiCorpID, global::System.Nullable<bool> included, global::System.Nullable<bool> autoTrans, global::System.Nullable<bool> autoJournal, global::System.Nullable<bool> autoAssets, global::System.Nullable<bool> autoOrders, global::System.Nullable<bool> autoIndustry, global::System.Nullable<long> apiCharID) {
             global::System.Data.SqlClient.SqlCommand command = this.CommandCollection[2];
             if ((rptGroupID.HasValue == true)) {
                 command.Parameters[1].Value = ((int)(rptGroupID.Value));
@@ -46994,7 +46973,7 @@ SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
                 command.Parameters[1].Value = global::System.DBNull.Value;
             }
             if ((apiCorpID.HasValue == true)) {
-                command.Parameters[2].Value = ((int)(apiCorpID.Value));
+                command.Parameters[2].Value = ((long)(apiCorpID.Value));
             }
             else {
                 command.Parameters[2].Value = global::System.DBNull.Value;
@@ -47036,7 +47015,7 @@ SELECT ReportGroupID, APICorpID, AutoUpdateTrans, AutoUpdateJournal, AutoUpdateA
                 command.Parameters[8].Value = global::System.DBNull.Value;
             }
             if ((apiCharID.HasValue == true)) {
-                command.Parameters[9].Value = ((int)(apiCharID.Value));
+                command.Parameters[9].Value = ((long)(apiCharID.Value));
             }
             else {
                 command.Parameters[9].Value = global::System.DBNull.Value;

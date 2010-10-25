@@ -81,7 +81,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="apiKey"></param>
         /// <param name="charID"></param>
         /// <returns></returns>
-        public static APICharacter GetCharacter(int userID, string apiKey, int charID)
+        public static APICharacter GetCharacter(long userID, string apiKey, long charID)
         {
             APICharacter retVal = null;
             if (!_initalised) { Initialise(); }
@@ -99,10 +99,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             char[] delim = {'|'};
             string[] keyData = args.Key.Split(delim);
-            EMMADataSet.APICharactersRow rowData = LoadCharFromDB(int.Parse(keyData[2]));
+            EMMADataSet.APICharactersRow rowData = LoadCharFromDB(long.Parse(keyData[2]));
             if (rowData != null)
             {
-                args.Data = new APICharacter(int.Parse(keyData[0]), keyData[1], rowData);
+                args.Data = new APICharacter(long.Parse(keyData[0]), keyData[1], rowData);
             }
             else
             {
@@ -114,7 +114,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// Return the specified API character row direct from the EMMA database
         /// </summary>
         /// <returns></returns>
-        private static EMMADataSet.APICharactersRow LoadCharFromDB(int charID)
+        private static EMMADataSet.APICharactersRow LoadCharFromDB(long charID)
         {
             EMMADataSet.APICharactersRow retVal = null;
             EMMADataSet.APICharactersDataTable charData = new EMMADataSet.APICharactersDataTable();

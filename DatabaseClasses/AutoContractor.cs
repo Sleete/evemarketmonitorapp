@@ -13,7 +13,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
     {
         public event StatusChangeHandler StatusChange;
 
-        public ContractList GenerateContracts(int assetOwnerID)
+        public ContractList GenerateContracts(long assetOwnerID)
         {
             ContractList retVal = new ContractList();
 
@@ -28,7 +28,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 bool exclude = UserAccount.CurrentGroup.Settings.AutoCon_ExcludeContainers;
                 EMMADataSet.AssetsDataTable assets = Assets.GetAutoConAssets(assetOwnerID,
                     UserAccount.CurrentGroup.Settings.AutoCon_PickupLocations, exclude);
-                int stationID = 0;
+                long stationID = 0;
                 decimal collateralTotal = 0;
                 decimal volumeTotal = 0;
                 int counter = 0;
@@ -39,7 +39,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 decimal minCollateral = UserAccount.CurrentGroup.Settings.AutoCon_MinCollateral * 0.95m;
                 decimal minReward = UserAccount.CurrentGroup.Settings.AutoCon_MinReward * 0.95m;
                 decimal minVolume = UserAccount.CurrentGroup.Settings.AutoCon_MinVolume;
-                int destination = UserAccount.CurrentGroup.Settings.AutoCon_DestiantionStation;
+                long destination = UserAccount.CurrentGroup.Settings.AutoCon_DestiantionStation;
 
                 Diagnostics.StartTimer("AutoConGenerate");
                 Diagnostics.StartTimer("AutoConGenerate.Station");
@@ -146,7 +146,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public ContractList GenerateContracts(int ownerID, int pickupStation, int destinationStation, bool autoCon)
+        public ContractList GenerateContracts(long ownerID, long pickupStation, long destinationStation, bool autoCon)
         {
             ContractList retVal = new ContractList();
             ContractItemList items = new ContractItemList();
@@ -479,13 +479,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public static decimal GetSellPrice(int itemID, int destinationStation)
+        public static decimal GetSellPrice(int itemID, long destinationStation)
         {
             decimal sellPrice = UserAccount.CurrentGroup.ItemValues.GetItemValue(itemID, destinationStation);
             return sellPrice;
         }
 
-        public static decimal GetBuyPrice(int ownerID, int itemID, int stationID,
+        public static decimal GetBuyPrice(long ownerID, int itemID, long stationID,
             long quantity, long recentPurchasesToIgnore)
         {
             decimal retVal = 0, blank1 = 0;
@@ -514,13 +514,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 financeAccessParams.Add(new FinanceAccessParams(ownerID));
                 List<int> itemIDs = new List<int>();
                 itemIDs.Add(itemID);
-                List<int> stationIDs = new List<int>();
+                List<long> stationIDs = new List<long>();
                 stationIDs.Add(stationID);
 
                 if (!UserAccount.CurrentGroup.ItemValues.UseReprocessValGet(itemID) &&
                     !UserAccount.CurrentGroup.ItemValues.ForceDefaultBuyPriceGet(itemID))
                 {
-                    Transactions.GetAverageBuyPrice(financeAccessParams, itemIDs, stationIDs, new List<int>(), quantity,
+                    Transactions.GetAverageBuyPrice(financeAccessParams, itemIDs, stationIDs, new List<long>(), quantity,
                         recentPurchasesToIgnore, ref retVal, ref blank1, true);
                 }
 

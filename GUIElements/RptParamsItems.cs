@@ -120,8 +120,8 @@ namespace EveMarketMonitorApp.GUIElements
 
                 _parameters.Add("StartDate", dtpStartDate.Value.ToUniversalTime());
                 _parameters.Add("EndDate", dtpEndDate.Value.ToUniversalTime());
-                List<int> regions = new List<int>();
-                List<int> stations = new List<int>();
+                List<long> regions = new List<long>();
+                List<long> stations = new List<long>();
                 if (cmbLocation.Text.Equals("All Regions"))
                 {
                     regions.Add(0);
@@ -142,9 +142,9 @@ namespace EveMarketMonitorApp.GUIElements
                 List<int> tradedItemIDs = UserAccount.CurrentGroup.TradedItems.GetAllItemIDs();
                 foreach (EMMADataSet.IDTableRow id in ids)
                 {
-                    if (!chkTradedItems.Checked || tradedItemIDs.Contains(id.ID))
+                    if (!chkTradedItems.Checked || tradedItemIDs.Contains((int)id.ID))
                     {
-                        itemIds.Add(id.ID);
+                        itemIds.Add((int)id.ID);
                     }
                 }
                 _parameters.Add("ItemIDs", itemIds);

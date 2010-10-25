@@ -13,7 +13,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
     {
         private APICharSettingsTableAdapter settingsTableAdapter = new APICharSettingsTableAdapter();
         private APICharSettings _settings;
-        private int _charID;
+        private long _charID;
 
         #region Class Variables
         private DateTime _lastCharTransUpdate = SqlDateTime.MinValue.Value;
@@ -53,7 +53,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         private long _highestCorpJournalID = 0;
         #endregion
 
-        public APISettingsAndStatus(int charID)
+        public APISettingsAndStatus(long charID)
         {
             _charID = charID;
             InitSettings();

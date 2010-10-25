@@ -10,16 +10,16 @@ namespace EveMarketMonitorApp.DatabaseClasses
     {
         private long _id;
 
-        private int _ownerID;
+        private long _ownerID;
         private bool _gotOwner = false;
         private string _owner;
         private short _statusID;
         private bool _gotStatus = false;
         private string _status;
-        private int _pickupStationID;
+        private long _pickupStationID;
         private bool _gotPickupStation = false;
         private string _pickupStation;
-        private int _destinationStationID;
+        private long _destinationStationID;
         private bool _gotDestinationStation = false;
         private string _destinationStation;
         private ContractType _type;
@@ -32,7 +32,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
         private ContractItemList _items = null;
 
-        public Contract(int ownerID, short statusID)
+        public Contract(long ownerID, short statusID)
         {
             _ownerID = ownerID;
             _statusID = statusID;
@@ -47,7 +47,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             _type = ContractType.Courier;
         }
 
-        public Contract(int ownerID, short statusID, int pickupStationID, int destinationStationID,
+        public Contract(long ownerID, short statusID, long pickupStationID, long destinationStationID,
             decimal collateral, decimal reward, decimal expectedProfit, DateTime issueDate, ContractItemList items,
             ContractType type)
         {
@@ -107,7 +107,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set { _issueDate = value; }
         }
 
-        public int PickupStationID
+        public long PickupStationID
         {
             get { return _pickupStationID; }
             set
@@ -117,7 +117,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        public int DestinationStationID
+        public long DestinationStationID
         {
             get { return _destinationStationID; }
             set
@@ -137,7 +137,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        public int OwnerID
+        public long OwnerID
         {
             get { return _ownerID; }
             set

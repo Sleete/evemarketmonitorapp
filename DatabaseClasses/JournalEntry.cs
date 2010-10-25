@@ -15,14 +15,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private bool _gotType = false;
         private string _type;
         private bool _ownerIsSender;
-        private int _senderID;
+        private long _senderID;
         private bool _gotSender = false;
         private string _sender;
-        private int _recieverID;
+        private long _recieverID;
         private bool _gotReciever = false;
         private string _reciever;
         private string _argName;
-        private int _argID;
+        private long _argID;
         private decimal _amount;
         private decimal _balance;
         private string _reason;
@@ -32,16 +32,16 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private int _rWalletID;
         private bool _gotRWallet = false;
         private string _rWallet = "";
-        private int _rCorpID;
+        private long _rCorpID;
         private bool _gotRCorp = false;
         private string _rCorp;
-        private int _sCorpID;
+        private long _sCorpID;
         private bool _gotSCorp = false;
         private string _sCorp;
 
 
 
-        public JournalEntry(EMMADataSet.JournalRow dataRow, int ownerID)
+        public JournalEntry(EMMADataSet.JournalRow dataRow, long ownerID)
         {
             if (dataRow != null)
             {
@@ -128,7 +128,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set { _sender = value; }
         }
 
-        public int SenderID
+        public long SenderID
         {
             get { return _senderID; }
             set { _senderID = value; }
@@ -155,7 +155,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set { _reciever = value; }
         }
 
-        public int RecieverID
+        public long RecieverID
         {
             get { return _recieverID; }
             set { _recieverID = value; }
@@ -167,7 +167,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set { _argName = value; }
         }
 
-        public int ArgID
+        public long ArgID
         {
             get { return _argID; }
             set { _argID = value; }

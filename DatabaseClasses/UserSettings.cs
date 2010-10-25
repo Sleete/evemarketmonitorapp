@@ -597,6 +597,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
             get { return bool.Parse(GetValue(Setting.ShowEMMAInTaskBarWhenMinimised)); }
             set { SetValue(Setting.ShowEMMAInTaskBarWhenMinimised, value.ToString()); }
         }
+        public string APIURL
+        {
+            get { return GetValue(Setting.APIURL); }
+            set { SetValue(Setting.APIURL, value); }
+        }
         #endregion
 
         #region Public methods
@@ -748,7 +753,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             APIIndustryJobsUpdatePeriod,
             UseCompactUpdatePanel,
             ShowEMMAInTaskBarWhenMinimised,
-            ExtendedDiags
+            ExtendedDiags,
+            APIURL
         }
 
     }

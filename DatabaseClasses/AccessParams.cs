@@ -13,18 +13,18 @@ namespace EveMarketMonitorApp.DatabaseClasses
     /// </summary>
     public class AssetAccessParams
     {
-        private int _ownerID;
+        private long _ownerID;
         //private bool _includePersonal;
         //private bool _includeCorporate;
 
-        public AssetAccessParams(int ownerID)//, bool includePersonal, bool includeCorporate)
+        public AssetAccessParams(long ownerID)//, bool includePersonal, bool includeCorporate)
         {
             _ownerID = ownerID;
             //_includePersonal = includePersonal;
             //_includeCorporate = includeCorporate;
         }
 
-        public int OwnerID
+        public long OwnerID
         {
             get { return _ownerID; }
             set { _ownerID = value; }
@@ -45,7 +45,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public static string BuildAccessList(List<AssetAccessParams> accessParams)
         {
             StringBuilder accessList = new StringBuilder("");
-            List<int> done = new List<int>();
+            List<long> done = new List<long>();
             foreach (AssetAccessParams entry in accessParams)
             {
                 if (!done.Contains(entry.OwnerID))
@@ -75,11 +75,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
     /// </summary>
     public class FinanceAccessParams
     {
-        private int _ownerID;
+        private long _ownerID;
         private List<short> _walletIDs;
         private bool _includeCorporate = true;
 
-        public FinanceAccessParams(int ownerID)
+        public FinanceAccessParams(long ownerID)
         {
             _ownerID = ownerID;
             _walletIDs = new List<short>();
@@ -87,14 +87,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
             InitWallets();
         }
 
-        public FinanceAccessParams(int ownerID, List<short> walletIDs)
+        public FinanceAccessParams(long ownerID, List<short> walletIDs)
         {
             _ownerID = ownerID;
             _walletIDs = walletIDs;
             InitWallets();
         }
 
-        public FinanceAccessParams(int ownerID, bool includeCorporate)
+        public FinanceAccessParams(long ownerID, bool includeCorporate)
         {
             _ownerID = ownerID;
             _walletIDs = new List<short>();
@@ -118,7 +118,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public int OwnerID
+        public long OwnerID
         {
             get { return _ownerID; }
             set { _ownerID = value; }

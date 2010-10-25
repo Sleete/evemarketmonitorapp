@@ -16,12 +16,12 @@ namespace EveMarketMonitorApp.GUIElements
     public partial class DeliveryPlanner : Form
     {
         private List<string> _recentSystems;
-        private string _lastSystem = "";
+        //private string _lastSystem = "";
         private short[,] _jumps;
-        private Dictionary<int, int> _idMapper;
+        private Dictionary<long, int> _idMapper;
         private int _nextFreeIndex = 0;
         private string _lastStartSystem = "";
-        private string _lastEndSystem = "";
+        //private string _lastEndSystem = "";
         private CargoHoldSpec _cargoHold;
 
         private ContractList _cargo = new ContractList();
@@ -190,7 +190,7 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void btnAddAssets_Click(object sender, EventArgs e)
         {
-            int ownerID = 0;
+            long ownerID = 0;
 
             if (cmbOwner.SelectedItem != null)
             {
@@ -271,10 +271,10 @@ namespace EveMarketMonitorApp.GUIElements
                 try
                 {
                     _nextFreeIndex = 0;
-                    _idMapper = new Dictionary<int, int>();
+                    _idMapper = new Dictionary<long, int>();
                     _jumps = new short[_cargo.Count + 2, _cargo.Count + 2];
 
-                    List<int> waypoints = new List<int>();
+                    List<long> waypoints = new List<long>();
                     waypoints.Add(startSystemID);
 
                     route = new CargoRoute(waypoints, ref _nextFreeIndex, ref _jumps, _idMapper, _cargo, _cargoHold);
@@ -704,8 +704,8 @@ namespace EveMarketMonitorApp.GUIElements
                 g.DrawString(text, font, new SolidBrush(col), bounds);
             }
         }
-        
-        private class CargoRoute : List<int>, IProvideStatus
+
+        private class CargoRoute : List<long>, IProvideStatus
         {
             public event StatusChangeHandler StatusChange;
             private int _nextFreeIndex;
@@ -713,28 +713,29 @@ namespace EveMarketMonitorApp.GUIElements
             // The ID Mapper matches a solar system ID to an index in the '_jumps' array.
             // This enables us to use an array, (which is much faster than other structures,) 
             // to cache jump distance data. 
-            private Dictionary<int, int> _idMapper;
+            private Dictionary<long, int> _idMapper;
             private ContractList _contracts;
             private bool _initialised = false;
             private CargoHoldSpec _cargoHold;
 
-            private List<int> _pickupStations;
-            private List<int> _destinationStations;
-            private List<int> _pickupStationsRemaining;
-            private List<int> _destinationStationsRemaining;
+            private List<long> _pickupStations;
+            private List<long> _destinationStations;
+            private List<long> _pickupStationsRemaining;
+            private List<long> _destinationStationsRemaining;
 
-            public CargoRoute(List<int> waypoints, ref int nextFreeIndex, ref short[,] jumps, 
-                Dictionary<int, int> idMapper, ContractList contracts, CargoHoldSpec cargoHold) : base(waypoints)
+            public CargoRoute(List<long> waypoints, ref int nextFreeIndex, ref short[,] jumps,
+                Dictionary<long, int> idMapper, ContractList contracts, CargoHoldSpec cargoHold)
+                : base(waypoints)
             {
                 _nextFreeIndex = nextFreeIndex;
                 _jumps = jumps;
                 _idMapper = idMapper;
                 _contracts = contracts;
                 _cargoHold = cargoHold;
-                _destinationStations = new List<int>();
-                _pickupStations = new List<int>();
-                _destinationStationsRemaining = new List<int>();
-                _pickupStationsRemaining = new List<int>();
+                _destinationStations = new List<long>();
+                _pickupStations = new List<long>();
+                _destinationStationsRemaining = new List<long>();
+                _pickupStationsRemaining = new List<long>();
             }
 
 
@@ -753,7 +754,7 @@ namespace EveMarketMonitorApp.GUIElements
                 Thread.Sleep(500); 
                 UpdateStatus(0, 1, "Optimizing Route", "", false);
                 UpdateStatus(0, 1, "", "Pre-caching data", false);
-                List<int> allSystems = new List<int>();
+                List<long> allSystems = new List<long>();
                 foreach (Contract contract in _contracts)
                 {
                     if (!_pickupStations.Contains(contract.PickupStationID))
@@ -903,7 +904,7 @@ namespace EveMarketMonitorApp.GUIElements
                 }
             }
 
-            private short GetRouteLength(int startSystemID, int endSystemID, ref int[] diagnostics)
+            private short GetRouteLength(long startSystemID, long endSystemID, ref int[] diagnostics)
             {
                 short retVal = 0;
 
@@ -911,7 +912,7 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     if (startSystemID > endSystemID)
                     {
-                        int tmp = startSystemID;
+                        long tmp = startSystemID;
                         startSystemID = endSystemID;
                         endSystemID = tmp;
                     }
@@ -983,14 +984,14 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     if (this[i] != this[i + 1])
                     {
-                        List<int> route = Map.GetRoute(this[i], this[i + 1]);
+                        List<long> route = Map.GetRoute(this[i], this[i + 1]);
 
                         // Remove the first system (i.e. the start system).
                         route.RemoveAt(0);
 
                         for (int systemIndex = 0; systemIndex < route.Count; systemIndex++)
                         {
-                            int systemID = route[systemIndex];
+                            long systemID = route[systemIndex];
                             /*retVal.Add(new LocationData(systemID,
                                 SolarSystems.GetSystemName(systemID),
                                 systemIndex == route.Count - 1));*/
@@ -1005,7 +1006,7 @@ namespace EveMarketMonitorApp.GUIElements
 
             }
 
-            private PickupResult PickupCargo(int stationID)
+            private PickupResult PickupCargo(long stationID)
             {
                 PickupResult retVal = PickupResult.AllCollected;
                 return retVal;

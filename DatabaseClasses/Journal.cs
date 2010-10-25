@@ -18,7 +18,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         public event StatusChangeHandler StatusChange;
 
 
-        public static bool HasBrokerFeePayment(int ownerID, DateTime date, decimal expectedFee)
+        public static bool HasBrokerFeePayment(long ownerID, DateTime date, decimal expectedFee)
         {
             EMMADataSet.JournalDataTable table = new EMMADataSet.JournalDataTable();
             bool retVal = false;
@@ -41,7 +41,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return retVal;
         }
 
-        public static EMMADataSet.JournalRow GetClosest(int ownerID, bool corp, short walletID, DateTime date)
+        public static EMMADataSet.JournalRow GetClosest(long ownerID, bool corp, short walletID, DateTime date)
         {
             EMMADataSet.JournalDataTable table = new EMMADataSet.JournalDataTable();
             EMMADataSet.JournalRow retVal = null;
@@ -129,7 +129,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             foreach (EMMADataSet.JournalRow row in table)
             {
                 // We need to build the journal rows differently depending on who the owner is...
-                int sOwner = 0, rOwner = 0;
+                long sOwner = 0, rOwner = 0;
                 foreach (FinanceAccessParams access in accessParams)
                 {
                     if ((access.OwnerID == row.SenderID && sOwner == 0) || access.OwnerID == row.SCorpID)
@@ -158,7 +158,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public static bool EntryExists(EMMADataSet.JournalDataTable table, long ID, int recieverID)
+        public static bool EntryExists(EMMADataSet.JournalDataTable table, long ID, long recieverID)
         {
             bool? exists = false;
 
@@ -172,7 +172,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public static EMMADataSet.JournalRow FindEntry(DateTime date, int senderID, int recieverID, decimal amount)
+        public static EMMADataSet.JournalRow FindEntry(DateTime date, long senderID, long recieverID, decimal amount)
         {
             EMMADataSet.JournalDataTable table = new EMMADataSet.JournalDataTable();
             EMMADataSet.JournalRow retVal = null;
@@ -192,7 +192,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public void LoadOldEmmaXML(string filename, int charID, int corpID) 
+        public void LoadOldEmmaXML(string filename, long charID, long corpID) 
         {
             EMMADataSet.JournalDataTable table = new EMMADataSet.JournalDataTable();
             XmlDocument xml = new XmlDocument();
@@ -266,7 +266,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        private EMMADataSet.JournalRow BuildRow(int corpID, XmlNode node, long id, int recieverID,
+        private EMMADataSet.JournalRow BuildRow(long corpID, XmlNode node, long id, long recieverID,
             EMMADataSet.JournalDataTable table)
         {
             EMMADataSet.JournalRow newRow = table.NewJournalRow();

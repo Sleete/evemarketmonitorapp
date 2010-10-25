@@ -13,11 +13,11 @@ using EveMarketMonitorApp.AbstractionClasses;
 
 namespace EveMarketMonitorApp.GUIElements
 {
-    public partial class ViewJournal : Form
+    public partial class ViewIndustryJobs : Form
     {
         private JournalList _entries;
         private BindingSource _journalBindingSource;
-        private List<long> _possibleOwners;
+        private List<int> _possibleOwners;
         private List<FinanceAccessParams> _accessParams = new List<FinanceAccessParams>();
         private static bool _allowRefresh = true;
         private static bool _acceptStartDate = true;
@@ -27,15 +27,15 @@ namespace EveMarketMonitorApp.GUIElements
         private DataGridViewRow _clickedRow;
         private DataGridViewCell _clickedCell;
 
-        public ViewJournal()
+        public ViewIndustryJobs()
         {
             InitializeComponent();
-            journalDataGridView.AutoGenerateColumns = false;
+            industryJobsDataGridView.AutoGenerateColumns = false;
             UserAccount.Settings.GetFormSizeLoc(this);
-            journalDataGridView.Tag = "Journal Data";
+            industryJobsDataGridView.Tag = "Journal Data";
             if (Globals.calculator != null)
             {
-                Globals.calculator.BindGrid(journalDataGridView);
+                Globals.calculator.BindGrid(industryJobsDataGridView);
             }
         }
 
@@ -57,10 +57,10 @@ namespace EveMarketMonitorApp.GUIElements
                 style2.Format = IskAmount.FormatString();
                 BalanceColumn.DefaultCellStyle = style2;
 
-                journalDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-                journalDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+                industryJobsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+                industryJobsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
 
-                journalDataGridView.DataSource = _journalBindingSource;
+                industryJobsDataGridView.DataSource = _journalBindingSource;
                 IDColumn.DataPropertyName = "Id";
                 DateColumn.DataPropertyName = "Date";
                 TypeColumn.DataPropertyName = "Type";
@@ -79,7 +79,7 @@ namespace EveMarketMonitorApp.GUIElements
                 Owner1WalletColumn.DataPropertyName = "SenderWallet";
                 Owner2WalletColumn.DataPropertyName = "RecieverWallet";
 
-                UserAccount.Settings.GetColumnWidths(this.Name, journalDataGridView);
+                UserAccount.Settings.GetColumnWidths(this.Name, industryJobsDataGridView);
                 
                 dtpEndDate.Value = DateTime.Now;
                 dtpStartDate.Value = DateTime.Now.AddDays(-2);
@@ -92,13 +92,13 @@ namespace EveMarketMonitorApp.GUIElements
 
                 Diagnostics.StartTimer("ViewJournal.Load.Part2");
                 List<CharCorpOption> charcorps = UserAccount.CurrentGroup.GetCharCorpOptions(APIDataType.Journal);
-                _possibleOwners = new List<long>();
+                _possibleOwners = new List<int>();
                 foreach (CharCorpOption chop in charcorps)
                 {
                     _possibleOwners.Add(chop.Corp ? chop.CharacterObj.CorpID : chop.CharacterObj.CharID);
                 }
                 _accessParams = new List<FinanceAccessParams>();
-                foreach (long id in _possibleOwners)
+                foreach (int id in _possibleOwners)
                 {
                     _accessParams.Add(new FinanceAccessParams(id));
                 }
@@ -168,12 +168,12 @@ namespace EveMarketMonitorApp.GUIElements
         {
             if (UserAccount.Settings != null)
             {
-                UserAccount.Settings.StoreColumnWidths(this.Name, journalDataGridView);
+                UserAccount.Settings.StoreColumnWidths(this.Name, industryJobsDataGridView);
                 UserAccount.Settings.StoreFormSizeLoc(this);
             }
             if (Globals.calculator != null)
             {
-                Globals.calculator.RemoveGrid(journalDataGridView);
+                Globals.calculator.RemoveGrid(industryJobsDataGridView);
             }
         }
 
@@ -361,7 +361,7 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 if (_allowRefresh)
                 {
-                    long ownerID = 0;
+                    int ownerID = 0;
                     if (cmbOwner.SelectedValue != null && !chkIngoreOwner.Checked)
                     {
                         CharCorp data = (CharCorp)cmbOwner.SelectedValue;
@@ -397,7 +397,7 @@ namespace EveMarketMonitorApp.GUIElements
                     //ListSortDirection sortDirection = ListSortDirection.Descending;
                     //DataGridViewColumn sortColumn = journalDataGridView.SortedColumn;
                     //if (journalDataGridView.SortOrder == SortOrder.Ascending) sortDirection = ListSortDirection.Ascending;
-                    List<SortInfo> sortinfo = journalDataGridView.GridSortInfo;
+                    List<SortInfo> sortinfo = industryJobsDataGridView.GridSortInfo;
 
                     Diagnostics.StartTimer("ViewJournal.Refresh.Load");
                     _entries = Journal.LoadEntries(_accessParams, typeIDs, startDate, endDate, nameProfile);
@@ -417,10 +417,10 @@ namespace EveMarketMonitorApp.GUIElements
                     //}
                     if (sortinfo.Count == 0)
                     {
-                        DataGridViewColumn column = journalDataGridView.Columns["DateColumn"];
+                        DataGridViewColumn column = industryJobsDataGridView.Columns["DateColumn"];
                         sortinfo.Add(new SortInfo(column.Index, column.DataPropertyName));
                     }
-                    journalDataGridView.GridSortInfo = sortinfo;
+                    industryJobsDataGridView.GridSortInfo = sortinfo;
 
                     Text = "Viewing " + _journalBindingSource.Count + " entries";
                     Diagnostics.StopTimer("ViewJournal.Refresh");
@@ -443,11 +443,11 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void journalDataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (journalDataGridView.Rows[e.RowIndex] != null)
+            if (industryJobsDataGridView.Rows[e.RowIndex] != null)
             {
-                if (journalDataGridView.Columns[e.ColumnIndex].Name.Equals("AmountColumn"))
+                if (industryJobsDataGridView.Columns[e.ColumnIndex].Name.Equals("AmountColumn"))
                 {
-                    bool ownerIsSender = (bool)journalDataGridView["OwnerIsSenderColumn", e.RowIndex].Value;
+                    bool ownerIsSender = (bool)industryJobsDataGridView["OwnerIsSenderColumn", e.RowIndex].Value;
 
                     DataGridViewCellStyle style = e.CellStyle;
                     if (ownerIsSender)
@@ -470,13 +470,13 @@ namespace EveMarketMonitorApp.GUIElements
             if (e.Button == MouseButtons.Right)
             {
                 DataGridView.HitTestInfo Hti;
-                Hti = journalDataGridView.HitTest(e.X, e.Y);
+                Hti = industryJobsDataGridView.HitTest(e.X, e.Y);
 
                 if (Hti.Type == DataGridViewHitTestType.Cell)
                 {
                     // store a reference to the cell and row that the user has clicked on.
-                    _clickedRow = journalDataGridView.Rows[Hti.RowIndex];
-                    _clickedCell = journalDataGridView[Hti.ColumnIndex, Hti.RowIndex];
+                    _clickedRow = industryJobsDataGridView.Rows[Hti.RowIndex];
+                    _clickedCell = industryJobsDataGridView[Hti.ColumnIndex, Hti.RowIndex];
                     _clickedRow.Selected = true;
                 }
             }
@@ -539,7 +539,7 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void btnCSV_Click(object sender, EventArgs e)
         {
-            CSVExport.Export(journalDataGridView, "journal");
+            CSVExport.Export(industryJobsDataGridView, "journal");
         }
 
 

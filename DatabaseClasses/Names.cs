@@ -12,7 +12,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
     {
         static private EMMADataSetTableAdapters.NamesTableAdapter namesTableAdapter =
             new EveMarketMonitorApp.DatabaseClasses.EMMADataSetTableAdapters.NamesTableAdapter();
-        static private Cache<int, string> _cache = new Cache<int, string>(1000);
+        static private Cache<long, string> _cache = new Cache<long, string>(1000);
         private static bool _initalised = false;
 
 
@@ -20,7 +20,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             if (!_initalised)
             {
-                _cache.DataUpdateNeeded += new Cache<int, string>.DataUpdateNeededHandler(Cache_DataUpdateNeeded);
+                _cache.DataUpdateNeeded += new Cache<long, string>.DataUpdateNeededHandler(Cache_DataUpdateNeeded);
                 _initalised = true;
             }
         }
@@ -32,7 +32,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="characterID"></param>
         /// <returns></returns>
-        static public string GetName(int ID)
+        static public string GetName(long ID)
         {
             string retVal = "";
             if (!_initalised) { InitCache(); }
@@ -52,7 +52,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        static void Cache_DataUpdateNeeded(object myObject, DataUpdateNeededArgs<int, string> args)
+        static void Cache_DataUpdateNeeded(object myObject, DataUpdateNeededArgs<long, string> args)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="characterID"></param>
         /// <param name="characterName"></param>
-        static public void AddName(int ID, string Name)
+        static public void AddName(long ID, string Name)
         {
             try
             {

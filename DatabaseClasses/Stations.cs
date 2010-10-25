@@ -14,8 +14,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         static private EveDataSetTableAdapters.staStationsTableAdapter stationsTableAdapter =
             new EveMarketMonitorApp.DatabaseClasses.EveDataSetTableAdapters.staStationsTableAdapter();
         static private EveDataSet.staStationsDataTable _stations = new EveDataSet.staStationsDataTable();
-        static private Cache<int, string> _nameCache = new Cache<int, string>(1000);
-        static private Cache<int, double> _securityCache = new Cache<int, double>(1000);
+        static private Cache<long, string> _nameCache = new Cache<long, string>(1000);
+        static private Cache<long, double> _securityCache = new Cache<long, double>(1000);
         static private bool _initalised = false;
 
 
@@ -81,13 +81,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="systemID"></param>
         /// <returns></returns>
-        static public List<int> GetStationsInSystem(int systemID)
+        static public List<long> GetStationsInSystem(long systemID)
         {
             EveDataSet.staStationsDataTable table = new EveDataSet.staStationsDataTable();
-            List<int> retVal = new List<int>();
+            List<long> retVal = new List<long>();
             lock (stationsTableAdapter)
             {
-                stationsTableAdapter.FillBySystem(table, systemID);
+                stationsTableAdapter.FillBySystem(table, (int)systemID);
             }
             foreach (EveDataSet.staStationsRow station in table)
             {
@@ -151,7 +151,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return retVal;
         }
 
-        public static EveDataSet.staStationsDataTable GetContractStations(List<int> ownerIDs,
+        public static EveDataSet.staStationsDataTable GetContractStations(List<long> ownerIDs,
             ContractStationType type)
         {
             StringBuilder stationIDs = new StringBuilder("");
@@ -224,7 +224,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="stationID"></param>
         /// <returns></returns>
-        static public bool IsLowSec(int stationID)
+        static public bool IsLowSec(long stationID)
         {
             if (!_initalised) { InitialiseCache(); }
             return _securityCache.Get(stationID) <= 0.45;
@@ -235,11 +235,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="stationID"></param>
         /// <returns></returns>
-        static public EveDataSet.staStationsRow GetStation(int stationID)
+        static public EveDataSet.staStationsRow GetStation(long stationID)
         {
             EveDataSet.staStationsRow retVal;
 
-            retVal = _stations.FindBystationID(stationID);
+            int intStationID = (int)stationID;
+            retVal = _stations.FindBystationID(intStationID);
 
             if (retVal == null)
             {
@@ -248,7 +249,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 {
                     stationsTableAdapter.FillByIDs(_stations, stationID.ToString());
                 }
-                retVal = _stations.FindBystationID(stationID);
+                retVal = _stations.FindBystationID(intStationID);
             }
             
             if (retVal == null)
@@ -265,7 +266,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="stationID"></param>
         /// <returns></returns>
-        static public string GetStationName(int stationID)
+        static public string GetStationName(long stationID)
         {
             if (!_initalised) { InitialiseCache(); }
             return _nameCache.Get(stationID);
@@ -367,13 +368,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             if (!_initalised)
             {
-                _nameCache.DataUpdateNeeded += new Cache<int, string>.DataUpdateNeededHandler(NameCache_DataUpdateNeeded);
-                _securityCache.DataUpdateNeeded += new Cache<int, double>.DataUpdateNeededHandler(SecurityCache_DataUpdateNeeded);
+                _nameCache.DataUpdateNeeded += new Cache<long, string>.DataUpdateNeededHandler(NameCache_DataUpdateNeeded);
+                _securityCache.DataUpdateNeeded += new Cache<long, double>.DataUpdateNeededHandler(SecurityCache_DataUpdateNeeded);
                 _initalised = true;
             }
         }
 
-        static void SecurityCache_DataUpdateNeeded(object myObject, DataUpdateNeededArgs<int, double> args)
+        static void SecurityCache_DataUpdateNeeded(object myObject, DataUpdateNeededArgs<long, double> args)
         {
             double security = 0;
             EveDataSet.staStationsRow station = GetStation(args.Key);
@@ -393,13 +394,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="myObject"></param>
         /// <param name="args"></param>
-        static void NameCache_DataUpdateNeeded(object myObject, DataUpdateNeededArgs<int, string> args)
+        static void NameCache_DataUpdateNeeded(object myObject, DataUpdateNeededArgs<long, string> args)
         {
             string name = "";
 
             lock (stationsTableAdapter)
             {
-                stationsTableAdapter.GetName(args.Key, ref name);
+                stationsTableAdapter.GetName((int)args.Key, ref name);
             }
 
             if (name.Equals(""))

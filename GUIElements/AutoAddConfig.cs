@@ -184,13 +184,13 @@ namespace EveMarketMonitorApp.GUIElements
             UserAccount.CurrentGroup.Settings.AutoAddBuyMin = int.Parse(txtMinPurchases.Text);
             UserAccount.CurrentGroup.Settings.AutoAddSellMin = int.Parse(txtMinSales.Text);
             UserAccount.CurrentGroup.Settings.AutoAddStartDate = dtpTransactionStartDate.Value;
-            List<int> stationIDs = new List<int>();
+            List<long> stationIDs = new List<long>();
             foreach (EveDataSet.staStationsRow station in _buyStations)
             {
                 stationIDs.Add(station.stationID);
             }
             UserAccount.CurrentGroup.Settings.AutoAddBuyStations = stationIDs;
-            stationIDs = new List<int>();
+            stationIDs = new List<long>();
             foreach (EveDataSet.staStationsRow station in _sellStations)
             {
                 stationIDs.Add(station.stationID);
