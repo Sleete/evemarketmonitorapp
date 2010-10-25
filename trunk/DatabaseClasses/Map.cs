@@ -17,9 +17,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private const int _numSystemsInEve = 20000;
         private const int _maxNeighbours = 8;
         private static bool _initalised = false;
-        private static int[][] _systemNeighbours = new int[_numSystemsInEve][];
+        private static long[][] _systemNeighbours = new long[_numSystemsInEve][];
         private static float[] _systemSec = new float[_numSystemsInEve];
-        private static Dictionary<int, int> _idToIndex = new Dictionary<int, int>();
+        private static Dictionary<long, int> _idToIndex = new Dictionary<long, int>();
 
         private static int _highSecCost = 1;
         private static int _lowSecCost = 1;
@@ -27,7 +27,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         #endregion
 
         #region Public methods
-        public static float GetSecurity(int systemID)
+        public static float GetSecurity(long systemID)
         {
             float retVal = 0;
             if (_idToIndex.ContainsKey(systemID))
@@ -50,7 +50,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="startSystemID"></param>
         /// <param name="endSystemID"></param>
         /// <returns></returns>
-        public static List<int> GetRoute(int startSystemID, int endSystemID)
+        public static List<long> GetRoute(long startSystemID, long endSystemID)
         {
             return GetRouteDijkstra(startSystemID, endSystemID);
         }
@@ -61,7 +61,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="startStationID"></param>
         /// <param name="endStationID"></param>
         /// <returns></returns>
-        public static int CalcRouteLengthBetweenStations(int startStationID, int endStationID)
+        public static int CalcRouteLengthBetweenStations(long startStationID, long endStationID)
         {
             EveDataSet.staStationsRow startStation = Stations.GetStation(startStationID);
             EveDataSet.staStationsRow endStation = Stations.GetStation(endStationID);
@@ -75,9 +75,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="startSystemID"></param>
         /// <param name="endSystemID"></param>
         /// <returns></returns>
-        public static int CalcRouteLength(int startSystemID, int endSystemID)
+        public static int CalcRouteLength(long startSystemID, long endSystemID)
         {
-            List<int> route;
+            List<long> route;
             //route = GetSystemRouteDijkstra(startSystemID, endSystemID);
             route = GetRouteDijkstra(startSystemID, endSystemID);
 
@@ -88,10 +88,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
         #endregion
 
         #region Dijkstra
-        private static List<int> GetRouteDijkstra(int startSystemID, int endSystemID)
+        private static List<long> GetRouteDijkstra(long startSystemID, long endSystemID)
         {
-            Dictionary<int, int> indexToId = new Dictionary<int, int>();
-            Dictionary<int, int> idToIndex = new Dictionary<int, int>();
+            Dictionary<int, long> indexToId = new Dictionary<int, long>();
+            Dictionary<long, int> idToIndex = new Dictionary<long, int>();
             int nextFreeIndex = 0;
             short[] distance = new short[_numSystemsInEve];
             int[] previous = new int[_numSystemsInEve];
@@ -139,10 +139,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 else
                 {
                     vistited[minIndex] = true;
-                    int[] systems = GetNeighbourSystems(indexToId[minIndex]);
+                    long[] systems = GetNeighbourSystems(indexToId[minIndex]);
                     for (int i = 0; i < _maxNeighbours; i++)
                     {
-                        int system = systems[i];
+                        long system = systems[i];
                         if (system != 0)
                         {
                             //if (SolarSystems.InConstellation(system, constellations))
@@ -189,12 +189,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 }
             }
 
-            List<int> route = new List<int>();
-            int systemId = endSystemID;
+            List<long> route = new List<long>();
+            long systemId = endSystemID;
             route.Add(systemId);
             while (systemId != startSystemID)
             {
-                int prevId = indexToId[previous[idToIndex[systemId]]];
+                long prevId = indexToId[previous[idToIndex[systemId]]];
                 route.Add(prevId);
                 systemId = prevId;
             }
@@ -203,7 +203,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return route;
         }
 
-        private static int[] GetNeighbourSystems(int systemID)
+        private static long[] GetNeighbourSystems(long systemID)
         {
             int index = _idToIndex[systemID];
             return _systemNeighbours[index];
@@ -452,7 +452,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 //DateTime dt1 = DateTime.UtcNow;
                 for (int i = 0; i < _numSystemsInEve; i++)
                 {
-                    _systemNeighbours[i] = new int[_maxNeighbours];
+                    _systemNeighbours[i] = new long[_maxNeighbours];
                 }
 
                 SqlConnection connection = new SqlConnection(Properties.Settings.Default.ebs_DATADUMPConnectionString);

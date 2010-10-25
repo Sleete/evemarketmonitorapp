@@ -28,7 +28,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             bankTransactionTableAdapter.ClearBeforeFill = true;
         }
 
-        public static void StoreAccount(PublicCorp data, int reportGroupID, int ownerID)
+        public static void StoreAccount(PublicCorp data, int reportGroupID, long ownerID)
         {
             EMMADataSet.BankAccountRow account = null;
             EMMADataSet.BankAccountDataTable table = new EMMADataSet.BankAccountDataTable();
@@ -57,7 +57,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             bankAccountTableAdapter.Update(table);
         }
 
-        public static void DeleteAccount(int corpID, int ownerID)
+        public static void DeleteAccount(int corpID, long ownerID)
         {
             PublicCorp corp = PublicCorps.GetCorp(corpID);
             if (corp != null)
@@ -297,7 +297,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        public static decimal GetAccountBalance(int corpID, int reportGroupID, int ownerID)
+        public static decimal GetAccountBalance(int corpID, int reportGroupID, long ownerID)
         {
             int accountID = GetSingleBankAccountData(reportGroupID, ownerID, corpID).AccountID;
             return GetAccountBalance(accountID, DateTime.UtcNow);
@@ -336,7 +336,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public static EMMADataSet.BankAccountRow GetSingleBankAccountData(int reportGroupID, int ownerID, int corpID)
+        public static EMMADataSet.BankAccountRow GetSingleBankAccountData(int reportGroupID, long ownerID, int corpID)
         {
             EMMADataSet.BankAccountRow retVal = null;
             EMMADataSet.BankAccountDataTable table = GetBankAccountData(reportGroupID, ownerID, corpID);
@@ -346,7 +346,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
             return retVal;
         }
-        public static EMMADataSet.BankAccountDataTable GetBankAccountData(int reportGroupID, int ownerID, int corpID)
+        public static EMMADataSet.BankAccountDataTable GetBankAccountData(int reportGroupID, long ownerID, int corpID)
         {
             EMMADataSet.BankAccountDataTable table = new EMMADataSet.BankAccountDataTable();
             bankAccountTableAdapter.FillByCorpAndOwner(table, corpID, reportGroupID, ownerID);

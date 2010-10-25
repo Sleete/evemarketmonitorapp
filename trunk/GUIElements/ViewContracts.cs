@@ -20,7 +20,7 @@ namespace EveMarketMonitorApp.GUIElements
         private static ContractList _contracts;
         private static AutoContractor _autocon;
         private BindingSource _contractsBindingSource;
-        private List<int> _owners;
+        private List<long> _owners;
 
         private string _lastPickup = "", _lastDest = "";
 
@@ -90,7 +90,7 @@ namespace EveMarketMonitorApp.GUIElements
                 UserAccount.Settings.GetColumnWidths(this.Name, contractsGrid);
 
                 List<CharCorpOption> charcorps = UserAccount.CurrentGroup.GetCharCorpOptions();
-                _owners = new List<int>();
+                _owners = new List<long>();
                 foreach (CharCorpOption chop in charcorps)
                 {
                     _owners.Add(chop.Corp ? chop.CharacterObj.CorpID : chop.CharacterObj.CharID);
@@ -376,7 +376,7 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void RefreshList()
         {
-            List<int> ownerIDs = new List<int>();
+            List<long> ownerIDs = new List<long>();
             int pickupStation = 0, destinationStation = 0;
             short status = 0;
             ContractType type = ContractType.Any;

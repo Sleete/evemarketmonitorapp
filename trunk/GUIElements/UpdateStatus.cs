@@ -75,7 +75,7 @@ namespace EveMarketMonitorApp.GUIElements
         {
             PauseUpdates();
             int position = 4;
-            List<int> ids = new List<int>();
+            List<long> ids = new List<long>();
 
             Dictionary<string, IUpdatePanel>.Enumerator e = panels.GetEnumerator();
             while (e.MoveNext())

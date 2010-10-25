@@ -18,14 +18,14 @@ namespace EveMarketMonitorApp.AbstractionClasses
     {
         public event StatusChangeHandler StatusChange;
 
-        private int _userID;
+        private long _userID;
         private string _apiKey;
 
         private string _charName;
-        private int _charID;
+        private long _charID;
 
         private string _corpName;
-        private int _corpID;
+        private long _corpID;
         private string _corpTag;
         private bool _corpFinanceAccess = false;
 
@@ -73,7 +73,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         private object _syncDownloadsInProg = new object();
 
         #region Public properties
-        public int CharID
+        public long CharID
         {
             get { return _charID; }
         }
@@ -93,12 +93,12 @@ namespace EveMarketMonitorApp.AbstractionClasses
             get { return _corpTag; }
         }
 
-        public int CorpID
+        public long CorpID
         {
             get { return _corpID; }
         }
 
-        public int UserID
+        public long UserID
         {
             get { return _userID; }
         }
@@ -223,7 +223,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         }
         #endregion
 
-        public APICharacter(int userID, string apiKey, EMMADataSet.APICharactersRow data)
+        public APICharacter(long userID, string apiKey, EMMADataSet.APICharactersRow data)
         {
             _userID = userID;
             _apiKey = apiKey;
@@ -277,7 +277,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             }
         }
 
-        public APICharacter(int userID, string apiKey, int charID)
+        public APICharacter(long userID, string apiKey, long charID)
         {
             _userID = userID;
             _charID = charID;
@@ -534,7 +534,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         /// <param name="corc"></param>
         public void UpdateStandings(CharOrCorp corc)
         {
-            int id = (corc == CharOrCorp.Char ? _charID : _corpID);
+            long id = (corc == CharOrCorp.Char ? _charID : _corpID);
 
 
             XmlDocument xml = EveAPI.GetXml(EveAPI.URL_EveApiBase +
@@ -1588,7 +1588,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     {
                         bool tryUpdate = false;
                         long id = long.Parse(journEntry.SelectSingleNode("@refID").Value) + offset;
-                        int recieverID = 0;
+                        long recieverID = 0;
                         if (corc == CharOrCorp.Corp)
                         {
                             // This is a special case.
@@ -1636,13 +1636,13 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                     // for the values used in this new journal entry.
                                     // If they are not present in the tables then they are added.
                                     #region Check other tables and add values if needed.
-                                    SortedList<int, string> entityIDs = new SortedList<int, string>();
+                                    SortedList<long, string> entityIDs = new SortedList<long, string>();
                                     entityIDs.Add(newRow.SenderID, journEntry.SelectSingleNode("@ownerName1").Value);
                                     if (!entityIDs.ContainsKey(newRow.RecieverID))
                                     {
                                         entityIDs.Add(newRow.RecieverID, journEntry.SelectSingleNode("@ownerName2").Value);
                                     }
-                                    foreach (KeyValuePair<int, string> checkName in entityIDs)
+                                    foreach (KeyValuePair<long, string> checkName in entityIDs)
                                     {
                                         Names.AddName(checkName.Key, checkName.Value);
                                     }
@@ -2585,7 +2585,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 XmlNode corpIDNode = _charSheetXMLCache.SelectSingleNode("/eveapi/result/corporationID");
                 if (corpIDNode != null)
                 {
-                    int oldCorp = _corpID;
+                    long oldCorp = _corpID;
                     _corpID = int.Parse(corpIDNode.LastChild.Value,
                             System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                     if (_corpID != oldCorp && oldCorp != 0)

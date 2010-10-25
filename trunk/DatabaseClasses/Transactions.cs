@@ -28,12 +28,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="transData"></param>
         /// <param name="newRow"></param>
         /// <returns></returns>
-        public static decimal CalcProfit(int ownerID, EMMADataSet.TransactionsDataTable transData,
+        public static decimal CalcProfit(long ownerID, EMMADataSet.TransactionsDataTable transData,
             EMMADataSet.TransactionsRow newRow, DateTime assetsEffectiveDate)
         {
             decimal retVal = 0;
             EMMADataSet.AssetsDataTable existingAssets = new EMMADataSet.AssetsDataTable();
-            int stationID = newRow.StationID;
+            long stationID = newRow.StationID;
 
             //int ownerID = corp ? UserAccount.CurrentGroup.GetCharacter(charID).CorpID : charID;
             bool exDiag = UserAccount.Settings.ExtendedDiagnostics;
@@ -290,8 +290,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// Used for creating transactions that are not part of the data recieved from the API,
         /// e.g. transactions created from item exchange contracts.
         /// </summary>
-        public static void NewTransaction(DateTime datetime, int quantity, int itemID, decimal price, 
-            int buyerID, int sellerID, int buyerCharID, int sellerCharID, int stationID, int regionID,
+        public static void NewTransaction(DateTime datetime, int quantity, int itemID, decimal price,
+            long buyerID, long sellerID, long buyerCharID, long sellerCharID, long stationID, long regionID,
             bool buyerForCorp, bool sellerForCorp, short buyerWalletID, short sellerWalletID, 
             decimal sellerUnitProfit, bool calcProfitFromAssets, ref long newID)
         {
@@ -306,7 +306,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
         public static void GetItemTransData(List<FinanceAccessParams> accessParams, List<int> itemIDs,
-             List<int> regionIDs, List<int> stationIDs, DateTime startDate, DateTime endDate,
+             List<long> regionIDs, List<long> stationIDs, DateTime startDate, DateTime endDate,
             ref decimal avgSellPrice, ref decimal avgBuyPrice, ref long unitsBought, ref long unitsSold,
             ref decimal brokerBuyFees, ref decimal brokerSellFees, ref decimal transactionTax,
             ref decimal transportCosts, ref decimal avgSellProfit,
@@ -329,14 +329,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
             DateTime startDate = SqlDateTime.MinValue.Value;
             DateTime endDate = SqlDateTime.MaxValue.Value;
 
-            GetItemTransData(accessParams, itemIDs, new List<int>(), new List<int>(), startDate, endDate,
+            GetItemTransData(accessParams, itemIDs, new List<long>(), new List<long>(), startDate, endDate,
                 quantity, recentBuyUnitsToIgnore, ref avgSellPrice, ref blank1, ref avgBuyPrice, ref blank2,
                 ref unitsBought, ref unitsSold, ref brokerBuyFees, ref brokerSellFees, ref transactionTax,
                 ref blank3, ref blank4, calcBrokerFees, calcTransTax, true, true, false, false, useReprocessData);
         }
 
         public static void GetAverageBuyPrice(List<FinanceAccessParams> accessParams, List<int> itemIDs,
-            List<int> stationIDs, List<int> regionIDs, long quantity, 
+            List<long> stationIDs, List<long> regionIDs, long quantity, 
             long recentBuyUnitsToIgnore, ref decimal avgBuyPrice, ref decimal brokerBuyFees,
             bool useReprocessData)
         {
@@ -352,7 +352,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
         public static void GetAverageBuyPrice(List<FinanceAccessParams> accessParams, int itemID,
-            List<int> stationIDs, List<int> regionIDs, long quantity,
+            List<long> stationIDs, List<long> regionIDs, long quantity,
             long recentBuyUnitsToIgnore, ref decimal avgBuyPrice)
         {
             List<int> itemIDs = new List<int>();
@@ -369,32 +369,32 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
         public static void GetMedianSellPrice(List<FinanceAccessParams> accessParams, List<int> itemIDs,
-            List<int> regionIDs, DateTime startDate, DateTime endDate, ref decimal medianSellPrice)
+            List<long> regionIDs, DateTime startDate, DateTime endDate, ref decimal medianSellPrice)
         {
             decimal blank1 = 0, blank2 = 0, blank5 = 0, blank6 = 0, blank7 = 0, blank8 = 0, blank9 = 0, blank10 = 0;
             long blank3 = 0, blank4 = 0;
 
-            GetItemTransData(accessParams, itemIDs, regionIDs, new List<int>(), startDate, endDate,
+            GetItemTransData(accessParams, itemIDs, regionIDs, new List<long>(), startDate, endDate,
                 0, 0, ref blank1, ref medianSellPrice, ref blank2, ref blank5, ref blank3, ref blank4,
                 ref blank6, ref blank7, ref blank8, ref blank9, ref blank10,
                 false, false, false, true, true, false, true);
         }
 
         public static void GetMedianBuyPrice(List<FinanceAccessParams> accessParams, List<int> itemIDs,
-            List<int> regionIDs, DateTime startDate, DateTime endDate, ref decimal medianBuyPrice,
+            List<long> regionIDs, DateTime startDate, DateTime endDate, ref decimal medianBuyPrice,
             bool useReprocessData)
         {
             decimal blank1 = 0, blank2 = 0, blank5 = 0, blank6 = 0, blank7 = 0, blank8 = 0, blank9 = 0, blank10 = 0;
             long blank3 = 0, blank4 = 0;
 
-            GetItemTransData(accessParams, itemIDs, regionIDs, new List<int>(), startDate, endDate,
+            GetItemTransData(accessParams, itemIDs, regionIDs, new List<long>(), startDate, endDate,
                 0, 0, ref blank1, ref blank5, ref blank2, ref medianBuyPrice, ref blank3, ref blank4,
                 ref blank6, ref blank7, ref blank8, ref blank9, ref blank10,
                 false, false, true, false, true, false, useReprocessData);
         }
 
         private static void GetItemTransData(List<FinanceAccessParams> accessParams, List<int> itemIDs,
-             List<int> regionIDs, List<int> stationIDs, DateTime startDate, DateTime endDate,
+             List<long> regionIDs, List<long> stationIDs, DateTime startDate, DateTime endDate,
             long quantity, long recentBuyUnitsToIgnore,
             ref decimal avgSellPrice, ref decimal medianSellPrice, ref decimal avgBuyPrice,
             ref decimal medianBuyPrice, ref long unitsBought, ref long unitsSold,
@@ -410,11 +410,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
             transactionTax = 0;
             transportCosts = 0;
             // Used for working out transport costs for sell transactions.
-            Dictionary<int, Dictionary<int, long>> quantities = new Dictionary<int, Dictionary<int, long>>();
+            Dictionary<long, Dictionary<int, long>> quantities = new Dictionary<long, Dictionary<int, long>>();
             long quantityRemaining = quantity;
             bool ignoreQuantity = quantity == 0;
-            Dictionary<int, int> brokerRelations = new Dictionary<int, int>();
-            Dictionary<int, int> accounting = new Dictionary<int, int>();
+            // These map from a char ID to a value from 1-5 that is the character's skill level in that skill.
+            Dictionary<long, int> brokerRelations = new Dictionary<long, int>();
+            Dictionary<long, int> accounting = new Dictionary<long, int>();
+
             SortedList<decimal, long> priceFrequencies = new SortedList<decimal, long>();
 
             startDate = startDate.ToUniversalTime();
@@ -564,7 +566,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                                 if (buyOrder != null)
                                 {
                                     Diagnostics.StartTimer("Transactions.GetBkrRelLvl");
-                                    int id = trans.BuyerForCorp ? trans.BuyerCharacterID : trans.BuyerID;
+                                    long id = trans.BuyerForCorp ? trans.BuyerCharacterID : trans.BuyerID;
                                     int bkrrellvl = 0;
                                     decimal corpStanding = 0;
                                     decimal factionStanding = 0;
@@ -730,7 +732,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                             if (sellOrder != null)
                             {
                                 Diagnostics.StartTimer("Transactions.CalcSellBrokerFees");
-                                int id = trans.SellerForCorp ? trans.SellerCharacterID : trans.SellerID;
+                                long id = trans.SellerForCorp ? trans.SellerCharacterID : trans.SellerID;
                                 int bkrrellvl = 0;
                                 decimal factionStanding = 0, corpStanding = 0;
 
@@ -772,7 +774,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         if (calcTransTax)
                         {
                             Diagnostics.StartTimer("Transactions.CalcSellTransTax");
-                            int id = trans.SellerForCorp ? trans.SellerCharacterID : trans.SellerID;
+                            long id = trans.SellerForCorp ? trans.SellerCharacterID : trans.SellerID;
                             int acclvl = 0;
                             if (accounting.ContainsKey(id))
                             {
@@ -829,7 +831,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             if (calcTransportCosts)
             {
                 Diagnostics.StartTimer("Transactions.CalcSellTransportCosts");
-                Dictionary<int, Dictionary<int, long>>.Enumerator enumerator = quantities.GetEnumerator();
+                Dictionary<long, Dictionary<int, long>>.Enumerator enumerator = quantities.GetEnumerator();
                 while (enumerator.MoveNext())
                 {
                     Dictionary<int, long>.Enumerator enumerator2 = enumerator.Current.Value.GetEnumerator();
@@ -954,8 +956,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="accessParams"></param>
         /// <returns></returns>
         public static EMMADataSet.IDTableDataTable GetInvolvedItemIDs(List<FinanceAccessParams> accessParams,
-            int minVolume, DateTime minDate, DateTime maxDate, int minBuy, int minSell, List<int> buyStations,
-            List<int> sellStations)
+            int minVolume, DateTime minDate, DateTime maxDate, int minBuy, int minSell, List<long> buyStations,
+            List<long> sellStations)
         {
             EMMADataSet.IDTableDataTable retVal = new EMMADataSet.IDTableDataTable();
             EMMADataSet.TransactionsDataTable table = GetTransData(accessParams, null, null, null,
@@ -968,7 +970,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 int itemID = trans.ItemID;
                 if (!allItems.Contains(itemID)) { allItems.Add(itemID); }
-                int stationID = trans.StationID;
+                long stationID = trans.StationID;
                 bool buyTrans = false;
                 bool sellTrans = false;
                 // Determine if this transaction is buy, sell or both for the characters passed in
@@ -1063,14 +1065,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="endDate"></param>
         /// <returns></returns>
         public static TransactionList LoadTransactions(List<FinanceAccessParams> accessParams, List<int> itemIDs,
-            List<int> stationIDs, DateTime startDate, DateTime endDate, string type)
+            List<long> stationIDs, DateTime startDate, DateTime endDate, string type)
         {
             TransactionList retVal = new TransactionList();
 
             //---------------------------------------------------------------------------------------------------
 
             EMMADataSet.TransactionsDataTable table = new EMMADataSet.TransactionsDataTable();
-            table = GetTransData(accessParams, itemIDs, new List<int>(), stationIDs, startDate, endDate, type);
+            table = GetTransData(accessParams, itemIDs, new List<long>(), stationIDs, startDate, endDate, type);
 
             foreach (EMMADataSet.TransactionsRow row in table)
             {
@@ -1192,8 +1194,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public static EMMADataSet.TransactionsDataTable GetTransData(int ownerID, bool includeCorporate,
-            int itemID, int regionID, int stationID, long minTransID, string type)
+        public static EMMADataSet.TransactionsDataTable GetTransData(long ownerID, bool includeCorporate,
+            int itemID, long regionID, long stationID, long minTransID, string type)
         {
             EMMADataSet.TransactionsDataTable retVal = new EMMADataSet.TransactionsDataTable();
 
@@ -1219,11 +1221,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="type">If value is 'buy' or 'sell' then only the relevant transactions are returned. Any other values returns both buy and sell transactions</param>
         /// <returns></returns>
         public static EMMADataSet.TransactionsDataTable GetTransData(List<FinanceAccessParams> accessList,
-            List<int> itemIDs, List<int> regionIDs, List<int> stationIDs, 
+            List<int> itemIDs, List<long> regionIDs, List<long> stationIDs, 
             DateTime startDate, DateTime endDate, string type)
         {
             EMMADataSet.TransactionsDataTable retVal = new EMMADataSet.TransactionsDataTable();
-            int charID = 0;
+            long charID = 0;
             List<short> walletIDs = new List<short>();
 
             // Make sure start/end dates are within the allowed ranges
@@ -1235,8 +1237,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             if (endDate.CompareTo(SqlDateTime.MaxValue.Value) > 0) endDate = SqlDateTime.MaxValue.Value;
 
             if (itemIDs == null) { itemIDs = new List<int>(); }
-            if (regionIDs == null) { regionIDs = new List<int>(); }
-            if (stationIDs == null) { stationIDs = new List<int>(); }
+            if (regionIDs == null) { regionIDs = new List<long>(); }
+            if (stationIDs == null) { stationIDs = new List<long>(); }
 
             if (itemIDs.Count == 0) { itemIDs.Add(0); }
             if (regionIDs.Count == 0) { regionIDs.Add(0); }
@@ -1315,7 +1317,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
         #region Instance methods
-        public void LoadOldEmmaXML(string filename, int charID, int corpID)
+        public void LoadOldEmmaXML(string filename, long charID, long corpID)
         {
             EMMADataSet.TransactionsDataTable table = new EMMADataSet.TransactionsDataTable();
             XmlDocument xml = new XmlDocument();
@@ -1402,8 +1404,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        private EMMADataSet.TransactionsRow BuildTransRow(long transID, 
-            EMMADataSet.TransactionsDataTable table, XmlNode node, int corpID, int charID)
+        private EMMADataSet.TransactionsRow BuildTransRow(long transID,
+            EMMADataSet.TransactionsDataTable table, XmlNode node, long corpID, long charID)
         {
             EMMADataSet.TransactionsRow newRow = table.NewTransactionsRow();
 

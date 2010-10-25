@@ -191,7 +191,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return str.ToString().GetHashCode();
         }
 
-        public EVEAccount GetAccount(int userID)
+        public EVEAccount GetAccount(long userID)
         {
             EVEAccount retVal = null;
             foreach (EVEAccount account in _accounts)
@@ -201,12 +201,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return retVal;
         }
 
-        public APICharacter GetCharacter(int entityID)
+        public APICharacter GetCharacter(long entityID)
         {
             bool corp = false;
             return GetCharacter(entityID, ref corp);
         }
-        public APICharacter GetCharacter(int entityID, ref bool corpID)
+        public APICharacter GetCharacter(long entityID, ref bool corpID)
         {
             APICharacter retVal = null;
             corpID = false;
@@ -452,7 +452,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             this.corp = corp;
         }
 
-        public int ID
+        public long ID
         {
             get { return (corp ? characterObj.CorpID : characterObj.CharID);}
         }

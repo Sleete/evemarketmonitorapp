@@ -11,14 +11,14 @@ namespace EveMarketMonitorApp.AbstractionClasses
 {
     public class EVEAccount
     {
-        private int _userID;
+        private long _userID;
         private string _apiKey;
         private XmlDocument _charList;
         private DateTime _lastcharListUpdate = DateTime.MinValue;
         private List<APICharacter> _chars;
 
         #region Properties
-        public int UserID
+        public long UserID
         {
             get { return _userID; }
             set { _userID = value; }
@@ -152,7 +152,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         {
                             // Need to create a new API char in the database.
                             apiChar = new APICharacter(_userID, _apiKey,
-                                int.Parse(node.SelectSingleNode("@characterID").Value.ToString()));
+                                long.Parse(node.SelectSingleNode("@characterID").Value.ToString()));
                             APICharacters.Store(apiChar);
                         }
                         _chars.Add(apiChar);

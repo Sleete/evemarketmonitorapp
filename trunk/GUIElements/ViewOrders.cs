@@ -17,8 +17,8 @@ namespace EveMarketMonitorApp.GUIElements
     {
         private OrdersList _orders;
         private BindingSource _ordersBindingSource;
-        private List<int> _personalOwners;
-        private List<int> _corporateOwners;
+        private List<long> _personalOwners;
+        private List<long> _corporateOwners;
         private List<AssetAccessParams> _accessParams;
         private List<string> _recentStations;
         private string _lastStation = "";
@@ -81,8 +81,8 @@ namespace EveMarketMonitorApp.GUIElements
                 UserAccount.Settings.GetColumnWidths(this.Name, ordersGrid);
 
                 List<CharCorpOption> charcorps = UserAccount.CurrentGroup.GetCharCorpOptions(APIDataType.Orders);
-                _corporateOwners = new List<int>();
-                _personalOwners = new List<int>();
+                _corporateOwners = new List<long>();
+                _personalOwners = new List<long>();
                 foreach (CharCorpOption chop in charcorps)
                 {
                     if (chop.Corp)
@@ -231,7 +231,7 @@ namespace EveMarketMonitorApp.GUIElements
                         _lastStation = txtStation.Text;
                     }
 
-                    if ((int)txtStation.Tag == 0)
+                    if ((long)txtStation.Tag == 0)
                     {
                         txtStation.Text = "";
                     }
@@ -245,13 +245,13 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void DisplayOrders()
         {
-            int ownerID = 0;
+            long ownerID = 0;
             List<int> items = new List<int>();
             items.Add(0);
-            List<int> stations = new List<int>();
+            List<long> stations = new List<long>();
             try
             {
-                stations.Add((int)txtStation.Tag);
+                stations.Add((long)txtStation.Tag);
             }
             catch (InvalidCastException)
             {

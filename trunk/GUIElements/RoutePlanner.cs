@@ -18,13 +18,13 @@ namespace EveMarketMonitorApp.GUIElements
         private List<string> _recentSystems;
         private string _lastSystem = "";
         private short[,] _jumps;
-        private Dictionary<int, int> _idMapper;
+        private Dictionary<long, int> _idMapper;
         private int _nextFreeIndex = 0;
         private string _lastStartSystem = "";
         private string _lastEndSystem = "";
         private List<string> _recentItems;
         private string _lastItem = "";
-        private List<int> _listedWPs = new List<int>();
+        private List<long> _listedWPs = new List<long>();
 
         public RoutePlanner()
         {
@@ -274,7 +274,7 @@ namespace EveMarketMonitorApp.GUIElements
         {
             if (e.KeyCode == Keys.Delete && lstWaypoints.SelectedIndex >= 0)
             {
-                int systemID = ((SystemData)lstWaypoints.SelectedItem).ID;
+                long systemID = ((SystemData)lstWaypoints.SelectedItem).ID;
                 if (_listedWPs.Contains(systemID))
                 {
                     _listedWPs.Remove(systemID);
@@ -285,7 +285,7 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void btnAddAssets_Click(object sender, EventArgs e)
         {
-            int ownerID = 0;
+            long ownerID = 0;
             bool corp = false;
             GroupLocation location = null;
             int itemID = 0;
@@ -326,7 +326,7 @@ namespace EveMarketMonitorApp.GUIElements
                         {
                             string systemName = SolarSystems.GetSystem(idRow.ID).solarSystemName;
                             string regionName = Regions.GetRegionName(SolarSystems.GetSystem(idRow.ID).regionID);
-                            lstWaypoints.Items.Add(new SystemData(idRow.ID, systemName, regionName, true));
+                            lstWaypoints.Items.Add(new SystemData((int)idRow.ID, systemName, regionName, true));
                             _listedWPs.Add(idRow.ID);
                         }
                     }
@@ -363,10 +363,10 @@ namespace EveMarketMonitorApp.GUIElements
                 try
                 {
                     _nextFreeIndex = 0;
-                    _idMapper = new Dictionary<int, int>();
+                    _idMapper = new Dictionary<long, int>();
                     _jumps = new short[lstWaypoints.Items.Count + 2, lstWaypoints.Items.Count + 2];
 
-                    List<int> waypoints = new List<int>();
+                    List<long> waypoints = new List<long>();
                     waypoints.Add(startSystemID);
                     foreach (object item in lstWaypoints.Items)
                     {
@@ -489,13 +489,13 @@ namespace EveMarketMonitorApp.GUIElements
 
         private class SystemData
         {
-            public int ID;
+            public long ID;
             public string SystemName;
             public string RegionName;
             public bool IsWaypoint;
             private float _security = -10;
 
-            public SystemData(int id, string name, string regionName, bool isWaypoint)
+            public SystemData(long id, string name, string regionName, bool isWaypoint)
             {
                 ID = id;
                 SystemName = name;
@@ -548,16 +548,16 @@ namespace EveMarketMonitorApp.GUIElements
             }
         }
 
-        private class WPRoute : List<int>, IProvideStatus
+        private class WPRoute : List<long>, IProvideStatus
         {
             public event StatusChangeHandler StatusChange;
             private int _nextFreeIndex;
             private short[,] _jumps;
-            private Dictionary<int, int> _idMapper;
+            private Dictionary<long, int> _idMapper;
 
 
-            public WPRoute(List<int> waypoints, ref int nextFreeIndex, ref short[,] jumps,
-                Dictionary<int, int> idMapper)
+            public WPRoute(List<long> waypoints, ref int nextFreeIndex, ref short[,] jumps,
+                Dictionary<long, int> idMapper)
                 : base(waypoints)
             {
                 _nextFreeIndex = nextFreeIndex;
@@ -712,7 +712,7 @@ namespace EveMarketMonitorApp.GUIElements
                                     UpdateStatus(counter, tmpRoute.Count, "", 
                                         "Attempting smart rearrangement of waypoints", false);
                                     counter++;
-                                    int lastWPID = 0;
+                                    long lastWPID = 0;
                                     foreach (SystemData sys in completeRoute)
                                     {
                                         if (sys.IsWaypoint) { lastWPID = sys.ID; }
@@ -774,7 +774,7 @@ namespace EveMarketMonitorApp.GUIElements
                 }
             }
 
-            private short GetRouteLength(int startSystemID, int endSystemID, ref int[] diagnostics)
+            private short GetRouteLength(long startSystemID, long endSystemID, ref int[] diagnostics)
             {
                 short retVal = 0;
 
@@ -782,7 +782,7 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     if (startSystemID > endSystemID)
                     {
-                        int tmp = startSystemID;
+                        long tmp = startSystemID;
                         startSystemID = endSystemID;
                         endSystemID = tmp;
                     }
@@ -846,14 +846,14 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     if (this[i] != this[i + 1])
                     {
-                        List<int> route = Map.GetRoute(this[i], this[i + 1]);
+                        List<long> route = Map.GetRoute(this[i], this[i + 1]);
 
                         // Remove the first system (i.e. the start system).
                         route.RemoveAt(0);
 
                         for (int systemIndex = 0; systemIndex < route.Count; systemIndex++)
                         {
-                            int systemID = route[systemIndex];
+                            long systemID = route[systemIndex];
                             string systemName = SolarSystems.GetSystem(systemID).solarSystemName;
                             string regionName = Regions.GetRegionName(SolarSystems.GetSystem(systemID).regionID);
 

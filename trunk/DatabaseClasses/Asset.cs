@@ -12,17 +12,17 @@ namespace EveMarketMonitorApp.DatabaseClasses
     {
         #region Class variables
         private long _id;
-        private int _ownerID;
+        private long _ownerID;
         private bool _gotOwner = false;
         private string _owner;
         private bool _corpAsset = false;
-        private int _locationID;
+        private long _locationID;
         private bool _gotLocation = false;
         private string _location;
-        private int _regionID;
+        private long _regionID;
         private bool _gotRegion = false;
         private string _region;
-        private int _systemID;
+        private long _systemID;
         private bool _gotSystem = false;
         private string _system;
         private int _itemID;
@@ -239,7 +239,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
             set { _owner = value; }
         }
-        public int OwnerID
+        public long OwnerID
         {
             get { return _ownerID; }
             set 
@@ -257,7 +257,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             get { return _corpAsset; }
         }
 
-        public int LocationID
+        public long LocationID
         {
             get { return _locationID; }
             set
@@ -320,7 +320,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        public int SystemID
+        public long SystemID
         {
             get
             {
@@ -366,7 +366,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        public int RegionID
+        public long RegionID
         {
             get
             {
@@ -565,12 +565,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 {
                     try
                     {
-                        List<int> stationIDs = new List<int>();
+                        List<long> stationIDs = new List<long>();
                         stationIDs.Add(_locationID);
                         // First try getting the price by looking at the most recent buy transactions
                         // at the asset's location.
                         Transactions.GetAverageBuyPrice(UserAccount.CurrentGroup.GetFinanceAccessParams(
-                            APIDataType.Transactions), _itemID, stationIDs, new List<int>(),
+                            APIDataType.Transactions), _itemID, stationIDs, new List<long>(),
                             Math.Abs(_quantity), 0, ref _unitBuyPrice);
 
                         // If we don't find anything then just use the most recent buy transaction 
@@ -578,7 +578,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         if (_unitBuyPrice == 0)
                         {
                             Transactions.GetAverageBuyPrice(UserAccount.CurrentGroup.GetFinanceAccessParams(
-                                APIDataType.Transactions), _itemID, new List<int>(), new List<int>(),
+                                APIDataType.Transactions), _itemID, new List<long>(), new List<long>(),
                                 Math.Abs(_quantity), 0, ref _unitBuyPrice);
                         }
 

@@ -17,7 +17,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private static Dictionary<int, int> _escrowOrderQuantity;
 
 
-        public static decimal GetWalletCash(int ownerID, short walletID, DateTime date)
+        public static decimal GetWalletCash(long ownerID, short walletID, DateTime date)
         {
             decimal retVal = 0;
 
@@ -55,7 +55,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public static decimal GetEscrowCash(int ownerID, short walletID)
+        public static decimal GetEscrowCash(long ownerID, short walletID)
         {
             decimal retVal = 0;
 
@@ -71,7 +71,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
 
 
-        public static decimal GetNextEscrowCash(int ownerID, short walletID, DateTime date)
+        public static decimal GetNextEscrowCash(long ownerID, short walletID, DateTime date)
         {
             decimal retVal = _lastCashInEscrow;
             APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID);
@@ -106,7 +106,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
                 // Get buy transactions that occured between the last date and the desired date.
                 EMMADataSet.TransactionsDataTable transactions = Transactions.GetTransData(accessParams,
-                    new List<int>(), new List<int>(), new List<int>(), startDate, endDate, "Buy");
+                    new List<int>(), new List<long>(), new List<long>(), startDate, endDate, "Buy");
 
                 //// Get orders that were created between the last date and the desired date.
                 //EMMADataSet.OrdersDataTable orders = Orders.GetOrdersByIssueDate(ownerID, walletID,
@@ -201,7 +201,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public static decimal GetSellOrdersValue(int ownerID, DateTime date)
+        public static decimal GetSellOrdersValue(long ownerID, DateTime date)
         {
             decimal retVal = 0;
 
@@ -225,7 +225,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 // Get transactions that occured between the current date and the 
                 // desired date.
                 EMMADataSet.TransactionsDataTable transactions = Transactions.GetTransData(accessParams,
-                    new List<int>(), new List<int>(), new List<int>(), date, DateTime.UtcNow, "Sell");
+                    new List<int>(), new List<long>(), new List<long>(), date, DateTime.UtcNow, "Sell");
                 Dictionary<int, long> deltaQuantaties = new Dictionary<int, long>();
 
                 // Use the sales quantity and price per item to calculate the change in sale order value
@@ -239,7 +239,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 List<AssetAccessParams> accessParams2 = new List<AssetAccessParams>();
                 accessParams2.Add(new AssetAccessParams(ownerID));
 
-                OrdersList orders = Orders.LoadOrders(accessParams2, new List<int>(), new List<int>(), 0, "sell");
+                OrdersList orders = Orders.LoadOrders(accessParams2, new List<int>(), new List<long>(), 0, "sell");
                 foreach (Order order in orders)
                 {
                     if (order.Date.CompareTo(DateTime.UtcNow) < 0 && order.Date.CompareTo(date) > 0)
@@ -253,7 +253,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public static decimal GetAssetsValue(int ownerID, DateTime date)
+        public static decimal GetAssetsValue(long ownerID, DateTime date)
         {
             decimal retVal = 0;
             bool storeValue = true;
@@ -356,7 +356,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     // Get transactions that occured between the closest data point we have and the 
                     // desired date.
                     EMMADataSet.TransactionsDataTable transactions = Transactions.GetTransData(accessParams2,
-                        new List<int>(), new List<int>(), new List<int>(), startDate, endDate, "both");
+                        new List<int>(), new List<long>(), new List<long>(), startDate, endDate, "both");
                     int mult = 0;
 
                     // Total up the increase and decrease in quantity of each item due to transactions.
@@ -452,7 +452,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        private static void SaveAssetsValue(int ownerID, DateTime date, decimal value)
+        private static void SaveAssetsValue(long ownerID, DateTime date, decimal value)
         {
             bool corp = false;
             APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);

@@ -12,7 +12,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
     {
         static private EveDataSetTableAdapters.mapSolarSystemsTableAdapter systemsTableAdapter =
             new EveMarketMonitorApp.DatabaseClasses.EveDataSetTableAdapters.mapSolarSystemsTableAdapter();
-        static private Cache<int, string> _nameCache = new Cache<int, string>(5000);
+        static private Cache<long, string> _nameCache = new Cache<long, string>(5000);
         static private bool _initalised = false;
 
         /// <summary>
@@ -20,12 +20,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="systemID"></param>
         /// <returns></returns>
-        static public bool IsLowSec(int systemID)
+        static public bool IsLowSec(long systemID)
         {
             return Map.GetSecurity(systemID) <= 0.45;
         }
 
-        static public float GetSystemSecurity(int systemID)
+        static public float GetSystemSecurity(long systemID)
         {
             return Map.GetSecurity(systemID);
         }
@@ -49,7 +49,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        static public string GetSystemName(int systemID)
+        static public string GetSystemName(long systemID)
         {
             if (!_initalised) { InitialiseCache(); }
             string retVal = "";
@@ -58,12 +58,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        static public EveDataSet.mapSolarSystemsRow GetSystem(int systemID)
+        static public EveDataSet.mapSolarSystemsRow GetSystem(long systemID)
         {
             EveDataSet.mapSolarSystemsDataTable table = new EveDataSet.mapSolarSystemsDataTable();
             EveDataSet.mapSolarSystemsRow retVal;
             table = GetSystems(systemID.ToString());
-            retVal = table.FindBysolarSystemID(systemID);
+            retVal = table.FindBysolarSystemID((int)systemID);
             return retVal;
         }
 
@@ -127,19 +127,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             if (!_initalised)
             {
-                _nameCache.DataUpdateNeeded += 
-                    new Cache<int, string>.DataUpdateNeededHandler(NameCache_DataUpdateNeeded);
+                _nameCache.DataUpdateNeeded +=
+                    new Cache<long, string>.DataUpdateNeededHandler(NameCache_DataUpdateNeeded);
                 _initalised = true;
             }
         }
 
-        static void NameCache_DataUpdateNeeded(object myObject, DataUpdateNeededArgs<int, string> args)
+        static void NameCache_DataUpdateNeeded(object myObject, DataUpdateNeededArgs<long, string> args)
         {
             string name = "";
 
             lock (systemsTableAdapter)
             {
-                systemsTableAdapter.GetName(args.Key, ref name);
+                systemsTableAdapter.GetName((int)args.Key, ref name);
             }
 
             if (name.Equals(""))

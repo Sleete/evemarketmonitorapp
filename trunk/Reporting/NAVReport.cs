@@ -90,7 +90,7 @@ namespace EveMarketMonitorApp.Reporting
 
             foreach (FinanceAccessParams accessParams in _financeAccessParams)
             {
-                int ownerID = accessParams.OwnerID;
+                long ownerID = accessParams.OwnerID;
                 bool corp = false;
 
                 APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);
@@ -136,7 +136,7 @@ namespace EveMarketMonitorApp.Reporting
 
             foreach (FinanceAccessParams accessParams in _financeAccessParams)
             {
-                int ownerID = accessParams.OwnerID;
+                long ownerID = accessParams.OwnerID;
                 Diagnostics.StartTimer("NAVReport." + ownerID.ToString());
                 bool corp = false;
                 APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);
@@ -341,7 +341,7 @@ namespace EveMarketMonitorApp.Reporting
             DiagnosticUpdate("", "Total time building report: " + Diagnostics.GetRunningTime("NAVReport"));
             foreach (FinanceAccessParams accessParams in _financeAccessParams)
             {
-                int ownerID = accessParams.OwnerID;
+                long ownerID = accessParams.OwnerID;
                 bool corp = false;
                 APICharacter character = UserAccount.CurrentGroup.GetCharacter(ownerID, ref corp);
                 DiagnosticUpdate("", "\t" + (corp ? character.CorpName : character.CharName) + ": " +

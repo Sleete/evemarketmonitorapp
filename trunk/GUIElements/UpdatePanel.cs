@@ -738,10 +738,10 @@ namespace EveMarketMonitorApp.GUIElements
     public class APIUpdateEventArgs : EventArgs
     {
         private APIDataType _updateType;
-        private int _id;
+        private long _id;
         private APIUpdateEventType _eventType;
 
-        public APIUpdateEventArgs(APIDataType updateType, int ownerID, APIUpdateEventType eventType)
+        public APIUpdateEventArgs(APIDataType updateType, long ownerID, APIUpdateEventType eventType)
         {
             _updateType = updateType;
             _id = ownerID;
@@ -754,7 +754,7 @@ namespace EveMarketMonitorApp.GUIElements
             set { _updateType = value; }
         }
 
-        public int OwnerID
+        public long OwnerID
         {
             get { return _id; }
             set { _id = value; }

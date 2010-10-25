@@ -9,17 +9,17 @@ namespace EveMarketMonitorApp.DatabaseClasses
     public class GroupLocation : SortableObject
     {
         private string _name;
-        private List<int> _regions;
-        private List<int> _stations;
-        private int _stationID;
+        private List<long> _regions;
+        private List<long> _stations;
+        private long _stationID;
         private int _range;
         private int _reportGroupID;
 
         public GroupLocation()
         {
             _name = "";
-            _regions = new List<int>();
-            _stations = new List<int>();
+            _regions = new List<long>();
+            _stations = new List<long>();
             _stationID = 0;
             _range = 0;
             _reportGroupID = UserAccount.CurrentGroup.ID;
@@ -33,14 +33,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
                 char[] delim = {','};
                 string[] regions = data.RegionIDs.Split(delim, StringSplitOptions.RemoveEmptyEntries);
-                _regions = new List<int>();
+                _regions = new List<long>();
                 foreach (string region in regions)
                 {
                     _regions.Add(int.Parse(region));
                 }
 
                 string[] stations = data.StationIDs.Split(delim, StringSplitOptions.RemoveEmptyEntries);
-                _stations = new List<int>();
+                _stations = new List<long>();
                 foreach (string station in stations)
                 {
                     _stations.Add(int.Parse(station));
@@ -59,19 +59,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set { _name = value; }
         }
 
-        public List<int> Regions
+        public List<long> Regions
         {
             get { return _regions; }
             set { _regions = value; }
         }
 
-        public List<int> Stations
+        public List<long> Stations
         {
             get { return _stations; }
             set { _stations = value; }
         }
 
-        public int StationID
+        public long StationID
         {
             get { return _stationID; }
             set { _stationID = value; }

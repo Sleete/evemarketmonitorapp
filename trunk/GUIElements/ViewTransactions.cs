@@ -15,7 +15,7 @@ namespace EveMarketMonitorApp.GUIElements
 {
     public partial class ViewTransactions : Form
     {
-        private List<int> _possibleOwners = new List<int>();
+        private List<long> _possibleOwners = new List<long>();
         private TransactionList _transactions;
         private BindingSource _transBindingSource;
         private List<string> _recentStations;
@@ -98,7 +98,7 @@ namespace EveMarketMonitorApp.GUIElements
 
                 List<CharCorpOption> charcorps = UserAccount.CurrentGroup.GetCharCorpOptions(
                     APIDataType.Transactions);
-                _possibleOwners = new List<int>();
+                _possibleOwners = new List<long>();
                 foreach (CharCorpOption chop in charcorps)
                 {
                     _possibleOwners.Add(chop.Corp ? chop.CharacterObj.CorpID : chop.CharacterObj.CharID);
@@ -429,8 +429,8 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 List<int> itemIDs = new List<int>();
                 itemIDs.Add(short.Parse(cmbItem.Tag.ToString()));
-                List<int> stationIDs = new List<int>();
-                stationIDs.Add(int.Parse(cmbStation.Tag.ToString()));
+                List<long> stationIDs = new List<long>();
+                stationIDs.Add(long.Parse(cmbStation.Tag.ToString()));
                 DateTime utcStart = new DateTime();
                 DateTime utcEnd = new DateTime();
                 string type = cmbType.Text;
@@ -439,7 +439,7 @@ namespace EveMarketMonitorApp.GUIElements
 
                 try
                 {
-                    int ownerID = 0;
+                    long ownerID = 0;
                     if (cmbOwner.SelectedValue != null && !chkIngoreOwner.Checked)
                     {
                         CharCorp data = (CharCorp)cmbOwner.SelectedValue;
@@ -454,7 +454,7 @@ namespace EveMarketMonitorApp.GUIElements
                     List<FinanceAccessParams> accessParams = new List<FinanceAccessParams>();
                     if (ownerID == 0)
                     {
-                        foreach (int id in _possibleOwners)
+                        foreach (long id in _possibleOwners)
                         {
                             accessParams.Add(new FinanceAccessParams(id));
                         }

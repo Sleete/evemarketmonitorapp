@@ -22,7 +22,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public static EMMADataSet.AssetsLostDataTable GetAssetsLost(int ownerID, DateTime startDate, DateTime endDate)
+        public static EMMADataSet.AssetsLostDataTable GetAssetsLost(long ownerID, DateTime startDate, DateTime endDate)
         {
             EMMADataSet.AssetsLostDataTable retVal = new EMMADataSet.AssetsLostDataTable();
 

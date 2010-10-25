@@ -44,7 +44,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             rowData.ReportGroupID = data.ReportGroupID;
             rowData.Range = data.Range;
             rowData.StationID = data.StationID;
-            List<int> regions = data.Regions;
+            List<long> regions = data.Regions;
             StringBuilder regionList = new StringBuilder();
             foreach (int region in regions)
             {
@@ -52,7 +52,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 regionList.Append(region);
             }
             rowData.RegionIDs = regionList.ToString();
-            List<int> stations = data.Stations;
+            List<long> stations = data.Stations;
             StringBuilder stationList = new StringBuilder();
             foreach (int station in stations)
             {

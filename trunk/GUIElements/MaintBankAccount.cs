@@ -21,10 +21,10 @@ namespace EveMarketMonitorApp.GUIElements
         private bool _accountExists = true;
 
         public PublicCorp _oldCorpData = null;
-        private int _oldOwner = 0;
+        private long _oldOwner = 0;
         private int _oldCorp = 0;
 
-        private int _lastOwner = 0;
+        private long _lastOwner = 0;
         private int _lastCorp = 0;
 
         public MaintBankAccount(PublicCorp corp)
@@ -128,7 +128,7 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 cmbOwner.SelectedIndexChanged -= cmbOwner_SelectedIndexChanged;
 
-                List<int> existingOwners = new List<int>();
+                List<long> existingOwners = new List<long>();
                 EMMADataSet.BankAccountDataTable accounts = BankAccounts.GetBankAccountData(
                     UserAccount.CurrentGroup.ID, 0, _corp.ID);
                 foreach (EMMADataSet.BankAccountRow account in accounts)
@@ -143,7 +143,7 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     foreach (CharCorpOption chop in charcorps)
                     {
-                        int id = chop.Corp ? chop.CharacterObj.CorpID : chop.CharacterObj.CharID;
+                        long id = chop.Corp ? chop.CharacterObj.CorpID : chop.CharacterObj.CharID;
                         if (existingOwners.Contains(id))
                         {
                             optionsToRemove.Add(chop);
@@ -184,7 +184,7 @@ namespace EveMarketMonitorApp.GUIElements
 
                 if (cmbOwner.SelectedValue != null && (_oldOwner == 0 || _oldCorpData == null))
                 {
-                    int newOwner = ((CharCorp)cmbOwner.SelectedValue).ID;
+                    long newOwner = ((CharCorp)cmbOwner.SelectedValue).ID;
                     //if (_lastOwner > 0 && _lastOwner != newOwner && _lastCorp > 0)
                     //{
                     //    BankAccounts.DeleteAccount(_lastCorp, _lastOwner);

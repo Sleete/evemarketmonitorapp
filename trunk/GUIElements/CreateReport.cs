@@ -22,7 +22,8 @@ namespace EveMarketMonitorApp.GUIElements
         private RptParamsBase paramFormToRun;
         private IskMultiplier showAmountsIn;
         private CharCorpOption lastSelectedOwner;
-        private Dictionary<int, List<int>> useDataFrom;
+        // First key is ownerID
+        private Dictionary<long, List<int>> useDataFrom;
         private bool _selectAll = false;
 
         static Dictionary<string, object> parameters;
@@ -30,7 +31,7 @@ namespace EveMarketMonitorApp.GUIElements
         public CreateReport()
         {
             InitializeComponent();
-            useDataFrom = new Dictionary<int, List<int>>();
+            useDataFrom = new Dictionary<long, List<int>>();
 
             SetupReportTypes();
             SetupGUI();
@@ -78,7 +79,7 @@ namespace EveMarketMonitorApp.GUIElements
 
             if (selectedOwner != null)
             {
-                int id = selectedOwner.Corp ? selectedOwner.CharacterObj.CorpID : selectedOwner.CharacterObj.CharID;
+                long id = selectedOwner.Corp ? selectedOwner.CharacterObj.CorpID : selectedOwner.CharacterObj.CharID;
                 if (useDataFrom.ContainsKey(id))
                 {
                     if (selectedOwner.Corp)
@@ -139,7 +140,7 @@ namespace EveMarketMonitorApp.GUIElements
 
                 if (thisType.NeedFinanceAccessParams || paramFormToRun.NeedFinanceParams)
                 {
-                    Dictionary<int, List<int>>.Enumerator enumerator = useDataFrom.GetEnumerator();
+                    Dictionary<long, List<int>>.Enumerator enumerator = useDataFrom.GetEnumerator();
                     while (enumerator.MoveNext())
                     {
                         // If we are accessing all wallets for a corp then no need to bether with this 
@@ -284,7 +285,7 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 if (lastSelectedOwner.Corp && !lastSelectedOwner.Equals((CharCorpOption)lstOwners.SelectedItem))
                 {
-                    int id = lastSelectedOwner.Corp ? 
+                    long id = lastSelectedOwner.Corp ? 
                         lastSelectedOwner.CharacterObj.CorpID : lastSelectedOwner.CharacterObj.CharID;
 
                     if (useDataFrom.ContainsKey(id))
@@ -314,7 +315,7 @@ namespace EveMarketMonitorApp.GUIElements
             CharCorpOption item = (CharCorpOption)lstOwners.Items[e.Index];
             if (item != null)
             {
-                int id = item.Corp ? item.CharacterObj.CorpID : item.CharacterObj.CharID;
+                long id = item.Corp ? item.CharacterObj.CorpID : item.CharacterObj.CharID;
                 if (e.NewValue == CheckState.Unchecked && useDataFrom.ContainsKey(id))
                 {
                     useDataFrom.Remove(id);

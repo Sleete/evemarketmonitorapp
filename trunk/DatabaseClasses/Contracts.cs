@@ -22,7 +22,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
         public event StatusChangeHandler StatusChange;
 
-        public static decimal GetTransportCosts(int itemID, int destinationStationID,
+        public static decimal GetTransportCosts(int itemID, long destinationStationID,
             long quantity, DateTime oldestDate)
         {
             decimal retVal = 0;
@@ -138,7 +138,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         //    return table.Count > 0;
         //}
 
-        public static EMMADataSet.IDTableDataTable GetInvolvedStationIDs(List<int> ownerIDs, 
+        public static EMMADataSet.IDTableDataTable GetInvolvedStationIDs(List<long> ownerIDs, 
             ContractStationType type)
         {
             StringBuilder ownerIDString = new StringBuilder("");
@@ -163,13 +163,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return table;
         }
 
-        public static ContractList GetContracts(List<int> ownerIDs, short status, int pickupStationID,
-            int destinationStationID, ContractType contractType)
+        public static ContractList GetContracts(List<long> ownerIDs, short status, long pickupStationID,
+            long destinationStationID, ContractType contractType)
         {
             ContractList retVal = new ContractList();
             EMMADataSet.ContractsDataTable table = new EMMADataSet.ContractsDataTable();
             StringBuilder ownerIDString = new StringBuilder("");
-            foreach (int ownerID in ownerIDs)
+            foreach (long ownerID in ownerIDs)
             {
                 if (ownerIDString.Length != 0) { ownerIDString.Append(","); }
                 ownerIDString.Append(ownerID);
@@ -397,7 +397,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     // Look for assets that are marked as 'for sale via contract'
                     AssetList assets = Assets.LoadAssets(
                         UserAccount.CurrentGroup.GetAssetAccessParams(APIDataType.Assets),
-                        new List<int>(), item.ItemID, 0, 0, false,
+                        new List<long>(), item.ItemID, 0, 0, false,
                         (int)AssetStatus.States.ForSaleViaContract, true, true);
 
                     LookForAssetMatch(contract, updateAssets, ref qToFind, ref itemBuyPrice,
@@ -414,7 +414,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         // assets
                         assets = Assets.LoadAssets(
                             UserAccount.CurrentGroup.GetAssetAccessParams(APIDataType.Assets),
-                            new List<int>(), item.ItemID, 0, 0, false,
+                            new List<long>(), item.ItemID, 0, 0, false,
                             (int)AssetStatus.States.Normal, true, false);
 
                         LookForAssetMatch(contract, updateAssets, ref qToFind, ref itemBuyPrice,
@@ -489,7 +489,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                             // a calculated cost.
                             AssetList assets = Assets.LoadAssets(
                                 UserAccount.CurrentGroup.GetAssetAccessParams(APIDataType.Assets),
-                                new List<int>(), item.ItemID, 0, 0, false,
+                                new List<long>(), item.ItemID, 0, 0, false,
                                 (int)AssetStatus.States.Normal, true, false);
                             foreach (Asset asset in assets)
                             {
@@ -905,7 +905,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 */
 
-        public void LoadOldEmmaXML(string contractFile, string contractItemFile, int ownerID)
+        public void LoadOldEmmaXML(string contractFile, string contractItemFile, long ownerID)
         {
             Dictionary<long, long> idTranslation = new Dictionary<long,long>();
             Dictionary<long, DateTime> contractTime = new Dictionary<long,DateTime>();

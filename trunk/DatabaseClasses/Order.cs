@@ -9,10 +9,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
     class Order : SortableObject
     {
         private int _id;
-        private int _ownerID;
+        private long _ownerID;
         private bool _gotOwner = false;
         private string _owner;
-        private int _stationID;
+        private long _stationID;
         private bool _gotStation = false;
         private string _station;
         private bool _gotSystem = false;
@@ -49,7 +49,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <summary>
         /// This contsructor is used by the itemdetail form 
         /// </summary>
-        public Order(int ownerID, int itemID, bool buyOrder)
+        public Order(long ownerID, int itemID, bool buyOrder)
         {
             _ownerID = ownerID;
             _itemID = itemID;
@@ -142,7 +142,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set { _owner = value; }
         }
 
-        public int OwnerID
+        public long OwnerID
         {
             get { return _ownerID; }
         }
@@ -168,7 +168,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set { _station = value; }
         }
 
-        public int StationID
+        public long StationID
         {
             get { return _stationID; }
         }
@@ -422,12 +422,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
             accessParams.Add(new FinanceAccessParams(_ownerID));
             List<int> itemIDs = new List<int>();
             itemIDs.Add(_itemID);
-            List<int> regionIDs = new List<int>();
-            List<int> stationIDs = new List<int>();
+            List<long> regionIDs = new List<long>();
+            List<long> stationIDs = new List<long>();
             if (_buyOrder)
             {
                 short range = Range;
-                List<int> systemIDs = new List<int>();
+                List<long> systemIDs = new List<long>();
                 if (range == 32767)
                 {
                     regionIDs.Add(RegionID);

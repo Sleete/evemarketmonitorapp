@@ -132,21 +132,21 @@ namespace EveMarketMonitorApp.DatabaseClasses
         
         static public EveDataSet.invTypesDataTable GetItemsTraded(List<FinanceAccessParams> accessList, int minTrans)
         {
-            List<int> buyStations = new List<int>();
+            List<long> buyStations = new List<long>();
             buyStations.Add(0);
-            List<int> sellStations = new List<int>();
+            List<long> sellStations = new List<long>();
             sellStations.Add(0);
             return GetItemsTraded(accessList, minTrans, 0, 0, buyStations, sellStations, 
                 new DateTime(1990, 1, 1));
         }
 
         static public EveDataSet.invTypesDataTable GetItemsTraded(List<FinanceAccessParams> accessList, int minTrans,
-            int minBuy, int minSell, List<int> buyStations, List<int> sellStations, DateTime startDate)
+            int minBuy, int minSell, List<long> buyStations, List<long> sellStations, DateTime startDate)
         {
             StringBuilder itemIDs = new StringBuilder("");
             DateTime endData = DateTime.UtcNow.Add(new TimeSpan(1, 0, 0, 0));
-            EMMADataSet.IDTableDataTable idTable = Transactions.GetInvolvedItemIDs(accessList, minTrans, startDate,
-                DateTime.UtcNow, minBuy, minSell, buyStations, sellStations);
+            EMMADataSet.IDTableDataTable idTable = Transactions.GetInvolvedItemIDs(accessList, 
+                minTrans, startDate, DateTime.UtcNow, minBuy, minSell, buyStations, sellStations);
             foreach (EMMADataSet.IDTableRow id in idTable)
             {
                 itemIDs.Append(" ");
@@ -163,7 +163,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             EMMADataSet.IDTableDataTable idTable = Transactions.GetInvolvedItemIDs(accessList, 0);
             foreach (EMMADataSet.IDTableRow id in idTable)
             {
-                retVal.Add(id.ID);
+                retVal.Add((int)id.ID);
             }
             return retVal;
         }

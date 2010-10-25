@@ -21,7 +21,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="toID"></param>
         /// <param name="fromID"></param>
-        public static void ClearStandings(int toID, int fromID)
+        public static void ClearStandings(long toID, long fromID)
         {
             lock (tableAdapter)
             {
@@ -35,7 +35,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="toID"></param>
         /// <param name="fromID"></param>
         /// <returns></returns>
-        public static decimal GetStanding(int toID, int fromID) 
+        public static decimal GetStanding(long toID, long fromID) 
         {
             decimal retVal = 0;
             if (!_initalised) { Initalise(); }
@@ -50,7 +50,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="toID"></param>
         /// <param name="fromID"></param>
         /// <param name="standing"></param>
-        public static void SetStanding(int toID, int fromID, decimal standing)
+        public static void SetStanding(long toID, long fromID, decimal standing)
         {
             EMMADataSet.StandingsDataTable table = new EMMADataSet.StandingsDataTable();
             tableAdapter.FillByIDs(table, toID, fromID);
@@ -75,7 +75,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// Update standings for the supplied id with the latest from the eve API.
         /// </summary>
         /// <param name="id"></param>
-        public static void UpdateStandings(int id)
+        public static void UpdateStandings(long id)
         {
             bool corp = false;
 
@@ -110,10 +110,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
             lock (tableAdapter)
             {
                 char[] delim = { '|' };
-                int toID = 0, fromID = 0;
+                long toID = 0, fromID = 0;
                 string[] ids = args.Key.Split(delim);
-                toID = int.Parse(ids[0]);
-                fromID = int.Parse(ids[1]);
+                toID = long.Parse(ids[0]);
+                fromID = long.Parse(ids[1]);
                 tableAdapter.FillByIDs(table, toID, fromID);
             }
 

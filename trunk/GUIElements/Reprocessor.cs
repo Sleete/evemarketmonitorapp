@@ -214,7 +214,7 @@ namespace EveMarketMonitorApp.GUIElements
                 if ((int)txtStation.Tag != 0 && cmbDefaultReprocessor.SelectedValue != null)
                 {
                     CharCorp charcorp = (CharCorp)cmbDefaultReprocessor.SelectedValue;
-                    int station = (int)txtStation.Tag;
+                    long station = (long)txtStation.Tag;
 
                     AssetList containers = Assets.LoadReprocessableAssets(charcorp.ID, station, 1, true, false);
 
@@ -262,7 +262,7 @@ namespace EveMarketMonitorApp.GUIElements
                 if ((int)txtStation.Tag != 0 && cmbDefaultReprocessor.SelectedValue != null)
                 {
                     CharCorp charcorp = (CharCorp)cmbDefaultReprocessor.SelectedValue;
-                    int station = (int)txtStation.Tag;
+                    long station = (long)txtStation.Tag;
 
                     _reprocessJob = new ReprocessJob(station, UserAccount.CurrentGroup.ID, charcorp.ID);
                     _reprocessJob.SetDefaultResultPrices(_resultPrices);

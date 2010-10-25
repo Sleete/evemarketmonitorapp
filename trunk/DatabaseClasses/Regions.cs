@@ -11,7 +11,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
     {
         static private EveDataSetTableAdapters.mapRegionsTableAdapter regionsTableAdapter =
             new EveMarketMonitorApp.DatabaseClasses.EveDataSetTableAdapters.mapRegionsTableAdapter();
-        static private Cache<int, string> _nameCache = new Cache<int, string>(200);
+        static private Cache<long, string> _nameCache = new Cache<long, string>(200);
         static private bool _initalised = false;
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="stationID"></param>
         /// <returns></returns>
-        static public string GetRegionName(int regionID)
+        static public string GetRegionName(long regionID)
         {
             if (!_initalised) { InitialiseCache(); }
             return _nameCache.Get(regionID);
@@ -73,7 +73,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             if (!_initalised)
             {
-                _nameCache.DataUpdateNeeded += new Cache<int, string>.DataUpdateNeededHandler(NameCache_DataUpdateNeeded);
+                _nameCache.DataUpdateNeeded += new Cache<long, string>.DataUpdateNeededHandler(NameCache_DataUpdateNeeded);
                 _initalised = true;
             }
         }
@@ -84,7 +84,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="myObject"></param>
         /// <param name="args"></param>
-        static void NameCache_DataUpdateNeeded(object myObject, DataUpdateNeededArgs<int, string> args)
+        static void NameCache_DataUpdateNeeded(object myObject, DataUpdateNeededArgs<long, string> args)
         {
             string name = "";
 

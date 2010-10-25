@@ -19,22 +19,22 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private bool _gotItem = false;
         private string _item;
         private decimal _price;
-        private int _buyerID;
+        private long _buyerID;
         private bool _gotBuyer = false;
         private string _buyer;
-        private int _sellerID;
+        private long _sellerID;
         private bool _gotSeller = false;
         private string _seller;
-        private int _sellerCharID;
+        private long _sellerCharID;
         private bool _gotSellerChar = false;
         private string _sellerChar;
-        private int _buyerCharID;
+        private long _buyerCharID;
         private bool _gotBuyerChar = false;
         private string _buyerChar;
-        private int _stationID;
+        private long _stationID;
         private bool _gotStation = false;
         private string _station;
-        private int _regionID;
+        private long _regionID;
         private string _region;
         private bool _buyerForCorp;
         private bool _sellerForCorp;
@@ -248,12 +248,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set { _station = value; }
         }
 
-        public int StationID
+        public long StationID
         {
             get { return _stationID; }
         }
 
-        public int RegionID
+        public long RegionID
         {
             get { return _regionID; }
             set { _regionID = value; }
@@ -377,25 +377,25 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public int BuyerID
+        public long BuyerID
         {
             get { return _buyerID; }
             set { _buyerID = value; }
         }
 
-        public int SellerID
+        public long SellerID
         {
             get { return _sellerID; }
             set { _sellerID = value; }
         }
 
-        public int BuyerCharID
+        public long BuyerCharID
         {
             get {return _buyerCharID; }
             set { _buyerCharID = value; }
         }
 
-        public int SellerCharID
+        public long SellerCharID
         {
             get {  return _sellerCharID; }
             set { _sellerCharID = value; }
@@ -473,8 +473,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         itemIDList.Add(_itemID);
 
                         decimal buyPrice = 0, blank1 = 0;
-                        Transactions.GetAverageBuyPrice(financeAccessParams, itemIDList, new List<int>(),
-                            new List<int>(), _quantity, historyQuantity,
+                        Transactions.GetAverageBuyPrice(financeAccessParams, itemIDList, new List<long>(),
+                            new List<long>(), _quantity, historyQuantity,
                             ref buyPrice, ref blank1, true);
 
                         _profit = _price - buyPrice;

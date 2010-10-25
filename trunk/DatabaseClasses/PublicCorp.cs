@@ -26,7 +26,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private bool _accountDetailsLoaded = false;
         private int _accountID = 0;
         private decimal _amountInAccount;
-        private int _ownerID = -1;
+        private long _ownerID = -1;
         private bool _gotOwner = false;
         private string _ownerName = "";
 
@@ -250,7 +250,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        public int OwnerID
+        public long OwnerID
         {
             get { return _ownerID; }
             set
@@ -290,11 +290,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
             PublicCorp other = obj as PublicCorp;
             if (other != null)
             {
-                retVal = other.ID == _id;
+                retVal = obj.GetHashCode() == GetHashCode();
             }
             return retVal;
         }
 
+        public override string ToString()
+        {
+            return _id.ToString();
+        }
 
+        public override int GetHashCode()
+        {
+            return this.ToString().GetHashCode();
+        }
     }
 }

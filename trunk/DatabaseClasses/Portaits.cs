@@ -13,7 +13,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
     {
         private static EMMADataSetTableAdapters.PortraitsTableAdapter portraitsTableAdapter = 
             new EveMarketMonitorApp.DatabaseClasses.EMMADataSetTableAdapters.PortraitsTableAdapter();
-        private static Cache<int, Image> _cache = new Cache<int, Image>(50);
+        private static Cache<long, Image> _cache = new Cache<long, Image>(50);
         private static bool _initalised = false;
 
 
@@ -21,7 +21,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             if (!_initalised)
             {
-                _cache.DataUpdateNeeded += new Cache<int, Image>.DataUpdateNeededHandler(Cache_DataUpdateNeeded);
+                _cache.DataUpdateNeeded += new Cache<long, Image>.DataUpdateNeededHandler(Cache_DataUpdateNeeded);
                 _initalised = true;
             }
         }
@@ -31,7 +31,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="charID"></param>
         /// <returns></returns>
-        public static Image GetPortrait(int charID)
+        public static Image GetPortrait(long charID)
         {
             if (!_initalised) { Initialise(); }
             Image retVal = _cache.Get(charID);
@@ -43,7 +43,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="myObject"></param>
         /// <param name="args"></param>
-        static void Cache_DataUpdateNeeded(object myObject, DataUpdateNeededArgs<int, Image> args)
+        static void Cache_DataUpdateNeeded(object myObject, DataUpdateNeededArgs<long, Image> args)
         {
             EMMADataSet.PortraitsRow rowData = LoadPortraitFromDB(args.Key);
             if (rowData != null)
@@ -65,7 +65,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// Return the specified protrait row direct from the EMMA database
         /// </summary>
         /// <returns></returns>
-        private static EMMADataSet.PortraitsRow LoadPortraitFromDB(int charID)
+        private static EMMADataSet.PortraitsRow LoadPortraitFromDB(long charID)
         {
             EMMADataSet.PortraitsRow retVal = null;
             EMMADataSet.PortraitsDataTable portraitData = new EMMADataSet.PortraitsDataTable();
@@ -88,7 +88,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="charID"></param>
         /// <param name="portrait"></param>
-        private static void StorePortrait(int charID, Image portrait) 
+        private static void StorePortrait(long charID, Image portrait) 
         {
             EMMADataSet.PortraitsDataTable table = new EMMADataSet.PortraitsDataTable();
             EMMADataSet.PortraitsRow data = null;
@@ -109,7 +109,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="charID"></param>
         /// <returns></returns>
-        private static Image GetImageFromAPI(int charID)
+        private static Image GetImageFromAPI(long charID)
         {
             HttpWebRequest request;
             HttpWebResponse response = null;

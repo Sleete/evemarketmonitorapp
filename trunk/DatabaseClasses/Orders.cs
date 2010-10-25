@@ -12,14 +12,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private static EMMADataSetTableAdapters.OrdersTableAdapter tableAdapter = 
             new EveMarketMonitorApp.DatabaseClasses.EMMADataSetTableAdapters.OrdersTableAdapter();
 
-        private static int _lastBuyerID;
+        private static long _lastBuyerID;
         private static EMMADataSet.OrdersDataTable _lastBuyerOrders;
-        private static int _lastSellerID;
+        private static long _lastSellerID;
         private static EMMADataSet.OrdersDataTable _lastSellerOrders;
         private static int _lastItemID;
 
 
-        public static void MigrateOrdersToCorpID(int charID, int corpID)
+        public static void MigrateOrdersToCorpID(long charID, long corpID)
         {
             lock (tableAdapter)
             {
@@ -81,14 +81,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public static void SetProcessed(int ownerID, bool processed)
+        public static void SetProcessed(long ownerID, bool processed)
         {
             lock (tableAdapter)
             {
                 tableAdapter.SetProcessed(ownerID, processed);
             }
         }
-        
+
         public static void SetProcessedByID(int orderID, bool processed)
         {
             lock (tableAdapter)
@@ -97,7 +97,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        public static void FinishUnProcessed(int ownerID)
+        public static void FinishUnProcessed(long ownerID)
         {
             lock (tableAdapter)
             {
@@ -110,7 +110,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
 
 
-        public static EMMADataSet.OrdersDataTable GetOrdersByIssueDate(int ownerID, short walletID,
+        public static EMMADataSet.OrdersDataTable GetOrdersByIssueDate(long ownerID, short walletID,
             DateTime earliestIsssueDate, DateTime latestIssueDate)
         {
             EMMADataSet.OrdersDataTable retVal = new EMMADataSet.OrdersDataTable();
@@ -125,11 +125,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
 
-        public static decimal GetSellOrderValue(int ownerID)
+        public static decimal GetSellOrderValue(long ownerID)
         {
             return GetSellOrderValue(ownerID, 0);
         }
-        public static decimal GetSellOrderValue(int ownerID, short walletID)
+        public static decimal GetSellOrderValue(long ownerID, short walletID)
         {
             decimal retVal = 0;
             EMMADataSet.OrdersDataTable table = new EMMADataSet.OrdersDataTable();
@@ -159,7 +159,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return retVal;
         }
 
-        public static decimal GetCashInEscrow(int ownerID, short walletID)
+        public static decimal GetCashInEscrow(long ownerID, short walletID)
         {
             decimal retVal = 0;
             EMMADataSet.OrdersDataTable table = new EMMADataSet.OrdersDataTable();
@@ -178,7 +178,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
 
         public static OrdersList LoadOrders(List<AssetAccessParams> accessParams, List<int> itemIDs,
-            List<int> stationIDs, int state, string type)
+            List<long> stationIDs, int state, string type)
         {
             OrdersList retVal = new OrdersList();
             EMMADataSet.OrdersDataTable table = new EMMADataSet.OrdersDataTable();
@@ -223,7 +223,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="ID">The ID of the order that matches the supplied one</param>
         /// <returns></returns>
         public static bool Exists(EMMADataSet.OrdersDataTable ordersTable, EMMADataSet.OrdersRow orderRow,
-            ref int ID, int corpID, int charID)
+            ref int ID, long corpID, long charID)
         {
             bool? exists = false;
             int? orderID = 0;
@@ -290,7 +290,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             bool retVal = false;
             bool buyerForCorp = false, sellerForCorp = false;
-            int buyerID =0, sellerID = 0;
+            long buyerID =0, sellerID = 0;
             buyOrder = null;
             sellOrder = null;
 
@@ -377,7 +377,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         }
                         else
                         {
-                            List<int> systemsInRange = SolarSystemDistances.GetSystemsInRange(
+                            List<long> systemsInRange = SolarSystemDistances.GetSystemsInRange(
                                 order.StationID, (int)order.Range);
                             if (systemsInRange.Contains(Stations.GetStation(trans.StationID).solarSystemID)) 
                             { 

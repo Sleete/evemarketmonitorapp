@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Xml;
 
 using EveMarketMonitorApp.Common;
+using EveMarketMonitorApp.AbstractionClasses;
 
 namespace EveMarketMonitorApp.DatabaseClasses
 {
@@ -108,6 +109,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         _name = account.Name.Trim();
                         Diagnostics.StartTimer("OpenAccount.InitSettings");
                         InitSettings();
+                        // Set API base URL
+                        EveAPI.URL_EveApiBase = _settings.APIURL; 
                         Diagnostics.StopTimer("OpenAccount.InitSettings");
                         Diagnostics.StartTimer("OpenAccount.GetGroups");
                         _reportGroups = ReportGroups.GetUsersGroups(_name, true);

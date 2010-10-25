@@ -18,8 +18,8 @@ namespace EveMarketMonitorApp.Reporting
             "Units Bought", "Units Sold", "Cost Of Units Sold",
             "Gross Margin %", "Gross Margin per Item", "Gross Profit",
             "Broker Fees", "Transaction Fees", "Transport Costs", "Overheads %", "Net Profit"};
-        private List<int> _regionIDs;
-        private List<int> _stationIDs;
+        private List<long> _regionIDs;
+        private List<long> _stationIDs;
         private List<int> _itemIDs;
         private bool _useMostRecentBuyPrice;
 
@@ -170,8 +170,8 @@ namespace EveMarketMonitorApp.Reporting
                     paramsOk = paramsOk && parameters.TryGetValue(_expectedParams[i], out paramValue);
                     if (_expectedParams[i].Equals("StartDate")) _startDate = (DateTime)paramValue;
                     if (_expectedParams[i].Equals("EndDate")) _endDate = (DateTime)paramValue;
-                    if (_expectedParams[i].Equals("RegionIDs")) _regionIDs = (List<int>)paramValue;
-                    if (_expectedParams[i].Equals("StationIDs")) _stationIDs = (List<int>)paramValue;
+                    if (_expectedParams[i].Equals("RegionIDs")) _regionIDs = (List<long>)paramValue;
+                    if (_expectedParams[i].Equals("StationIDs")) _stationIDs = (List<long>)paramValue;
                     if (_expectedParams[i].Equals("ItemIDs")) _itemIDs = (List<int>)paramValue;
                     if (_expectedParams[i].Equals("ColumnsVisible")) columnsVisible = (bool[])paramValue;
                     if (_expectedParams[i].Equals("UseMostRecentBuyPrice")) _useMostRecentBuyPrice = (bool)paramValue;
@@ -341,14 +341,14 @@ namespace EveMarketMonitorApp.Reporting
                             {
                                 quantityToIgnore = Assets.GetTotalQuantity(_assetAccessParams, itemID);
                                 OrdersList sellOrders = Orders.LoadOrders(_assetAccessParams, itemIDList,
-                                    new List<int>(), (int)OrderState.Active, "sell");
+                                    new List<long>(), (int)OrderState.Active, "sell");
                                 foreach (Order sellOrder in sellOrders)
                                 {
                                     quantityToIgnore += sellOrder.RemainingVol;
                                 }
                             }
-                            Transactions.GetAverageBuyPrice(_financeAccessParams, itemIDList, new List<int>(),
-                                new List<int>(), (int)totSellVolume, quantityToIgnore,
+                            Transactions.GetAverageBuyPrice(_financeAccessParams, itemIDList, new List<long>(),
+                                new List<long>(), (int)totSellVolume, quantityToIgnore,
                                 ref soldUnitsBuyPrice, ref soldUnitsPurchaseBrokerFees, true);
                         }
                         else

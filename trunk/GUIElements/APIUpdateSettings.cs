@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using EveMarketMonitorApp.DatabaseClasses;
+using EveMarketMonitorApp.AbstractionClasses;
 
 namespace EveMarketMonitorApp.GUIElements
 {
@@ -56,10 +57,10 @@ namespace EveMarketMonitorApp.GUIElements
                 txtTransHours.Text = "1";
                 txtTransMins.Text = "1";
             }
-            txtAssetsUpdateMaxMinutes.Text = UserAccount.Settings.AssetsUpdateMaxMinutes.ToString();
             chkManufacturing.Checked = UserAccount.Settings.ManufacturingMode;
             chkAllowIndividualUpdate.Checked = UserAccount.Settings.APIIndividualUpdate;
             chkCompactView.Checked = UserAccount.Settings.UseCompactUpdatePanel;
+            txtAPIURL.Text = UserAccount.Settings.APIURL;
             RefreshDisplay();
         }
 
@@ -80,10 +81,11 @@ namespace EveMarketMonitorApp.GUIElements
                     int.Parse(txtOrdersMins.Text), 0);
                 UserAccount.Settings.APITransUpdatePeriod = new TimeSpan(int.Parse(txtTransHours.Text),
                     int.Parse(txtTransMins.Text), 0);
-                UserAccount.Settings.AssetsUpdateMaxMinutes = int.Parse(txtAssetsUpdateMaxMinutes.Text);
                 UserAccount.Settings.ManufacturingMode = chkManufacturing.Checked;
                 UserAccount.Settings.APIIndividualUpdate = chkAllowIndividualUpdate.Checked;
                 UserAccount.Settings.UseCompactUpdatePanel = chkCompactView.Checked;
+                UserAccount.Settings.APIURL = txtAPIURL.Text;
+                EveAPI.URL_EveApiBase = txtAPIURL.Text;
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -197,19 +199,6 @@ namespace EveMarketMonitorApp.GUIElements
                     "update time has been reset to the default 1 hour.",
                     "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-             // ----- Assets update max miuntes setting -----
-            try
-            {
-                int mins = int.Parse(txtAssetsUpdateMaxMinutes.Text);
-            }
-            catch
-            {
-                retVal = false;
-                txtAssetsUpdateMaxMinutes.Text = "10";
-                MessageBox.Show("Problem parsing assets update maximum minutes value.\r\n" +
-                    "value has been reset to the default 10 minutes.",
-                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
 
             return retVal;
         }
@@ -231,6 +220,16 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 chkAllowIndividualUpdate.Enabled = true;
             }
+        }
+
+        private void btnDefaultAPIURL_Click(object sender, EventArgs e)
+        {
+            txtAPIURL.Text = "http://api.eve-online.com";
+        }
+
+        private void btnTestAPIURL_Click(object sender, EventArgs e)
+        {
+            txtAPIURL.Text = "http://apitest.eve-online.com";
         }
 
 

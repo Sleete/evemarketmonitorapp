@@ -19,7 +19,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 Math.Abs(producedAsset.Quantity), ref producedAssetID);
         }
 
-        public static EMMADataSet.AssetsProducedDataTable GetAssetsProduced(int ownerID, DateTime startDate, DateTime endDate)
+        public static EMMADataSet.AssetsProducedDataTable GetAssetsProduced(long ownerID, DateTime startDate, DateTime endDate)
         {
             EMMADataSet.AssetsProducedDataTable retVal = new EMMADataSet.AssetsProducedDataTable();
 

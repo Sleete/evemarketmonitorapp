@@ -739,13 +739,13 @@ namespace EveMarketMonitorApp.GUIElements
         {
             if (items.Count > 0)
             {
-                bool corp = false;
-                UserAccount.CurrentGroup.GetCharacter(_contract.OwnerID, ref corp);
+                //bool corp = false;
+                //UserAccount.CurrentGroup.GetCharacter(_contract.OwnerID, ref corp);
                 foreach (ContractItem item in items)
                 {
                     if (permenantly)
                     {
-                        Assets.SetAutoConExcludeFlag(_contract.OwnerID, corp, _contract.PickupStationID, 
+                        Assets.SetAutoConExcludeFlag(_contract.OwnerID, _contract.PickupStationID, 
                             item.ItemID, true);
                     }
                     _contract.Items.Remove(item);
@@ -767,10 +767,10 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 if (_contract.Type == ContractType.Courier)
                 {
-                    int pickupID = _contract.PickupStationID;
-                    int destID = _contract.DestinationStationID;
+                    long pickupID = _contract.PickupStationID;
+                    long destID = _contract.DestinationStationID;
                     CreateContract();
-                    int ownerID = _contract.OwnerID;
+                    long ownerID = _contract.OwnerID;
                     _contract = new Contract(ownerID, 5);
                     _contract.PickupStationID = pickupID;
                     _contract.DestinationStationID = destID;
