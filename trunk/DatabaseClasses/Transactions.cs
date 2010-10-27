@@ -163,7 +163,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
         public static void BuildResults(List<FinanceAccessParams> accessParams, List<int> itemIDs,
-            List<int> regionIDs, List<int> stationIDs, DateTime startDate, DateTime endDate, string transType)
+            List<long> regionIDs, List<long> stationIDs, DateTime startDate, DateTime endDate, string transType)
         {
             // Make sure start/end dates are within the allowed ranges
             startDate = startDate.ToUniversalTime();
@@ -181,8 +181,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             string stationString = "";
             string regionString = "";
             foreach (int item in itemIDs) { itemString = itemString + (itemString.Length == 0 ? "" : ",") + item; }
-            foreach (int station in stationIDs) { stationString = stationString + (stationString.Length == 0 ? "" : ",") + station; }
-            foreach (int region in regionIDs) { regionString = regionString + (regionString.Length == 0 ? "" : ",") + region; }
+            foreach (long station in stationIDs) { stationString = stationString + (stationString.Length == 0 ? "" : ",") + station; }
+            foreach (long region in regionIDs) { regionString = regionString + (regionString.Length == 0 ? "" : ",") + region; }
 
             //lock (tableAdapter)
             //{
@@ -1418,19 +1418,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             newRow.Price = Decimal.Parse(node.SelectSingleNode("Price").FirstChild.Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-            newRow.StationID = int.Parse(node.SelectSingleNode("StationID").FirstChild.Value,
+            newRow.StationID = long.Parse(node.SelectSingleNode("StationID").FirstChild.Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             newRow.RegionID = Stations.GetStation(newRow.StationID).regionID;
 
             // Get the data to work out the more complicated fields..
             string transType = node.SelectSingleNode("TransactionType").FirstChild.Value;
-            int clientID = int.Parse(node.SelectSingleNode("ClientID").FirstChild.Value,
+            long clientID = long.Parse(node.SelectSingleNode("ClientID").FirstChild.Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             XmlNode charNode = node.SelectSingleNode("CharacterID").FirstChild;
-            int charID2 = 0;
+            long charID2 = 0;
             if (charNode != null)
             {
-                charID2 = int.Parse(charNode.Value,
+                charID2 = long.Parse(charNode.Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             }
             bool forCorp = bool.Parse(node.SelectSingleNode("ForCorp").FirstChild.Value);

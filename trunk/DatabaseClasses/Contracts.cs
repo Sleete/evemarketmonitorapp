@@ -924,9 +924,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 long oldID = long.Parse(node.SelectSingleNode("ID").FirstChild.Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 int status = 2;
-                int pickupID = int.Parse(node.SelectSingleNode("PickupStationID").FirstChild.Value,
+                long pickupID = long.Parse(node.SelectSingleNode("PickupStationID").FirstChild.Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-                int destID = int.Parse(node.SelectSingleNode("DestinationStationID").FirstChild.Value,
+                long destID = long.Parse(node.SelectSingleNode("DestinationStationID").FirstChild.Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 decimal collateral = decimal.Parse(node.SelectSingleNode("Collateral").FirstChild.Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);

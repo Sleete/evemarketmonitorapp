@@ -376,7 +376,7 @@ namespace EveMarketMonitorApp.GUIElements
                     _accessParams = new List<FinanceAccessParams>();
                     if (ownerID == 0)
                     {
-                        foreach (int id in _possibleOwners)
+                        foreach (long id in _possibleOwners)
                         {
                             _accessParams.Add(new FinanceAccessParams(id));
                         }

@@ -207,7 +207,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 bool tryUpdate = true;
                 long id = long.Parse(node.SelectSingleNode("ID").FirstChild.Value) + 1085796677;
-                int recieverID = int.Parse(node.SelectSingleNode("OwnerID2").FirstChild.Value);
+                long recieverID = long.Parse(node.SelectSingleNode("OwnerID2").FirstChild.Value);
 
                 if (!EntryExists(table, id, recieverID))
                 {
@@ -273,7 +273,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             XmlNode child = null;
             newRow.ID = id;
             newRow.RecieverID = recieverID;
-            newRow.SenderID = int.Parse(node.SelectSingleNode("OwnerID1").FirstChild.Value);
+            newRow.SenderID = long.Parse(node.SelectSingleNode("OwnerID1").FirstChild.Value);
             newRow.Date = DateTime.Parse(node.SelectSingleNode("Date").FirstChild.Value,
                 System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
             newRow.TypeID = short.Parse(node.SelectSingleNode("TypeID").FirstChild.Value);
@@ -288,7 +288,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 child = node.SelectSingleNode("ArgName1").FirstChild;
                 newRow.SArgName = child == null ? "" : child.Value;
                 child = node.SelectSingleNode("ArgID1").FirstChild;
-                newRow.SArgID = int.Parse(child == null ? "0" : child.Value,
+                newRow.SArgID = long.Parse(child == null ? "0" : child.Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 newRow.SCorpID = corpID;
 
@@ -306,7 +306,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 child = node.SelectSingleNode("ArgName1").FirstChild;
                 newRow.RArgName = child == null ? "" : child.Value;
                 child = node.SelectSingleNode("ArgID1").FirstChild;
-                newRow.RArgID = int.Parse(child == null ? "0" : child.Value,
+                newRow.RArgID = long.Parse(child == null ? "0" : child.Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 newRow.RCorpID = corpID;
 

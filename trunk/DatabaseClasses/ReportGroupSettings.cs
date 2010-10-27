@@ -494,11 +494,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
         #region Public properties to access settings
         #region Reprocessing settings
-        public int ReprocessStation
+        public long ReprocessStation
         {
             get
             {
-                return int.Parse(GetValue(Setting.reproc_station),
+                return long.Parse(GetValue(Setting.reproc_station),
                   System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             }
             set
@@ -813,11 +813,11 @@ namespace EveMarketMonitorApp.DatabaseClasses
             get { return bool.Parse(GetValue(Setting.autocon_tradedItems)); }
             set { SetValue(Setting.autocon_tradedItems, value.ToString()); }
         }
-        public int AutoCon_DestiantionStation
+        public long AutoCon_DestiantionStation
         {
             get
             {
-                return int.Parse(GetValue(Setting.autocon_destinationStation),
+                return long.Parse(GetValue(Setting.autocon_destinationStation),
                   System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             }
             set

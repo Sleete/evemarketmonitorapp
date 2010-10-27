@@ -83,6 +83,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetValue(Setting.UseCompactUpdatePanel);
             GetValue(Setting.ShowEMMAInTaskBarWhenMinimised);
             GetValue(Setting.ExtendedDiags);
+            GetValue(Setting.APIURL);
         }
 
         /// <summary>
@@ -295,6 +296,9 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     break;
                 case Setting.ExtendedDiags:
                     retVal = bool.FalseString;
+                    break;
+                case Setting.APIURL:
+                    retVal = "http://api.eve-online.com";
                     break;
                 default:
                     break;

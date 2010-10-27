@@ -17,8 +17,8 @@ namespace EveMarketMonitorApp.GUIElements
     {
         private OrdersList _orders;
         //private BindingSource _ordersBindingSource;
-        //private List<int> _owners;
-        //private List<int> _corporateOwners;
+        //private List<long> _owners;
+        //private List<long> _corporateOwners;
         //private List<AssetAccessParams> _accessParams;
         private int _lastNumberOfOrders = 0;
 
@@ -26,8 +26,8 @@ namespace EveMarketMonitorApp.GUIElements
         {
             InitializeComponent();
 
-            //_owners = new List<int>();
-            //_corporateOwners = new List<int>();
+            //_owners = new List<long>();
+            //_corporateOwners = new List<long>();
             //List<CharCorpOption> charcorps = UserAccount.CurrentGroup.GetCharCorpOptions(APIDataType.Orders);
             //foreach (CharCorpOption chop in charcorps)
             //{
@@ -143,14 +143,14 @@ namespace EveMarketMonitorApp.GUIElements
 
                 //_accessParams = new List<AssetAccessParams>();
 
-                ////List<int> ignore = new List<int>();
-                //foreach (int id in _owners)
+                ////List<long> ignore = new List<long>();
+                //foreach (long id in _owners)
                 //{
                 //    _accessParams.Add(new AssetAccessParams(id));
                 //    //_accessParams.Add(new AssetAccessParams(id, true, _corporateOwners.Contains(id)));
                 //    //ignore.Add(id);
                 //}
-                //foreach (int id in _corporateOwners)
+                //foreach (long id in _corporateOwners)
                 //{
                 //    _accessParams.Add(new AssetAccessParams(id));
                 ////    if (!ignore.Contains(id))

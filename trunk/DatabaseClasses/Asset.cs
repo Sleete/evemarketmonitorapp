@@ -126,7 +126,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
         }
 
-        public Asset(XmlNode apiAssetData, int ownerID, bool corpAsset, Asset container)
+        public Asset(XmlNode apiAssetData, long ownerID, bool corpAsset, Asset container)
         {
             _id = 0;
             _ownerID = ownerID;
@@ -134,7 +134,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             XmlNode locationNode = apiAssetData.SelectSingleNode("@locationID");
             if (locationNode != null)
             {
-                _locationID = int.Parse(locationNode.Value);
+                _locationID = long.Parse(locationNode.Value);
 
                 // Translate location ID from a corporate office to a station ID if required.
                 if (_locationID >= 66000000 && _locationID < 67000000)

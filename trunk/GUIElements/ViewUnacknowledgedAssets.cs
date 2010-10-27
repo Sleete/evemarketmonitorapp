@@ -948,14 +948,14 @@ namespace EveMarketMonitorApp.GUIElements
         private class TempAssetKey
         {
             private long _assetID;
-            private int _ownerID;
+            private long _ownerID;
             private bool _forCorp;
 
             private string _itemName;
             private int _itemID;
             private long _quantity;
 
-            public TempAssetKey(long assetID, int ownerID, bool forCorp)
+            public TempAssetKey(long assetID, long ownerID, bool forCorp)
             {
                 _assetID = assetID;
                 _ownerID = ownerID;
@@ -967,7 +967,7 @@ namespace EveMarketMonitorApp.GUIElements
                 get { return _assetID; }
                 set { _assetID = value; }
             }
-            public int OwnerID
+            public long OwnerID
             {
                 get { return _ownerID; }
                 set { _ownerID = value; }

@@ -24,7 +24,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="stationID"></param>
         /// <param name="stationName"></param>
-        static public void AddStation(int stationID, string stationName, int solarSystemID, int corpID)
+        static public void AddStation(long stationID, string stationName, long solarSystemID, long corpID)
         {
             try
             {
@@ -34,15 +34,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 {
                     stationsTableAdapter.FillByIDs(table, stationID.ToString());
                 }
-                EveDataSet.staStationsRow data = table.FindBystationID(stationID);
+                EveDataSet.staStationsRow data = table.FindBystationID((int)stationID);
 
                 if (data == null)
                 {
                     EveDataSet.staStationsRow newRow = table.NewstaStationsRow();
-                    newRow.stationID = stationID;
+                    newRow.stationID = (int)stationID;
                     newRow.stationName = stationName;
-                    newRow.corporationID = corpID;
-                    newRow.solarSystemID = solarSystemID;
+                    newRow.corporationID = (int)corpID;
+                    newRow.solarSystemID = (int)solarSystemID;
                     EveDataSet.mapSolarSystemsRow systemData = SolarSystems.GetSystem(solarSystemID);
                     newRow.constellationID = systemData.constellationID;
                     newRow.regionID = systemData.regionID;
@@ -61,7 +61,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     }
                     if (data.IscorporationIDNull() || data.corporationID != corpID)
                     {
-                        data.corporationID = corpID;
+                        data.corporationID = (int)corpID;
                         update = true;
                     }
                     if (update)
@@ -178,7 +178,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <param name="systemID"></param>
         /// <returns></returns>
         static public EveDataSet.staStationsDataTable GetAssetStations(
-            List<AssetAccessParams> accessParams, int itemID, int systemID)
+            List<AssetAccessParams> accessParams, int itemID, long systemID)
         {
             StringBuilder stationIDs = new StringBuilder("");
             EMMADataSet.IDTableDataTable idTable = Assets.GetInvolvedStationIDs(accessParams, itemID, systemID);

@@ -183,15 +183,15 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         XmlNode solarSystemNode = outpost.SelectSingleNode("@solarSystemID");
                         XmlNode corpIDNode = outpost.SelectSingleNode("@corporationID");
 
-                        int stationID = 0, solarSystemID = 0, corpID = 0;
+                        long stationID = 0, solarSystemID = 0, corpID = 0;
                         string stationName = "";
 
-                        stationID = int.Parse(stationIDNode.Value,
+                        stationID = long.Parse(stationIDNode.Value,
                             System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                         stationName = stationNameNode.Value;
-                        solarSystemID = int.Parse(solarSystemNode.Value,
+                        solarSystemID = long.Parse(solarSystemNode.Value,
                             System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-                        corpID = int.Parse(corpIDNode.Value,
+                        corpID = long.Parse(corpIDNode.Value,
                             System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
 
                         Stations.AddStation(stationID, stationName, solarSystemID, corpID);

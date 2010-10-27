@@ -218,7 +218,7 @@ namespace EveMarketMonitorApp.GUIElements
                         _lastStation = cmbStation.Text;
                         DisplayTrans();
                     }
-                    if ((int)cmbStation.Tag == 0) { cmbStation.Text = ""; }
+                    if ((long)cmbStation.Tag == 0) { cmbStation.Text = ""; }
                 }
             }
             finally
@@ -516,8 +516,8 @@ namespace EveMarketMonitorApp.GUIElements
                 if (transactionGrid.Columns[e.ColumnIndex].Name.Equals("PriceColumn")
                     || transactionGrid.Columns[e.ColumnIndex].Name.Equals("TotalValueColumn"))
                 {
-                    int buyerID = (int)transactionGrid["BuyerIDColumn", e.RowIndex].Value;
-                    int sellerID = (int)transactionGrid["SellerIDColumn", e.RowIndex].Value;
+                    long buyerID = (long)transactionGrid["BuyerIDColumn", e.RowIndex].Value;
+                    long sellerID = (long)transactionGrid["SellerIDColumn", e.RowIndex].Value;
                     bool matchBuyer = _possibleOwners.Contains(buyerID);
                     bool matchSeller = _possibleOwners.Contains(sellerID);
                     DataGridViewCellStyle style = e.CellStyle;
