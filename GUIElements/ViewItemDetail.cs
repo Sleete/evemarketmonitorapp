@@ -526,7 +526,7 @@ namespace EveMarketMonitorApp.GUIElements
         {
             try
             {
-                Transactions.BuildResults(_finParams, _itemIDs, new List<int>(), new List<int>(),
+                Transactions.BuildResults(_finParams, _itemIDs, new List<long>(), new List<long>(),
                     dtpStartDate.Value, dtpEndDate.Value, "any");
                 _transactionsDataVisible = true;
                 RefreshGUI();

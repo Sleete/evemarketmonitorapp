@@ -851,7 +851,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
         public static EMMADataSet.IDTableDataTable GetInvolvedStationIDs(List<AssetAccessParams> accessParams,
-            int itemID, int systemID)
+            int itemID, long systemID)
         {
             EMMADataSet.IDTableDataTable table = new EMMADataSet.IDTableDataTable();
             lock (assetsTableAdapter)
@@ -863,7 +863,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
         public static EMMADataSet.IDTableDataTable GetInvolvedSystemIDs(List<AssetAccessParams> accessParams,
-            int itemID, int regionID)
+            int itemID, long regionID)
         {
             EMMADataSet.IDTableDataTable table = new EMMADataSet.IDTableDataTable();
             lock (assetsTableAdapter)

@@ -276,14 +276,14 @@ namespace EveMarketMonitorApp.GUIElements
             _accessParams = new List<AssetAccessParams>();
             if (ownerID == 0)
             {
-                //List<int> ignore = new List<int>();
-                foreach (int id in _personalOwners)
+                //List<long> ignore = new List<long>();
+                foreach (long id in _personalOwners)
                 {
                     _accessParams.Add(new AssetAccessParams(id));
                     //_accessParams.Add(new AssetAccessParams(id, true, _corporateOwners.Contains(id)));
                     //ignore.Add(id);
                 }
-                foreach (int id in _corporateOwners)
+                foreach (long id in _corporateOwners)
                 {
                     _accessParams.Add(new AssetAccessParams(id));
                     //if (!ignore.Contains(id))

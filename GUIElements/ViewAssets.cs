@@ -345,7 +345,7 @@ namespace EveMarketMonitorApp.GUIElements
                     _modifiedIndicies = new List<int>();
 
                     _itemID = short.Parse(cmbItem.Tag.ToString());
-                    int locationID = 0, systemID = 0;
+                    long locationID = 0, systemID = 0;
                     List<long> regionIDs = new List<long>();
                     Asset container = null;
 
@@ -361,13 +361,13 @@ namespace EveMarketMonitorApp.GUIElements
                                 case AssetViewNodeType.All:
                                     break;
                                 case AssetViewNodeType.Region:
-                                    regionIDs.Add((int)tag.Id);
+                                    regionIDs.Add((long)tag.Id);
                                     break;
                                 case AssetViewNodeType.System:
-                                    systemID = (int)tag.Id;
+                                    systemID = (long)tag.Id;
                                     break;
                                 case AssetViewNodeType.Station:
-                                    locationID = (int)tag.Id;
+                                    locationID = (long)tag.Id;
                                     break;
                                 case AssetViewNodeType.Container:
                                     container = tag.Data as Asset;
@@ -459,11 +459,11 @@ namespace EveMarketMonitorApp.GUIElements
             _accessParams = new List<AssetAccessParams>();
             if (ownerID == 0)
             {
-                foreach (int id in _personalOwners)
+                foreach (long id in _personalOwners)
                 {
                     _accessParams.Add(new AssetAccessParams(id));
                 }
-                foreach (int id in _corporateOwners)
+                foreach (long id in _corporateOwners)
                 {
                     _accessParams.Add(new AssetAccessParams(id));
                 }
@@ -514,7 +514,7 @@ namespace EveMarketMonitorApp.GUIElements
                     // This is a region level node so the next level will be solar systems
                     // within the region that contain assets.
                     EveDataSet.mapSolarSystemsDataTable systems = SolarSystems.GetAssetSystems(_accessParams,
-                        _itemID, (int)nodeData.Id);
+                        _itemID, (long)nodeData.Id);
                     foreach(EveDataSet.mapSolarSystemsRow system in systems)
                     {
                         TreeNode snode = new TreeNode(system.solarSystemName);
@@ -526,8 +526,8 @@ namespace EveMarketMonitorApp.GUIElements
                 case AssetViewNodeType.System:
                     // This is a system level node so the next level will be both stations
                     // within the system that contain assets and any containers in space in the system.
-                    EveDataSet.staStationsDataTable stations = Stations.GetAssetStations(_accessParams, 
-                        _itemID, (int)nodeData.Id);
+                    EveDataSet.staStationsDataTable stations = Stations.GetAssetStations(_accessParams,
+                        _itemID, (long)nodeData.Id);
                     foreach(EveDataSet.staStationsRow station in stations) 
                     {
                         TreeNode stnode = new TreeNode(station.stationName);
@@ -540,7 +540,7 @@ namespace EveMarketMonitorApp.GUIElements
                     // This is because we only want assets that are in space in the system.
                     // NOT those in stations in the system.
                     AssetList systemAssets = Assets.LoadAssets(_accessParams, new List<long>(), _itemID,
-                        (int)nodeData.Id, 0, true, 0, false, true);
+                        (long)nodeData.Id, 0, true, 0, false, true);
                     foreach(Asset asset in systemAssets) 
                     {
                         TreeNode anode = new TreeNode(asset.Item);
@@ -552,7 +552,7 @@ namespace EveMarketMonitorApp.GUIElements
                     // This is a station level node so the next level will be any containers in
                     // the station that contain assets.
                     AssetList stationContainers = Assets.LoadAssetsByItemAndContainersOfItem(_accessParams,
-                        new List<long>(), _itemID, (int)nodeData.Id, 0, true);
+                        new List<long>(), _itemID, (long)nodeData.Id, 0, true);
                     foreach (Asset asset in stationContainers)
                     {
                         TreeNode cnode = new TreeNode(asset.Item);

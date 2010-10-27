@@ -40,7 +40,7 @@ namespace EveMarketMonitorApp.GUIElements
 
         private string _lastItem = "", _lastDest = "", _lastPickup = "";
 
-        public CourierCalc(int ownerID, ContractType type)
+        public CourierCalc(long ownerID, ContractType type)
         {
             InitializeComponent();
 

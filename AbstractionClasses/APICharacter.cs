@@ -572,7 +572,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 xmlNodes = xml.SelectNodes("/eveapi/result/standingsTo/rowset/row");
                 foreach (XmlNode node in xmlNodes)
                 {
-                    int toID = int.Parse(node.Attributes.GetNamedItem("toID").Value);
+                    long toID = long.Parse(node.Attributes.GetNamedItem("toID").Value);
                     string toName = node.Attributes.GetNamedItem("toName").Value;
                     decimal standing = decimal.Parse(node.Attributes.GetNamedItem("standing").Value, 
                         System.Globalization.CultureInfo.InvariantCulture.NumberFormat) * 10;
@@ -587,7 +587,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 xmlNodes = xml.SelectNodes("/eveapi/result/standingsFrom/rowset/row");
                 foreach (XmlNode node in xmlNodes)
                 {
-                    int fromID = int.Parse(node.Attributes.GetNamedItem("fromID").Value);
+                    long fromID = long.Parse(node.Attributes.GetNamedItem("fromID").Value);
                     string fromName = node.Attributes.GetNamedItem("fromName").Value;
                     decimal standing = decimal.Parse(node.Attributes.GetNamedItem("standing").Value,
                         System.Globalization.CultureInfo.InvariantCulture.NumberFormat); //* 10;
@@ -1245,7 +1245,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         /// <param name="corc"></param>
         /// <param name="containerID"></param>
         /// <param name="expectedChanges"></param>
-        private void UpdateAssets(EMMADataSet.AssetsDataTable assetData, XmlNodeList assetList, int locationID,
+        private void UpdateAssets(EMMADataSet.AssetsDataTable assetData, XmlNodeList assetList, long locationID,
             CharOrCorp corc, long containerID, AssetList changes)
         {
             int counter = 0;
@@ -1268,7 +1268,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 XmlNode locationNode = asset.SelectSingleNode("@locationID");
                 if (locationNode != null)
                 {
-                    locationID = int.Parse(locationNode.Value);
+                    locationID = long.Parse(locationNode.Value);
 
                     // Translate location ID from a corporate office to a station ID if required.
                     if (locationID >= 66000000 && locationID < 67000000)
@@ -1284,7 +1284,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 }
                 itemID = int.Parse(asset.SelectSingleNode("@typeID").Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-                eveInstanceID = int.Parse(asset.SelectSingleNode("@itemID").Value,
+                eveInstanceID = long.Parse(asset.SelectSingleNode("@itemID").Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 quantity = int.Parse(asset.SelectSingleNode("@quantity").Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
@@ -1426,7 +1426,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     assetRow.CostCalc = false;
                     assetRow.BoughtViaContract = false;
 
-                    int systemID = 0, regionID = 0;
+                    long systemID = 0, regionID = 0;
                     if (locationID >= 30000000 && locationID < 40000000)
                     {
                         systemID = locationID;
@@ -1610,7 +1610,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         }
                         if (recieverID == 0)
                         {
-                            recieverID = int.Parse(journEntry.SelectSingleNode("@ownerID2").Value);
+                            recieverID = long.Parse(journEntry.SelectSingleNode("@ownerID2").Value);
                         }
 
 
@@ -1748,9 +1748,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
             retVal.Date = DateTime.Parse(journEntry.SelectSingleNode("@date").Value);
             retVal.TypeID = short.Parse(journEntry.SelectSingleNode("@refTypeID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-            retVal.SenderID = int.Parse(journEntry.SelectSingleNode("@ownerID1").Value,
+            retVal.SenderID = long.Parse(journEntry.SelectSingleNode("@ownerID1").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-            retVal.RecieverID = int.Parse(journEntry.SelectSingleNode("@ownerID2").Value,
+            retVal.RecieverID = long.Parse(journEntry.SelectSingleNode("@ownerID2").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             decimal amount = decimal.Parse(journEntry.SelectSingleNode("@amount").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
@@ -1799,7 +1799,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 retVal.SWalletID = walletID == 0 ? (short)1000 : walletID;
                 retVal.SArgName = journEntry.SelectSingleNode("@argName1").Value;
-                retVal.SArgID = int.Parse(journEntry.SelectSingleNode("@argID1").Value,
+                retVal.SArgID = long.Parse(journEntry.SelectSingleNode("@argID1").Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 retVal.SCorpID = corc == CharOrCorp.Corp ? _corpID : 0;
 
@@ -1815,7 +1815,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 retVal.RWalletID = walletID == 0 ? (short)1000 : walletID;
                 retVal.RArgName = journEntry.SelectSingleNode("@argName1").Value;
-                retVal.RArgID = int.Parse(journEntry.SelectSingleNode("@argID1").Value,
+                retVal.RArgID = long.Parse(journEntry.SelectSingleNode("@argID1").Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 retVal.RCorpID = corc == CharOrCorp.Corp ? _corpID : 0;
 
@@ -1919,7 +1919,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                 transData.FindByID(transID) == null)
                             {
                                 // Actually create the line and add it to the data table
-                                SortedList<int, string> nameIDs = new SortedList<int, string>();
+                                SortedList<long, string> nameIDs = new SortedList<long, string>();
                                 EMMADataSet.TransactionsRow newRow = BuildTransRow(transID, transData,
                                     transEntry, walletID, nameIDs, false);
 
@@ -1930,7 +1930,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                 // for the values used in this new transaction entry.
                                 // If they are not present in the table then they are added.
                                 #region Check other tables and add values if needed.
-                                foreach (KeyValuePair<int, string> checkName in nameIDs)
+                                foreach (KeyValuePair<long, string> checkName in nameIDs)
                                 {
                                     Names.AddName(checkName.Key, checkName.Value);
                                 }
@@ -1939,7 +1939,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             }
                             else
                             {
-                                SortedList<int, string> nameIDs = new SortedList<int, string>();
+                                SortedList<long, string> nameIDs = new SortedList<long, string>();
                                 // We've got a transaction that already exists in the database,
                                 // update the row with additional data if available. 
                                 EMMADataSet.TransactionsRow newRow =
@@ -2034,7 +2034,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
 
         private EMMADataSet.TransactionsRow BuildTransRow(long transID, EMMADataSet.TransactionsDataTable transData,
-            XmlNode transEntry, short walletID, SortedList<int, string> nameIDs, bool rowInDatabase)
+            XmlNode transEntry, short walletID, SortedList<long, string> nameIDs, bool rowInDatabase)
         {
             EMMADataSet.TransactionsRow newRow = transData.NewTransactionsRow();
 
@@ -2047,19 +2047,19 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             newRow.Price = Decimal.Parse(transEntry.SelectSingleNode("@price").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-            newRow.StationID = int.Parse(transEntry.SelectSingleNode("@stationID").Value,
+            newRow.StationID = long.Parse(transEntry.SelectSingleNode("@stationID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             newRow.RegionID = Stations.GetStation(newRow.StationID).regionID;
 
             // Get the data to work out the more complicated fields..
             string transType = transEntry.SelectSingleNode("@transactionType").Value;
-            int clientID = int.Parse(transEntry.SelectSingleNode("@clientID").Value,
+            long clientID = long.Parse(transEntry.SelectSingleNode("@clientID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             XmlNode node = transEntry.SelectSingleNode("@characterID");
-            int charID = 0;
+            long charID = 0;
             if (node != null)
             {
-                charID = int.Parse(node.Value,
+                charID = long.Parse(node.Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             }
             bool forCorp =
@@ -2333,11 +2333,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
             newRow.EveOrderID = long.Parse(orderEntry.SelectSingleNode("@orderID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-            //newRow.OwnerID = int.Parse(orderEntry.SelectSingleNode("@charID").Value,
+            //newRow.OwnerID = long.Parse(orderEntry.SelectSingleNode("@charID").Value,
             //    System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             newRow.OwnerID = corc == CharOrCorp.Corp ? _corpID : _charID;
             newRow.ForCorp = corc == CharOrCorp.Corp;
-            newRow.StationID = int.Parse(orderEntry.SelectSingleNode("@stationID").Value,
+            newRow.StationID = long.Parse(orderEntry.SelectSingleNode("@stationID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             newRow.TotalVol = int.Parse(orderEntry.SelectSingleNode("@volEntered").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
@@ -2494,7 +2494,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             jobRow.ActivityID = int.Parse(xmlData.SelectSingleNode("@activityID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-            jobRow.AssemblyLineID = int.Parse(xmlData.SelectSingleNode("@assemblyLineID").Value,
+            jobRow.AssemblyLineID = long.Parse(xmlData.SelectSingleNode("@assemblyLineID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             jobRow.BeginProductionTime = DateTime.Parse(xmlData.SelectSingleNode("@beginProductionTime").Value,
                 System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
@@ -2508,7 +2508,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             jobRow.CompletedSuccessfully = int.Parse(xmlData.SelectSingleNode("@completedSuccessfully").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat) == 1;
-            jobRow.ContainerID = int.Parse(xmlData.SelectSingleNode("@containerID").Value,
+            jobRow.ContainerID = long.Parse(xmlData.SelectSingleNode("@containerID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             jobRow.ContainerTypeID = int.Parse(xmlData.SelectSingleNode("@containerTypeID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
@@ -2518,9 +2518,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat) == 1;
             jobRow.InstalledItemFlag = int.Parse(xmlData.SelectSingleNode("@installedItemFlag").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-            jobRow.InstalledItemID = int.Parse(xmlData.SelectSingleNode("@installedItemID").Value,
+            jobRow.InstalledItemID = long.Parse(xmlData.SelectSingleNode("@installedItemID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-            jobRow.InstalledItemLocationID = int.Parse(xmlData.SelectSingleNode("@installedItemLocationID").Value,
+            jobRow.InstalledItemLocationID = long.Parse(xmlData.SelectSingleNode("@installedItemLocationID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             jobRow.InstalledItemME = int.Parse(xmlData.SelectSingleNode("@installedItemMaterialLevel").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
@@ -2532,7 +2532,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             jobRow.InstalledItemTypeID = int.Parse(xmlData.SelectSingleNode("@installedItemTypeID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-            jobRow.InstallerID = int.Parse(xmlData.SelectSingleNode("@installerID").Value,
+            jobRow.InstallerID = long.Parse(xmlData.SelectSingleNode("@installerID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             jobRow.InstallTime = DateTime.Parse(xmlData.SelectSingleNode("@installTime").Value,
                 System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
@@ -2542,7 +2542,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             jobRow.OutputFlag = int.Parse(xmlData.SelectSingleNode("@outputFlag").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-            jobRow.OutputLcoationID = int.Parse(xmlData.SelectSingleNode("@outputLocationID").Value,
+            jobRow.OutputLcoationID = long.Parse(xmlData.SelectSingleNode("@outputLocationID").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             jobRow.OutputRuns = int.Parse(xmlData.SelectSingleNode("@licensedProductionRuns").Value,
                 System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
@@ -2586,7 +2586,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 if (corpIDNode != null)
                 {
                     long oldCorp = _corpID;
-                    _corpID = int.Parse(corpIDNode.LastChild.Value,
+                    _corpID = long.Parse(corpIDNode.LastChild.Value,
                             System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                     if (_corpID != oldCorp && oldCorp != 0)
                     {

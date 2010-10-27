@@ -225,7 +225,7 @@ namespace EveMarketMonitorApp.GUIElements
                         _lastPickup = cmbPickup.Text;
                         DisplayContracts();
                     }
-                    if ((int)cmbPickup.Tag == 0) { cmbPickup.Text = ""; }
+                    if ((long)cmbPickup.Tag == 0) { cmbPickup.Text = ""; }
                 }
             }
             finally
@@ -277,7 +277,7 @@ namespace EveMarketMonitorApp.GUIElements
                         _lastDest = cmbDestination.Text;
                         DisplayContracts();
                     }
-                    if ((int)cmbDestination.Tag == 0) { cmbDestination.Text = ""; }
+                    if ((long)cmbDestination.Tag == 0) { cmbDestination.Text = ""; }
                 }
             }
             finally
@@ -377,7 +377,7 @@ namespace EveMarketMonitorApp.GUIElements
         private void RefreshList()
         {
             List<long> ownerIDs = new List<long>();
-            int pickupStation = 0, destinationStation = 0;
+            long pickupStation = 0, destinationStation = 0;
             short status = 0;
             ContractType type = ContractType.Any;
 
@@ -395,8 +395,8 @@ namespace EveMarketMonitorApp.GUIElements
                 ownerIDs = _owners;
             }
 
-            pickupStation = int.Parse(cmbPickup.Tag.ToString());
-            destinationStation = int.Parse(cmbDestination.Tag.ToString());
+            pickupStation = long.Parse(cmbPickup.Tag.ToString());
+            destinationStation = long.Parse(cmbDestination.Tag.ToString());
             if (cmbStatus.SelectedValue != null) { status = (short)cmbStatus.SelectedValue; }
 
             CompletedColumn.Visible = (type == ContractType.Courier && status == 1);
@@ -476,7 +476,7 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void AutoCon(object ownerID)
         {
-            int id = (int)ownerID;
+            long id = (long)ownerID;
             _contracts = _autocon.GenerateContracts(id);
         }
 
@@ -502,7 +502,7 @@ namespace EveMarketMonitorApp.GUIElements
                 Cursor = Cursors.WaitCursor;
                 try
                 {
-                    CourierCalc courierCalc = new CourierCalc((int)picker.SelectedItem, type);
+                    CourierCalc courierCalc = new CourierCalc((long)picker.SelectedItem, type);
                     courierCalc.ShowDialog();
                     RefreshList();
                 }

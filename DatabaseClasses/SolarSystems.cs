@@ -31,7 +31,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
 
         static public EveDataSet.mapSolarSystemsDataTable GetAssetSystems(
-            List<AssetAccessParams> accessParams, int itemID, int regionID)
+            List<AssetAccessParams> accessParams, int itemID, long regionID)
         {
             StringBuilder systemIDs = new StringBuilder("");
             EMMADataSet.IDTableDataTable idTable = Assets.GetInvolvedSystemIDs(accessParams, itemID, regionID);

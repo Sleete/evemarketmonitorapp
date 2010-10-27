@@ -36,14 +36,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 _regions = new List<long>();
                 foreach (string region in regions)
                 {
-                    _regions.Add(int.Parse(region));
+                    _regions.Add(long.Parse(region));
                 }
 
                 string[] stations = data.StationIDs.Split(delim, StringSplitOptions.RemoveEmptyEntries);
                 _stations = new List<long>();
                 foreach (string station in stations)
                 {
-                    _stations.Add(int.Parse(station));
+                    _stations.Add(long.Parse(station));
                 }
 
                 _stationID = data.StationID;
