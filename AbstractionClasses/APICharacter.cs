@@ -1131,6 +1131,13 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             changes, out gained, out lost);
                         UpdateStatus(0, 0, "", "Complete", false);
                     }
+                    // If this is the first assets update then we want to try and assign sensible cost
+                    // values to assets that we have not yet got a value for.
+                    if ((corc == CharOrCorp.Char && !Settings.FirstUpdateDoneAssetsChar) ||
+                        (corc == CharOrCorp.Corp && !Settings.FirstUpdateDoneAssetsCorp))
+                    {
+                        Assets.AssignApproxCosts(assetData, corc == CharOrCorp.Corp ? _corpID : _charID);
+                    }
 
                     if (corc == CharOrCorp.Char)
                     {

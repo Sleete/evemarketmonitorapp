@@ -74,7 +74,8 @@ namespace AutoUpdater
                     {
                         _updateComponents.Add(component);
                     }
-                    else if (component.Exists && component.latestVersion.CompareTo(component.currentVersion) > 0)
+                    else if ((component.Exists || component.ComparingToOtherComponent) && 
+                        component.latestVersion.CompareTo(component.currentVersion) > 0)
                     {
                         if (component.Name.ToLower().Equals("autoupdater.exe"))
                         {

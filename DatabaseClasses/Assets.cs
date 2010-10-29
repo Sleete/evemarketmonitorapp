@@ -20,6 +20,30 @@ namespace EveMarketMonitorApp.DatabaseClasses
             new EveMarketMonitorApp.DatabaseClasses.EMMADataSetTableAdapters.IDTableTableAdapter();
 
 
+        /// <summary>
+        /// This routine is used only on the first asset update for a character or corp.
+        /// It attempts to assign reasonable 'cost' values to any assets that would otherwise
+        /// have a cost of zero.
+        /// </summary>
+        /// <param name="assetData"></param>
+        /// <param name="ownerID"></param>
+        public static void AssignApproxCosts(EMMADataSet.AssetsDataTable assetsData, long ownerID)
+        {
+            DataRow[] zeroCostData = assetsData.Select("Cost = 0");
+
+            foreach (DataRow data in zeroCostData)
+            {
+                EMMADataSet.AssetsRow asset = data as EMMADataSet.AssetsRow;
+                if (asset != null)
+                {
+                    decimal price = UserAccount.CurrentGroup.ItemValues.GetBuyPrice(asset.ItemID, 0);
+                    asset.Cost = price;
+                    asset.CostCalc = true;
+                }
+            }
+
+        }
+
         public static void MigrateAssetsToCorpID(long charID, long corpID)
         {
             lock (assetsTableAdapter)
