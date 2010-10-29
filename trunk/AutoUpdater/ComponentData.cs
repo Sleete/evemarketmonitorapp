@@ -42,13 +42,14 @@ namespace AutoUpdater
             }
             catch { }
 
-            string subpath = (subpathnode == null ? "" : subpathnode.Value + Path.DirectorySeparatorChar);
-            _fullPath = homeDir + Path.DirectorySeparatorChar + subpath + _name;
+            string subpath = (subpathnode == null ? "" : subpathnode.Value);
+            _fullPath = Path.Combine(Path.Combine(homeDir, subpath), _name);
             // Non-permenant files need to go in the user's applciation directory location instead.
             if (!_permenant)
             {
-                _fullPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + 
-                    Path.DirectorySeparatorChar + "EMMA" + Path.DirectorySeparatorChar + subpath + _name;
+                _fullPath = Path.Combine(Path.Combine(Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "EMMA"), subpath), _name);
             }
             _latestVersion = new Version(xml.SelectSingleNode("@version").Value);
             _description = xml.SelectSingleNode("@description").Value;
@@ -56,10 +57,13 @@ namespace AutoUpdater
             // If we need to check this component's version number against another component
             // then work out where that component should be.
             XmlNode otherCompNode = xml.SelectSingleNode("@checkOtherComponentVersion");
+            XmlNode otherCompSubPathNode = xml.SelectSingleNode("@otherComponentSubPath");
             XmlNode otherCompPermNode = xml.SelectSingleNode("@otherComponentPermenant");
             bool otherCompPerm = true;
+            string otherCompSubPath = "";
             if (otherCompNode != null) { _otherComponent = otherCompNode.Value; }
-            _otherCompFullPath = homeDir + Path.DirectorySeparatorChar + subpath + _otherComponent;
+            if (otherCompSubPathNode != null) { otherCompSubPath = otherCompSubPathNode.Value; }
+            _otherCompFullPath = Path.Combine(Path.Combine(homeDir, otherCompSubPath), _otherComponent);
             try
             {
                 if (otherCompPermNode != null) { otherCompPerm = bool.Parse(otherCompPermNode.Value.ToString()); }
@@ -67,16 +71,31 @@ namespace AutoUpdater
             catch { }
             if (!otherCompPerm)
             {
-                _otherCompFullPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                    Path.DirectorySeparatorChar + "EMMA" + Path.DirectorySeparatorChar + subpath + _otherComponent;
+                _otherCompFullPath = Path.Combine(Path.Combine(Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "EMMA"), otherCompSubPath), _otherComponent);
             }
 
 
+            // If we're comparing to another component and the new component already exists
+            // then consider it the correct version.
+            // This is to stop the updater continually thinking there are new updates available.
+            // e.g. database is 1.5.2.0
+            // we look for updates and databaseupdate_1_5_3_0 is available because the database is 
+            // less than 1.5.3.0
+            // The update is downloaded and the user told to restart EMMA.
+            // Before the update is applied, EMMA will check for updates again, the database will 
+            // still be 1.5.2.0 so if we don't stop it, it would download the same update again.
+            if (File.Exists(_fullPath) && _otherComponent.Length > 0)
+            {
+                _exists = true;
+                _currentVersion = _latestVersion;
+            }
             // Work out what the version of the component on the users's machine is.
             // Note that if we are comparing the latest version number to a different component
             // then we must get the version number from that other component rather than the
             // component itself.
-            if (File.Exists(_fullPath) || (_otherComponent.Length > 0 && File.Exists(_otherComponent)))
+            else if (File.Exists(_fullPath) || (_otherComponent.Length > 0 && File.Exists(_otherComponent)))
             {
                 string comparisonName = _otherComponent.Length > 0 ? _otherComponent : _name;
                 string comparisonFullPath = _otherComponent.Length > 0 ? _otherCompFullPath : _fullPath;
