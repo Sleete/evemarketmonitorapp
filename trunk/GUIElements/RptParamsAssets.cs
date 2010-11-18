@@ -82,7 +82,17 @@ namespace EveMarketMonitorApp.GUIElements
                 colsVisible[i] = chkColumns.CheckedItems.Contains(columnNames[i]);
             }
             _parameters.Add("ColumnsVisible", colsVisible);
-            _parameters.Add("ValueRegion", (long)cmbValueRegion.SelectedValue);
+            try
+            {
+                // During the transition from 64 bit to 32 bit, this region id could be either
+                // an int or a long.
+                // Make sure we can deal with both cases by catching the exception and re-casting.
+                _parameters.Add("ValueRegion", (long)cmbValueRegion.SelectedValue);
+            }
+            catch (InvalidCastException)
+            {
+                _parameters.Add("ValueRegion", (int)cmbValueRegion.SelectedValue);
+            }
             List<long> regions = new List<long>();
             List<long> stations = new List<long>();
             if (cmbLocation.Text.Equals("All Regions"))

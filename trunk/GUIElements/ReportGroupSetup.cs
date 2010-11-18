@@ -304,7 +304,7 @@ namespace EveMarketMonitorApp.GUIElements
                 if (value != null)
                 {
                     // Don't allow player to select an NPC corp.
-                    if (NPCCorps.GetCorp((int)value) != null)
+                    if (NPCCorps.GetCorp((long)value) != null)
                     {
                         charsAndCorpsGrid["corpIncludedColumn", e.RowIndex].ReadOnly = true;
                     }
