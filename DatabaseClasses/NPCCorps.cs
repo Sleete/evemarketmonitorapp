@@ -10,14 +10,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
             new EveMarketMonitorApp.DatabaseClasses.EveDataSetTableAdapters.crpNPCCorporationsTableAdapter();
 
 
-        public static EveDataSet.crpNPCCorporationsRow GetCorp(int id)
+        public static EveDataSet.crpNPCCorporationsRow GetCorp(long id)
         {
             EveDataSet.crpNPCCorporationsDataTable table = new EveDataSet.crpNPCCorporationsDataTable();
             EveDataSet.crpNPCCorporationsRow retVal = null;
 
             lock (tableAdapter)
             {
-                tableAdapter.FillByID(table, id);
+                tableAdapter.FillByID(table, (int)id);
             }
 
             if (table.Count > 0)
