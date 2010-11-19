@@ -47,6 +47,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.label6 = new System.Windows.Forms.Label();
             this.lblStdDev = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.lblValFreqHelp = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblNumValues
@@ -55,7 +56,7 @@ namespace EveMarketMonitorApp.GUIElements
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblNumValues.Location = new System.Drawing.Point(116, 9);
             this.lblNumValues.Name = "lblNumValues";
-            this.lblNumValues.Size = new System.Drawing.Size(129, 13);
+            this.lblNumValues.Size = new System.Drawing.Size(153, 13);
             this.lblNumValues.TabIndex = 7;
             this.lblNumValues.Text = "0";
             this.lblNumValues.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -75,7 +76,7 @@ namespace EveMarketMonitorApp.GUIElements
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblMedian.Location = new System.Drawing.Point(116, 48);
             this.lblMedian.Name = "lblMedian";
-            this.lblMedian.Size = new System.Drawing.Size(129, 13);
+            this.lblMedian.Size = new System.Drawing.Size(153, 13);
             this.lblMedian.TabIndex = 5;
             this.lblMedian.Text = "0";
             this.lblMedian.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -86,7 +87,7 @@ namespace EveMarketMonitorApp.GUIElements
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAverage.Location = new System.Drawing.Point(116, 35);
             this.lblAverage.Name = "lblAverage";
-            this.lblAverage.Size = new System.Drawing.Size(129, 13);
+            this.lblAverage.Size = new System.Drawing.Size(153, 13);
             this.lblAverage.TabIndex = 4;
             this.lblAverage.Text = "0";
             this.lblAverage.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -115,7 +116,7 @@ namespace EveMarketMonitorApp.GUIElements
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSum.Location = new System.Drawing.Point(116, 22);
             this.lblSum.Name = "lblSum";
-            this.lblSum.Size = new System.Drawing.Size(129, 13);
+            this.lblSum.Size = new System.Drawing.Size(153, 13);
             this.lblSum.TabIndex = 1;
             this.lblSum.Text = "0";
             this.lblSum.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -146,7 +147,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.boundGrids.FormattingEnabled = true;
             this.boundGrids.Location = new System.Drawing.Point(12, 126);
             this.boundGrids.Name = "boundGrids";
-            this.boundGrids.Size = new System.Drawing.Size(233, 79);
+            this.boundGrids.Size = new System.Drawing.Size(257, 79);
             this.boundGrids.TabIndex = 9;
             this.boundGrids.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.boundGrids_ItemCheck);
             // 
@@ -173,7 +174,7 @@ namespace EveMarketMonitorApp.GUIElements
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblMaximum.Location = new System.Drawing.Point(116, 61);
             this.lblMaximum.Name = "lblMaximum";
-            this.lblMaximum.Size = new System.Drawing.Size(129, 13);
+            this.lblMaximum.Size = new System.Drawing.Size(153, 13);
             this.lblMaximum.TabIndex = 12;
             this.lblMaximum.Text = "0";
             this.lblMaximum.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -193,7 +194,7 @@ namespace EveMarketMonitorApp.GUIElements
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblMinimum.Location = new System.Drawing.Point(116, 74);
             this.lblMinimum.Name = "lblMinimum";
-            this.lblMinimum.Size = new System.Drawing.Size(129, 13);
+            this.lblMinimum.Size = new System.Drawing.Size(153, 13);
             this.lblMinimum.TabIndex = 14;
             this.lblMinimum.Text = "0";
             this.lblMinimum.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -213,7 +214,7 @@ namespace EveMarketMonitorApp.GUIElements
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStdDev.Location = new System.Drawing.Point(116, 87);
             this.lblStdDev.Name = "lblStdDev";
-            this.lblStdDev.Size = new System.Drawing.Size(129, 13);
+            this.lblStdDev.Size = new System.Drawing.Size(153, 13);
             this.lblStdDev.TabIndex = 16;
             this.lblStdDev.Text = "0";
             this.lblStdDev.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -227,11 +228,25 @@ namespace EveMarketMonitorApp.GUIElements
             this.label10.TabIndex = 15;
             this.label10.Text = "Standard Deviation";
             // 
+            // lblValFreqHelp
+            // 
+            this.lblValFreqHelp.AutoSize = true;
+            this.lblValFreqHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.lblValFreqHelp.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblValFreqHelp.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lblValFreqHelp.Location = new System.Drawing.Point(256, 212);
+            this.lblValFreqHelp.Name = "lblValFreqHelp";
+            this.lblValFreqHelp.Size = new System.Drawing.Size(15, 15);
+            this.lblValFreqHelp.TabIndex = 17;
+            this.lblValFreqHelp.Text = "?";
+            this.lblValFreqHelp.Click += new System.EventHandler(this.lblValFreqHelp_Click);
+            // 
             // GridCalculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(257, 240);
+            this.ClientSize = new System.Drawing.Size(281, 240);
+            this.Controls.Add(this.lblValFreqHelp);
             this.Controls.Add(this.lblStdDev);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.lblMinimum);
@@ -250,6 +265,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.MinimumSize = new System.Drawing.Size(289, 0);
             this.Name = "GridCalculator";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Grid Calculator";
@@ -278,5 +294,6 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lblStdDev;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label lblValFreqHelp;
     }
 }

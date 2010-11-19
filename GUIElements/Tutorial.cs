@@ -46,7 +46,7 @@ namespace EveMarketMonitorApp.GUIElements
                 _currentSection = section;
                 if (display)
                 {
-                    lblTitle.Text = _currentSection.TitleText;
+                    lblTitle.Text = _currentSection.TitleText + "(Entry " + _sections.IndexOf(_currentSection) + " of " + _sections.Count + ")";
                     lblText.Text = _currentSection.Text;
                     btnNext.Enabled = !_currentSection.NextSection.Equals("");
                     btnPrevious.Enabled = !_currentSection.PrevSection.Equals("");

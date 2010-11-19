@@ -225,7 +225,7 @@ namespace EveMarketMonitorApp.GUIElements
             foreach (DataGridViewCell cell in grid.SelectedCells)
             {
                 // Only interested in isk values, ignore anything else.
-                if (cell.FormattedValue.ToString().ToUpper().Contains(" ISK"))
+                if (cell.FormattedValue.ToString().ToUpper().Contains(" ISK") & !grid.Columns[cell.ColumnIndex].Name.ToLower().Contains("balance"))
                 {
                     try
                     {
@@ -439,6 +439,16 @@ namespace EveMarketMonitorApp.GUIElements
         }
 
 
+        private void lblValFreqHelp_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Checking this option will tell the grid calculator to use any 'quantity' " +
+                "column data in it's calulations. e.g. there are two rows in a table, isk values are 10 and 4, " +
+                " quantities are 2 and 8 respectively. (i.e. 2 at 10 isk, 8 at 4 isk).\r\n" +
+                "Without this option checked, the average will be calculated as (10 + 4) / 2 = 7\r\n" +
+                "With this option checked, the average will be calculated as (10 * 2 + 4 * 8) / (2 + 8) = 5.2");
+        }
+
+
         #region 'GridData' Inner class and 'ValueFrequency' struct
         private class GridData
         {
@@ -499,6 +509,7 @@ namespace EveMarketMonitorApp.GUIElements
             Min,
             StdDev
         }
+
 
 
     }

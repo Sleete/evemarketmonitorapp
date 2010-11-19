@@ -95,7 +95,7 @@ namespace AutoUpdater
             // Note that if we are comparing the latest version number to a different component
             // then we must get the version number from that other component rather than the
             // component itself.
-            else if (File.Exists(_fullPath) || (_otherComponent.Length > 0 && File.Exists(_otherComponent)))
+            else if (File.Exists(_fullPath) || (_otherComponent.Length > 0 && File.Exists(_otherCompFullPath)))
             {
                 string comparisonName = _otherComponent.Length > 0 ? _otherComponent : _name;
                 string comparisonFullPath = _otherComponent.Length > 0 ? _otherCompFullPath : _fullPath;

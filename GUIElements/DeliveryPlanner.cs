@@ -723,6 +723,8 @@ namespace EveMarketMonitorApp.GUIElements
             private List<long> _pickupStationsRemaining;
             private List<long> _destinationStationsRemaining;
 
+
+
             public CargoRoute(List<long> waypoints, ref int nextFreeIndex, ref short[,] jumps,
                 Dictionary<long, int> idMapper, ContractList contracts, CargoHoldSpec cargoHold)
                 : base(waypoints)

@@ -112,7 +112,7 @@ namespace EveMarketMonitorApp.GUIElements
             txtAutoMaxCollateral.Tag = new TagData(TagDataType.IskAmount, _settings.AutoCon_MaxCollateral);
             txtAutoMaxVolume.Tag = new TagData(TagDataType.Volume, _settings.AutoCon_MaxVolume);
             cmbAutoStation.Tag = _settings.AutoCon_DestiantionStation;
-            cmbAutoStation.Text = Stations.GetStationName((int)cmbAutoStation.Tag);
+            cmbAutoStation.Text = Stations.GetStationName((long)cmbAutoStation.Tag);
             cmbPickupLocation.SelectedItem = _settings.AutoCon_PickupLocations; 
             chkSplitStack.Checked = _settings.AutoCon_AllowStackSplitting;
             chkExcludeContainers.Checked = _settings.AutoCon_ExcludeContainers;
@@ -205,7 +205,7 @@ namespace EveMarketMonitorApp.GUIElements
             _settings.AutoCon_MinVolume = ((TagData)txtAutoMinVolume.Tag).Value;
             _settings.AutoCon_MaxCollateral = ((TagData)txtAutoMaxCollateral.Tag).Value;
             _settings.AutoCon_MaxVolume = ((TagData)txtAutoMaxVolume.Tag).Value;
-            _settings.AutoCon_DestiantionStation = (int)cmbAutoStation.Tag;
+            _settings.AutoCon_DestiantionStation = (long)cmbAutoStation.Tag;
             if (cmbPickupLocation.Text.Equals("All Regions"))
             {
                 _settings.AutoCon_PickupLocations = cmbPickupLocation.SelectedItem.ToString();
