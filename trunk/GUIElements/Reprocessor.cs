@@ -53,7 +53,7 @@ namespace EveMarketMonitorApp.GUIElements
                 txtStation.AutoCompleteMode = AutoCompleteMode.Suggest;
                 txtStation.Leave += new EventHandler(txtStation_Leave);
                 txtStation.KeyDown += new KeyEventHandler(txtStation_KeyDown);
-                txtStation.Tag = 0;
+                txtStation.Tag = (long)0;
                 txtStation.Text = "";
 
                 DataGridViewCellStyle iskStyle = new DataGridViewCellStyle(UnitValueColumn.DefaultCellStyle);
@@ -166,7 +166,7 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 if (!txtStation.Text.Equals(_lastStation))
                 {
-                    txtStation.Tag = 0;
+                    txtStation.Tag = (long)0;
                     if (!txtStation.Text.Equals(""))
                     {
                         try
@@ -174,7 +174,7 @@ namespace EveMarketMonitorApp.GUIElements
                             EveDataSet.staStationsRow station = Stations.GetStation(txtStation.Text);
                             if (station != null)
                             {
-                                txtStation.Tag = station.stationID;
+                                txtStation.Tag = (long)station.stationID;
                                 string name = station.stationName;
                                 txtStation.Text = name;
                                 if (!_recentStations.Contains(name))
@@ -189,7 +189,7 @@ namespace EveMarketMonitorApp.GUIElements
                         _lastStation = txtStation.Text;
                     }
 
-                    if ((int)txtStation.Tag == 0)
+                    if ((long)txtStation.Tag == 0)
                     {
                         txtStation.Text = "";
                     }
@@ -211,7 +211,7 @@ namespace EveMarketMonitorApp.GUIElements
                 cmbContainers.Items.Add(defaultItem);
                 cmbContainers.Enabled = false;
 
-                if ((int)txtStation.Tag != 0 && cmbDefaultReprocessor.SelectedValue != null)
+                if ((long)txtStation.Tag != 0 && cmbDefaultReprocessor.SelectedValue != null)
                 {
                     CharCorp charcorp = (CharCorp)cmbDefaultReprocessor.SelectedValue;
                     long station = (long)txtStation.Tag;
@@ -259,7 +259,7 @@ namespace EveMarketMonitorApp.GUIElements
                     container = ((ContainerItem)cmbContainers.SelectedItem).Data;
                 }
 
-                if ((int)txtStation.Tag != 0 && cmbDefaultReprocessor.SelectedValue != null)
+                if ((long)txtStation.Tag != 0 && cmbDefaultReprocessor.SelectedValue != null)
                 {
                     CharCorp charcorp = (CharCorp)cmbDefaultReprocessor.SelectedValue;
                     long station = (long)txtStation.Tag;

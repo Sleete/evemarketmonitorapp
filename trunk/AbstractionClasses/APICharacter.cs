@@ -1268,8 +1268,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
             foreach (XmlNode asset in assetList)
             {
-                int itemID, quantity;
-                long assetID = 0, eveInstanceID;
+                int itemID;
+                long assetID = 0, eveInstanceID, quantity;
                 bool isContainer = false, needNewRow = false;
 
                 XmlNode locationNode = asset.SelectSingleNode("@locationID");
@@ -1293,7 +1293,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 eveInstanceID = long.Parse(asset.SelectSingleNode("@itemID").Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-                quantity = int.Parse(asset.SelectSingleNode("@quantity").Value,
+                quantity = long.Parse(asset.SelectSingleNode("@quantity").Value,
                     System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 if (asset.LastChild != null && asset.LastChild.Name.Equals("rowset"))
                 {
