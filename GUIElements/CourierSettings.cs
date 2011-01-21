@@ -33,7 +33,7 @@ namespace EveMarketMonitorApp.GUIElements
             cmbAutoStation.AutoCompleteMode = AutoCompleteMode.Suggest;
             cmbAutoStation.KeyDown += new KeyEventHandler(cmbAutoStation_KeyDown);
             cmbAutoStation.SelectedIndexChanged += new EventHandler(cmbAutoStation_SelectedIndexChanged);
-            cmbAutoStation.Tag = 0;
+            cmbAutoStation.Tag = (long)0;
 
             List<string> locations = GroupLocations.GetLocationNames();
             if (!locations.Contains("All Regions"))
@@ -525,7 +525,7 @@ namespace EveMarketMonitorApp.GUIElements
                         EveDataSet.staStationsRow station = Stations.GetStation(cmbAutoStation.Text);
                         if (station != null)
                         {
-                            cmbAutoStation.Tag = station.stationID;
+                            cmbAutoStation.Tag = (long)station.stationID;
                             string name = station.stationName;
                             cmbAutoStation.Text = name;
                             if (!cmbAutoStation.Items.Contains(name))
@@ -536,7 +536,7 @@ namespace EveMarketMonitorApp.GUIElements
                         }
                         else
                         {
-                            cmbAutoStation.Tag = 0;
+                            cmbAutoStation.Tag = (long)0;
                         }
                     }
                     catch (EMMADataException) { }
