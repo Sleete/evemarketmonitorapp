@@ -1057,9 +1057,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
         }
         #endregion
         #region General item value settings
+        // Eve metrics no longer exists so our only option is eve central.
         public bool UseEveCentral
         {
-            get { return bool.Parse(GetValue(Setting.useEveCentral)); }
+            get { return true; } // bool.Parse(GetValue(Setting.useEveCentral)); }
             set { SetValue(Setting.useEveCentral, value.ToString()); }
         }
         public EveMarketValueToUse EveMarketType
@@ -1083,9 +1084,10 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 SetValue(Setting.eveMarketValueToUse, val.ToString());
             }
         }
+        // Eve metrics no longer exists so our only option is eve central.
         public bool UseEveMetrics
         {
-            get { return bool.Parse(GetValue(Setting.useEveMetrics)); }
+            get { return false; } //bool.Parse(GetValue(Setting.useEveMetrics)); }
             set { SetValue(Setting.useEveMetrics, value.ToString()); }
         }
         public int ItemValueWebExpiryDays

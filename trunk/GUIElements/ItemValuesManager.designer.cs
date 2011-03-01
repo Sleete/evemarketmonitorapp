@@ -257,6 +257,7 @@ namespace EveMarketMonitorApp.GUIElements
             // lnkEveMetrics
             // 
             this.lnkEveMetrics.AutoSize = true;
+            this.lnkEveMetrics.Enabled = false;
             this.lnkEveMetrics.Location = new System.Drawing.Point(227, 44);
             this.lnkEveMetrics.Name = "lnkEveMetrics";
             this.lnkEveMetrics.Size = new System.Drawing.Size(111, 13);
@@ -279,6 +280,7 @@ namespace EveMarketMonitorApp.GUIElements
             // rdbEveMetrics
             // 
             this.rdbEveMetrics.AutoSize = true;
+            this.rdbEveMetrics.Enabled = false;
             this.rdbEveMetrics.Location = new System.Drawing.Point(8, 42);
             this.rdbEveMetrics.Name = "rdbEveMetrics";
             this.rdbEveMetrics.Size = new System.Drawing.Size(182, 17);
@@ -313,8 +315,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtItemSellPrice.Name = "txtItemSellPrice";
             this.txtItemSellPrice.Size = new System.Drawing.Size(159, 20);
             this.txtItemSellPrice.TabIndex = 9;
-            this.txtItemSellPrice.Leave += new System.EventHandler(this.txtItemSellPrice_Leave);
             this.txtItemSellPrice.Enter += new System.EventHandler(this.txtItemSellPrice_Enter);
+            this.txtItemSellPrice.Leave += new System.EventHandler(this.txtItemSellPrice_Leave);
             // 
             // label3
             // 
@@ -398,8 +400,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.txtDefaultBuyPrice.Name = "txtDefaultBuyPrice";
             this.txtDefaultBuyPrice.Size = new System.Drawing.Size(159, 20);
             this.txtDefaultBuyPrice.TabIndex = 18;
-            this.txtDefaultBuyPrice.Leave += new System.EventHandler(this.txtItemBuyPrice_Leave);
             this.txtDefaultBuyPrice.Enter += new System.EventHandler(this.txtItemBuyPrice_Enter);
+            this.txtDefaultBuyPrice.Leave += new System.EventHandler(this.txtItemBuyPrice_Leave);
             // 
             // chkUseReprocessVal
             // 
