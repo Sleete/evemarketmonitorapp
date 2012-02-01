@@ -10,6 +10,8 @@ using EveMarketMonitorApp.DatabaseClasses;
 using EveMarketMonitorApp.AbstractionClasses;
 using EveMarketMonitorApp.Common;
 
+using System.Linq;
+
 namespace EveMarketMonitorApp.GUIElements
 {
     public partial class ReportGroupSetup : Form
@@ -136,22 +138,34 @@ namespace EveMarketMonitorApp.GUIElements
             }
 
             charsAndCorpsGrid.AutoGenerateColumns = false;
-            charsAndCorpsGrid.DataSource = _characters;
+            charsAndCorpsGrid.DataSource = _characters.Where(c => c.AccessType == CharOrCorp.Char).ToList<APICharacter>();
+
+            var charsOnly = from cc in _characters
+                            where cc.AccessType == CharOrCorp.Char
+                            select cc;
 
             charNameColumn.DataPropertyName = "CharName";
             charIDColumn.DataPropertyName = "CharID";
             charIncludedColumn.DataPropertyName = "CharIncWithRptGroup";
             corpNameColumn.DataPropertyName = "CorpName";
             corpIDColumn.DataPropertyName = "CorpID";
-            corpIncludedColumn.DataPropertyName = "CorpIncWithRptGroup";
+            
+            CorprGrid.AutoGenerateColumns = false;
+            CorprGrid.DataSource = _characters.Where(c => c.AccessType == CharOrCorp.Corp).ToList<APICharacter>();
+            charNameColumn_corp.DataPropertyName = "CharName";
+            corpNameColumn_Corp.DataPropertyName = "CorpName";
+            corpIDColumn_Corp.DataPropertyName = "CorpID";
+            corpIncludedColumn_Corp.DataPropertyName = "CorpIncWithRptGroup";
 
             if (_characters == null || _characters.Count == 0)
             {
                 lblNoChars.Visible = true;
+                lblNoCorp.Visible = true;
             }
             else
             {
                 lblNoChars.Visible = false;
+                lblNoCorp.Visible = false;
             }
         }
 
@@ -235,9 +249,21 @@ namespace EveMarketMonitorApp.GUIElements
                     // API key may have been changed so make sure we update it.
                     apiChar.APIKey = UserAccount.CurrentGroup.GetAccount(apiChar.UserID).ApiKey;
                     // update standings for all those that are part of the group
-                    if (apiChar.CharIncWithRptGroup) { apiChar.UpdateStandings(CharOrCorp.Char); }
-                    if (apiChar.CorpIncWithRptGroup) { apiChar.UpdateStandings(CharOrCorp.Corp); }
-                    apiChar.StoreGroupLevelSettings(SettingsStoreType.Both);
+                    //if (apiChar.CharIncWithRptGroup) { apiChar.UpdateStandings(CharOrCorp.Char); }
+                    //if (apiChar.CorpIncWithRptGroup) { apiChar.UpdateStandings(CharOrCorp.Corp); }
+                    if (apiChar.AccessType == CharOrCorp.Char){apiChar.UpdateStandings(CharOrCorp.Char);}
+                    if (apiChar.AccessType == CharOrCorp.Corp){apiChar.UpdateStandings(CharOrCorp.Corp);}
+
+                    if (apiChar.AccessType == CharOrCorp.Char)
+                    {
+                        apiChar.StoreGroupLevelSettings(SettingsStoreType.Char);
+                    }
+
+                    if (apiChar.AccessType == CharOrCorp.Corp)
+                    {
+                        apiChar.StoreGroupLevelSettings(SettingsStoreType.Corp);
+                    }
+                    //apiChar.StoreGroupLevelSettings(SettingsStoreType.Both);
                 }
 
                 // Make sure to clear 'included' flags for any chars/corps on accounts that have been removed.
@@ -306,7 +332,7 @@ namespace EveMarketMonitorApp.GUIElements
                     // Don't allow player to select an NPC corp.
                     if (NPCCorps.GetCorp((long)value) != null)
                     {
-                        charsAndCorpsGrid["corpIncludedColumn", e.RowIndex].ReadOnly = true;
+                        charsAndCorpsGrid["corpIncludedColumn_Corp", e.RowIndex].ReadOnly = true;
                     }
                 }
             }
@@ -325,7 +351,7 @@ namespace EveMarketMonitorApp.GUIElements
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
-                if (charsAndCorpsGrid.Columns[e.ColumnIndex] == corpIncludedColumn)
+                if (charsAndCorpsGrid.Columns[e.ColumnIndex] == corpIncludedColumn_Corp)
                 {
                     DataGridViewDataErrorContexts context = DataGridViewDataErrorContexts.Commit;
                     charsAndCorpsGrid.CommitEdit(context);
@@ -340,7 +366,7 @@ namespace EveMarketMonitorApp.GUIElements
                             {
                                 object rowCorpID = charsAndCorpsGrid["corpIDColumn", i].Value;
                                 object rowCharID = charsAndCorpsGrid["charIDColumn", i].Value;
-                                object rowCorpSelected = charsAndCorpsGrid["corpIncludedColumn", i].Value;
+                                object rowCorpSelected = charsAndCorpsGrid["corpIncludedColumn_Corp", i].Value;
 
                                 if (rowCharID != null && rowCorpID != null && rowCorpSelected != null)
                                 {
@@ -366,7 +392,7 @@ namespace EveMarketMonitorApp.GUIElements
                 // character/corp to be selected.
                 if (Globals.License == Enforcer.LicenseType.Lite)
                 {
-                    if (charsAndCorpsGrid.Columns[e.ColumnIndex] == corpIncludedColumn ||
+                    if (charsAndCorpsGrid.Columns[e.ColumnIndex] == corpIncludedColumn_Corp ||
                         charsAndCorpsGrid.Columns[e.ColumnIndex] == charIncludedColumn)
                     {
                         DataGridViewDataErrorContexts context = DataGridViewDataErrorContexts.Commit;
@@ -380,14 +406,14 @@ namespace EveMarketMonitorApp.GUIElements
                                 bool setCharFalse = true;
                                 if (e.RowIndex == i)
                                 {
-                                    if (charsAndCorpsGrid.Columns[e.ColumnIndex] == corpIncludedColumn) { setCorpFalse = false; }
+                                    if (charsAndCorpsGrid.Columns[e.ColumnIndex] == corpIncludedColumn_Corp) { setCorpFalse = false; }
                                     if (charsAndCorpsGrid.Columns[e.ColumnIndex] == charIncludedColumn) { setCharFalse = false; }
                                 }
 
                                 if (setCorpFalse)
                                 {
-                                    if ((bool)charsAndCorpsGrid[corpIncludedColumn.Index, i].Value) { showWarning = true; }
-                                    charsAndCorpsGrid[corpIncludedColumn.Index, i].Value = false;
+                                    if ((bool)charsAndCorpsGrid[corpIncludedColumn_Corp.Index, i].Value) { showWarning = true; }
+                                    charsAndCorpsGrid[corpIncludedColumn_Corp.Index, i].Value = false;
                                 }
                                 if (setCharFalse)
                                 {
@@ -426,6 +452,11 @@ namespace EveMarketMonitorApp.GUIElements
                     }
                 }
             }
+        }
+
+        private void eveAccountsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
 
 

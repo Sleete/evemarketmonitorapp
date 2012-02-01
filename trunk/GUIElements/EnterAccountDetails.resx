@@ -118,6 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="textBox3.Text" xml:space="preserve">
-    <value>Please enter your User ID and FULL ACCESS API Key. This software requires access to your transaction and journal information that is provided only by the full access key. If you are uncomfortable with this then do not use this software.</value>
+    <value>Please enter your Key ID and Verification code. 
+This software requires the following permission set to work normally:
+
+Character API: WalletTransactions, WalletJournal, MarketOrders, AccountBalance, CharacterInfo (public), Standings, AssetList, IndustryJobs. 
+
+Corporation API: WalletTransactions, WalletJournal, MarketOrders, AccountBalance, CorporationSheet, AssetList, Standings, IndustryJobs. 
+
+This software requires access to your transaction and journal information. If you are uncomfortable with this then do not use this software.</value>
   </data>
 </root>

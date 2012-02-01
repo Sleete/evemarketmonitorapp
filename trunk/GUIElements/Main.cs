@@ -1758,7 +1758,7 @@ namespace EveMarketMonitorApp.GUIElements
         {
             if (!Properties.Settings.Default.SkipConnectionCheck)
             {
-                try { Ping("api.eve-online.com"); }
+                try { Ping("api.eveonline.com"); }
                 catch (EMMAException)
                 {
                     Globals.EveAPIDown = true;
