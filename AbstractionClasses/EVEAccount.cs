@@ -107,7 +107,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             if (DateTime.UtcNow.AddHours(-48).CompareTo(_lastcharListUpdate) > 0 || forceUpdate)
             {
                 XmlDocument xml = EveAPI.GetXml(EveAPI.URL_EveApiBase + EveAPI.URL_CharsApi,
-                    "userid=" + _userID + "&apiKey=" + _apiKey);
+                    "keyID=" + _userID + "&vCode=" + _apiKey);
                 _lastcharListUpdate = DateTime.UtcNow;
 
                 if (!_charList.Equals(xml))
@@ -142,20 +142,27 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                 try
                 {
-                    XmlNodeList results = EveAPI.GetResults(_charList);
+                    CharOrCorp accessType;
+                    XmlNodeList results = EveAPI.GetResults(_charList,true);
 
                     foreach (XmlNode node in results)
                     {
-                        APICharacter apiChar = APICharacters.GetCharacter(_userID, _apiKey,
-                            int.Parse(node.SelectSingleNode("@characterID").Value.ToString()));
-                        if (apiChar == null)
+                        accessType = node.SelectSingleNode("@type").Value.ToString() == "Account" ? CharOrCorp.Char : CharOrCorp.Corp;
+
+                        foreach (XmlNode node2 in node.SelectNodes("rowset/row"))
                         {
-                            // Need to create a new API char in the database.
-                            apiChar = new APICharacter(_userID, _apiKey,
-                                long.Parse(node.SelectSingleNode("@characterID").Value.ToString()));
-                            APICharacters.Store(apiChar);
+                            APICharacter apiChar = APICharacters.GetCharacter(_userID, _apiKey,
+                                int.Parse(node2.SelectSingleNode("@characterID").Value.ToString()));
+                            if (apiChar == null)
+                            {
+                                // Need to create a new API char in the database.
+                                apiChar = new APICharacter(_userID, _apiKey,
+                                    long.Parse(node2.SelectSingleNode("@characterID").Value.ToString()), accessType);
+                                APICharacters.Store(apiChar);
+                            }
+                            apiChar.AccessType = accessType;
+                            _chars.Add(apiChar);
                         }
-                        _chars.Add(apiChar);
                     }
                 }
                 catch (EMMAEveAPIException) { }

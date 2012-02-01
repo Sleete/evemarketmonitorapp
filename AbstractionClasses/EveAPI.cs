@@ -18,9 +18,10 @@ namespace EveMarketMonitorApp.AbstractionClasses
     /// </summary>
     public static class EveAPI
     {
-        public static string URL_EveApiBase = "http://api.eve-online.com";
+        public static string URL_EveApiBase = "http://api.eveonline.com";
 
-        public const string URL_CharsApi = "/account/Characters.xml.aspx";
+        //public const string URL_KeyInfoApi = "/account/APIKeyInfo.xml.aspx";
+        public const string URL_CharsApi = "/account/APIKeyInfo.xml.aspx";
 
         public const string URL_TransApi = "/char/WalletTransactions.xml.aspx";
         public const string URL_TransCorpApi = "/corp/WalletTransactions.xml.aspx";
@@ -60,7 +61,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             SortedList retVal = new SortedList();
 
             XmlDocument xml = GetXml(URL_EveApiBase + URL_CharsApi,
-                "userid=" + Settings.UserID + "&apiKey=" + Settings.ApiKey);
+                "keyID=" + Settings.UserID + "&vCode=" + Settings.ApiKey);
 
             XmlNodeList eveChars = GetResults(xml);
             foreach (XmlNode eveChar in eveChars)
@@ -82,7 +83,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             SortedList retVal = new SortedList();
 
             XmlDocument xml = GetXml(URL_EveApiBase + URL_CharsApi,
-                "userid=" + Settings.UserID + "&apiKey=" + Settings.ApiKey);
+                "keyID=" + Settings.UserID + "&vCode=" + Settings.ApiKey);
 
             XmlNodeList eveChars = GetResults(xml);
             foreach (XmlNode eveChar in eveChars)
@@ -336,7 +337,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         /// <exception cref="EMMAEveAPIException">If the xml document contains Eve API error information then 
         /// an exception is thrown containing the error code and description.
         /// </exception>
-        public static XmlNodeList GetResults(XmlDocument xml)
+        public static XmlNodeList GetResults(XmlDocument xml, bool accessType=false)
         {
             XmlNodeList retVal = null;
 
@@ -358,8 +359,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     throw new EMMAEveAPIException(ExceptionSeverity.Error, 
                         (errCodeNode == null ? 0 : int.Parse(errCodeNode.Value)), errTextNode.Value);
                 }
-
-                retVal = xml.SelectNodes("/eveapi/result/rowset/row");
+                retVal = (accessType == true) ? xml.SelectNodes("/eveapi/result/key") : xml.SelectNodes("/eveapi/result/rowset/row");
+                //retVal = xml.SelectNodes("/eveapi/result/key");
+                //retVal = xml.SelectNodes("/eveapi/result/key/rowset/row");
             }
             else
             {
@@ -542,7 +544,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                     {
                                         desc = enumerator.Current.Value;
                                         string filenameparams = parameters.Replace('&', ' ');
-                                        int userIDloc = filenameparams.ToUpper().IndexOf("USERID=");
+                                        int userIDloc = filenameparams.ToUpper().IndexOf("keyID=");
                                         if (userIDloc >= 0)
                                         {
                                             int length = filenameparams.IndexOf(' ', userIDloc) - userIDloc + 1;
@@ -550,7 +552,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                             filenameparams = filenameparams.Remove(
                                                 userIDloc, length);
                                         }
-                                        int apiKeyloc = filenameparams.ToUpper().IndexOf("APIKEY=");
+                                        
+                                        //int apiKeyloc = filenameparams.ToUpper().IndexOf("APIKEY=");
+                                        int apiKeyloc = filenameparams.ToUpper().IndexOf("VCODE=");
                                         if (apiKeyloc >= 0)
                                         {
                                             int length = filenameparams.IndexOf(' ', apiKeyloc) - apiKeyloc + 1;
@@ -558,6 +562,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                             filenameparams = filenameparams.Remove(
                                                 apiKeyloc, length);
                                         }
+                                        
                                         int versionloc = filenameparams.ToUpper().IndexOf("VERSION=");
                                         if (versionloc >= 0)
                                         {

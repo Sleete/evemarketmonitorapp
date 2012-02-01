@@ -21,6 +21,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
         private long _userID;
         private string _apiKey;
 
+        private CharOrCorp _accessType;
+
         private string _charName;
         private long _charID;
 
@@ -97,7 +99,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
         {
             get { return _corpID; }
         }
-
+        public CharOrCorp AccessType 
+        { 
+            get { return _accessType; }
+            set { _accessType = value;}
+        }
         public long UserID
         {
             get { return _userID; }
@@ -277,11 +283,12 @@ namespace EveMarketMonitorApp.AbstractionClasses
             }
         }
 
-        public APICharacter(long userID, string apiKey, long charID)
+        public APICharacter(long userID, string apiKey, long charID, CharOrCorp accessType)
         {
             _userID = userID;
             _charID = charID;
             _apiKey = apiKey;
+            _accessType = accessType;
             _apiSettings = new APISettingsAndStatus(_charID);
 
             try
@@ -445,7 +452,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             if (DateTime.UtcNow.AddHours(-48).CompareTo(_charSheetXMLLastUpdate) > 0)
             {
                 xml = EveAPI.GetXml(EveAPI.URL_EveApiBase + EveAPI.URL_CharDataApi,
-                  "userid=" + _userID + "&apiKey=" + _apiKey + "&characterID=" + _charID);
+                  "keyID=" + _userID + "&vCode=" + _apiKey + "&characterID=" + _charID);
             }
             else
             {
@@ -495,7 +502,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             {
                 xml = EveAPI.GetXml(EveAPI.URL_EveApiBase +
                     (corp ? EveAPI.URL_WalletCorpApi : EveAPI.URL_WalletApi),
-                    "userid=" + _userID + "&apiKey=" + _apiKey +
+                    "keyID=" + _userID + "&vCode=" + _apiKey +
                     "&characterID=" + _charID);
             }
 
@@ -539,7 +546,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
             XmlDocument xml = EveAPI.GetXml(EveAPI.URL_EveApiBase +
                 (corc == CharOrCorp.Corp ? EveAPI.URL_CorpStandingsApi : EveAPI.URL_CharStandingsApi),
-                "userid=" + _userID + "&apiKey=" + _apiKey + "&characterID=" + _charID);
+                "keyID=" + _userID + "&vCode=" + _apiKey + "&characterID=" + _charID);
 
             // Standings xml does not have the normal format so can't use EveAPI.GetResults...
             if (xml != null)
@@ -741,9 +748,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         // Set parameters that will be passed to the API
                         #region Set parameters
                         StringBuilder parameters = new StringBuilder();
-                        parameters.Append("userid=");
+                        parameters.Append("keyID=");
                         parameters.Append(_userID);
-                        parameters.Append("&apiKey=");
+                        parameters.Append("&vCode=");
                         parameters.Append(_apiKey);
                         parameters.Append("&characterID=");
                         parameters.Append(_charID);
@@ -2676,7 +2683,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             if (DateTime.UtcNow.AddHours(-48).CompareTo(_corpSheetXMLLastUpdate) > 0)
             {
                 xml = EveAPI.GetXml(EveAPI.URL_EveApiBase + EveAPI.URL_CorpDataApi,
-                   "userid=" + _userID + "&apiKey=" + _apiKey + "&characterID=" + _charID);
+                   "keyID=" + _userID + "&vCode=" + _apiKey + "&characterID=" + _charID);
             }
             else
             {

@@ -97,9 +97,11 @@ namespace EveMarketMonitorApp.GUIElements
                             character.UpdateEvent += new APIUpdateEvent(character_UpdateEvent);
                             charsListeningTo.Add(character);
                         }
-                        if (character.CharIncWithRptGroup)
+                        //if (character.CharIncWithRptGroup)
+                        if (character.CharIncWithRptGroup && character.AccessType == CharOrCorp.Char)
                         {
                             if (!ids.Contains(character.CharID))
+                            //if(1==1)
                             {
                                 IUpdatePanel panel;
                                 if (UserAccount.Settings.UseCompactUpdatePanel)
@@ -124,9 +126,11 @@ namespace EveMarketMonitorApp.GUIElements
                                 ids.Add(character.CharID);
                             }
                         }
-                        if (character.CorpIncWithRptGroup)
+                        //if (character.CorpIncWithRptGroup)
+                        if (character.CorpIncWithRptGroup && character.AccessType == CharOrCorp.Corp)
                         {
                             if (!ids.Contains(character.CorpID))
+                            //if(1==1)
                             {
                                 IUpdatePanel panel;
                                 if (UserAccount.Settings.UseCompactUpdatePanel)

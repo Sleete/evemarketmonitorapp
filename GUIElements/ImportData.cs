@@ -294,8 +294,8 @@ namespace EveMarketMonitorApp.GUIElements
 
                     /*
                     UpdateStatus(5, maxStatus, "Importing Data", "Loading Characters (" +
-                        (new FileInfo(tmpLoadDir + "Characters.xml").Length / 1024).ToString() + " Kb)", false);
-                    Names.LoadOldEmmaXML(tmpLoadDir + "Characters.xml");
+                        (new FileInfo(tmpLoadDir + "APIKeyInfo.xml").Length / 1024).ToString() + " Kb)", false);
+                    Names.LoadOldEmmaXML(tmpLoadDir + "APIKeyInfo.xml");
                     UpdateStatus(6, maxStatus, "Importing Data", "Loading Traded Items (" +
                         (new FileInfo(tmpLoadDir + "TradedItems.xml").Length / 1024).ToString() + " Kb)", false);
                     UserAccount.CurrentGroup.ItemsTraded.LoadOldEmmaXML(tmpLoadDir + "TradedItems.xml");

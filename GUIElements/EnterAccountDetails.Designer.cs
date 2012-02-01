@@ -43,7 +43,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // txtUserID
             // 
-            this.txtUserID.Location = new System.Drawing.Point(75, 19);
+            this.txtUserID.Location = new System.Drawing.Point(99, 19);
             this.txtUserID.Name = "txtUserID";
             this.txtUserID.Size = new System.Drawing.Size(94, 20);
             this.txtUserID.TabIndex = 0;
@@ -52,9 +52,9 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.txtApiKey.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtApiKey.Location = new System.Drawing.Point(75, 45);
+            this.txtApiKey.Location = new System.Drawing.Point(99, 45);
             this.txtApiKey.Name = "txtApiKey";
-            this.txtApiKey.Size = new System.Drawing.Size(483, 20);
+            this.txtApiKey.Size = new System.Drawing.Size(459, 20);
             this.txtApiKey.TabIndex = 1;
             // 
             // label1
@@ -62,18 +62,18 @@ namespace EveMarketMonitorApp.GUIElements
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 22);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 13);
+            this.label1.Size = new System.Drawing.Size(39, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "User ID";
+            this.label1.Text = "Key ID";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(6, 45);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(45, 13);
+            this.label2.Size = new System.Drawing.Size(87, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "API Key";
+            this.label2.Text = "Verification Code";
             // 
             // textBox3
             // 
@@ -86,7 +86,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(564, 47);
+            this.textBox3.Size = new System.Drawing.Size(564, 156);
             this.textBox3.TabIndex = 4;
             this.textBox3.TabStop = false;
             this.textBox3.Text = resources.GetString("textBox3.Text");
@@ -95,13 +95,13 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.eveApiKeyLink.AutoSize = true;
             this.eveApiKeyLink.LinkArea = new System.Windows.Forms.LinkArea(41, 43);
-            this.eveApiKeyLink.Location = new System.Drawing.Point(9, 62);
+            this.eveApiKeyLink.Location = new System.Drawing.Point(12, 171);
             this.eveApiKeyLink.Name = "eveApiKeyLink";
-            this.eveApiKeyLink.Size = new System.Drawing.Size(422, 17);
+            this.eveApiKeyLink.Size = new System.Drawing.Size(423, 17);
             this.eveApiKeyLink.TabIndex = 5;
             this.eveApiKeyLink.TabStop = true;
-            this.eveApiKeyLink.Text = "If you don\'t know your API key try here: http://myeve.eve-online.com/api/default." +
-                "asp";
+            this.eveApiKeyLink.Text = "If you don\'t know your API key try here: https://support.eveonline.com/api/Key/In" +
+                "dex";
             this.eveApiKeyLink.UseCompatibleTextRendering = true;
             this.eveApiKeyLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.eveApiKeyLink_LinkClicked);
             // 
@@ -113,7 +113,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.groupBox1.Controls.Add(this.txtApiKey);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(12, 82);
+            this.groupBox1.Location = new System.Drawing.Point(12, 203);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(564, 77);
             this.groupBox1.TabIndex = 0;
@@ -123,7 +123,7 @@ namespace EveMarketMonitorApp.GUIElements
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(408, 165);
+            this.btnOk.Location = new System.Drawing.Point(408, 295);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(81, 30);
             this.btnOk.TabIndex = 0;
@@ -135,7 +135,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(495, 165);
+            this.btnCancel.Location = new System.Drawing.Point(495, 295);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(81, 30);
             this.btnCancel.TabIndex = 1;
@@ -147,7 +147,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(588, 205);
+            this.ClientSize = new System.Drawing.Size(588, 335);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.groupBox1);
