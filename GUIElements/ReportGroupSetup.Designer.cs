@@ -62,8 +62,8 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.eveAccountsGrid.AllowUserToAddRows = false;
             this.eveAccountsGrid.AllowUserToDeleteRows = false;
-            this.eveAccountsGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.eveAccountsGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.eveAccountsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.eveAccountsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.UserIDColumn,
@@ -75,10 +75,10 @@ namespace EveMarketMonitorApp.GUIElements
             this.eveAccountsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.eveAccountsGrid.Size = new System.Drawing.Size(865, 118);
             this.eveAccountsGrid.TabIndex = 0;
-            this.eveAccountsGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.eveAccountsGrid_CellDoubleClick);
-            this.eveAccountsGrid.KeyDown += new System.Windows.Forms.KeyEventHandler(this.eveAccountsGrid_KeyDown);
-            this.eveAccountsGrid.SelectionChanged += new System.EventHandler(this.eveAccountsGrid_SelectionChanged);
             this.eveAccountsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.eveAccountsGrid_CellContentClick);
+            this.eveAccountsGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.eveAccountsGrid_CellDoubleClick);
+            this.eveAccountsGrid.SelectionChanged += new System.EventHandler(this.eveAccountsGrid_SelectionChanged);
+            this.eveAccountsGrid.KeyDown += new System.Windows.Forms.KeyEventHandler(this.eveAccountsGrid_KeyDown);
             // 
             // UserIDColumn
             // 
@@ -97,9 +97,9 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.charsAndCorpsGrid.AllowUserToAddRows = false;
             this.charsAndCorpsGrid.AllowUserToDeleteRows = false;
-            this.charsAndCorpsGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.charsAndCorpsGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.charsAndCorpsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.charsAndCorpsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.charIDColumn,
@@ -113,9 +113,9 @@ namespace EveMarketMonitorApp.GUIElements
             this.charsAndCorpsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.charsAndCorpsGrid.Size = new System.Drawing.Size(865, 171);
             this.charsAndCorpsGrid.TabIndex = 1;
+            this.charsAndCorpsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.charsAndCorpsGrid_CellContentClick);
             this.charsAndCorpsGrid.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.charsAndCorpsGrid_CellContentDoubleClick);
             this.charsAndCorpsGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.charsAndCorpsGrid_CellFormatting);
-            this.charsAndCorpsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.charsAndCorpsGrid_CellContentClick);
             // 
             // charIDColumn
             // 
@@ -150,8 +150,8 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
@@ -176,7 +176,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnNewAccount.Name = "btnNewAccount";
             this.btnNewAccount.Size = new System.Drawing.Size(105, 30);
             this.btnNewAccount.TabIndex = 5;
-            this.btnNewAccount.Text = "New Account";
+            this.btnNewAccount.Text = "Add key";
             this.btnNewAccount.UseVisualStyleBackColor = true;
             this.btnNewAccount.Click += new System.EventHandler(this.btnNewAccount_Click);
             // 
@@ -186,7 +186,7 @@ namespace EveMarketMonitorApp.GUIElements
             this.btnDeleteAccount.Name = "btnDeleteAccount";
             this.btnDeleteAccount.Size = new System.Drawing.Size(105, 30);
             this.btnDeleteAccount.TabIndex = 6;
-            this.btnDeleteAccount.Text = "Remove Account";
+            this.btnDeleteAccount.Text = "Remove key";
             this.btnDeleteAccount.UseVisualStyleBackColor = true;
             this.btnDeleteAccount.Click += new System.EventHandler(this.btnDeleteAccount_Click);
             // 
@@ -214,38 +214,38 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // lblNoAccounts
             // 
-            this.lblNoAccounts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblNoAccounts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblNoAccounts.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.lblNoAccounts.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoAccounts.Location = new System.Drawing.Point(18, 112);
             this.lblNoAccounts.Name = "lblNoAccounts";
             this.lblNoAccounts.Size = new System.Drawing.Size(856, 57);
             this.lblNoAccounts.TabIndex = 9;
-            this.lblNoAccounts.Text = "You currently have no Eve accounts as part of this report group, click \'New Accou" +
-                "nt\' to add one.";
+            this.lblNoAccounts.Text = "You currently have no Eve API keys as part of this report group, click \'Add Key\' " +
+    "to add one.";
             this.lblNoAccounts.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblNoChars
             // 
-            this.lblNoChars.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblNoChars.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblNoChars.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.lblNoChars.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoChars.Location = new System.Drawing.Point(18, 288);
             this.lblNoChars.Name = "lblNoChars";
             this.lblNoChars.Size = new System.Drawing.Size(856, 57);
             this.lblNoChars.TabIndex = 10;
-            this.lblNoChars.Text = "Select one or more accounts above to see the characters that are involved.";
+            this.lblNoChars.Text = "Select one or more API keys above to see the characters that are involved.";
             this.lblNoChars.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // CorprGrid
             // 
             this.CorprGrid.AllowUserToAddRows = false;
             this.CorprGrid.AllowUserToDeleteRows = false;
-            this.CorprGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.CorprGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.CorprGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CorprGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.corpIDColumn_Corp,
@@ -286,15 +286,15 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // lblNoCorp
             // 
-            this.lblNoCorp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblNoCorp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblNoCorp.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.lblNoCorp.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNoCorp.Location = new System.Drawing.Point(12, 445);
             this.lblNoCorp.Name = "lblNoCorp";
             this.lblNoCorp.Size = new System.Drawing.Size(856, 52);
             this.lblNoCorp.TabIndex = 12;
-            this.lblNoCorp.Text = "Select one or more accounts above to see the Corporations that are involved.";
+            this.lblNoCorp.Text = "Select one or more API keys above to see the Corporations that are involved.";
             this.lblNoCorp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ReportGroupSetup
