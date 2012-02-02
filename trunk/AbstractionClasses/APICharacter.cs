@@ -729,6 +729,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             bool noData = true;
             bool abort = false;
             string xmlFile = "";
+            int rowCount = 200;
             XmlDocument xml = null;
 
             try
@@ -756,13 +757,15 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         parameters.Append(_charID);
                         if (type == APIDataType.Journal || type == APIDataType.Transactions)
                         {
+                            parameters.Append("&rowCount=");
+                            parameters.Append(rowCount);
                             if (walletID != 0)
                             {
                                 parameters.Append("&accountKey=");
                                 parameters.Append(walletID);
                             }
-                            if (type == APIDataType.Journal) { parameters.Append("&beforeRefID="); }
-                            if (type == APIDataType.Transactions) { parameters.Append("&beforeTransID="); }
+                            if (type == APIDataType.Journal) { parameters.Append("&fromID="); }
+                            if (type == APIDataType.Transactions) { parameters.Append("&fromID="); }
                             parameters.Append(beforeID);
                         }
                         if (type == APIDataType.Assets || type == APIDataType.Orders)
@@ -781,7 +784,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         }
                         if (type == APIDataType.Journal || type == APIDataType.Transactions)
                         {
-                            if (tmp.Count < 1000) { walletExhausted = true; }
+                            if (tmp.Count < rowCount) { walletExhausted = true; }
                         }
 
                         // Set the last update time based upon the 'cached until'
@@ -882,13 +885,23 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     {
                         if (type == APIDataType.Journal || type == APIDataType.Transactions)
                         {
-                            XmlNode lastRowNode = xml.SelectSingleNode(@"/eveapi/result/rowset/row[last()]");
-                            if (lastRowNode != null)
+                            //XmlNode lastRowNode = xml.SelectSingleNode(@"/eveapi/result/rowset/row[last()]");                            
+                            XmlNodeList results = xml.SelectNodes(@"/eveapi/result/rowset/row");
+                            long minID = long.MaxValue;
+                            if (results != null)
                             {
-                                string idAttribName = "";
-                                if (type == APIDataType.Journal) { idAttribName = "@refID"; }
-                                if (type == APIDataType.Transactions) { idAttribName = "@transactionID"; }
-                                beforeID = decimal.Parse(lastRowNode.SelectSingleNode(idAttribName).Value);
+                                foreach (XmlNode node in results)
+                                {
+                                    string idAttribName = "";
+                                    if (type == APIDataType.Journal) { idAttribName = "@refID"; }
+                                    if (type == APIDataType.Transactions) { idAttribName = "@transactionID"; }
+                                    long val = long.Parse(node.SelectSingleNode(idAttribName).Value);
+                                    if (val < minID) { minID = val; }
+                                }
+                            }
+                            if (minID != long.MaxValue)
+                            {
+                                beforeID = minID;
                             }
                             else { walletExhausted = true; }
                             if (!walletExhausted) { finishedDownloading = false; }

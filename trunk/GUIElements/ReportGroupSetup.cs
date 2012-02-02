@@ -324,18 +324,19 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void charsAndCorpsGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if(e.RowIndex >= 0 && e.ColumnIndex >=0) 
-            {
-                object value = charsAndCorpsGrid["corpIDColumn", e.RowIndex].Value;
-                if (value != null)
-                {
-                    // Don't allow player to select an NPC corp.
-                    if (NPCCorps.GetCorp((long)value) != null)
-                    {
-                        charsAndCorpsGrid["corpIncludedColumn_Corp", e.RowIndex].ReadOnly = true;
-                    }
-                }
-            }
+            // No longer needed with new API Keys                    
+            //if(e.RowIndex >= 0 && e.ColumnIndex >=0) 
+            //{
+            //    object value = charsAndCorpsGrid["corpIDColumn", e.RowIndex].Value;
+            //    if (value != null)
+            //    {
+            //        // Don't allow player to select an NPC corp.
+            //        if (NPCCorps.GetCorp((long)value) != null)
+            //        {
+            //            charsAndCorpsGrid["corpIncludedColumn_Corp", e.RowIndex].ReadOnly = true;
+            //        }
+            //    }
+            //}
         }
 
         private void charsAndCorpsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
