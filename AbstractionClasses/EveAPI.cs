@@ -393,6 +393,28 @@ namespace EveMarketMonitorApp.AbstractionClasses
             return retVal;
         }
 
+        public static DateTime GetDataTime(XmlDocument xml)
+        {
+            DateTime retVal = new DateTime(2000, 1, 1);
+
+            if (xml != null)
+            {
+                XmlNode timeNode = xml.SelectSingleNode("/eveapi/currentTime");
+                if (timeNode != null)
+                {
+                    // Get the date/time that the assets data is cached until and then subtract
+                    // 23 hours to get the date/time that the snapshot was actually taken.
+                    retVal = DateTime.Parse(timeNode.InnerText,
+                        System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                    // C# will asume that the value from the file is for the local time zone.
+                    // in fact it is UTC so we need to specify this.
+                    retVal = TimeZoneInfo.ConvertTime(retVal, TimeZoneInfo.Utc, TimeZoneInfo.Utc);
+                }
+            }
+
+            return retVal;
+        }
+
         ///// <summary>
         ///// This proceedure provides a way to determine the time that the snapshot of assets data 
         ///// in the supplied xml document was taken.

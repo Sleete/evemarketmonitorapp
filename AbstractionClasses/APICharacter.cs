@@ -229,7 +229,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         }
         #endregion
 
-        public APICharacter(long userID, string apiKey, EMMADataSet.APICharactersRow data)
+        public APICharacter(long userID, string apiKey, CharOrCorp accessType, EMMADataSet.APICharactersRow data)
         {
             _userID = userID;
             _apiKey = apiKey;
@@ -250,16 +250,22 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
             _corpFinanceAccess = data.CorpFinanceAccess;
 
-            try
+            if (accessType == CharOrCorp.Char)
             {
-                RefreshCharXMLFromAPI();
+                try
+                {
+                    RefreshCharXMLFromAPI();
+                }
+                catch { }
             }
-            catch { }
-            try
+            else
             {
-                RefreshCorpXMLFromAPI();
+                try
+                {
+                    RefreshCorpXMLFromAPI();
+                }
+                catch { }
             }
-            catch { }
 
             SetLastAPIUpdateTime(CharOrCorp.Char, APIDataType.Assets, data.LastCharAssetsUpdate);
             SetLastAPIUpdateTime(CharOrCorp.Char, APIDataType.Journal, data.LastCharJournalUpdate);
@@ -283,24 +289,30 @@ namespace EveMarketMonitorApp.AbstractionClasses
             }
         }
 
-        public APICharacter(long userID, string apiKey, long charID, CharOrCorp accessType)
+        public APICharacter(long userID, string apiKey, CharOrCorp accessType, long charID)
         {
             _userID = userID;
-            _charID = charID;
             _apiKey = apiKey;
+            _charID = charID;
             _accessType = accessType;
             _apiSettings = new APISettingsAndStatus(_charID);
 
-            try
+            if (accessType == CharOrCorp.Char)
             {
-                RefreshCharXMLFromAPI();
+                try
+                {
+                    RefreshCharXMLFromAPI();
+                }
+                catch { }
             }
-            catch { }
-            try
+            else
             {
-                RefreshCorpXMLFromAPI();
+                try
+                {
+                    RefreshCorpXMLFromAPI();
+                }
+                catch { }
             }
-            catch { }
 
             if (!Settings.UpdatedOwnerIDToCorpID)
             {
@@ -732,6 +744,10 @@ namespace EveMarketMonitorApp.AbstractionClasses
             int rowCount = 200;
             XmlDocument xml = null;
 
+            long currentMaxID = 0;
+            if (type == APIDataType.Transactions) { currentMaxID = _apiSettings.GetHighestID(corc, APIDataType.Transactions); }
+            if (type == APIDataType.Journal) { currentMaxID = _apiSettings.GetHighestID(corc, APIDataType.Journal); }
+
             try
             {
                 // Make sure we don't download if we've already done so recently.
@@ -899,7 +915,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                     if (val < minID) { minID = val; }
                                 }
                             }
-                            if (minID != long.MaxValue)
+
+                            if (minID != long.MaxValue && minID > currentMaxID)
                             {
                                 beforeID = minID;
                             }
@@ -1096,8 +1113,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                 UpdateStatus(0, 1, "Getting asset data from file", "", false);
 
-                dataDate = EveAPI.GetCachedUntilTime(xml);
-                dataDate = dataDate.AddHours(-23);
+                dataDate = EveAPI.GetDataTime(xml);
                 DateTime assetsEffectiveDate = corc == CharOrCorp.Char ?
                     Settings.CharAssetsEffectiveDate : Settings.CorpAssetsEffectiveDate;
                 if (dataDate.CompareTo(assetsEffectiveDate) < 0)
@@ -1594,7 +1610,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                 UpdateStatus(0, 1, "Getting journal entries from file", "", false);
                 journEntries = EveAPI.GetResults(fileXML);
-                dataDate = EveAPI.GetCachedUntilTime(fileXML).AddHours(-1);
+                dataDate = EveAPI.GetDataTime(fileXML);
                 UpdateStatus(1, 1, "", journEntries.Count + " entries found in file.", false);
 
                 if (journEntries != null && journEntries.Count > 0)
@@ -1641,8 +1657,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         }
 
 
-                        if (id - offset > oldHighestID)
-                        {
+                        //if (id - offset > oldHighestID)
+                        //{
                             if (id - offset > highestIDSoFar) { highestIDSoFar = id - offset; }
                             if (Journal.EntryExists(journalData, id, recieverID))
                             {
@@ -1719,7 +1735,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                 }
                             }
 
-                        }
+                        //}
 
                         batchPrg++;
                         UpdateStatus(batchPrg, journEntries.Count, "", "", false);
@@ -1928,9 +1944,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
 
                     XmlNode entryIDNode = transEntries[0].SelectSingleNode("@transactionID");
-                    long fileMaxID = long.Parse(entryIDNode.Value,
-                        System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-                    if (fileMaxID > highestID) { highestID = fileMaxID; }
+                    //long fileMaxID = long.Parse(entryIDNode.Value,
+                    //    System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                    
 
                     // Loop through the results returned from this call to the API and add the line to
                     // the data table if the transactionID is not already in the database.
@@ -1940,8 +1956,10 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         long transID = long.Parse(transIDNode.Value,
                             System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
 
-                        if (transID > highestIDSoFar)
-                        {
+                        if (transID > highestID) { highestID = transID; }
+
+                        //if (transID > highestIDSoFar)
+                        //{
                             if (!Transactions.TransactionExists(transData, transID) &&
                                 transData.FindByID(transID) == null)
                             {
@@ -2010,7 +2028,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                     updated++;
                                 }
                             }
-                        }
+                        //}
 
                         batchPrg++;
                         UpdateStatus(batchPrg, transEntries.Count, "", "", false);

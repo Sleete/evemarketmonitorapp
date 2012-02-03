@@ -41,6 +41,25 @@ namespace EveMarketMonitorApp.AbstractionClasses
             get { return _lastcharListUpdate; }
             set { _lastcharListUpdate = value; }
         }
+
+        private CharOrCorp _type;
+        public CharOrCorp Type
+        {
+            get
+            {
+                CharOrCorp retVal = CharOrCorp.Char;
+                XmlNode keyNode = CharList.SelectSingleNode("/eveapi/result/key");
+                if (keyNode != null)
+                {
+                    XmlNode typeNode = keyNode.SelectSingleNode("@type");
+                    if (typeNode != null)
+                    {
+                        retVal = typeNode.Value.ToString() == "Character" || typeNode.Value.ToString() == "Account" ? CharOrCorp.Char : CharOrCorp.Corp;
+                    }
+                }
+                return retVal;
+            }
+        }
       
         public List<APICharacter> Chars
         {
@@ -147,7 +166,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                     foreach (XmlNode node in results)
                     {
-                        accessType = node.SelectSingleNode("@type").Value.ToString() == "Account" ? CharOrCorp.Char : CharOrCorp.Corp;
+                        accessType = node.SelectSingleNode("@type").Value.ToString() == "Character" ||
+                            node.SelectSingleNode("@type").Value.ToString() == "Account" ? CharOrCorp.Char : CharOrCorp.Corp;
 
                         foreach (XmlNode node2 in node.SelectNodes("rowset/row"))
                         {
@@ -156,8 +176,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
                             if (apiChar == null)
                             {
                                 // Need to create a new API char in the database.
-                                apiChar = new APICharacter(_userID, _apiKey,
-                                    long.Parse(node2.SelectSingleNode("@characterID").Value.ToString()), accessType);
+                                apiChar = new APICharacter(_userID, _apiKey, accessType,
+                                    long.Parse(node2.SelectSingleNode("@characterID").Value.ToString()));
                                 APICharacters.Store(apiChar);
                             }
                             apiChar.AccessType = accessType;
