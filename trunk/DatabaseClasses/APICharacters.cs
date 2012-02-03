@@ -99,10 +99,13 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             char[] delim = {'|'};
             string[] keyData = args.Key.Split(delim);
+
+            EVEAccount account = EveAccounts.GetAccount(int.Parse(keyData[0]));
+            
             EMMADataSet.APICharactersRow rowData = LoadCharFromDB(long.Parse(keyData[2]));
             if (rowData != null)
             {
-                args.Data = new APICharacter(long.Parse(keyData[0]), keyData[1], rowData);
+                args.Data = new APICharacter(long.Parse(keyData[0]), keyData[1], account.Type, rowData);
             }
             else
             {
