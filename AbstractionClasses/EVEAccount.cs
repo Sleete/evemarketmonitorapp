@@ -67,7 +67,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
             {
                 if (_chars == null || _chars.Count == 0)
                 {
-                    UpdateCharList(false);
+                    try
+                    {
+                        UpdateCharList(false);
+                    }
+                    catch (EMMAEveAPIException) { }
                     PopulateChars();
                 }
                 return _chars; 
@@ -123,30 +127,34 @@ namespace EveMarketMonitorApp.AbstractionClasses
         /// <returns></returns>
         public void UpdateCharList(bool forceUpdate)
         {
-            if (DateTime.UtcNow.AddHours(-48).CompareTo(_lastcharListUpdate) > 0 || forceUpdate)
-            {
+            //if (DateTime.UtcNow.AddHours(-48).CompareTo(_lastcharListUpdate) > 0 || forceUpdate)
+            //{
                 XmlDocument xml = EveAPI.GetXml(EveAPI.URL_EveApiBase + EveAPI.URL_CharsApi,
                     "keyID=" + _userID + "&vCode=" + _apiKey);
                 _lastcharListUpdate = DateTime.UtcNow;
 
                 if (!_charList.Equals(xml))
                 {
-                    // If there is some problem with the API or XML then this method will throw an exception.
-                    // This will prevent _charList from being set as we don't want to put the wrong thing in it.
                     try
                     {
+                        // If there is some problem with the API or XML then this method will throw an exception.
+                        // This will prevent _charList from being set as we don't want to put the wrong thing in it.
                         XmlNodeList results = EveAPI.GetResults(xml);
 
                         _charList = xml;
                         // Clear the current collection of character objects
                         _chars = null;
                     }
-                    catch(Exception ex)
+                    catch (EMMAEveAPIException apiEx)
                     {
-                        throw (ex);
+                        if (apiEx.EveCode == 203 || apiEx.EveCode == 222)
+                        {
+                            EveAPI.AddBlockedKey(_userID);
+                        }
+                        throw;
                     }
                 }
-            }
+            //}
         }
 
         /// <summary>

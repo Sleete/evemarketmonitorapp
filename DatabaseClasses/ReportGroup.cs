@@ -135,7 +135,16 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
                 foreach (EVEAccount account in _accounts)
                 {
-                    account.UpdateCharList(false);
+                    try
+                    {
+                        account.UpdateCharList(false);
+                    }
+                    catch (EMMAEveAPIException apiEx)
+                    {
+                        MessageBox.Show("Could not update character list due to problem accessing Eve API: " + apiEx.EveCode + " " + apiEx.EveDescription + "." +
+                            (apiEx.EveCode == 203 || apiEx.EveCode == 222 && (account.ApiKey.ToUpper() == account.ApiKey) ? 
+                                " This might be due to old-format API keys, please check the 'manage group' tab to ensure your API keys are up to date." : ""));
+                    }
                     account.PopulateChars();
                 }
 
