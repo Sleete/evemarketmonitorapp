@@ -49,6 +49,14 @@ namespace EveMarketMonitorApp.AbstractionClasses
         private static XmlNodeList _journalRefs;
         private static DateTime _lastJournalRefsAccess = DateTime.MinValue;
 
+        private static List<long> _blockedKeys = new List<long>();
+
+
+        public static void AddBlockedKey(long keyID)
+        {
+            if (!_blockedKeys.Contains(keyID)) { _blockedKeys.Add(keyID); }
+        }
+
 
         #region Old stuff...
         /*
@@ -503,6 +511,37 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 if (URL_Descriptions.Count == 0) { SetupURLDescriptions(); }
             }
 
+
+            try
+            {
+                int keyIDloc = parameters.ToUpper().IndexOf("KEYID=") + 6;
+
+                if (keyIDloc >= 0)
+                {
+                    int endIndex = parameters.IndexOf("&", keyIDloc);
+                    string keyIDStr = "";
+                    if (endIndex == 0)
+                    {
+                        keyIDStr = parameters.Substring(keyIDloc);
+                    }
+                    else
+                    {
+                        keyIDStr = parameters.Substring(keyIDloc, endIndex - keyIDloc);
+                    }
+                    long keyID = long.Parse(keyIDStr);
+                    if (_blockedKeys.Contains(keyID))
+                    {
+                        throw new EMMAEveAPIException(ExceptionSeverity.Error, 999,
+                            "This API Key has previously caused an authentication error so will be blocked from making requests until EMMA is restarted");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                EMMAEveAPIException apiEx = ex as EMMAEveAPIException;
+                if (apiEx != null) { throw; }
+            }
+
             if (!Globals.EveAPIDown)
             {
                 request = (HttpWebRequest)HttpWebRequest.Create(url);
@@ -566,14 +605,14 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                     {
                                         desc = enumerator.Current.Value;
                                         string filenameparams = parameters.Replace('&', ' ');
-                                        int userIDloc = filenameparams.ToUpper().IndexOf("keyID=");
-                                        if (userIDloc >= 0)
-                                        {
-                                            int length = filenameparams.IndexOf(' ', userIDloc) - userIDloc + 1;
-                                            if (length <= 0) length = filenameparams.Length - userIDloc;
-                                            filenameparams = filenameparams.Remove(
-                                                userIDloc, length);
-                                        }
+                                        //int userIDloc = filenameparams.ToUpper().IndexOf("KEYID=");
+                                        //if (userIDloc >= 0)
+                                        //{
+                                        //    int length = filenameparams.IndexOf(' ', userIDloc) - userIDloc + 1;
+                                        //    if (length <= 0) length = filenameparams.Length - userIDloc;
+                                        //    filenameparams = filenameparams.Remove(
+                                        //        userIDloc, length);
+                                        //}
                                         
                                         //int apiKeyloc = filenameparams.ToUpper().IndexOf("APIKEY=");
                                         int apiKeyloc = filenameparams.ToUpper().IndexOf("VCODE=");
