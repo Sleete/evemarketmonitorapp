@@ -1957,7 +1957,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class JournalRefTypesDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class JournalRefTypesDataTable : global::System.Data.TypedTableBase<JournalRefTypesRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -2064,12 +2064,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public JournalRefTypesRow FindByID(short ID) {
                 return ((JournalRefTypesRow)(this.Rows.Find(new object[] {
                             ID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2237,7 +2231,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class ReportGroupsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class ReportGroupsDataTable : global::System.Data.TypedTableBase<ReportGroupsRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -2355,12 +2349,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public ReportGroupsRow FindByID(int ID) {
                 return ((ReportGroupsRow)(this.Rows.Find(new object[] {
                             ID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2532,7 +2520,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class UserAccountsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class UserAccountsDataTable : global::System.Data.TypedTableBase<UserAccountsRow> {
             
             private global::System.Data.DataColumn columnName;
             
@@ -2683,12 +2671,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public UserAccountsRow FindByName(string Name) {
                 return ((UserAccountsRow)(this.Rows.Find(new object[] {
                             Name})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2873,7 +2855,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class EveAccountsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class EveAccountsDataTable : global::System.Data.TypedTableBase<EveAccountsRow> {
             
             private global::System.Data.DataColumn columnUserID;
             
@@ -3002,12 +2984,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public EveAccountsRow FindByUserID(long UserID) {
                 return ((EveAccountsRow)(this.Rows.Find(new object[] {
                             UserID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3184,7 +3160,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class PortraitsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class PortraitsDataTable : global::System.Data.TypedTableBase<PortraitsRow> {
             
             private global::System.Data.DataColumn columncharID;
             
@@ -3291,12 +3267,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public PortraitsRow FindBycharID(long charID) {
                 return ((PortraitsRow)(this.Rows.Find(new object[] {
                             charID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3463,7 +3433,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class JournalGenerationsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class JournalGenerationsDataTable : global::System.Data.TypedTableBase<JournalGenerationsRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -3603,12 +3573,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public JournalGenerationsRow FindByID(int ID) {
                 return ((JournalGenerationsRow)(this.Rows.Find(new object[] {
                             ID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3788,7 +3752,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class NamesDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class NamesDataTable : global::System.Data.TypedTableBase<NamesRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -3895,12 +3859,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public NamesRow FindByID(long ID) {
                 return ((NamesRow)(this.Rows.Find(new object[] {
                             ID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4068,7 +4026,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class UserSettingsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class UserSettingsDataTable : global::System.Data.TypedTableBase<UserSettingsRow> {
             
             private global::System.Data.DataColumn columnAccountName;
             
@@ -4175,12 +4133,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public UserSettingsRow FindByAccountName(string AccountName) {
                 return ((UserSettingsRow)(this.Rows.Find(new object[] {
                             AccountName})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4349,7 +4301,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class IDTableDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class IDTableDataTable : global::System.Data.TypedTableBase<IDTableRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -4438,12 +4390,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 rowIDTableRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowIDTableRow);
                 return rowIDTableRow;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4603,7 +4549,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class JournalDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class JournalDataTable : global::System.Data.TypedTableBase<JournalRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -4897,12 +4843,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
                 JournalDataTable cln = ((JournalDataTable)(base.Clone()));
                 cln.InitVars();
@@ -5128,7 +5068,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class OrderStatesDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class OrderStatesDataTable : global::System.Data.TypedTableBase<OrderStatesRow> {
             
             private global::System.Data.DataColumn columnStateID;
             
@@ -5235,12 +5175,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public OrderStatesRow FindByStateID(short StateID) {
                 return ((OrderStatesRow)(this.Rows.Find(new object[] {
                             StateID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5408,7 +5342,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class RptGroupSettingsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class RptGroupSettingsDataTable : global::System.Data.TypedTableBase<RptGroupSettingsRow> {
             
             private global::System.Data.DataColumn columnReportGroupID;
             
@@ -5515,12 +5449,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public RptGroupSettingsRow FindByReportGroupID(int ReportGroupID) {
                 return ((RptGroupSettingsRow)(this.Rows.Find(new object[] {
                             ReportGroupID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5688,7 +5616,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class APICharactersDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class APICharactersDataTable : global::System.Data.TypedTableBase<APICharactersRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -5993,12 +5921,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
                 APICharactersDataTable cln = ((APICharactersDataTable)(base.Clone()));
                 cln.InitVars();
@@ -6227,7 +6149,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class GroupLocationDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class GroupLocationDataTable : global::System.Data.TypedTableBase<GroupLocationRow> {
             
             private global::System.Data.DataColumn columnReportGroupID;
             
@@ -6379,12 +6301,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 return ((GroupLocationRow)(this.Rows.Find(new object[] {
                             ReportGroupID,
                             LocationName})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -6570,7 +6486,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class StandingsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class StandingsDataTable : global::System.Data.TypedTableBase<StandingsRow> {
             
             private global::System.Data.DataColumn columntoID;
             
@@ -6689,12 +6605,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 return ((StandingsRow)(this.Rows.Find(new object[] {
                             toID,
                             fromID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -6865,7 +6775,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class APICharSettingsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class APICharSettingsDataTable : global::System.Data.TypedTableBase<APICharSettingsRow> {
             
             private global::System.Data.DataColumn columnCharID;
             
@@ -6972,12 +6882,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public APICharSettingsRow FindByCharID(long CharID) {
                 return ((APICharSettingsRow)(this.Rows.Find(new object[] {
                             CharID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7145,7 +7049,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class AssetStatusesDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class AssetStatusesDataTable : global::System.Data.TypedTableBase<AssetStatusesRow> {
             
             private global::System.Data.DataColumn columnStatusID;
             
@@ -7252,12 +7156,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public AssetStatusesRow FindByStatusID(int StatusID) {
                 return ((AssetStatusesRow)(this.Rows.Find(new object[] {
                             StatusID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7425,7 +7323,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class ContractStatesDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class ContractStatesDataTable : global::System.Data.TypedTableBase<ContractStatesRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -7532,12 +7430,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public ContractStatesRow FindByID(short ID) {
                 return ((ContractStatesRow)(this.Rows.Find(new object[] {
                             ID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7705,7 +7597,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class DividendsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class DividendsDataTable : global::System.Data.TypedTableBase<DividendsRow> {
             
             private global::System.Data.DataColumn columnDividendID;
             
@@ -7834,12 +7726,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public DividendsRow FindByDividendID(int DividendID) {
                 return ((DividendsRow)(this.Rows.Find(new object[] {
                             DividendID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -8017,7 +7903,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class WebLinksDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class WebLinksDataTable : global::System.Data.TypedTableBase<WebLinksRow> {
             
             private global::System.Data.DataColumn columnWebLinkID;
             
@@ -8146,12 +8032,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public WebLinksRow FindByWebLinkID(int WebLinkID) {
                 return ((WebLinksRow)(this.Rows.Find(new object[] {
                             WebLinkID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -8331,7 +8211,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class ShareTransactionDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class ShareTransactionDataTable : global::System.Data.TypedTableBase<ShareTransactionRow> {
             
             private global::System.Data.DataColumn columnTransID;
             
@@ -8482,12 +8362,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public ShareTransactionRow FindByTransID(int TransID) {
                 return ((ShareTransactionRow)(this.Rows.Find(new object[] {
                             TransID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -8673,7 +8547,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class JournalDividendLinkDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class JournalDividendLinkDataTable : global::System.Data.TypedTableBase<JournalDividendLinkRow> {
             
             private global::System.Data.DataColumn columnJournalID;
             
@@ -8781,12 +8655,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 return ((JournalDividendLinkRow)(this.Rows.Find(new object[] {
                             JournalID,
                             DividendID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -8953,7 +8821,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class AssetsHistoryDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class AssetsHistoryDataTable : global::System.Data.TypedTableBase<AssetsHistoryRow> {
             
             private global::System.Data.DataColumn columnOwnerID;
             
@@ -9084,12 +8952,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                             OwnerID,
                             Corp,
                             Date})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -9265,7 +9127,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class ShareValueHistoryDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class ShareValueHistoryDataTable : global::System.Data.TypedTableBase<ShareValueHistoryRow> {
             
             private global::System.Data.DataColumn columnPublicCorpID;
             
@@ -9384,12 +9246,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 return ((ShareValueHistoryRow)(this.Rows.Find(new object[] {
                             PublicCorpID,
                             DateTime})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -9560,7 +9416,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class UserRptGroupsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class UserRptGroupsDataTable : global::System.Data.TypedTableBase<UserRptGroupsRow> {
             
             private global::System.Data.DataColumn columnUserName;
             
@@ -9668,12 +9524,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 return ((UserRptGroupsRow)(this.Rows.Find(new object[] {
                             UserName,
                             RptGroupID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -9841,7 +9691,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class BankTransactionDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class BankTransactionDataTable : global::System.Data.TypedTableBase<BankTransactionRow> {
             
             private global::System.Data.DataColumn columnTransactionID;
             
@@ -9981,12 +9831,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public BankTransactionRow FindByTransactionID(long TransactionID) {
                 return ((BankTransactionRow)(this.Rows.Find(new object[] {
                             TransactionID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -10168,7 +10012,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class PublicCorpPayoutPeriodDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class PublicCorpPayoutPeriodDataTable : global::System.Data.TypedTableBase<PublicCorpPayoutPeriodRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -10286,12 +10130,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public PublicCorpPayoutPeriodRow FindByID(short ID) {
                 return ((PublicCorpPayoutPeriodRow)(this.Rows.Find(new object[] {
                             ID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -10463,7 +10301,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class BankTransTypesDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class BankTransTypesDataTable : global::System.Data.TypedTableBase<BankTransTypesRow> {
             
             private global::System.Data.DataColumn columnTypeID;
             
@@ -10570,12 +10408,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public BankTransTypesRow FindByTypeID(short TypeID) {
                 return ((BankTransTypesRow)(this.Rows.Find(new object[] {
                             TypeID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -10743,7 +10575,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class ReprocessItemDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class ReprocessItemDataTable : global::System.Data.TypedTableBase<ReprocessItemRow> {
             
             private global::System.Data.DataColumn columnJobID;
             
@@ -10873,12 +10705,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 return ((ReprocessItemRow)(this.Rows.Find(new object[] {
                             JobID,
                             ItemID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -11053,7 +10879,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class ReprocessResultDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class ReprocessResultDataTable : global::System.Data.TypedTableBase<ReprocessResultRow> {
             
             private global::System.Data.DataColumn columnJobID;
             
@@ -11205,12 +11031,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 return ((ReprocessResultRow)(this.Rows.Find(new object[] {
                             JobID,
                             ItemID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -11393,7 +11213,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class ReprocessJobDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class ReprocessJobDataTable : global::System.Data.TypedTableBase<ReprocessJobRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -11533,12 +11353,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public ReprocessJobRow FindByID(int ID) {
                 return ((ReprocessJobRow)(this.Rows.Find(new object[] {
                             ID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -11719,7 +11533,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class RiskRatingDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class RiskRatingDataTable : global::System.Data.TypedTableBase<RiskRatingRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -11826,12 +11640,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public RiskRatingRow FindByID(short ID) {
                 return ((RiskRatingRow)(this.Rows.Find(new object[] {
                             ID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -11999,7 +11807,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class PublicCorpsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class PublicCorpsDataTable : global::System.Data.TypedTableBase<PublicCorpsRow> {
             
             private global::System.Data.DataColumn columnCorpID;
             
@@ -12220,12 +12028,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
                 PublicCorpsDataTable cln = ((PublicCorpsDataTable)(base.Clone()));
                 cln.InitVars();
@@ -12434,7 +12236,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class InvestmentsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class InvestmentsDataTable : global::System.Data.TypedTableBase<InvestmentsRow> {
             
             private global::System.Data.DataColumn columnCorpID;
             
@@ -12666,12 +12468,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
                 InvestmentsDataTable cln = ((InvestmentsDataTable)(base.Clone()));
                 cln.InitVars();
@@ -12884,7 +12680,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class BankAccountDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class BankAccountDataTable : global::System.Data.TypedTableBase<BankAccountRow> {
             
             private global::System.Data.DataColumn columnAccountID;
             
@@ -13024,12 +12820,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public BankAccountRow FindByAccountID(int AccountID) {
                 return ((BankAccountRow)(this.Rows.Find(new object[] {
                             AccountID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -13210,7 +13000,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class ContractTypeDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class ContractTypeDataTable : global::System.Data.TypedTableBase<ContractTypeRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -13317,12 +13107,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public ContractTypeRow FindByID(short ID) {
                 return ((ContractTypeRow)(this.Rows.Find(new object[] {
                             ID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -13490,7 +13274,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class ContractsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class ContractsDataTable : global::System.Data.TypedTableBase<ContractsRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -13674,12 +13458,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public ContractsRow FindByID(long ID) {
                 return ((ContractsRow)(this.Rows.Find(new object[] {
                             ID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -13874,7 +13652,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class ContractItemDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class ContractItemDataTable : global::System.Data.TypedTableBase<ContractItemRow> {
             
             private global::System.Data.DataColumn columnContractID;
             
@@ -14048,12 +13826,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 return ((ContractItemRow)(this.Rows.Find(new object[] {
                             ContractID,
                             ItemID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -14244,7 +14016,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class ItemValuesDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class ItemValuesDataTable : global::System.Data.TypedTableBase<ItemValuesRow> {
             
             private global::System.Data.DataColumn columnReportGroupID;
             
@@ -14467,12 +14239,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
                 ItemValuesDataTable cln = ((ItemValuesDataTable)(base.Clone()));
                 cln.InitVars();
@@ -14676,7 +14442,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class TradedItemsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class TradedItemsDataTable : global::System.Data.TypedTableBase<TradedItemsRow> {
             
             private global::System.Data.DataColumn columnReportGroupID;
             
@@ -14784,12 +14550,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 return ((TradedItemsRow)(this.Rows.Find(new object[] {
                             ReportGroupID,
                             ItemID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -14956,7 +14716,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class AssetsProducedDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class AssetsProducedDataTable : global::System.Data.TypedTableBase<AssetsProducedRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -15118,12 +14878,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public AssetsProducedRow FindByID(long ID) {
                 return ((AssetsProducedRow)(this.Rows.Find(new object[] {
                             ID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -15310,7 +15064,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class TransactionsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class TransactionsDataTable : global::System.Data.TypedTableBase<TransactionsRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -15603,12 +15357,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
                 TransactionsDataTable cln = ((TransactionsDataTable)(base.Clone()));
                 cln.InitVars();
@@ -15831,7 +15579,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class OrdersDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class OrdersDataTable : global::System.Data.TypedTableBase<OrdersRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -16135,12 +15883,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
                 OrdersDataTable cln = ((OrdersDataTable)(base.Clone()));
                 cln.InitVars();
@@ -16370,7 +16112,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class AssetsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class AssetsDataTable : global::System.Data.TypedTableBase<AssetsRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -16674,12 +16416,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
                 AssetsDataTable cln = ((AssetsDataTable)(base.Clone()));
                 cln.InitVars();
@@ -16909,7 +16645,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class AssetsLostDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class AssetsLostDataTable : global::System.Data.TypedTableBase<AssetsLostRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -17082,12 +16818,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             public AssetsLostRow FindByID(long ID) {
                 return ((AssetsLostRow)(this.Rows.Find(new object[] {
                             ID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -17278,7 +17008,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class IndustryJobsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class IndustryJobsDataTable : global::System.Data.TypedTableBase<IndustryJobsRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -17739,12 +17469,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
                 IndustryJobsDataTable cln = ((IndustryJobsDataTable)(base.Clone()));
                 cln.InitVars();
@@ -18023,7 +17747,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class RptGroupCharsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class RptGroupCharsDataTable : global::System.Data.TypedTableBase<RptGroupCharsRow> {
             
             private global::System.Data.DataColumn columnReportGroupID;
             
@@ -18186,12 +17910,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 return ((RptGroupCharsRow)(this.Rows.Find(new object[] {
                             ReportGroupID,
                             APICharID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -18378,7 +18096,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class RptGroupCorpsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class RptGroupCorpsDataTable : global::System.Data.TypedTableBase<RptGroupCorpsRow> {
             
             private global::System.Data.DataColumn columnReportGroupID;
             
@@ -18553,12 +18271,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                             ReportGroupID,
                             APICorpID,
                             APICharID})));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -18750,7 +18462,7 @@ namespace EveMarketMonitorApp.DatabaseClasses {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class WalletDivisionsDataTable : global::System.Data.DataTable, global::System.Collections.IEnumerable {
+        public partial class WalletDivisionsDataTable : global::System.Data.TypedTableBase<WalletDivisionsRow> {
             
             private global::System.Data.DataColumn columnID;
             
@@ -18850,12 +18562,6 @@ namespace EveMarketMonitorApp.DatabaseClasses {
                 rowWalletDivisionsRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowWalletDivisionsRow);
                 return rowWalletDivisionsRow;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public virtual global::System.Collections.IEnumerator GetEnumerator() {
-                return this.Rows.GetEnumerator();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
