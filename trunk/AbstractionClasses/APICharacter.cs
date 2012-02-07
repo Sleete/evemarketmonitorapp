@@ -74,6 +74,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         private int _downloadsInProgress = 0;
         private object _syncDownloadsInProg = new object();
 
+
         #region Public properties
         public long CharID
         {
@@ -780,9 +781,11 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                 parameters.Append("&accountKey=");
                                 parameters.Append(walletID);
                             }
-                            if (type == APIDataType.Journal) { parameters.Append("&fromID="); }
-                            if (type == APIDataType.Transactions) { parameters.Append("&fromID="); }
-                            parameters.Append(beforeID);
+                            if (beforeID != 0)
+                            {
+                                parameters.Append("&fromID=");
+                                parameters.Append(beforeID);
+                            }
                         }
                         if (type == APIDataType.Assets || type == APIDataType.Orders)
                         {
@@ -973,15 +976,15 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 {
                     _lastQueueProcessingDT = DateTime.UtcNow;
 
-                    // Limit this loop to running for no more than 1/2 a second
+                    // Limit this loop to running for no more than 1/2 second
                     while (_unprocessedXMLFiles.Count > 0 && 
                         _lastQueueProcessingDT.AddMilliseconds(500).CompareTo(DateTime.UtcNow) > 0)
                     {
                         bool process = true;
                         string xmlFile = "";
                         lock (_unprocessedXMLFiles) { xmlFile = _unprocessedXMLFiles.Dequeue(); }
-                        // If the next file is an asset data file and we still have other files waiting
-                        // or being downloaded then move the asset data file to the back of the queue.
+                        // If the next file is an asset data file and we still have other files waiting or 
+                        // being downloaded then move the asset data file to the back of the queue.
                         if (xmlFile.ToUpper().Contains("ASSETS") &&
                             (_unprocessedXMLFiles.Count > 0 || _downloadsInProgress > 0))
                         {
@@ -1000,6 +1003,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                                 if (_unprocessedXMLFiles.Count == 1 && _downloadsInProgress > 0) { break; }
                             }
                         }
+
 
                         if (process)
                         {
@@ -1564,7 +1568,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             parameters.xmlData = fileXml;
             parameters.corc = corc;
             parameters.walletID = walletID;
-            ThreadPool.QueueUserWorkItem(UpdateAssetsFromXML, parameters);
+            ThreadPool.QueueUserWorkItem(UpdateJournalFromXML, parameters);
         }
 
         private void UpdateJournalFromXML(object parameters)
@@ -1659,81 +1663,81 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                         //if (id - offset > oldHighestID)
                         //{
-                            if (id - offset > highestIDSoFar) { highestIDSoFar = id - offset; }
-                            if (Journal.EntryExists(journalData, id, recieverID))
-                            {
-                                tryUpdate = true;
-                            }
-                            else
-                            {
-                                EMMADataSet.JournalRow tmpRow = journalData.FindByIDRecieverID(id, recieverID);
-                                if (tmpRow == null)
-                                {
-                                    EMMADataSet.JournalRow newRow =
-                                        BuildJournalEntry(journalData, journEntry, offset, walletID, corc);
-
-                                    journalData.AddJournalRow(newRow);
-                                    retVal++;
-
-                                    // This section searches the character and journal ref type tables 
-                                    // for the values used in this new journal entry.
-                                    // If they are not present in the tables then they are added.
-                                    #region Check other tables and add values if needed.
-                                    SortedList<long, string> entityIDs = new SortedList<long, string>();
-                                    entityIDs.Add(newRow.SenderID, journEntry.SelectSingleNode("@ownerName1").Value);
-                                    if (!entityIDs.ContainsKey(newRow.RecieverID))
-                                    {
-                                        entityIDs.Add(newRow.RecieverID, journEntry.SelectSingleNode("@ownerName2").Value);
-                                    }
-                                    foreach (KeyValuePair<long, string> checkName in entityIDs)
-                                    {
-                                        Names.AddName(checkName.Key, checkName.Value);
-                                    }
-                                    #endregion
-                                }
-                                else
-                                {
-                                    tryUpdate = true;
-                                }
-                            }
-
-                            if (tryUpdate)
+                        if (id - offset > highestIDSoFar) { highestIDSoFar = id - offset; }
+                        if (Journal.EntryExists(journalData, id, recieverID))
+                        {
+                            tryUpdate = true;
+                        }
+                        else
+                        {
+                            EMMADataSet.JournalRow tmpRow = journalData.FindByIDRecieverID(id, recieverID);
+                            if (tmpRow == null)
                             {
                                 EMMADataSet.JournalRow newRow =
                                     BuildJournalEntry(journalData, journEntry, offset, walletID, corc);
-                                EMMADataSet.JournalRow oldRow = journalData.FindByIDRecieverID(newRow.ID,
-                                        newRow.RecieverID);
-                                bool updated = false;
 
-                                if (oldRow != null)
+                                journalData.AddJournalRow(newRow);
+                                retVal++;
+
+                                // This section searches the character and journal ref type tables 
+                                // for the values used in this new journal entry.
+                                // If they are not present in the tables then they are added.
+                                #region Check other tables and add values if needed.
+                                SortedList<long, string> entityIDs = new SortedList<long, string>();
+                                entityIDs.Add(newRow.SenderID, journEntry.SelectSingleNode("@ownerName1").Value);
+                                if (!entityIDs.ContainsKey(newRow.RecieverID))
                                 {
-                                    if ((newRow.RBalance > 0 && oldRow.RBalance == 0) ||
-                                        (newRow.RCorpID != 0 && oldRow.RCorpID == 0))
-                                    {
-                                        oldRow.RBalance = newRow.RBalance;
-                                        oldRow.RCorpID = newRow.RCorpID;
-                                        oldRow.RArgID = newRow.RArgID;
-                                        oldRow.RArgName = newRow.RArgName;
-                                        oldRow.RWalletID = newRow.RWalletID;
-                                        updated = true;
-                                    }
-                                    if ((newRow.SBalance > 0 && oldRow.SBalance == 0) ||
-                                        (newRow.SCorpID != 0 && oldRow.SCorpID == 0))
-                                    {
-                                        oldRow.SBalance = newRow.SBalance;
-                                        oldRow.SCorpID = newRow.SCorpID;
-                                        oldRow.SArgID = newRow.SArgID;
-                                        oldRow.SArgName = newRow.SArgName;
-                                        oldRow.SWalletID = newRow.SWalletID;
-                                        updated = true;
-                                    }
+                                    entityIDs.Add(newRow.RecieverID, journEntry.SelectSingleNode("@ownerName2").Value);
                                 }
-
-                                if (updated)
+                                foreach (KeyValuePair<long, string> checkName in entityIDs)
                                 {
-                                    updatedEntries++;
+                                    Names.AddName(checkName.Key, checkName.Value);
+                                }
+                                #endregion
+                            }
+                            else
+                            {
+                                tryUpdate = true;
+                            }
+                        }
+
+                        if (tryUpdate)
+                        {
+                            EMMADataSet.JournalRow newRow =
+                                BuildJournalEntry(journalData, journEntry, offset, walletID, corc);
+                            EMMADataSet.JournalRow oldRow = journalData.FindByIDRecieverID(newRow.ID,
+                                    newRow.RecieverID);
+                            bool updated = false;
+
+                            if (oldRow != null)
+                            {
+                                if ((newRow.RBalance > 0 && oldRow.RBalance == 0) ||
+                                    (newRow.RCorpID != 0 && oldRow.RCorpID == 0))
+                                {
+                                    oldRow.RBalance = newRow.RBalance;
+                                    oldRow.RCorpID = newRow.RCorpID;
+                                    oldRow.RArgID = newRow.RArgID;
+                                    oldRow.RArgName = newRow.RArgName;
+                                    oldRow.RWalletID = newRow.RWalletID;
+                                    updated = true;
+                                }
+                                if ((newRow.SBalance > 0 && oldRow.SBalance == 0) ||
+                                    (newRow.SCorpID != 0 && oldRow.SCorpID == 0))
+                                {
+                                    oldRow.SBalance = newRow.SBalance;
+                                    oldRow.SCorpID = newRow.SCorpID;
+                                    oldRow.SArgID = newRow.SArgID;
+                                    oldRow.SArgName = newRow.SArgName;
+                                    oldRow.SWalletID = newRow.SWalletID;
+                                    updated = true;
                                 }
                             }
+
+                            if (updated)
+                            {
+                                updatedEntries++;
+                            }
+                        }
 
                         //}
 
@@ -1946,7 +1950,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                     XmlNode entryIDNode = transEntries[0].SelectSingleNode("@transactionID");
                     //long fileMaxID = long.Parse(entryIDNode.Value,
                     //    System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-                    
+
 
                     // Loop through the results returned from this call to the API and add the line to
                     // the data table if the transactionID is not already in the database.
@@ -1960,74 +1964,74 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                         //if (transID > highestIDSoFar)
                         //{
-                            if (!Transactions.TransactionExists(transData, transID) &&
-                                transData.FindByID(transID) == null)
+                        if (!Transactions.TransactionExists(transData, transID) &&
+                            transData.FindByID(transID) == null)
+                        {
+                            // Actually create the line and add it to the data table
+                            SortedList<long, string> nameIDs = new SortedList<long, string>();
+                            EMMADataSet.TransactionsRow newRow = BuildTransRow(transID, transData,
+                                transEntry, walletID, nameIDs, false);
+
+                            transData.AddTransactionsRow(newRow);
+                            retVal++;
+
+                            // This section searches the character, item and station ref type tables 
+                            // for the values used in this new transaction entry.
+                            // If they are not present in the table then they are added.
+                            #region Check other tables and add values if needed.
+                            foreach (KeyValuePair<long, string> checkName in nameIDs)
                             {
-                                // Actually create the line and add it to the data table
-                                SortedList<long, string> nameIDs = new SortedList<long, string>();
-                                EMMADataSet.TransactionsRow newRow = BuildTransRow(transID, transData,
-                                    transEntry, walletID, nameIDs, false);
-
-                                transData.AddTransactionsRow(newRow);
-                                retVal++;
-
-                                // This section searches the character, item and station ref type tables 
-                                // for the values used in this new transaction entry.
-                                // If they are not present in the table then they are added.
-                                #region Check other tables and add values if needed.
-                                foreach (KeyValuePair<long, string> checkName in nameIDs)
-                                {
-                                    Names.AddName(checkName.Key, checkName.Value);
-                                }
-                                Items.AddItem(newRow.ItemID, transEntry.SelectSingleNode("@typeName").Value);
-                                #endregion
+                                Names.AddName(checkName.Key, checkName.Value);
                             }
-                            else
+                            Items.AddItem(newRow.ItemID, transEntry.SelectSingleNode("@typeName").Value);
+                            #endregion
+                        }
+                        else
+                        {
+                            SortedList<long, string> nameIDs = new SortedList<long, string>();
+                            // We've got a transaction that already exists in the database,
+                            // update the row with additional data if available. 
+                            EMMADataSet.TransactionsRow newRow =
+                                BuildTransRow(transID, transData, transEntry, walletID, nameIDs, true);
+                            EMMADataSet.TransactionsRow oldRow = transData.FindByID(transID);
+                            bool updateDone = false;
+
+                            if (newRow.BuyerWalletID != oldRow.BuyerWalletID && newRow.BuyerWalletID != 0)
                             {
-                                SortedList<long, string> nameIDs = new SortedList<long, string>();
-                                // We've got a transaction that already exists in the database,
-                                // update the row with additional data if available. 
-                                EMMADataSet.TransactionsRow newRow =
-                                    BuildTransRow(transID, transData, transEntry, walletID, nameIDs, true);
-                                EMMADataSet.TransactionsRow oldRow = transData.FindByID(transID);
-                                bool updateDone = false;
-
-                                if (newRow.BuyerWalletID != oldRow.BuyerWalletID && newRow.BuyerWalletID != 0)
-                                {
-                                    oldRow.BuyerWalletID = newRow.BuyerWalletID;
-                                    updateDone = true;
-                                }
-                                if (newRow.SellerWalletID != oldRow.SellerWalletID && newRow.SellerWalletID != 0)
-                                {
-                                    oldRow.SellerWalletID = newRow.SellerWalletID;
-                                    updateDone = true;
-                                }
-                                // If a corp sells somthing to another corp (or itself) then we will get into 
-                                // the position of having the other party set as a character when in fact
-                                // it is that character's corp.
-                                // We check for this here and correct it if required.
-                                if (oldRow.BuyerID == _charID && newRow.BuyerID == _corpID)
-                                {
-                                    oldRow.BuyerID = newRow.BuyerID;
-                                    oldRow.BuyerCharacterID = newRow.BuyerCharacterID;
-                                    oldRow.BuyerWalletID = newRow.BuyerWalletID;
-                                    oldRow.BuyerForCorp = newRow.BuyerForCorp;
-                                    updateDone = true;
-                                }
-                                if (oldRow.SellerID == _charID && newRow.SellerID == _corpID)
-                                {
-                                    oldRow.SellerID = newRow.SellerID;
-                                    oldRow.SellerCharacterID = newRow.SellerCharacterID;
-                                    oldRow.SellerWalletID = newRow.SellerWalletID;
-                                    oldRow.SellerForCorp = newRow.SellerForCorp;
-                                    updateDone = true;
-                                }
-
-                                if (updateDone)
-                                {
-                                    updated++;
-                                }
+                                oldRow.BuyerWalletID = newRow.BuyerWalletID;
+                                updateDone = true;
                             }
+                            if (newRow.SellerWalletID != oldRow.SellerWalletID && newRow.SellerWalletID != 0)
+                            {
+                                oldRow.SellerWalletID = newRow.SellerWalletID;
+                                updateDone = true;
+                            }
+                            // If a corp sells somthing to another corp (or itself) then we will get into 
+                            // the position of having the other party set as a character when in fact
+                            // it is that character's corp.
+                            // We check for this here and correct it if required.
+                            if (oldRow.BuyerID == _charID && newRow.BuyerID == _corpID)
+                            {
+                                oldRow.BuyerID = newRow.BuyerID;
+                                oldRow.BuyerCharacterID = newRow.BuyerCharacterID;
+                                oldRow.BuyerWalletID = newRow.BuyerWalletID;
+                                oldRow.BuyerForCorp = newRow.BuyerForCorp;
+                                updateDone = true;
+                            }
+                            if (oldRow.SellerID == _charID && newRow.SellerID == _corpID)
+                            {
+                                oldRow.SellerID = newRow.SellerID;
+                                oldRow.SellerCharacterID = newRow.SellerCharacterID;
+                                oldRow.SellerWalletID = newRow.SellerWalletID;
+                                oldRow.SellerForCorp = newRow.SellerForCorp;
+                                updateDone = true;
+                            }
+
+                            if (updateDone)
+                            {
+                                updated++;
+                            }
+                        }
                         //}
 
                         batchPrg++;

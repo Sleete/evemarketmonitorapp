@@ -301,19 +301,32 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                 XmlNode rowset = xml.SelectSingleNode("/eveapi/result/rowset");
                 XmlNode nameAttribute = rowset.Attributes.GetNamedItem("name");
+                XmlNode keyAttribute = rowset.Attributes.GetNamedItem("key");
                 string name = nameAttribute.Value;
-
-                if (name.Equals("entries"))
+                string key = "";
+                if (keyAttribute != null)
                 {
-                    retVal = APIDataType.Journal;
+                    key = keyAttribute.Value;
                 }
-                else if (name.Equals("assets"))
+
+                if (name.Equals("assets"))
                 {
                     retVal = APIDataType.Assets;
                 }
                 else if (name.Equals("transactions"))
                 {
-                    retVal = APIDataType.Transactions;
+                    if (key.Equals("transactionID"))
+                    {
+                        retVal = APIDataType.Transactions;
+                    }
+                    else if (key.Equals("refID"))
+                    {
+                        retVal = APIDataType.Journal;
+                    }
+                    else
+                    {
+                        retVal = APIDataType.Unknown;
+                    }
                 }
                 else if (name.Equals("orders"))
                 {

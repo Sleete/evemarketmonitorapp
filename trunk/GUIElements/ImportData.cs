@@ -50,7 +50,7 @@ namespace EveMarketMonitorApp.GUIElements
                     charcorps.Sort();
                     foreach (CharCorpOption opt in charcorps)
                     {
-                        options.Add(opt.Data.ID, opt.Name);
+                        if (!options.ContainsKey(opt.Data.ID)) { options.Add(opt.Data.ID, opt.Name); }
                     }
 
                     OptionPicker picker = new OptionPicker("Select Char/Corp",
@@ -59,7 +59,7 @@ namespace EveMarketMonitorApp.GUIElements
 
                     if (picker.ShowDialog() != DialogResult.Cancel)
                     {
-                        int chosenID = (int)picker.SelectedItem;
+                        long chosenID = (long)picker.SelectedItem;
                         bool corp = false;
                         character = UserAccount.CurrentGroup.GetCharacter(chosenID, ref corp);
                         corc = corp ? CharOrCorp.Corp : CharOrCorp.Char;

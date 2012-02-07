@@ -9250,7 +9250,45 @@ EXEC sys.sp_addextendedproperty @name=N'SqlAssemblyFileLine', @value=56 , @level
 
                         #endregion
                     }
+                    if (dbVersion.CompareTo(new Version("1.6.0.1")) < 0)
+                    {
+                        #region Updating JournalEntryExists stored proc
+                        commandText =
+                               @"ALTER PROCEDURE [dbo].[JournalEntryExists]
+	@entryID	bigint,
+	@recieverID	bigint,
+	@exists		bit		OUT
+AS
+	SET @exists = 0
+	
+	SELECT *
+	FROM Journal
+	WHERE ID = @entryID AND (RecieverID = @recieverID OR @recieverID = 0)
+	
+	IF(@@ROWCOUNT = 1)
+	BEGIN
+		SET @exists = 1
+	END
+	
+	RETURN";
 
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.6.0.1"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'JournalEntryExists' stored procedure", ex);
+                        }
+                        #endregion
+                    }
+
+                    
          
                 }
 
