@@ -341,45 +341,56 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void charsAndCorpsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            CheckForDuplicateCorp(e);
+            CheckForDuplicateCorp(CharOrCorp.Char, e);
         }
         private void charsAndCorpsGrid_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            CheckForDuplicateCorp(e);
+            CheckForDuplicateCorp(CharOrCorp.Char, e);
         }
 
-        private void CheckForDuplicateCorp(DataGridViewCellEventArgs e)
+        private void CorprGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            CheckForDuplicateCorp(CharOrCorp.Corp, e);
+        }
+        private void CorprGrid_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            CheckForDuplicateCorp(CharOrCorp.Corp, e);
+        }
+
+
+        private void CheckForDuplicateCorp(CharOrCorp gridType, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
-                if (charsAndCorpsGrid.Columns[e.ColumnIndex] == corpIncludedColumn_Corp)
+                if (gridType == CharOrCorp.Corp && CorprGrid.Columns[e.ColumnIndex] == corpIncludedColumn_Corp)
                 {
                     DataGridViewDataErrorContexts context = DataGridViewDataErrorContexts.Commit;
-                    charsAndCorpsGrid.CommitEdit(context);
-                    if ((bool)charsAndCorpsGrid[e.ColumnIndex, e.RowIndex].Value == true)
+                    CorprGrid.CommitEdit(context);
+                    if ((bool)CorprGrid[e.ColumnIndex, e.RowIndex].Value == true)
                     {
                         // Don't allow player to select the same corp on different characters.
-                        object charIDValue = charsAndCorpsGrid["charIDColumn", e.RowIndex].Value;
-                        object corpIDvalue = charsAndCorpsGrid["corpIDColumn", e.RowIndex].Value;
-                        if (corpIDvalue != null && charIDValue != null)
+                        //object charIDValue = CorprGrid["charIDColumn", e.RowIndex].Value;
+                        object corpIDvalue = CorprGrid["corpIDColumn_Corp", e.RowIndex].Value;
+                        if (corpIDvalue != null) // && charIDValue != null)
                         {
-                            for (int i = 0; i < charsAndCorpsGrid.Rows.Count; i++)
+                            for (int i = 0; i < CorprGrid.Rows.Count; i++)
                             {
-                                object rowCorpID = charsAndCorpsGrid["corpIDColumn", i].Value;
-                                object rowCharID = charsAndCorpsGrid["charIDColumn", i].Value;
-                                object rowCorpSelected = charsAndCorpsGrid["corpIncludedColumn_Corp", i].Value;
+                                object rowCorpID = CorprGrid["corpIDColumn_Corp", i].Value;
+                                //object rowCharID = CorprGrid["charIDColumn", i].Value;
+                                object rowCorpSelected = CorprGrid["corpIncludedColumn_Corp", i].Value;
 
-                                if (rowCharID != null && rowCorpID != null && rowCorpSelected != null)
+                                if (/*rowCharID != null &&*/ rowCorpID != null && rowCorpSelected != null)
                                 {
-                                    if ((int)rowCorpID == (int)corpIDvalue && 
-                                        (int)rowCharID != (int)charIDValue &&
+                                    if ((long)rowCorpID == (long)corpIDvalue && 
+                                        e.RowIndex != i &&
+                                        /*(int)rowCharID != (int)charIDValue &&*/
                                         (bool)rowCorpSelected)
                                     {
-                                        // If a character that is NOT the one on the row we are editing is part of
-                                        // the same corp and that corp is already included then de-select the
+                                        // If a row that is NOT the row we are editing is the same corp and 
+                                        // that corp is already included then de-select the
                                         // corp on the row being editied.
-                                        charsAndCorpsGrid[e.ColumnIndex, e.RowIndex].Value = false;
-                                        charsAndCorpsGrid.RefreshEdit();
+                                        CorprGrid[e.ColumnIndex, e.RowIndex].Value = false;
+                                        CorprGrid.RefreshEdit();
 
                                         MessageBox.Show("You cannot select the same corp more than once.",
                                             "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -393,37 +404,49 @@ namespace EveMarketMonitorApp.GUIElements
                 // character/corp to be selected.
                 if (Globals.License == Enforcer.LicenseType.Lite)
                 {
-                    if (charsAndCorpsGrid.Columns[e.ColumnIndex] == corpIncludedColumn_Corp ||
-                        charsAndCorpsGrid.Columns[e.ColumnIndex] == charIncludedColumn)
+                    if ((gridType == CharOrCorp.Corp && CorprGrid.Columns[e.ColumnIndex] == corpIncludedColumn_Corp) ||
+                        (gridType == CharOrCorp.Char && charsAndCorpsGrid.Columns[e.ColumnIndex] == charIncludedColumn))
                     {
                         DataGridViewDataErrorContexts context = DataGridViewDataErrorContexts.Commit;
                         charsAndCorpsGrid.CommitEdit(context);
                         bool showWarning = false;
-                        if ((bool)charsAndCorpsGrid[e.ColumnIndex, e.RowIndex].Value == true)
+                        if ((gridType == CharOrCorp.Char && (bool)charsAndCorpsGrid[e.ColumnIndex, e.RowIndex].Value) ||
+                            (gridType == CharOrCorp.Corp && (bool)CorprGrid[e.ColumnIndex, e.RowIndex].Value))
                         {
+                            bool setFalse = false;
+
                             for (int i = 0; i < charsAndCorpsGrid.Rows.Count; i++)
                             {
-                                bool setCorpFalse = true;
-                                bool setCharFalse = true;
-                                if (e.RowIndex == i)
+                                if (gridType == CharOrCorp.Corp || e.RowIndex != i)
                                 {
-                                    if (charsAndCorpsGrid.Columns[e.ColumnIndex] == corpIncludedColumn_Corp) { setCorpFalse = false; }
-                                    if (charsAndCorpsGrid.Columns[e.ColumnIndex] == charIncludedColumn) { setCharFalse = false; }
+                                    setFalse = setFalse || (bool)charsAndCorpsGrid[e.ColumnIndex, e.RowIndex].Value;
                                 }
-
-                                if (setCorpFalse)
-                                {
-                                    if ((bool)charsAndCorpsGrid[corpIncludedColumn_Corp.Index, i].Value) { showWarning = true; }
-                                    charsAndCorpsGrid[corpIncludedColumn_Corp.Index, i].Value = false;
-                                }
-                                if (setCharFalse)
-                                {
-                                    if ((bool)charsAndCorpsGrid[charIncludedColumn.Index, i].Value) { showWarning = true; }
-                                    charsAndCorpsGrid[charIncludedColumn.Index, i].Value = false;
-                                }
-                                
-                                charsAndCorpsGrid.RefreshEdit();
                             }
+                            for (int i = 0; i < CorprGrid.Rows.Count; i++)
+                            {
+                                if (gridType == CharOrCorp.Char || e.RowIndex != i)
+                                {
+                                    setFalse = setFalse || (bool)CorprGrid[e.ColumnIndex, e.RowIndex].Value;
+                                }
+                            }
+
+
+                            if (setFalse)
+                            {
+                                if (gridType == CharOrCorp.Char)
+                                {
+                                    showWarning = true;
+                                    charsAndCorpsGrid[e.ColumnIndex, e.RowIndex].Value = false;
+                                    charsAndCorpsGrid.RefreshEdit();
+                                }
+                                if (gridType == CharOrCorp.Corp)
+                                {
+                                    showWarning = true;
+                                    CorprGrid[e.ColumnIndex, e.RowIndex].Value = false;
+                                    CorprGrid.RefreshEdit();
+                                }
+                            }
+
                         }
 
                         if (showWarning)
@@ -459,6 +482,8 @@ namespace EveMarketMonitorApp.GUIElements
         {
 
         }
+
+
 
 
 

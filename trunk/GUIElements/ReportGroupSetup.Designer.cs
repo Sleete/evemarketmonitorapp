@@ -258,6 +258,8 @@ namespace EveMarketMonitorApp.GUIElements
             this.CorprGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.CorprGrid.Size = new System.Drawing.Size(865, 130);
             this.CorprGrid.TabIndex = 11;
+            this.CorprGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CorprGrid_CellContentClick);
+            this.CorprGrid.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CorprGrid_CellContentDoubleClick);
             // 
             // corpIDColumn_Corp
             // 

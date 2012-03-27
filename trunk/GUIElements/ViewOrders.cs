@@ -208,7 +208,7 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 if (!txtStation.Text.Equals(_lastStation))
                 {
-                    txtStation.Tag = 0;
+                    txtStation.Tag = (long)0;
                     if (!txtStation.Text.Equals(""))
                     {
                         try
@@ -216,7 +216,7 @@ namespace EveMarketMonitorApp.GUIElements
                             EveDataSet.staStationsRow station = Stations.GetStation(txtStation.Text);
                             if (station != null)
                             {
-                                txtStation.Tag = station.stationID;
+                                txtStation.Tag = (long)station.stationID;
                                 string name = station.stationName;
                                 txtStation.Text = name;
                                 if (!_recentStations.Contains(name))

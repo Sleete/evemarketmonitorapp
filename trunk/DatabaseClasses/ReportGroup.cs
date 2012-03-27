@@ -65,12 +65,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 foreach (APICharacter apichar in account.Chars)
                 {
-                    if (apichar.CharIncWithRptGroup)
+                    if (account.Type == CharOrCorp.Char && apichar.CharIncWithRptGroup)
                     {
                         CharCorpOption opt = new CharCorpOption(apichar, false);
                         options.Add(opt);
                     }
-                    if (!charsOnly && apichar.CorpIncWithRptGroup && apichar.CharHasCorporateAccess(type))
+                    if (account.Type == CharOrCorp.Corp && !charsOnly && apichar.CorpIncWithRptGroup && apichar.CharHasCorporateAccess(type))
                     {
                         CharCorpOption opt = new CharCorpOption(apichar, true);
                         options.Add(opt);
