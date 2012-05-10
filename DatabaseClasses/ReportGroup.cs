@@ -443,7 +443,14 @@ namespace EveMarketMonitorApp.DatabaseClasses
             CharCorpOption other = obj as CharCorpOption;
             if (other != null)
             {
-                retVal = Name.CompareTo(other.Name);
+                if (Name != null && other.Name != null)
+                {
+                    retVal = Name.CompareTo(other.Name);
+                }
+                else if ((Name == null && other.Name != null) || (Name != null && other.Name == null))
+                {
+                    retVal = 1;
+                }
             }
 
             return retVal;
