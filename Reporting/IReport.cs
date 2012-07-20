@@ -538,7 +538,7 @@ namespace EveMarketMonitorApp.Reporting
                 {
                     retVal = ReportPeriod.Year;
                 }
-                else if (_periodMonths == 4)
+                else if (_periodMonths == 3)
                 {
                     retVal = ReportPeriod.Quarter;
                 }
@@ -571,7 +571,7 @@ namespace EveMarketMonitorApp.Reporting
                         _periodYears = 1;
                         break;
                     case ReportPeriod.Quarter:
-                        _periodMonths = 4;
+                        _periodMonths = 3;
                         break;
                     case ReportPeriod.Month:
                         _periodMonths = 1;
