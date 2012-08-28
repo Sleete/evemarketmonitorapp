@@ -153,6 +153,10 @@
       <DependentUpon>EMMADataSet.xsd</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DatabaseClasses\EveDataSet.cs">
+      <DependentUpon>EveDataSet.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DatabaseClasses\IndustryJobs.cs" />
     <Compile Include="DatabaseClasses\TradedItems.cs" />
     <Compile Include="DatabaseClasses\EMMADataSet.Designer.cs">
