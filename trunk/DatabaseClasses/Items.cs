@@ -305,7 +305,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
             else
             {
-                short groupID = itemData.groupID;
+                int groupID = itemData.groupID;
                 if (groupTable == null)
                 {
                     groupTable = new EveDataSet.invGroupsDataTable();

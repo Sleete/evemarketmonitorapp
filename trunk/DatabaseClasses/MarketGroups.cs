@@ -55,7 +55,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// </summary>
         /// <param name="table"></param>
         /// <param name="groupID"></param>
-        private static void AddGroupParents(EveDataSet.invMarketGroupsDataTable table, short groupID)
+        private static void AddGroupParents(EveDataSet.invMarketGroupsDataTable table, int groupID)
         {
             EveDataSet.invMarketGroupsRow group = table.FindBymarketGroupID(groupID);
             if (group == null)
