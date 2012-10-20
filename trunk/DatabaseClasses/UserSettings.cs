@@ -298,7 +298,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     retVal = bool.FalseString;
                     break;
                 case Setting.APIURL:
-                    retVal = "http://api.eve-online.com";
+                    retVal = "https://api.eveonline.com";
                     break;
                 default:
                     break;

@@ -129,7 +129,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         {
             //if (DateTime.UtcNow.AddHours(-48).CompareTo(_lastcharListUpdate) > 0 || forceUpdate)
             //{
-                XmlDocument xml = EveAPI.GetXml(EveAPI.URL_EveApiBase + EveAPI.URL_CharsApi,
+            XmlDocument xml = EveAPI.GetXml(EveAPI.URL_EveApiHTTPS + EveAPI.URL_CharsApi,
                     "keyID=" + _userID + "&vCode=" + _apiKey);
                 _lastcharListUpdate = DateTime.UtcNow;
 

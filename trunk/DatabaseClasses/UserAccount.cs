@@ -110,7 +110,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         Diagnostics.StartTimer("OpenAccount.InitSettings");
                         InitSettings();
                         // Set API base URL
-                        EveAPI.URL_EveApiBase = _settings.APIURL; 
+                        EveAPI.URL_EveApiHTTPS = _settings.APIURL; 
                         Diagnostics.StopTimer("OpenAccount.InitSettings");
                         Diagnostics.StartTimer("OpenAccount.GetGroups");
                         _reportGroups = ReportGroups.GetUsersGroups(_name, true);

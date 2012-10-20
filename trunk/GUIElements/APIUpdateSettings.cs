@@ -85,7 +85,7 @@ namespace EveMarketMonitorApp.GUIElements
                 UserAccount.Settings.APIIndividualUpdate = chkAllowIndividualUpdate.Checked;
                 UserAccount.Settings.UseCompactUpdatePanel = chkCompactView.Checked;
                 UserAccount.Settings.APIURL = txtAPIURL.Text;
-                EveAPI.URL_EveApiBase = txtAPIURL.Text;
+                EveAPI.URL_EveApiHTTPS = txtAPIURL.Text;
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -224,12 +224,12 @@ namespace EveMarketMonitorApp.GUIElements
 
         private void btnDefaultAPIURL_Click(object sender, EventArgs e)
         {
-            txtAPIURL.Text = "http://api.eve-online.com";
+            txtAPIURL.Text = "https://api.eveonline.com";
         }
 
         private void btnTestAPIURL_Click(object sender, EventArgs e)
         {
-            txtAPIURL.Text = "http://apitest.eve-online.com";
+            txtAPIURL.Text = "https://apitest.eveonline.com";
         }
 
 

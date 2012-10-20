@@ -61,9 +61,9 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.rdbCSV);
             this.groupBox1.Controls.Add(this.rdbAPIXML);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
@@ -76,6 +76,7 @@ namespace EveMarketMonitorApp.GUIElements
             // rdbCSV
             // 
             this.rdbCSV.AutoSize = true;
+            this.rdbCSV.Enabled = false;
             this.rdbCSV.Location = new System.Drawing.Point(6, 42);
             this.rdbCSV.Name = "rdbCSV";
             this.rdbCSV.Size = new System.Drawing.Size(65, 17);

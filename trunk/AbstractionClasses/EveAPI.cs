@@ -8,6 +8,8 @@ using System.IO;
 
 using EveMarketMonitorApp.DatabaseClasses;
 using EveMarketMonitorApp.Common;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 
 namespace EveMarketMonitorApp.AbstractionClasses
 {
@@ -18,7 +20,8 @@ namespace EveMarketMonitorApp.AbstractionClasses
     /// </summary>
     public static class EveAPI
     {
-        public static string URL_EveApiBase = "http://api.eveonline.com";
+        //public static string URL_EveApiBase = "http://api.eveonline.com";
+        public static string URL_EveApiHTTPS = @"https://api.eveonline.com";
 
         //public const string URL_KeyInfoApi = "/account/APIKeyInfo.xml.aspx";
         public const string URL_CharsApi = "/account/APIKeyInfo.xml.aspx";
@@ -182,7 +185,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
                 if (DateTime.UtcNow.CompareTo(nextUpdate) >= 0)
                 {
-                    XmlDocument xml = GetXml(URL_EveApiBase + URL_OutpostListApi, "");
+                    XmlDocument xml = GetXml(URL_EveApiHTTPS + URL_OutpostListApi, "");
                     XmlNodeList results = GetResults(xml);
 
                     foreach (XmlNode outpost in results)
@@ -231,7 +234,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
             if (_journalRefs == null || DateTime.UtcNow.AddDays(-1).CompareTo(_lastJournalRefsAccess) < 0)
             {
-                XmlDocument xml = GetXml(URL_EveApiBase + URL_JournRefsApi, "");
+                XmlDocument xml = GetXml(URL_EveApiHTTPS + URL_JournRefsApi, "");
                 _journalRefs = GetResults(xml);
                 _lastJournalRefsAccess = DateTime.UtcNow;
             }
@@ -255,7 +258,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
         {
             string retVal = "";
 
-            XmlDocument xml = GetXml(URL_EveApiBase + URL_NameApi, "ids=" + id.ToString());
+            XmlDocument xml = GetXml(URL_EveApiHTTPS + URL_NameApi, "ids=" + id.ToString());
             try
             {
                 XmlNodeList nameXml = GetResults(xml);
@@ -560,6 +563,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 request = (HttpWebRequest)HttpWebRequest.Create(url);
                 request.ContentType = "application/x-www-form-urlencoded";
                 request.Method = "POST";
+                // allows for validation of SSL conversations
+                ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateRemoteCertificate);
+
                 ASCIIEncoding enc = new ASCIIEncoding();
                 data = enc.GetBytes(parameters);
 
@@ -691,6 +697,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
             return null;
         }
+
 
         private static void SetupURLDescriptions()
         {
