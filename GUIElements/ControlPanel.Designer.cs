@@ -65,7 +65,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnLogout
             // 
-            this.btnLogout.Location = new System.Drawing.Point(12, 257);
+            this.btnLogout.Location = new System.Drawing.Point(12, 292);
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.Size = new System.Drawing.Size(140, 29);
             this.btnLogout.TabIndex = 5;
@@ -95,18 +95,17 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(12, 174);
+            this.btnExport.Location = new System.Drawing.Point(12, 187);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(140, 29);
             this.btnExport.TabIndex = 4;
             this.btnExport.Text = "E&xport Data";
             this.btnExport.UseVisualStyleBackColor = true;
-            this.btnExport.Visible = false;
             this.btnExport.Click += new System.EventHandler(this.Button_Click);
             // 
             // btnQuit
             // 
-            this.btnQuit.Location = new System.Drawing.Point(12, 327);
+            this.btnQuit.Location = new System.Drawing.Point(12, 362);
             this.btnQuit.Name = "btnQuit";
             this.btnQuit.Size = new System.Drawing.Size(140, 29);
             this.btnQuit.TabIndex = 6;
@@ -131,7 +130,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnLicense
             // 
-            this.btnLicense.Location = new System.Drawing.Point(12, 187);
+            this.btnLicense.Location = new System.Drawing.Point(12, 222);
             this.btnLicense.Name = "btnLicense";
             this.btnLicense.Size = new System.Drawing.Size(140, 29);
             this.btnLicense.TabIndex = 8;
@@ -141,7 +140,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnVerifyDB
             // 
-            this.btnVerifyDB.Location = new System.Drawing.Point(12, 222);
+            this.btnVerifyDB.Location = new System.Drawing.Point(12, 257);
             this.btnVerifyDB.Name = "btnVerifyDB";
             this.btnVerifyDB.Size = new System.Drawing.Size(140, 29);
             this.btnVerifyDB.TabIndex = 9;
@@ -151,7 +150,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnAbout
             // 
-            this.btnAbout.Location = new System.Drawing.Point(12, 292);
+            this.btnAbout.Location = new System.Drawing.Point(12, 327);
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Size = new System.Drawing.Size(140, 29);
             this.btnAbout.TabIndex = 10;
@@ -163,7 +162,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(164, 370);
+            this.ClientSize = new System.Drawing.Size(164, 403);
             this.Controls.Add(this.btnAbout);
             this.Controls.Add(this.btnVerifyDB);
             this.Controls.Add(this.btnLicense);

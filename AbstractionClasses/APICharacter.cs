@@ -464,7 +464,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
 
             if (DateTime.UtcNow.AddHours(-48).CompareTo(_charSheetXMLLastUpdate) > 0)
             {
-                xml = EveAPI.GetXml(EveAPI.URL_EveApiBase + EveAPI.URL_CharDataApi,
+                xml = EveAPI.GetXml(EveAPI.URL_EveApiHTTPS + EveAPI.URL_CharDataApi,
                   "keyID=" + _userID + "&vCode=" + _apiKey + "&characterID=" + _charID);
             }
             else
@@ -513,7 +513,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             if (xml == null || DateTime.UtcNow.AddHours(-1).CompareTo(
                 (corp ? _corpWalletXMLLastUpdate : _walletXMLLastUpdate)) > 0)
             {
-                xml = EveAPI.GetXml(EveAPI.URL_EveApiBase +
+                xml = EveAPI.GetXml(EveAPI.URL_EveApiHTTPS +
                     (corp ? EveAPI.URL_WalletCorpApi : EveAPI.URL_WalletApi),
                     "keyID=" + _userID + "&vCode=" + _apiKey +
                     "&characterID=" + _charID);
@@ -557,7 +557,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             long id = (corc == CharOrCorp.Char ? _charID : _corpID);
 
 
-            XmlDocument xml = EveAPI.GetXml(EveAPI.URL_EveApiBase +
+            XmlDocument xml = EveAPI.GetXml(EveAPI.URL_EveApiHTTPS +
                 (corc == CharOrCorp.Corp ? EveAPI.URL_CorpStandingsApi : EveAPI.URL_CharStandingsApi),
                 "keyID=" + _userID + "&vCode=" + _apiKey + "&characterID=" + _charID);
 
@@ -793,7 +793,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         }
                         #endregion
 
-                        xml = EveAPI.GetXml(EveAPI.URL_EveApiBase + EveAPI.GetURL(corc, type), 
+                        xml = EveAPI.GetXml(EveAPI.URL_EveApiHTTPS + EveAPI.GetURL(corc, type), 
                             parameters.ToString(), ref xmlFile);
                         XmlNodeList tmp = EveAPI.GetResults(xml);
                         if (xmlFile.Length > 0)
@@ -2717,7 +2717,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
             XmlDocument xml = null;
             if (DateTime.UtcNow.AddHours(-48).CompareTo(_corpSheetXMLLastUpdate) > 0)
             {
-                xml = EveAPI.GetXml(EveAPI.URL_EveApiBase + EveAPI.URL_CorpDataApi,
+                xml = EveAPI.GetXml(EveAPI.URL_EveApiHTTPS + EveAPI.URL_CorpDataApi,
                    "keyID=" + _userID + "&vCode=" + _apiKey + "&characterID=" + _charID);
             }
             else
