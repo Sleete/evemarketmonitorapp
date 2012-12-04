@@ -765,7 +765,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             EveDataSet.invTypesDataTable retVal = new EveDataSet.invTypesDataTable();
             foreach (EMMADataSet.ItemValuesRow item in table)
             {
-                EveDataSet.invTypesRow existing = retVal.FindBytypeID((short)item.ItemID);
+                EveDataSet.invTypesRow existing = retVal.FindBytypeID(item.ItemID);
                 if (existing == null)
                 {
                     retVal.ImportRow(Items.GetItem(item.ItemID));

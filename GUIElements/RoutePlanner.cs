@@ -93,7 +93,7 @@ namespace EveMarketMonitorApp.GUIElements
                 cmbItem.AutoCompleteMode = AutoCompleteMode.Suggest;
                 cmbItem.KeyDown += new KeyEventHandler(cmbItem_KeyDown);
                 cmbItem.SelectedIndexChanged += new EventHandler(cmbItem_SelectedIndexChanged);
-                cmbItem.Tag = (short)0;
+                cmbItem.Tag = 0;
 
             }
             catch (Exception ex)
@@ -128,10 +128,10 @@ namespace EveMarketMonitorApp.GUIElements
             this.Cursor = Cursors.WaitCursor;
             try
             {
-                if (cmbItem.Text.Length == 0) { cmbItem.Tag = (short)0; }
+                if (cmbItem.Text.Length == 0) { cmbItem.Tag = 0; }
                 if (!cmbItem.Text.Equals(_lastItem))
                 {
-                    cmbItem.Tag = (short)0;
+                    cmbItem.Tag = 0;
                     if (!cmbItem.Text.Equals(""))
                     {
                         try
@@ -152,7 +152,7 @@ namespace EveMarketMonitorApp.GUIElements
                         catch (EMMADataException) { }
                     }
 
-                    if ((short)cmbItem.Tag == 0) { cmbItem.Text = ""; }
+                    if ((int)cmbItem.Tag == 0) { cmbItem.Text = ""; }
                     _lastItem = cmbItem.Text;
                 }
             }
@@ -302,7 +302,7 @@ namespace EveMarketMonitorApp.GUIElements
             }
             if (cmbItem.Text.Length > 0)
             {
-                itemID = (short)cmbItem.Tag;
+                itemID = (int)cmbItem.Tag;
             }
             if (txtMinQuantity.Text.Length > 0)
             {

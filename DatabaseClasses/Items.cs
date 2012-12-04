@@ -68,7 +68,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         {
             EveDataSet.invTypesDataTable table = new EveDataSet.invTypesDataTable();
             table = GetItems(itemID.ToString());
-            EveDataSet.invTypesRow data = table.FindBytypeID((short)itemID);
+            EveDataSet.invTypesRow data = table.FindBytypeID(itemID);
             return data;
         }
 
@@ -112,7 +112,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                         "those listed below.", options);
                     if (picker.ShowDialog() != System.Windows.Forms.DialogResult.Cancel)
                     {
-                        retVal = table.FindBytypeID((short)picker.SelectedItem);
+                        retVal = table.FindBytypeID((int)picker.SelectedItem);
                     }
                 }
                 else
@@ -211,12 +211,12 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     EveDataSet.invTypesDataTable items = new EveDataSet.invTypesDataTable();
 
                     items = GetItems(itemID.ToString());
-                    EveDataSet.invTypesRow data = items.FindBytypeID((short)itemID);
+                    EveDataSet.invTypesRow data = items.FindBytypeID(itemID);
 
                     if (data == null)
                     {
                         EveDataSet.invTypesRow newRow = items.NewinvTypesRow();
-                        newRow.typeID = (short)itemID;
+                        newRow.typeID = itemID;
                         newRow.typeName = itemName;
                         /// Just adding a placeholder row until an offical datadump arrives.
                         /// Can't expect the user to enter other details so just leave other rows

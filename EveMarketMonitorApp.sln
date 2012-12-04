@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveMarketMonitorApp", "EveMarketMonitorApp.csproj", "{B0843EAA-49A9-4746-B0A7-8958A7704ADF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUpdater", "AutoUpdater\AutoUpdater.csproj", "{0E39F2FB-A415-463F-9B93-58CF1E911DD5}"

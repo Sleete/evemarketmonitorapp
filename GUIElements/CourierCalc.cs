@@ -871,7 +871,7 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 if(!txtItem.Text.Equals(_lastItem))
                 {
-                    txtItem.Tag = (short)0;
+                    txtItem.Tag = 0;
                     if (!txtItem.Text.Equals(""))
                     {
                         try
@@ -893,7 +893,7 @@ namespace EveMarketMonitorApp.GUIElements
                         _lastItem = txtItem.Text;
                         txtQuantity.Text = "1";
                     }
-                    if ((short)txtItem.Tag == 0) { txtItem.Text = ""; }
+                    if ((int)txtItem.Tag == 0) { txtItem.Text = ""; }
                 }
             }
             finally
