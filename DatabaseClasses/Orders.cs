@@ -181,7 +181,20 @@ namespace EveMarketMonitorApp.DatabaseClasses
             List<long> stationIDs, int state, string type)
         {
             OrdersList retVal = new OrdersList();
-            EMMADataSet.OrdersDataTable table = new EMMADataSet.OrdersDataTable();
+            EMMADataSet.OrdersDataTable table = LoadOrdersData(accessParams, itemIDs, stationIDs, state, type);
+
+            foreach (EMMADataSet.OrdersRow row in table)
+            {
+                Order order = new Order(row);
+                retVal.Add(order);
+            }
+            return retVal;
+        }
+        public static EMMADataSet.OrdersDataTable LoadOrdersData(List<AssetAccessParams> accessParams, List<int> itemIDs,
+            List<long> stationIDs, int state, string type)
+        {
+            EMMADataSet.OrdersDataTable table = new EMMADataSet.OrdersDataTable(); 
+            
             if (itemIDs.Count == 0) { itemIDs.Add(0); }
             if (stationIDs.Count == 0) { stationIDs.Add(0); }
             string itemString = "";
@@ -194,14 +207,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     stationString, state, type);
             }
 
-            foreach (EMMADataSet.OrdersRow row in table)
-            {
-                Order order = new Order(row);
-                retVal.Add(order);
-            }
-            return retVal;
+            return table;
         }
-
 
 
         public static void Store(EMMADataSet.OrdersDataTable ordersTable)

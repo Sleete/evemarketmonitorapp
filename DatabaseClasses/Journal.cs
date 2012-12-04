@@ -16,7 +16,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             new EveMarketMonitorApp.DatabaseClasses.EMMADataSetTableAdapters.JournalTableAdapter();
 
         public event StatusChangeHandler StatusChange;
-
+       
 
         public static bool HasBrokerFeePayment(long ownerID, DateTime date, decimal expectedFee)
         {
@@ -98,32 +98,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             DateTime startDate, DateTime endDate, string nameProfile)
         {
             JournalList retVal = new JournalList();
-            EMMADataSet.JournalDataTable table = new EMMADataSet.JournalDataTable();
 
-            startDate = startDate.ToUniversalTime();
-            endDate = endDate.ToUniversalTime();
-            if (startDate.CompareTo(SqlDateTime.MinValue.Value) < 0) startDate = SqlDateTime.MinValue.Value;
-            if (endDate.CompareTo(SqlDateTime.MinValue.Value) < 0) endDate = SqlDateTime.MinValue.Value;
-            if (startDate.CompareTo(SqlDateTime.MaxValue.Value) > 0) startDate = SqlDateTime.MaxValue.Value;
-            if (endDate.CompareTo(SqlDateTime.MaxValue.Value) > 0) endDate = SqlDateTime.MaxValue.Value;
-
-            string typeString = "";
-            foreach (short typeID in typeIDs) { typeString = typeString + (typeString.Length == 0 ? "" : ",") + typeID; }
-            lock (tableAdapter)
-            {
-                Diagnostics.StartTimer("Journal.LoadEntries.Database");
-                if (nameProfile.Equals(""))
-                {
-                    tableAdapter.FillByAny(table, FinanceAccessParams.BuildAccessList(accessParams), typeString,
-                        startDate, endDate);
-                }
-                else
-                {
-                    tableAdapter.FillByAnyAndName(table, FinanceAccessParams.BuildAccessList(accessParams), 
-                        typeString, startDate, endDate, nameProfile);
-                }
-                Diagnostics.StopTimer("Journal.LoadEntries.Database");
-            }
+            EMMADataSet.JournalDataTable table = LoadEntriesData(accessParams, typeIDs, startDate, endDate, nameProfile);
 
             Diagnostics.StartTimer("Journal.LoadEntries.BuildList");
             foreach (EMMADataSet.JournalRow row in table)
@@ -147,6 +123,38 @@ namespace EveMarketMonitorApp.DatabaseClasses
             }
             Diagnostics.StopTimer("Journal.LoadEntries.BuildList");
             return retVal;
+        }
+
+        public static EMMADataSet.JournalDataTable LoadEntriesData(List<FinanceAccessParams> accessParams, 
+            List<short> typeIDs, DateTime startDate, DateTime endDate, string nameProfile)
+        {
+            EMMADataSet.JournalDataTable table = new EMMADataSet.JournalDataTable();
+
+            startDate = startDate.ToUniversalTime();
+            endDate = endDate.ToUniversalTime();
+            if (startDate.CompareTo(SqlDateTime.MinValue.Value) < 0) startDate = SqlDateTime.MinValue.Value;
+            if (endDate.CompareTo(SqlDateTime.MinValue.Value) < 0) endDate = SqlDateTime.MinValue.Value;
+            if (startDate.CompareTo(SqlDateTime.MaxValue.Value) > 0) startDate = SqlDateTime.MaxValue.Value;
+            if (endDate.CompareTo(SqlDateTime.MaxValue.Value) > 0) endDate = SqlDateTime.MaxValue.Value;
+
+            string typeString = "";
+            foreach (short typeID in typeIDs) { typeString = typeString + (typeString.Length == 0 ? "" : ",") + typeID; }
+            lock (tableAdapter)
+            {
+                Diagnostics.StartTimer("Journal.LoadEntries.Database");
+                if (string.IsNullOrEmpty(nameProfile))
+                {
+                    tableAdapter.FillByAny(table, FinanceAccessParams.BuildAccessList(accessParams), typeString,
+                        startDate, endDate);
+                }
+                else
+                {
+                    tableAdapter.FillByAnyAndName(table, FinanceAccessParams.BuildAccessList(accessParams), 
+                        typeString, startDate, endDate, nameProfile);
+                }
+                Diagnostics.StopTimer("Journal.LoadEntries.Database");
+            }
+            return table;
         }
         
         public static void Store(EMMADataSet.JournalDataTable table)

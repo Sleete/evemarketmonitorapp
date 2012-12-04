@@ -97,10 +97,14 @@ namespace EveMarketMonitorApp.GUIElements
                             if (character.CharIncWithRptGroup)
                             {
                                 ExportTransactionXML(dir, character, false);
+                                ExportJournalXML(dir, character, false);
+                                ExportMarketOrderXML(dir, character, false);
                             }
                             if (character.CorpIncWithRptGroup)
                             {
                                 ExportTransactionXML(dir, character, true);
+                                ExportJournalXML(dir, character, true);
+                                ExportMarketOrderXML(dir, character, true);
                             }
                         }
                     }
@@ -117,6 +121,7 @@ namespace EveMarketMonitorApp.GUIElements
             Contracts
         }
 
+        #region Transactions
         private void ExportTransactionXML(string dir, APICharacter character, bool forCorp)
         {
             int wallet = 1000;
@@ -158,20 +163,23 @@ namespace EveMarketMonitorApp.GUIElements
 
             foreach (EveMarketMonitorApp.DatabaseClasses.EMMADataSet.TransactionsRow transaction in transactions)
             {
-                if (transaction.BuyerID == APIEntityID)
+                if (transaction.ID < 10000000000)
                 {
-                    if (!forCorp || transaction.BuyerWalletID == walletID)
+                    if (transaction.BuyerID == APIEntityID)
                     {
-                        XmlNode node = AddTransRow(xml, APIEntityID, transaction, true, forCorp);
-                        rowSet.AppendChild(node);
+                        if (!forCorp || transaction.BuyerWalletID == walletID)
+                        {
+                            XmlNode node = AddTransRow(xml, APIEntityID, transaction, true, forCorp);
+                            rowSet.AppendChild(node);
+                        }
                     }
-                }
-                if (transaction.SellerID == APIEntityID)
-                {
-                    if (!forCorp || transaction.SellerWalletID == walletID)
+                    if (transaction.SellerID == APIEntityID)
                     {
-                        XmlNode node = AddTransRow(xml, APIEntityID, transaction, false, forCorp);
-                        rowSet.AppendChild(node);
+                        if (!forCorp || transaction.SellerWalletID == walletID)
+                        {
+                            XmlNode node = AddTransRow(xml, APIEntityID, transaction, false, forCorp);
+                            rowSet.AppendChild(node);
+                        }
                     }
                 }
             }
@@ -242,6 +250,264 @@ namespace EveMarketMonitorApp.GUIElements
 
             return rowSet;
         }
+        #endregion
+
+        #region Journal
+        private void ExportJournalXML(string dir, APICharacter character, bool forCorp)
+        {
+            short wallet = 1000;
+            int maxWallet = !forCorp ? 1000 : 1007;
+
+            while (wallet <= maxWallet)
+            {
+                string filename = Path.Combine(dir, (!forCorp ? character.CharName : character.CorpName) + " [" +
+                    (!forCorp ? character.CharID : character.CorpID) + "]" + (!forCorp ? "" : " Wallet " + wallet) + " Journal.xml");
+                List<FinanceAccessParams> accessParams = new List<FinanceAccessParams>();
+                if (!forCorp)
+                {
+                    accessParams.Add(new FinanceAccessParams(character.CharID));
+                }
+                else
+                {
+                    accessParams.Add(new FinanceAccessParams(character.CorpID, new List<short>() { wallet }));
+                }
+                EveMarketMonitorApp.DatabaseClasses.EMMADataSet.JournalDataTable journalEntries = Journal.LoadEntriesData(
+                    accessParams, new List<short>(), DateTime.MinValue, DateTime.MaxValue, null);
+
+                XmlDocument xml = new XmlDocument();
+
+                XmlNode eveAPINode = xml.CreateNode(XmlNodeType.Element, "eveapi", "");
+                XmlAttribute versionNode = xml.CreateAttribute("version", "");
+                versionNode.Value = "2";
+                eveAPINode.Attributes.Append(versionNode);
+
+                XmlNode currentTimeNode = xml.CreateNode(XmlNodeType.Element, "currentTime", "");
+                currentTimeNode.InnerText = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
+                eveAPINode.AppendChild(currentTimeNode);
+
+                XmlNode resultNode = xml.CreateNode(XmlNodeType.Element, "result", "");
+                XmlNode rootRowSetNode = AddJournalToXML(xml, journalEntries, !forCorp ? character.CharID : character.CorpID, forCorp, wallet);
+                resultNode.AppendChild(rootRowSetNode);
+                eveAPINode.AppendChild(resultNode);
+
+                xml.AppendChild(eveAPINode);
+                xml.Save(filename);
+
+                wallet++;
+            }
+        }
+
+        private XmlNode AddJournalToXML(XmlDocument xml, EveMarketMonitorApp.DatabaseClasses.EMMADataSet.JournalDataTable journalEntries,
+            long APIEntityID, bool forCorp, int walletID)
+        {
+            XmlNode rowSet = NewTransactionsRowset(xml);
+
+            foreach (EveMarketMonitorApp.DatabaseClasses.EMMADataSet.JournalRow journalEntry in journalEntries)
+            {
+                if (journalEntry.SenderID == APIEntityID || (forCorp && journalEntry.SCorpID == APIEntityID))
+                {
+                    if (!forCorp || journalEntry.SWalletID == walletID)
+                    {
+                        XmlNode node = AddJournalRow(xml, APIEntityID, journalEntry, true, forCorp);
+                        rowSet.AppendChild(node);
+                    }
+                }
+                if (journalEntry.RecieverID == APIEntityID || (forCorp && journalEntry.RCorpID == APIEntityID))
+                {
+                    if (!forCorp || journalEntry.RWalletID == walletID)
+                    {
+                        XmlNode node = AddJournalRow(xml, APIEntityID, journalEntry, false, forCorp);
+                        rowSet.AppendChild(node);
+                    }
+                }
+            }
+
+            return rowSet;
+        }
+
+        private XmlNode AddJournalRow(XmlDocument xml, long APIEntityID, EveMarketMonitorApp.DatabaseClasses.EMMADataSet.JournalRow journalEntry, bool currentUserIsSender, bool forCorp)
+        {
+            XmlNode row = xml.CreateNode(XmlNodeType.Element, "row", "");
+
+            XmlAttribute idAtt = xml.CreateAttribute("refID", "");
+            idAtt.Value = journalEntry.ID.ToString();
+            row.Attributes.Append(idAtt);
+            XmlAttribute dateAtt = xml.CreateAttribute("date", "");
+            dateAtt.Value = journalEntry.Date.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            row.Attributes.Append(dateAtt);
+            XmlAttribute typeAtt = xml.CreateAttribute("refTypeID", "");
+            typeAtt.Value = journalEntry.TypeID.ToString();
+            row.Attributes.Append(typeAtt);
+            XmlAttribute fromNameAtt = xml.CreateAttribute("ownerName1", "");
+            fromNameAtt.Value = Names.GetName(journalEntry.SenderID);
+            row.Attributes.Append(fromNameAtt);
+            XmlAttribute fromIDAtt = xml.CreateAttribute("ownerID1", "");
+            fromIDAtt.Value = journalEntry.SenderID.ToString();
+            row.Attributes.Append(fromIDAtt);
+            XmlAttribute toNameAtt = xml.CreateAttribute("ownerName2", "");
+            toNameAtt.Value = Names.GetName(journalEntry.RecieverID);
+            row.Attributes.Append(toNameAtt);
+            XmlAttribute toIDAtt = xml.CreateAttribute("ownerID2", "");
+            toIDAtt.Value = journalEntry.RecieverID.ToString();
+            row.Attributes.Append(toIDAtt);
+            XmlAttribute argNameAtt = xml.CreateAttribute("argName1", "");
+            argNameAtt.Value = currentUserIsSender ? journalEntry.SArgName : journalEntry.RArgName;
+            row.Attributes.Append(argNameAtt);
+            XmlAttribute argIDAtt = xml.CreateAttribute("argID1", "");
+            argIDAtt.Value = currentUserIsSender ? journalEntry.SArgID.ToString() : journalEntry.RArgID.ToString();
+            row.Attributes.Append(argIDAtt);
+            XmlAttribute amountAtt = xml.CreateAttribute("amount", "");
+            amountAtt.Value = journalEntry.Amount.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            row.Attributes.Append(amountAtt);
+            XmlAttribute balanceAtt = xml.CreateAttribute("balance", "");
+            balanceAtt.Value = currentUserIsSender ? journalEntry.SBalance.ToString() : journalEntry.RBalance.ToString();
+            row.Attributes.Append(balanceAtt);
+            XmlAttribute reasonAtt = xml.CreateAttribute("reason", "");
+            reasonAtt.Value = journalEntry.Reason;
+            row.Attributes.Append(reasonAtt);
+
+            return row;
+        }
+
+        private XmlNode NewJournalRowset(XmlDocument xml)
+        {
+            XmlNode rowSet = xml.CreateNode(XmlNodeType.Element, "rowset", "");
+
+            XmlAttribute nameAtt = xml.CreateAttribute("name", "");
+            nameAtt.Value = "transactions";
+            rowSet.Attributes.Append(nameAtt);
+            XmlAttribute keyAtt = xml.CreateAttribute("key", "");
+            keyAtt.Value = "refID";
+            rowSet.Attributes.Append(keyAtt);
+            XmlAttribute colAtt = xml.CreateAttribute("columns", "");
+            colAtt.Value = "date,refID,refTypeID,ownerName1,ownerID1,ownerName2,ownerID2,argName1,argID1,amount,balance,reason,taxReceiverID,taxAmount";
+            rowSet.Attributes.Append(colAtt);
+
+            return rowSet;
+        }
+        #endregion
+
+        #region Orders
+        private void ExportMarketOrderXML(string dir, APICharacter character, bool forCorp)
+        {
+                string filename = Path.Combine(dir, (!forCorp ? character.CharName : character.CorpName) + " [" +
+                    (!forCorp ? character.CharID : character.CorpID) + "]" + " MarketOrders.xml");
+                List<AssetAccessParams> accessParams = new List<AssetAccessParams>();
+                if (!forCorp)
+                {
+                    accessParams.Add(new AssetAccessParams(character.CharID));
+                }
+                else
+                {
+                    accessParams.Add(new AssetAccessParams(character.CorpID));
+                }
+                EveMarketMonitorApp.DatabaseClasses.EMMADataSet.OrdersDataTable marketOrders = Orders.LoadOrdersData(accessParams, new List<int>(), new List<long>(), 0, "");
+                    
+                XmlDocument xml = new XmlDocument();
+
+                XmlNode eveAPINode = xml.CreateNode(XmlNodeType.Element, "eveapi", "");
+                XmlAttribute versionNode = xml.CreateAttribute("version", "");
+                versionNode.Value = "2";
+                eveAPINode.Attributes.Append(versionNode);
+
+                XmlNode currentTimeNode = xml.CreateNode(XmlNodeType.Element, "currentTime", "");
+                currentTimeNode.InnerText = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
+                eveAPINode.AppendChild(currentTimeNode);
+
+                XmlNode resultNode = xml.CreateNode(XmlNodeType.Element, "result", "");
+                XmlNode rootRowSetNode = AddMarketOrderToXML(xml, marketOrders);
+                resultNode.AppendChild(rootRowSetNode);
+                eveAPINode.AppendChild(resultNode);
+
+                xml.AppendChild(eveAPINode);
+                xml.Save(filename);
+
+        }
+
+        private XmlNode AddMarketOrderToXML(XmlDocument xml, EveMarketMonitorApp.DatabaseClasses.EMMADataSet.OrdersDataTable marketOrders)
+        {
+            XmlNode rowSet = NewTransactionsRowset(xml);
+
+            foreach (EveMarketMonitorApp.DatabaseClasses.EMMADataSet.OrdersRow order in marketOrders)
+            {
+                XmlNode node = AddMarketOrderRow(xml, order);
+                rowSet.AppendChild(node);
+            }
+
+            return rowSet;
+        }
+
+        private XmlNode AddMarketOrderRow(XmlDocument xml, EveMarketMonitorApp.DatabaseClasses.EMMADataSet.OrdersRow order)
+        {
+            XmlNode row = xml.CreateNode(XmlNodeType.Element, "row", "");
+
+            XmlAttribute idAtt = xml.CreateAttribute("orderID", "");
+            idAtt.Value = order.EveOrderID.ToString();
+            row.Attributes.Append(idAtt);
+            XmlAttribute charAtt = xml.CreateAttribute("charID", "");
+            charAtt.Value = order.OwnerID.ToString();
+            row.Attributes.Append(charAtt);
+            XmlAttribute stationAtt = xml.CreateAttribute("stationID", "");
+            stationAtt.Value = order.StationID.ToString();
+            row.Attributes.Append(stationAtt);
+            XmlAttribute volEnteredAtt = xml.CreateAttribute("volEntered", "");
+            volEnteredAtt.Value = order.TotalVol.ToString();
+            row.Attributes.Append(volEnteredAtt);
+            XmlAttribute volRemainingAtt = xml.CreateAttribute("volRemaining", "");
+            volRemainingAtt.Value = order.RemainingVol.ToString();
+            row.Attributes.Append(volRemainingAtt);
+            XmlAttribute minVolumeAtt = xml.CreateAttribute("minVolume", "");
+            minVolumeAtt.Value = order.MinVolume.ToString();
+            row.Attributes.Append(minVolumeAtt);
+            XmlAttribute stateAtt = xml.CreateAttribute("orderState", "");
+            stateAtt.Value = order.OrderState.ToString();
+            row.Attributes.Append(stateAtt);
+            XmlAttribute typeAtt = xml.CreateAttribute("typeID", "");
+            typeAtt.Value = order.ItemID.ToString();
+            row.Attributes.Append(typeAtt);
+            XmlAttribute rangeAtt = xml.CreateAttribute("range", "");
+            rangeAtt.Value = order.Range.ToString();
+            row.Attributes.Append(rangeAtt);
+            XmlAttribute walletAtt = xml.CreateAttribute("accountKey", "");
+            walletAtt.Value = order.WalletID.ToString();
+            row.Attributes.Append(walletAtt);
+            XmlAttribute durationAtt = xml.CreateAttribute("duration", "");
+            durationAtt.Value = order.Duration.ToString();
+            row.Attributes.Append(durationAtt);
+            XmlAttribute escrowAtt = xml.CreateAttribute("escrow", "");
+            escrowAtt.Value = order.Escrow.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+            row.Attributes.Append(escrowAtt);
+            XmlAttribute priceAtt = xml.CreateAttribute("price", "");
+            priceAtt.Value = order.Price.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+            row.Attributes.Append(priceAtt);
+            XmlAttribute bidAtt = xml.CreateAttribute("bid", "");
+            bidAtt.Value = order.BuyOrder ? "1" : "0";
+            row.Attributes.Append(bidAtt);
+            XmlAttribute issuedAtt = xml.CreateAttribute("issued", "");
+            issuedAtt.Value = order.Issued.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            row.Attributes.Append(issuedAtt);
+
+            return row;
+        }
+
+        private XmlNode NewMarketOrderRowset(XmlDocument xml)
+        {
+            XmlNode rowSet = xml.CreateNode(XmlNodeType.Element, "rowset", "");
+
+            XmlAttribute nameAtt = xml.CreateAttribute("name", "");
+            nameAtt.Value = "orders";
+            rowSet.Attributes.Append(nameAtt);
+            XmlAttribute keyAtt = xml.CreateAttribute("key", "");
+            keyAtt.Value = "orderID";
+            rowSet.Attributes.Append(keyAtt);
+            XmlAttribute colAtt = xml.CreateAttribute("columns", "");
+            colAtt.Value = "orderID,charID,stationID,volEntered,volRemaining,minVolume,orderState,typeID,range,accountKey,duration,escrow,price,bid,issued";
+            rowSet.Attributes.Append(colAtt);
+
+            return rowSet;
+        }
+        #endregion
+
 
     }
 }
