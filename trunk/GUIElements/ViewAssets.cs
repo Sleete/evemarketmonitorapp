@@ -280,7 +280,7 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 if (!cmbItem.Text.Equals(_lastItem))
                 {
-                    cmbItem.Tag = (short)0;
+                    cmbItem.Tag = 0;
                     if (!cmbItem.Text.Equals(""))
                     {
                         try
@@ -300,14 +300,14 @@ namespace EveMarketMonitorApp.GUIElements
                         }
                         catch (EMMADataException) { }
 
-                        if ((short)cmbItem.Tag != 0)
+                        if ((int)cmbItem.Tag != 0)
                         {
                             _lastItem = cmbItem.Text;
                             DisplayAssets();
                             DisplayTree();
                         }
                     }
-                    if ((short)cmbItem.Tag == 0) 
+                    if ((int)cmbItem.Tag == 0) 
                     { 
                         cmbItem.Text = "";
                         DisplayTree();

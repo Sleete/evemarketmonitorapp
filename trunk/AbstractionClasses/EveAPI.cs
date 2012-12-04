@@ -20,6 +20,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
     /// </summary>
     public static class EveAPI
     {
+        // Note the value of this setting can be changed and is stored in user-level settings.
         //public static string URL_EveApiBase = "http://api.eveonline.com";
         public static string URL_EveApiHTTPS = @"https://api.eveonline.com";
 
@@ -564,7 +565,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 request.ContentType = "application/x-www-form-urlencoded";
                 request.Method = "POST";
                 // allows for validation of SSL conversations
-                ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateRemoteCertificate);
+                ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(
+                    (object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors policyErrors) =>
+                    { return true; });
 
                 ASCIIEncoding enc = new ASCIIEncoding();
                 data = enc.GetBytes(parameters);

@@ -252,7 +252,7 @@ namespace EveMarketMonitorApp.GUIElements
             {
                 if (!cmbItem.Text.Equals(_lastItem))
                 {
-                    cmbItem.Tag = (short)0;
+                    cmbItem.Tag = (int)0;
                     if (!cmbItem.Text.Equals(""))
                     {
                         try
@@ -273,7 +273,7 @@ namespace EveMarketMonitorApp.GUIElements
                         catch (EMMADataException) { }
                     }
 
-                    if ((short)cmbItem.Tag == 0) { cmbItem.Text = ""; }
+                    if ((int)cmbItem.Tag == 0) { cmbItem.Text = ""; }
                     _lastItem = cmbItem.Text;
                     DisplayTrans();
                 }
@@ -428,7 +428,7 @@ namespace EveMarketMonitorApp.GUIElements
             if (_allowRefresh)
             {
                 List<int> itemIDs = new List<int>();
-                itemIDs.Add(short.Parse(cmbItem.Tag.ToString()));
+                itemIDs.Add(int.Parse(cmbItem.Tag.ToString()));
                 List<long> stationIDs = new List<long>();
                 stationIDs.Add(long.Parse(cmbStation.Tag.ToString()));
                 DateTime utcStart = new DateTime();
