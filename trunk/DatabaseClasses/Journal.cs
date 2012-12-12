@@ -137,6 +137,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             if (startDate.CompareTo(SqlDateTime.MaxValue.Value) > 0) startDate = SqlDateTime.MaxValue.Value;
             if (endDate.CompareTo(SqlDateTime.MaxValue.Value) > 0) endDate = SqlDateTime.MaxValue.Value;
 
+            if (typeIDs.Count == 0) { typeIDs.Add(0); }
+
             string typeString = "";
             foreach (short typeID in typeIDs) { typeString = typeString + (typeString.Length == 0 ? "" : ",") + typeID; }
             lock (tableAdapter)
