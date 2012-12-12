@@ -163,7 +163,7 @@ namespace EveMarketMonitorApp.GUIElements
 
             foreach (EveMarketMonitorApp.DatabaseClasses.EMMADataSet.TransactionsRow transaction in transactions)
             {
-                if (transaction.ID < 10000000000)
+                if (transaction.ID < 9000000000000000000)
                 {
                     if (transaction.BuyerID == APIEntityID)
                     {
