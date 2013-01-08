@@ -300,7 +300,7 @@ namespace EveMarketMonitorApp.GUIElements
         private XmlNode AddJournalToXML(XmlDocument xml, EveMarketMonitorApp.DatabaseClasses.EMMADataSet.JournalDataTable journalEntries,
             long APIEntityID, bool forCorp, int walletID)
         {
-            XmlNode rowSet = NewTransactionsRowset(xml);
+            XmlNode rowSet = NewJournalRowset(xml);
 
             foreach (EveMarketMonitorApp.DatabaseClasses.EMMADataSet.JournalRow journalEntry in journalEntries)
             {
@@ -426,7 +426,7 @@ namespace EveMarketMonitorApp.GUIElements
 
         private XmlNode AddMarketOrderToXML(XmlDocument xml, EveMarketMonitorApp.DatabaseClasses.EMMADataSet.OrdersDataTable marketOrders)
         {
-            XmlNode rowSet = NewTransactionsRowset(xml);
+            XmlNode rowSet = NewMarketOrderRowset(xml);
 
             foreach (EveMarketMonitorApp.DatabaseClasses.EMMADataSet.OrdersRow order in marketOrders)
             {
