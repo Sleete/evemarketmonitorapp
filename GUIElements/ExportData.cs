@@ -460,7 +460,15 @@ namespace EveMarketMonitorApp.GUIElements
             minVolumeAtt.Value = order.MinVolume.ToString();
             row.Attributes.Append(minVolumeAtt);
             XmlAttribute stateAtt = xml.CreateAttribute("orderState", "");
-            stateAtt.Value = order.OrderState.ToString();
+            if(order.OrderState == 1) { stateAtt.Value = "1"; }
+            if(order.OrderState == 2) { stateAtt.Value = "2"; }
+            if(order.OrderState == 3) { stateAtt.Value = "3"; }
+            if(order.OrderState == 4) { stateAtt.Value = "4"; }
+            if(order.OrderState == 5) { stateAtt.Value = "5"; }
+            if(order.OrderState == 999) { stateAtt.Value = "0"; }
+            if(order.OrderState == 1000) { stateAtt.Value = "2"; }
+            if(order.OrderState == 1001) { stateAtt.Value = "0"; }
+            if(order.OrderState == 2000) { stateAtt.Value = "2"; }
             row.Attributes.Append(stateAtt);
             XmlAttribute typeAtt = xml.CreateAttribute("typeID", "");
             typeAtt.Value = order.ItemID.ToString();
