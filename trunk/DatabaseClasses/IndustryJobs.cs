@@ -21,6 +21,16 @@ namespace EveMarketMonitorApp.DatabaseClasses
             return row != null;
         }
 
+        public static EMMADataSet.IndustryJobsDataTable GetJobs()
+        {
+            EMMADataSet.IndustryJobsDataTable table = new EMMADataSet.IndustryJobsDataTable();
+            lock (_tableAdapter)
+            {
+                _tableAdapter.Fill(table);
+            }
+            return table;
+        }
+
         public static void Store(EMMADataSet.IndustryJobsDataTable table)
         {
             lock (_tableAdapter)
