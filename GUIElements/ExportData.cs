@@ -99,6 +99,7 @@ namespace EveMarketMonitorApp.GUIElements
                                 ExportTransactionXML(dir, character, false);
                                 ExportJournalXML(dir, character, false);
                                 ExportMarketOrderXML(dir, character, false);
+                                ExportIndustryJobXML(dir, character);
                             }
                             if (character.CorpIncWithRptGroup)
                             {
@@ -516,6 +517,347 @@ namespace EveMarketMonitorApp.GUIElements
         }
         #endregion
 
+        #region Industry Jobs
+        private void ExportIndustryJobXML(string dir, APICharacter character)
+        {
+            string filename = Path.Combine(dir, character.CharName + " [" +
+                character.CharID + "]" + " IndustryJobs.xml");
+            EMMADataSet.IndustryJobsDataTable industryJobs = IndustryJobs.GetJobs();
 
+            XmlDocument xml = new XmlDocument();
+
+            XmlNode eveAPINode = xml.CreateNode(XmlNodeType.Element, "eveapi", "");
+            XmlAttribute versionNode = xml.CreateAttribute("version", "");
+            versionNode.Value = "2";
+            eveAPINode.Attributes.Append(versionNode);
+
+            XmlNode currentTimeNode = xml.CreateNode(XmlNodeType.Element, "currentTime", "");
+            currentTimeNode.InnerText = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
+            eveAPINode.AppendChild(currentTimeNode);
+
+            XmlNode resultNode = xml.CreateNode(XmlNodeType.Element, "result", "");
+            XmlNode rootRowSetNode = AddIndustryJobsToXML(xml, industryJobs.Where(j => j.InstallerID == character.CharID));
+            resultNode.AppendChild(rootRowSetNode);
+            eveAPINode.AppendChild(resultNode);
+
+            xml.AppendChild(eveAPINode);
+            xml.Save(filename);
+
+        }
+
+        private XmlNode AddIndustryJobsToXML(XmlDocument xml, EnumerableRowCollection<EMMADataSet.IndustryJobsRow> industryJobs)
+        {
+            XmlNode rowSet = NewIndustryJobRowset(xml);
+
+            foreach (EveMarketMonitorApp.DatabaseClasses.EMMADataSet.IndustryJobsRow job in industryJobs)
+            {
+                XmlNode node = AddIndustryJobRow(xml, job);
+                rowSet.AppendChild(node);
+            }
+
+            return rowSet;
+        }
+
+        private XmlNode AddIndustryJobRow(XmlDocument xml, EveMarketMonitorApp.DatabaseClasses.EMMADataSet.IndustryJobsRow job)
+        {
+            XmlNode row = xml.CreateNode(XmlNodeType.Element, "row", "");
+
+            XmlAttribute idAtt = xml.CreateAttribute("jobID", "");
+            idAtt.Value = job.ID.ToString();
+            row.Attributes.Append(idAtt);
+            XmlAttribute assemblyLineIDAtt = xml.CreateAttribute("assemblyLineID", "");
+            assemblyLineIDAtt.Value = job.AssemblyLineID.ToString();
+            row.Attributes.Append(assemblyLineIDAtt);
+            XmlAttribute containerIDAtt = xml.CreateAttribute("containerID", "");
+            containerIDAtt.Value = job.ContainerID.ToString();
+            row.Attributes.Append(containerIDAtt);
+            XmlAttribute installedItemIDAtt = xml.CreateAttribute("installedItemID", "");
+            installedItemIDAtt.Value = job.InstalledItemID.ToString();
+            row.Attributes.Append(installedItemIDAtt);
+            XmlAttribute installedItemLocationIDAtt = xml.CreateAttribute("installedItemLocationID", "");
+            installedItemLocationIDAtt.Value = job.InstalledItemLocationID.ToString();
+            row.Attributes.Append(installedItemLocationIDAtt);
+            XmlAttribute installedItemQuantityAtt = xml.CreateAttribute("installedItemQuantity", "");
+            installedItemQuantityAtt.Value = job.InstalledItemQuantity.ToString();
+            row.Attributes.Append(installedItemQuantityAtt);
+            XmlAttribute installedItemProductivityLevelAtt = xml.CreateAttribute("installedItemProductivityLevel", "");
+            installedItemProductivityLevelAtt.Value = job.InstalledItemPL.ToString();
+            row.Attributes.Append(installedItemProductivityLevelAtt);
+            XmlAttribute installedItemMaterialLevelAtt = xml.CreateAttribute("installedItemMaterialLevel", "");
+            installedItemMaterialLevelAtt.Value = job.InstalledItemME.ToString();
+            row.Attributes.Append(installedItemMaterialLevelAtt);
+            XmlAttribute installedItemLicensedProductionRunsRemainingAtt =
+                xml.CreateAttribute("installedItemLicensedProductionRunsRemaining", "");
+            installedItemLicensedProductionRunsRemainingAtt.Value = job.InstalledItemRunsRemaining.ToString();
+            row.Attributes.Append(installedItemLicensedProductionRunsRemainingAtt);
+            XmlAttribute outputLocationIDAtt = xml.CreateAttribute("outputLocationID", "");
+            outputLocationIDAtt.Value = job.OutputLcoationID.ToString();
+            row.Attributes.Append(outputLocationIDAtt);
+            XmlAttribute installerIDAtt = xml.CreateAttribute("installerID", "");
+            installerIDAtt.Value = job.InstallerID.ToString();
+            row.Attributes.Append(installerIDAtt);
+            XmlAttribute runsAtt = xml.CreateAttribute("runs", "");
+            runsAtt.Value = job.JobRuns.ToString();
+            row.Attributes.Append(runsAtt);
+            XmlAttribute licensedProductionRunsAtt = xml.CreateAttribute("licensedProductionRuns", "");
+            licensedProductionRunsAtt.Value = job.OutputRuns.ToString();
+            row.Attributes.Append(licensedProductionRunsAtt);
+            EveDataSet.staStationsRow station = Stations.GetStation(job.OutputLcoationID);
+            if (station != null)
+            {
+                XmlAttribute installedInSolarSystemIDAtt = xml.CreateAttribute("installedInSolarSystemID", "");
+                installedInSolarSystemIDAtt.Value = station.solarSystemID.ToString();
+                row.Attributes.Append(installedInSolarSystemIDAtt);
+            }
+            XmlAttribute containerLocationIDAtt = xml.CreateAttribute("containerLocationID", "");
+            containerLocationIDAtt.Value = job.OutputLcoationID.ToString();
+            row.Attributes.Append(containerLocationIDAtt);
+            XmlAttribute materialMultiplierAtt = xml.CreateAttribute("materialMultiplier", "");
+            materialMultiplierAtt.Value = job.MaterialModifier.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+            row.Attributes.Append(materialMultiplierAtt);
+            XmlAttribute charMaterialMultiplierAtt = xml.CreateAttribute("charMaterialMultiplier", "");
+            charMaterialMultiplierAtt.Value = job.CharMaterialModifier.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+            row.Attributes.Append(charMaterialMultiplierAtt);
+            XmlAttribute timeMultiplierAtt = xml.CreateAttribute("timeMultiplier", "");
+            timeMultiplierAtt.Value = job.TimeMultiplier.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+            row.Attributes.Append(timeMultiplierAtt);
+            XmlAttribute charTimeMultiplierAtt = xml.CreateAttribute("charTimeMultiplier", "");
+            charTimeMultiplierAtt.Value = job.CharTimeMultiplier.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+            row.Attributes.Append(charTimeMultiplierAtt);
+            XmlAttribute installedItemTypeIDAtt = xml.CreateAttribute("installedItemTypeID", "");
+            installedItemTypeIDAtt.Value = job.InstalledItemTypeID.ToString();
+            row.Attributes.Append(installedItemTypeIDAtt);
+            XmlAttribute outputTypeIDAtt = xml.CreateAttribute("outputTypeID", "");
+            outputTypeIDAtt.Value = job.OutputTypeID.ToString();
+            row.Attributes.Append(outputTypeIDAtt);
+            XmlAttribute containerTypeIDAtt = xml.CreateAttribute("containerTypeID", "");
+            containerTypeIDAtt.Value = job.ContainerTypeID.ToString();
+            row.Attributes.Append(containerTypeIDAtt);
+            XmlAttribute installedItemCopyAtt = xml.CreateAttribute("installedItemCopy", "");
+            installedItemCopyAtt.Value = job.InstalledItemCopy ? "1" : "0";
+            row.Attributes.Append(installedItemCopyAtt);
+            XmlAttribute completedAtt = xml.CreateAttribute("completed", "");
+            completedAtt.Value = job.Completed ? "1" : "0";
+            row.Attributes.Append(completedAtt);
+            XmlAttribute completedSuccessfullyAtt = xml.CreateAttribute("completedSuccessfully", "");
+            completedSuccessfullyAtt.Value = job.CompletedSuccessfully ? "1" : "0";
+            row.Attributes.Append(completedSuccessfullyAtt);
+            XmlAttribute installedItemFlagAtt = xml.CreateAttribute("installedItemFlag", "");
+            installedItemFlagAtt.Value = job.InstalledItemFlag.ToString();
+            row.Attributes.Append(installedItemFlagAtt);
+            XmlAttribute outputFlagAtt = xml.CreateAttribute("outputFlag", "");
+            outputFlagAtt.Value = job.OutputFlag.ToString();
+            row.Attributes.Append(outputFlagAtt);
+            XmlAttribute activityAtt = xml.CreateAttribute("activityID", "");
+            activityAtt.Value = job.ActivityID.ToString();
+            row.Attributes.Append(activityAtt);
+            XmlAttribute completedStatusAtt = xml.CreateAttribute("completedStatus", "");
+            completedStatusAtt.Value = job.CompletedStatus.ToString();
+            row.Attributes.Append(completedStatusAtt);
+            XmlAttribute installTimeAtt = xml.CreateAttribute("installTime", "");
+            installTimeAtt.Value = job.InstallTime.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            row.Attributes.Append(installTimeAtt);
+            XmlAttribute beginProductionTimeAtt = xml.CreateAttribute("beginProductionTime", "");
+            beginProductionTimeAtt.Value = job.BeginProductionTime.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            row.Attributes.Append(beginProductionTimeAtt);
+            XmlAttribute endProductionTimeAtt = xml.CreateAttribute("endProductionTime", "");
+            endProductionTimeAtt.Value = job.EndProductionTime.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            row.Attributes.Append(endProductionTimeAtt);
+            XmlAttribute pauseProductionTimeAtt = xml.CreateAttribute("pauseProductionTime", "");
+            pauseProductionTimeAtt.Value = job.PauseProductionTime.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            row.Attributes.Append(pauseProductionTimeAtt);
+
+            return row;
+        }
+
+        private XmlNode NewIndustryJobRowset(XmlDocument xml)
+        {
+            XmlNode rowSet = xml.CreateNode(XmlNodeType.Element, "rowset", "");
+
+            XmlAttribute nameAtt = xml.CreateAttribute("name", "");
+            nameAtt.Value = "jobs";
+            rowSet.Attributes.Append(nameAtt);
+            XmlAttribute keyAtt = xml.CreateAttribute("key", "");
+            keyAtt.Value = "jobID";
+            rowSet.Attributes.Append(keyAtt);
+            XmlAttribute colAtt = xml.CreateAttribute("columns", "");
+            colAtt.Value = "jobID,assemblyLineID,containerID,installedItemID,installedItemLocationID,installedItemQuantity,installedItemProductivityLevel,installedItemMaterialLevel,installedItemLicensedProductionRunsRemaining,outputLocationID,installerID,runs,licensedProductionRuns,installedInSolarSystemID,containerLocationID,materialMultiplier,charMaterialMultiplier,timeMultiplier,charTimeMultiplier,installedItemTypeID,outputTypeID,containerTypeID,installedItemCopy,completed,completedSuccessfully,installedItemFlag,outputFlag,activityID,completedStatus,installTime,beginProductionTime,endProductionTime,pauseProductionTime";
+            rowSet.Attributes.Append(colAtt);
+
+            return rowSet;
+        }
+        #endregion
+
+        #region Contracts
+        // Note - cannot export these contracts as they don't have half the data needed.
+        // when I put them in EMMA there was no contracts API so all the data in EMMA has been 
+        // entered by users and it's just not enough for EMMA 2 to work with.
+        private void ExportContractsXML(string dir, APICharacter character, bool forCorp)
+        {
+            string filename = Path.Combine(dir, (!forCorp ? character.CharName : character.CorpName) + " [" +
+                (!forCorp ? character.CharID : character.CorpID) + "]" + " Contracts.xml");
+            List<long> ownerIDs  = new List<long>();
+            if (!forCorp){  ownerIDs.Add(character.CharID);}
+            else{ ownerIDs.Add(character.CorpID);}
+            ContractList contracts = Contracts.GetContracts(ownerIDs, 0, 0, 0, ContractType.Any);
+
+            XmlDocument xml = new XmlDocument();
+
+            XmlNode eveAPINode = xml.CreateNode(XmlNodeType.Element, "eveapi", "");
+            XmlAttribute versionNode = xml.CreateAttribute("version", "");
+            versionNode.Value = "2";
+            eveAPINode.Attributes.Append(versionNode);
+
+            XmlNode currentTimeNode = xml.CreateNode(XmlNodeType.Element, "currentTime", "");
+            currentTimeNode.InnerText = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
+            eveAPINode.AppendChild(currentTimeNode);
+
+            XmlNode resultNode = xml.CreateNode(XmlNodeType.Element, "result", "");
+            XmlNode rootRowSetNode = AddContractsToXML(xml, contracts);
+            resultNode.AppendChild(rootRowSetNode);
+            eveAPINode.AppendChild(resultNode);
+
+            xml.AppendChild(eveAPINode);
+            xml.Save(filename);
+
+        }
+
+        private XmlNode AddContractsToXML(XmlDocument xml, ContractList contracts)
+        {
+            XmlNode rowSet = NewContractRowset(xml);
+
+            foreach (Contract contract in contracts)
+            {
+                //XmlNode node = AddContractRow(xml, contract);
+                //rowSet.AppendChild(node);
+            }
+
+            return rowSet;
+        }
+
+        private XmlNode AddContractRow(XmlDocument xml, Contract contract, long charID, long? corpID)
+        {
+            XmlNode row = xml.CreateNode(XmlNodeType.Element, "row", "");
+
+            XmlAttribute idAtt = xml.CreateAttribute("contractID", "");
+            idAtt.Value = contract.ID.ToString();
+            row.Attributes.Append(idAtt);
+            XmlAttribute issuerAtt = xml.CreateAttribute("issuerID", "");
+            issuerAtt.Value = charID.ToString();
+            row.Attributes.Append(issuerAtt);
+            if (corpID.HasValue)
+            {
+                XmlAttribute issuerCorpAtt = xml.CreateAttribute("issuerCorpID", "");
+                issuerCorpAtt.Value = corpID.ToString();
+                row.Attributes.Append(issuerCorpAtt);
+            }
+            //if (contract.Assignee.HasValue)
+            //{
+            //    XmlAttribute assigneeAtt = xml.CreateAttribute("assigneeID", "");
+            //    assigneeAtt.Value = contract.AssigneeID.ToString();
+            //    row.Attributes.Append(assigneeAtt);
+            //}
+            //if (contract.AcceptorID.HasValue)
+            //{
+            //    XmlAttribute acceptorAtt = xml.CreateAttribute("acceptorID", "");
+            //    acceptorAtt.Value = contract.AcceptorID.ToString();
+            //    row.Attributes.Append(acceptorAtt);
+            //}
+            //XmlAttribute startStationAtt = xml.CreateAttribute("startStationID", "");
+            //startStationAtt.Value = contract.StartStationID.ToString();
+            //row.Attributes.Append(startStationAtt);
+            //if (contract.EndStationID.HasValue)
+            //{
+            //    XmlAttribute endStationAtt = xml.CreateAttribute("endStationID", "");
+            //    endStationAtt.Value = contract.EndStationID.ToString();
+            //    row.Attributes.Append(endStationAtt);
+            //}
+            //XmlAttribute typeAtt = xml.CreateAttribute("type", "");
+            //typeAtt.Value = contract.ContractType.ToString();
+            //row.Attributes.Append(typeAtt);
+            //XmlAttribute statusAtt = xml.CreateAttribute("status", "");
+            //statusAtt.Value = contract.ContractStatus.ToString();
+            //row.Attributes.Append(statusAtt);
+            //XmlAttribute titleAtt = xml.CreateAttribute("title", "");
+            //titleAtt.Value = contract.Title;
+            //row.Attributes.Append(titleAtt);
+            //XmlAttribute forCorpAtt = xml.CreateAttribute("forCorp", "");
+            //forCorpAtt.Value = contract.ForCorp ? "1" : "0";
+            //row.Attributes.Append(forCorpAtt);
+            //XmlAttribute availabilityAtt = xml.CreateAttribute("availability", "");
+            //availabilityAtt.Value = contract.ContractAvailability.ToString();
+            //row.Attributes.Append(availabilityAtt);
+            //XmlAttribute dateIssuedAtt = xml.CreateAttribute("dateIssued", "");
+            //dateIssuedAtt.Value = contract.DateIssued.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            //row.Attributes.Append(dateIssuedAtt);
+            //if (contract.DateExpired.HasValue)
+            //{
+            //    XmlAttribute dateExpiredAtt = xml.CreateAttribute("dateExpired", "");
+            //    dateExpiredAtt.Value = contract.DateExpired.Value.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            //    row.Attributes.Append(dateExpiredAtt);
+            //}
+            //if (contract.DateAccepted.HasValue)
+            //{
+            //    XmlAttribute dateAcceptedAtt = xml.CreateAttribute("dateAccepted", "");
+            //    dateAcceptedAtt.Value = contract.DateAccepted.Value.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            //    row.Attributes.Append(dateAcceptedAtt);
+            //}
+            //if (contract.DateCompleted.HasValue)
+            //{
+            //    XmlAttribute dateCompletedAtt = xml.CreateAttribute("dateCompleted", "");
+            //    dateCompletedAtt.Value = contract.DateCompleted.Value.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            //    row.Attributes.Append(dateCompletedAtt);
+            //}
+            //XmlAttribute numDaysAtt = xml.CreateAttribute("numDays", "");
+            //numDaysAtt.Value = contract.Days.ToString();
+            //row.Attributes.Append(numDaysAtt);
+            //if (contract.Price.HasValue)
+            //{
+            //    XmlAttribute priceAtt = xml.CreateAttribute("price", "");
+            //    priceAtt.Value = contract.Price.Value.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+            //    row.Attributes.Append(priceAtt);
+            //}
+            //if (contract.Reward.HasValue)
+            //{
+            //    XmlAttribute rewardAtt = xml.CreateAttribute("reward", "");
+            //    rewardAtt.Value = contract.Reward.Value.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+            //    row.Attributes.Append(rewardAtt);
+            //}
+            //if (contract.Collateral.HasValue)
+            //{
+            //    XmlAttribute collateralAtt = xml.CreateAttribute("collateral", "");
+            //    collateralAtt.Value = contract.Collateral.Value.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+            //    row.Attributes.Append(collateralAtt);
+            //}
+            //if (contract.Buyout.HasValue)
+            //{
+            //    XmlAttribute buyoutAtt = xml.CreateAttribute("buyout", "");
+            //    buyoutAtt.Value = contract.Buyout.Value.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+            //    row.Attributes.Append(buyoutAtt);
+            //}
+            //XmlAttribute volumeAtt = xml.CreateAttribute("volume", "");
+            //volumeAtt.Value = contract.Volume.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+            //row.Attributes.Append(volumeAtt);
+
+            return row;
+        }
+
+        private XmlNode NewContractRowset(XmlDocument xml)
+        {
+            XmlNode rowSet = xml.CreateNode(XmlNodeType.Element, "rowset", "");
+
+            XmlAttribute nameAtt = xml.CreateAttribute("name", "");
+            nameAtt.Value = "orders";
+            rowSet.Attributes.Append(nameAtt);
+            XmlAttribute keyAtt = xml.CreateAttribute("key", "");
+            keyAtt.Value = "orderID";
+            rowSet.Attributes.Append(keyAtt);
+            XmlAttribute colAtt = xml.CreateAttribute("columns", "");
+            colAtt.Value = "orderID,charID,stationID,volEntered,volRemaining,minVolume,orderState,typeID,range,accountKey,duration,escrow,price,bid,issued";
+            rowSet.Attributes.Append(colAtt);
+
+            return rowSet;
+        }
+        #endregion
     }
 }
