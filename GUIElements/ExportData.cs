@@ -142,7 +142,7 @@ namespace EveMarketMonitorApp.GUIElements
                 eveAPINode.Attributes.Append(versionNode);
 
                 XmlNode currentTimeNode = xml.CreateNode(XmlNodeType.Element, "currentTime", "");
-                currentTimeNode.InnerText = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
+                currentTimeNode.InnerText = DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
                 eveAPINode.AppendChild(currentTimeNode);
 
                 XmlNode resultNode = xml.CreateNode(XmlNodeType.Element, "result", "");
@@ -193,7 +193,7 @@ namespace EveMarketMonitorApp.GUIElements
             XmlNode row = xml.CreateNode(XmlNodeType.Element, "row", "");
 
             XmlAttribute datetimeAtt = xml.CreateAttribute("transactionDateTime", "");
-            datetimeAtt.Value = transaction.DateTime.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            datetimeAtt.Value = transaction.DateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
             row.Attributes.Append(datetimeAtt);
             XmlAttribute idAtt = xml.CreateAttribute("transactionID", "");
             idAtt.Value = transaction.ID.ToString();
@@ -283,7 +283,7 @@ namespace EveMarketMonitorApp.GUIElements
                 eveAPINode.Attributes.Append(versionNode);
 
                 XmlNode currentTimeNode = xml.CreateNode(XmlNodeType.Element, "currentTime", "");
-                currentTimeNode.InnerText = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
+                currentTimeNode.InnerText = DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
                 eveAPINode.AppendChild(currentTimeNode);
 
                 XmlNode resultNode = xml.CreateNode(XmlNodeType.Element, "result", "");
@@ -334,7 +334,7 @@ namespace EveMarketMonitorApp.GUIElements
             idAtt.Value = journalEntry.ID.ToString();
             row.Attributes.Append(idAtt);
             XmlAttribute dateAtt = xml.CreateAttribute("date", "");
-            dateAtt.Value = journalEntry.Date.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            dateAtt.Value = journalEntry.Date.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
             row.Attributes.Append(dateAtt);
             XmlAttribute typeAtt = xml.CreateAttribute("refTypeID", "");
             typeAtt.Value = journalEntry.TypeID.ToString();
@@ -412,7 +412,7 @@ namespace EveMarketMonitorApp.GUIElements
                 eveAPINode.Attributes.Append(versionNode);
 
                 XmlNode currentTimeNode = xml.CreateNode(XmlNodeType.Element, "currentTime", "");
-                currentTimeNode.InnerText = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
+                currentTimeNode.InnerText = DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
                 eveAPINode.AppendChild(currentTimeNode);
 
                 XmlNode resultNode = xml.CreateNode(XmlNodeType.Element, "result", "");
@@ -493,7 +493,7 @@ namespace EveMarketMonitorApp.GUIElements
             bidAtt.Value = order.BuyOrder ? "1" : "0";
             row.Attributes.Append(bidAtt);
             XmlAttribute issuedAtt = xml.CreateAttribute("issued", "");
-            issuedAtt.Value = order.Issued.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            issuedAtt.Value = order.Issued.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
             row.Attributes.Append(issuedAtt);
 
             return row;
@@ -532,7 +532,7 @@ namespace EveMarketMonitorApp.GUIElements
             eveAPINode.Attributes.Append(versionNode);
 
             XmlNode currentTimeNode = xml.CreateNode(XmlNodeType.Element, "currentTime", "");
-            currentTimeNode.InnerText = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
+            currentTimeNode.InnerText = DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
             eveAPINode.AppendChild(currentTimeNode);
 
             XmlNode resultNode = xml.CreateNode(XmlNodeType.Element, "result", "");
@@ -655,16 +655,16 @@ namespace EveMarketMonitorApp.GUIElements
             completedStatusAtt.Value = job.CompletedStatus.ToString();
             row.Attributes.Append(completedStatusAtt);
             XmlAttribute installTimeAtt = xml.CreateAttribute("installTime", "");
-            installTimeAtt.Value = job.InstallTime.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            installTimeAtt.Value = job.InstallTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
             row.Attributes.Append(installTimeAtt);
             XmlAttribute beginProductionTimeAtt = xml.CreateAttribute("beginProductionTime", "");
-            beginProductionTimeAtt.Value = job.BeginProductionTime.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            beginProductionTimeAtt.Value = job.BeginProductionTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
             row.Attributes.Append(beginProductionTimeAtt);
             XmlAttribute endProductionTimeAtt = xml.CreateAttribute("endProductionTime", "");
-            endProductionTimeAtt.Value = job.EndProductionTime.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            endProductionTimeAtt.Value = job.EndProductionTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
             row.Attributes.Append(endProductionTimeAtt);
             XmlAttribute pauseProductionTimeAtt = xml.CreateAttribute("pauseProductionTime", "");
-            pauseProductionTimeAtt.Value = job.PauseProductionTime.ToString(System.Globalization.DateTimeFormatInfo.InvariantInfo);
+            pauseProductionTimeAtt.Value = job.PauseProductionTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
             row.Attributes.Append(pauseProductionTimeAtt);
 
             return row;
