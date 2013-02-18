@@ -1768,28 +1768,32 @@ namespace EveMarketMonitorApp.GUIElements
                         "(See " + EMMAException.logFile + " for more detailed information)",
                         "Communication failure", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-                try { Ping("www.eve-central.com"); }
-                catch (EMMAException)
-                {
-                    Globals.EveCentralDown = true;
-                    //UpdateStatus(0, 0, "Done", "", true);
-                    splash.ShowMessage(
-                        "Failed to contact eve-central.\r\nPrice updates from eve-central will be disabled until " +
-                        "EMMA is restarted.\r\n(See " + EMMAException.logFile + " for more " +
-                        "detailed information)", "Communication failure",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                try { Ping("www.eve-metrics.com"); }
-                catch (EMMAException)
-                {
-                    Globals.EveMetricsDown = true;
-                    //UpdateStatus(0, 0, "Done", "", true);
-                    splash.ShowMessage( 
-                        "Failed to contact eve-metrics.\r\n" +
-                        "Price updates from eve-metrics will be disabled until EMMA is restarted.\r\n" +
-                        "(See " + EMMAException.logFile + " for more detailed information)", "Communication failure",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+
+                // Note - the eve-central site seems to block ping requests so instead, we just set 'EveCentralDown' to true
+                // if it fails in the EveCentral.GetXml method.
+                //try { Ping("api.eve-central.com"); }
+                //catch (EMMAException)
+                //{
+                //    Globals.EveCentralDown = true;
+                //    //UpdateStatus(0, 0, "Done", "", true);
+                //    splash.ShowMessage(
+                //        "Failed to contact eve-central.\r\nPrice updates from eve-central will be disabled until " +
+                //        "EMMA is restarted.\r\n(See " + EMMAException.logFile + " for more " +
+                //        "detailed information)", "Communication failure",
+                //                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //}
+
+                //try { Ping("www.eve-metrics.com"); }
+                //catch (EMMAException)
+                //{
+                //    Globals.EveMetricsDown = true;
+                //    //UpdateStatus(0, 0, "Done", "", true);
+                //    splash.ShowMessage( 
+                //        "Failed to contact eve-metrics.\r\n" +
+                //        "Price updates from eve-metrics will be disabled until EMMA is restarted.\r\n" +
+                //        "(See " + EMMAException.logFile + " for more detailed information)", "Communication failure",
+                //                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //}
 
                 Globals.EMMAUpdateServer = "";
                 int serverIndex = 0;
