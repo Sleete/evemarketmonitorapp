@@ -15,7 +15,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
     /// </summary>
     public static class EveCentral
     {
-        public const string URL_PriceStats = @"http://eve-central.com/api/marketstat";
+        public const string URL_PriceStats = @"http://api.eve-central.com/api/marketstat";
 
         public static decimal GetPrice(int itemID, long regionID, bool buyPrice)
         {
@@ -102,8 +102,9 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 }
                 catch (WebException webEx)
                 {
+                    Globals.EveCentralDown = true;
                     throw new EMMAEveAPIException(ExceptionSeverity.Error,
-                        "Problem retrieving data from the Eve-central web service", webEx);
+                        "Problem retrieving data from the Eve-central web service. Calls to Eve-central have been disabled until EMMA is restarted.", webEx);
                 }
 
                 if (response != null)
@@ -182,7 +183,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                         catch (Exception ex)
                         {
                             throw new EMMAEveAPIException(ExceptionSeverity.Error,
-                                "Problem recovering XML message from Eve-central response stream", ex);
+                                "Problem recovering XML message from Eve-central response stream.", ex);
                         }
                         finally
                         {
