@@ -153,10 +153,6 @@
       <DependentUpon>EMMADataSet.xsd</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="DatabaseClasses\EveDataSet.cs">
-      <DependentUpon>EveDataSet.xsd</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="DatabaseClasses\IndustryJobs.cs" />
     <Compile Include="DatabaseClasses\TradedItems.cs" />
     <Compile Include="DatabaseClasses\EMMADataSet.Designer.cs">
@@ -991,11 +987,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>EveData.mdf</DependentUpon>
     </Content>
-    <Content Include="Data\EMMA Database.mdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Data\EMMA Database.mdf" />
     <Content Include="Data\EMMA Database_log.ldf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>EMMA Database.mdf</DependentUpon>
     </Content>
     <Content Include="Data\Tutorial_default.xml">

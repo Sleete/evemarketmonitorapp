@@ -1528,7 +1528,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
 
         static public AssetList GetAssets(List<AssetAccessParams> accessParams, int itemID, List<long> stationIDs,
-            List<long> regionIDs, bool includeInTransit, bool includeContainers)
+            List<long> regionIDs, bool includeInTransit, bool includeContainers, bool includeSingletons)
         {
             AssetList retVal = new AssetList();
             EMMADataSet.AssetsDataTable data = new EMMADataSet.AssetsDataTable();
@@ -1552,7 +1552,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             {
                 assetsTableAdapter.FillByItem(data, AssetAccessParams.BuildAccessList(accessParams), 
                     regionString.ToString(), stationString.ToString(), itemID, 
-                    includeInTransit, includeContainers);
+                    includeInTransit, includeContainers, includeSingletons);
             }
 
             foreach (EMMADataSet.AssetsRow asset in data)

@@ -9287,7 +9287,49 @@ AS
                         }
                         #endregion
                     }
+                    if (dbVersion.CompareTo(new Version("1.6.2.0")) < 0)
+                    {
+                        #region Updating AssetsGetByItem stored proc
+                        commandText =
+                               @"ALTER PROCEDURE [dbo].[AssetsGetByItem]
+	@accessList			varchar(max),
+	@regionIDs			varchar(max),
+	@stationIDs			varchar(max),
+	@itemID				int,
+	@includeInTransit	bit,
+	@includeContainers	bit,
+    @includeSingletons  bit
+AS
+IF(NOT @regionIDs LIKE '')
+BEGIN
+	SELECT Assets.*
+	FROM Assets 
+	JOIN CLR_bigintlist_split(@accessList) a ON (Assets.OwnerID = a.number)
+	JOIN CLR_bigintlist_split(@regionIDs) r ON (Assets.RegionID = r.number OR r.number = 0)
+	JOIN CLR_bigintlist_split(@stationIDs) s ON (Assets.LocationID = s.number OR s.number = 0)
+	WHERE (Assets.ItemID = @itemID OR @itemID = 0) AND (@includeInTransit = 1 OR NOT Assets.Status = 2) 
+        AND (@includeContainers = 1 OR (Assets.IsContainer = 0 AND Assets.ContainerID = 0))
+        AND (@includeSingletons = 1 OR (Assets.Quantity > 1))
+END
 
+	RETURN";
+
+                        adapter = new SqlDataAdapter(commandText, connection);
+
+                        try
+                        {
+                            adapter.SelectCommand.ExecuteNonQuery();
+
+                            SetDBVersion(connection, new Version("1.6.2.0"));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new EMMADataException(ExceptionSeverity.Critical,
+                                "Problem updating 'AssetsGetByItem' stored procedure", ex);
+                        }
+                        #endregion
+                        
+                    }
                     
          
                 }
