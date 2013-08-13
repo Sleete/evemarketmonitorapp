@@ -50,6 +50,7 @@ namespace EveMarketMonitorApp.Common
         {
             this._progressObject.StatusChange -= new StatusChangeHandler(progressObject_OnStatusChange);
             timer1.Stop();
+
             base.OnClosing(e);
         }
 
@@ -124,6 +125,7 @@ namespace EveMarketMonitorApp.Common
                 }
             }
         }
+
 
         private void SetHorizScroll()
         {

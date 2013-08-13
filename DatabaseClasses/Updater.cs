@@ -9287,7 +9287,7 @@ AS
                         }
                         #endregion
                     }
-                    if (dbVersion.CompareTo(new Version("1.6.2.0")) < 0)
+                    if (dbVersion.CompareTo(new Version("1.6.3.0")) < 0)
                     {
                         #region Updating AssetsGetByItem stored proc
                         commandText =
@@ -9320,7 +9320,7 @@ END
                         {
                             adapter.SelectCommand.ExecuteNonQuery();
 
-                            SetDBVersion(connection, new Version("1.6.2.0"));
+                            SetDBVersion(connection, new Version("1.6.3.0"));
                         }
                         catch (Exception ex)
                         {
