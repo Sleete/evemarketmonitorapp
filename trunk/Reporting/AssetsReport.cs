@@ -258,7 +258,7 @@ namespace EveMarketMonitorApp.Reporting
                         //    quantity, 0, ref avgBuyPrice, ref blank1, true);
                         quantity = 0;
                         AssetList assets = Assets.GetAssets(_assetAccessParams, itemID, _stationsIDs, _regionIDs, 
-                            _includeInTransit, _includeContainers);
+                            _includeInTransit, _includeContainers, true);
                         foreach (Asset a in assets)
                         {
                             avgBuyPrice += a.TotalBuyPrice;

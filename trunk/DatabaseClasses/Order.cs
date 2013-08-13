@@ -37,8 +37,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         private DateTime _date;
 
         private long _eveOrderID;
-
-
+        
         private long _twelveHourMovement;
         private bool _gotTwelveHourMovement = false;
         private long _twoDayMovement;
@@ -49,7 +48,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
         /// <summary>
         /// This contsructor is used by the itemdetail form 
         /// </summary>
-        public Order(long ownerID, int itemID, bool buyOrder)
+        public Order(long ownerID, int itemID, bool buyOrder, List<AssetAccessParams> accessParams)
         {
             _ownerID = ownerID;
             _itemID = itemID;
@@ -77,9 +76,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
             _sevenDayMovement = 0;
             _gotSevenDayMovement = true;
             _eveOrderID = 0;
+
+            AccessParameters = accessParams;
         }
 
-        public Order(EMMADataSet.OrdersRow dataRow)
+        public Order(EMMADataSet.OrdersRow dataRow) : this(dataRow, null)
+        {
+            
+        }
+        public Order(EMMADataSet.OrdersRow dataRow, List<AssetAccessParams> accessParams)
         {
             if (dataRow != null)
             {
@@ -107,6 +112,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     _date = _date.AddHours(Globals.HoursOffset);
                 }
                 _eveOrderID = dataRow.EveOrderID;
+
+                AccessParameters = accessParams;
             }
         }
 
@@ -295,6 +302,15 @@ namespace EveMarketMonitorApp.DatabaseClasses
             set { _remainingVol = value; }
         }
 
+        public float PercentageCompleted
+        {
+            get
+            {
+                float result = (float)(_totalVol - _remainingVol) / (float)_totalVol;
+                return result;
+            }
+        }
+
         public int MinVol
         {
             get { return _minVol; }
@@ -407,6 +423,33 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 return _sevenDayMovement;
             }
         }
+
+        public long LocalStockAvailable
+        {
+            get
+            {
+                long result = 0;
+                if (AccessParameters != null)
+                {
+                    List<long> stations = new List<long>();
+                    stations.Add(StationID);
+                    AssetList results = Assets.GetAssets(AccessParameters, ItemID, stations, new List<long>(), false, true, false);
+                    foreach (Asset a in results)
+                    {
+                        result += a.Quantity;
+                    }
+                }
+                return result;
+            }
+        }
+
+        public bool? BuyOrderExistsForThisItem
+        {
+            get;
+            set;
+        }
+
+        private List<AssetAccessParams> AccessParameters { get; set; }
 
         /// <summary>
         /// Calculates the movement on the market order over the period covered by the specified time span,

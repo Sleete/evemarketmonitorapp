@@ -185,7 +185,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
             foreach (EMMADataSet.OrdersRow row in table)
             {
-                Order order = new Order(row);
+                Order order = new Order(row, accessParams);
                 retVal.Add(order);
             }
             return retVal;

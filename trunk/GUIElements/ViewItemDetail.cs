@@ -13,6 +13,7 @@ using EveMarketMonitorApp.Reporting;
 
 namespace EveMarketMonitorApp.GUIElements
 {
+
     public partial class ViewItemDetail : Form
     {
         private CharCorpOption _lastSelectedOwner;
@@ -24,7 +25,14 @@ namespace EveMarketMonitorApp.GUIElements
         private List<FinanceAccessParams> _finParams = new List<FinanceAccessParams>();
         private List<AssetAccessParams> _assetParams = new List<AssetAccessParams>();
         private List<int> _itemIDs = new List<int>();
-        private bool _generatePlaceholderOrders = false;
+        
+        private enum OrderPlaceholderType
+        {
+            None,
+            PerItem,
+            PerItemPerEntity
+        }
+        private OrderPlaceholderType _orderPlaceholderType = OrderPlaceholderType.None;
 
         private bool _ordersDataVisible = false;
         private bool _inventoryDataVisible = false;
@@ -64,7 +72,20 @@ namespace EveMarketMonitorApp.GUIElements
                 DateTime.Now.AddMonths(-1) : DateTime.UtcNow.AddMonths(-1);
             dtpEndDate.Value = UserAccount.Settings.UseLocalTimezone ? DateTime.Now : DateTime.UtcNow;
             rdbNone.Checked = true;
-            chkGenPlaceholders.Checked = _generatePlaceholderOrders;
+            switch (_orderPlaceholderType)
+            {
+                case OrderPlaceholderType.None:
+                    rdbNoPlaceholders.Checked = true;
+                    break;
+                case OrderPlaceholderType.PerItem:
+                    rdbItemPlaceholders.Checked = true;
+                    break;
+                case OrderPlaceholderType.PerItemPerEntity:
+                    rdbAllPlaceholders.Checked = true;
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void ViewItemDetail_Load(object sender, EventArgs e)
@@ -111,6 +132,7 @@ namespace EveMarketMonitorApp.GUIElements
                 BuyOrderStatus.DataPropertyName = "State";
                 BuyOrderSystemColumn.DataPropertyName = "System";
                 BuyOrderTotaUnits.DataPropertyName = "TotalVol";
+                BuyOrderPercentageCompleteColumn.DataPropertyName = "PercentageCompleted";
 
                 sellOrdersView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                 sellOrdersView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
@@ -129,6 +151,9 @@ namespace EveMarketMonitorApp.GUIElements
                 SellOrderStatusColumn.DataPropertyName = "State";
                 SellOrderSystemColumn.DataPropertyName = "System";
                 SellOrderTotalUnitsColumn.DataPropertyName = "TotalVol";
+                SellOrderPercentageCompleteColumn.DataPropertyName = "PercentageCompleted";
+                SellOrderLocalStockAvailable.DataPropertyName = "LocalStockAvailable";
+                SellOrderMatchingBuyOrderExistsColumn.DataPropertyName = "BuyOrderExistsForThisItem";
 
                 transactionsView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                 transactionsView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
@@ -428,7 +453,15 @@ namespace EveMarketMonitorApp.GUIElements
                     _itemIDs.Add(((ItemInfo)item).ID);
                 }
 
-                _generatePlaceholderOrders = chkGenPlaceholders.Checked;
+                _orderPlaceholderType = OrderPlaceholderType.None;
+                if (rdbItemPlaceholders.Checked)
+                {
+                    _orderPlaceholderType = OrderPlaceholderType.PerItem;
+                }
+                else if (rdbAllPlaceholders.Checked)
+                {
+                    _orderPlaceholderType = OrderPlaceholderType.PerItemPerEntity;
+                }
 
                 // Kick off the threads that will do the updating of the data tables.
                 _ordersUpdateThread = new Thread(new ThreadStart(UpdateOrders));
@@ -481,25 +514,46 @@ namespace EveMarketMonitorApp.GUIElements
                 _sellOrders = Orders.LoadOrders(_assetParams, _itemIDs, new List<long>(), (int)OrderState.Active, "sell");
 
                 // Now add placeholder rows for item/owner combos that do not exist in the retrieved data.
-                if (_generatePlaceholderOrders)
+                if (_orderPlaceholderType != OrderPlaceholderType.None)
                 {
-                    foreach (object ownerObj in chkOwners.CheckedItems)
+                    foreach (object itemObj in chkItems.CheckedItems)
                     {
-                        foreach (object itemObj in chkItems.CheckedItems)
+                        int maxOwner = _orderPlaceholderType == OrderPlaceholderType.PerItem ? 1 : chkOwners.CheckedItems.Count;
+
+                        for(int currentOwnerIndex = 0; currentOwnerIndex < maxOwner; currentOwnerIndex++)
                         {
+                            object ownerObj = chkOwners.CheckedItems[currentOwnerIndex];
                             CharCorpOption owner = (CharCorpOption)ownerObj;
                             long ownerID = owner.Data.ID;
                             int itemID = ((ItemInfo)itemObj).ID;
 
-                            _buyOrders.ItemFilter = "OwnerID = " + ownerID + " AND ItemID = " + itemID;
-                            if (_buyOrders.Count == 0)
+                            _buyOrders.ItemFilter = "ItemID = " + itemID;
+                            if (_orderPlaceholderType == OrderPlaceholderType.PerItemPerEntity)
                             {
-                                _buyOrders.Add(new Order(ownerID, itemID, true));
+                                _buyOrders.ItemFilter = _buyOrders.ItemFilter + " AND OwnerID = " + ownerID;
                             }
-                            _sellOrders.ItemFilter = "OwnerID = " + ownerID + " AND ItemID = " + itemID;
-                            if (_sellOrders.Count == 0)
+                            if (_buyOrders.FiltredItems.Count == 0)
                             {
-                                _sellOrders.Add(new Order(ownerID, itemID, false));
+                                _buyOrders.Add(new Order(ownerID, itemID, true, _assetParams));
+                            }
+
+                            _sellOrders.ItemFilter = "ItemID = " + itemID;
+                            if (_orderPlaceholderType == OrderPlaceholderType.PerItemPerEntity)
+                            {
+                                _sellOrders.ItemFilter = _sellOrders.ItemFilter + " AND OwnerID = " + ownerID;
+                            }
+                            if (_sellOrders.FiltredItems.Count == 0)
+                            {
+                                _sellOrders.Add(new Order(ownerID, itemID, false, _assetParams));
+                            }
+                            else
+                            {
+                                // Check if there is a buy order for the same item as in this sell order
+                                _buyOrders.ItemFilter = "ItemID = " + itemID;
+                                foreach (Order o in _sellOrders.FiltredItems)
+                                {
+                                    o.BuyOrderExistsForThisItem = _buyOrders.FiltredItems.Count > 0;
+                                }
                             }
                         }
                     }
@@ -736,6 +790,21 @@ namespace EveMarketMonitorApp.GUIElements
         private void chkGenPlaceholders_CheckedChanged(object sender, EventArgs e)
         {
             _ordersDataVisible = false;
+            RefreshGUI();
+        }
+
+        private void rdbPlaceholders_CheckedChanged(object sender, EventArgs e)
+        {
+            _orderPlaceholderType = OrderPlaceholderType.None;
+            if (rdbItemPlaceholders.Checked)
+            {
+                _orderPlaceholderType = OrderPlaceholderType.PerItem;
+            }
+            else if (rdbAllPlaceholders.Checked)
+            {
+                _orderPlaceholderType = OrderPlaceholderType.PerItemPerEntity;
+            }
+
             RefreshGUI();
         }
 
