@@ -546,20 +546,28 @@ namespace EveMarketMonitorApp.GUIElements
                             {
                                 _sellOrders.Add(new Order(ownerID, itemID, false, _assetParams));
                             }
-                            else
-                            {
-                                // Check if there is a buy order for the same item as in this sell order
-                                _buyOrders.ItemFilter = "ItemID = " + itemID;
-                                foreach (Order o in _sellOrders.FiltredItems)
-                                {
-                                    o.BuyOrderExistsForThisItem = _buyOrders.FiltredItems.Count > 0;
-                                }
-                            }
                         }
                     }
                     _buyOrders.ItemFilter = "";
                     _sellOrders.ItemFilter = "";
                 }
+                foreach (object itemObj in chkItems.CheckedItems)
+                {
+                    int itemID = ((ItemInfo)itemObj).ID;
+
+                    _sellOrders.ItemFilter = "ItemID = " + itemID;
+                    if (_sellOrders.FiltredItems.Count > 0)
+                    {
+                        // Check if there is a buy order for the same item as in this sell order
+                        _buyOrders.ItemFilter = "ItemID = " + itemID;
+                        foreach (Order o in _sellOrders.FiltredItems)
+                        {
+                            o.BuyOrderExistsForThisItem = _buyOrders.FiltredItems.Count > 0;
+                        }
+                    }
+                }
+                _buyOrders.ItemFilter = "";
+                _sellOrders.ItemFilter = "";
                 
                 _ordersDataVisible = true;
                 _ordersGettingData = false;
