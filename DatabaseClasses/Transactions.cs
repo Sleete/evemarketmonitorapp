@@ -443,6 +443,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
                 Diagnostics.StartTimer("Transactions.GetBuyTrans");
                 // Retrieve buy transactions that match our criteria
                 transactions = GetTransData(accessParams, itemIDs, regionIDs, stationIDs, startDate, endDate, "Buy");
+                transactions.OrderByDescending(t => t.DateTime);
                 Diagnostics.StopTimer("Transactions.GetBuyTrans");
                 ReprocessResultList reprocessResults = new ReprocessResultList();
                 if (itemIDs.Count == 1 && useReprocessData)
