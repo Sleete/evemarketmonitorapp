@@ -824,6 +824,30 @@ namespace EveMarketMonitorApp.DatabaseClasses
 
                     quantityRemaining -= quantityToUse;
                 }
+
+                if (recentBuyUnitsToIgnore == 0 && totSell > 0)
+                {
+                    decimal totIsk = 0;
+                    long q = 0;
+                    transactions = GetTransData(accessParams, itemIDs, regionIDs, stationIDs, startDate, endDate, "Buy");
+                    transactions.OrderByDescending(t => t.DateTime);
+
+                    for (int i = 0; i < transactions.Count; i++)
+                    {
+                        EMMADataSet.TransactionsRow trans = transactions[i];
+                        long qToUse = (q + trans.Quantity > totSell) ? (totSell - q) : trans.Quantity;
+                        q += qToUse;
+                        totIsk += trans.Price * qToUse;
+                        if (q >= totSell)
+                        {
+                            break;
+                        }
+                    }
+                    if (q > 0)
+                    {
+                        totIskSellProfit = ((totIskSell / totSell) - (totIsk / q)) * totSell;
+                    }
+                }
                 Diagnostics.StopTimer("Transactions.ProcessSellTrans");
 
             }
