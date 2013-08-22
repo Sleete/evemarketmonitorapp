@@ -47,12 +47,14 @@ namespace EveMarketMonitorApp.GUIElements
             this.chkUseRecentBuyPrices = new System.Windows.Forms.CheckBox();
             this.chkTradedItems = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.chkRestrictedCostCalc = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(95, 522);
+            this.btnOk.Location = new System.Drawing.Point(189, 543);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(88, 29);
             this.btnOk.TabIndex = 5;
@@ -64,7 +66,7 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(189, 522);
+            this.btnCancel.Location = new System.Drawing.Point(283, 543);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(88, 29);
             this.btnCancel.TabIndex = 6;
@@ -83,11 +85,13 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // chkColumns
             // 
+            this.chkColumns.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.chkColumns.CheckOnClick = true;
             this.chkColumns.FormattingEnabled = true;
-            this.chkColumns.Location = new System.Drawing.Point(12, 334);
+            this.chkColumns.Location = new System.Drawing.Point(9, 356);
             this.chkColumns.Name = "chkColumns";
-            this.chkColumns.Size = new System.Drawing.Size(265, 109);
+            this.chkColumns.Size = new System.Drawing.Size(362, 109);
             this.chkColumns.TabIndex = 3;
             // 
             // dtpStartDate
@@ -119,8 +123,10 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 318);
+            this.label4.Location = new System.Drawing.Point(9, 340);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(260, 13);
             this.label4.TabIndex = 11;
@@ -138,9 +144,11 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.Location = new System.Drawing.Point(12, 110);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(260, 42);
+            this.label5.Size = new System.Drawing.Size(354, 31);
             this.label5.TabIndex = 15;
             this.label5.Text = "(Produces a report where items are organised by categories with sub totals on rel" +
                 "evant fields for each category)";
@@ -148,7 +156,7 @@ namespace EveMarketMonitorApp.GUIElements
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 456);
+            this.label3.Location = new System.Drawing.Point(6, 494);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(51, 13);
             this.label3.TabIndex = 16;
@@ -156,15 +164,18 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // cmbLocation
             // 
+            this.cmbLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbLocation.FormattingEnabled = true;
-            this.cmbLocation.Location = new System.Drawing.Point(12, 491);
+            this.cmbLocation.Location = new System.Drawing.Point(9, 513);
             this.cmbLocation.Name = "cmbLocation";
-            this.cmbLocation.Size = new System.Drawing.Size(265, 21);
+            this.cmbLocation.Size = new System.Drawing.Size(362, 21);
             this.cmbLocation.TabIndex = 4;
             // 
             // btnNewLocation
             // 
-            this.btnNewLocation.Location = new System.Drawing.Point(95, 456);
+            this.btnNewLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnNewLocation.Location = new System.Drawing.Point(189, 478);
             this.btnNewLocation.Name = "btnNewLocation";
             this.btnNewLocation.Size = new System.Drawing.Size(88, 29);
             this.btnNewLocation.TabIndex = 7;
@@ -174,7 +185,8 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // btnModifyLocation
             // 
-            this.btnModifyLocation.Location = new System.Drawing.Point(189, 456);
+            this.btnModifyLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnModifyLocation.Location = new System.Drawing.Point(283, 478);
             this.btnModifyLocation.Name = "btnModifyLocation";
             this.btnModifyLocation.Size = new System.Drawing.Size(88, 29);
             this.btnModifyLocation.TabIndex = 8;
@@ -184,16 +196,18 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(12, 175);
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.Location = new System.Drawing.Point(11, 219);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(260, 66);
+            this.label6.Size = new System.Drawing.Size(354, 57);
             this.label6.TabIndex = 18;
             this.label6.Text = resources.GetString("label6.Text");
             // 
             // chkUseRecentBuyPrices
             // 
             this.chkUseRecentBuyPrices.AutoSize = true;
-            this.chkUseRecentBuyPrices.Location = new System.Drawing.Point(12, 155);
+            this.chkUseRecentBuyPrices.Location = new System.Drawing.Point(11, 199);
             this.chkUseRecentBuyPrices.Name = "chkUseRecentBuyPrices";
             this.chkUseRecentBuyPrices.Size = new System.Drawing.Size(254, 17);
             this.chkUseRecentBuyPrices.TabIndex = 17;
@@ -203,7 +217,7 @@ namespace EveMarketMonitorApp.GUIElements
             // chkTradedItems
             // 
             this.chkTradedItems.AutoSize = true;
-            this.chkTradedItems.Location = new System.Drawing.Point(12, 244);
+            this.chkTradedItems.Location = new System.Drawing.Point(11, 279);
             this.chkTradedItems.Name = "chkTradedItems";
             this.chkTradedItems.Size = new System.Drawing.Size(144, 17);
             this.chkTradedItems.TabIndex = 19;
@@ -212,12 +226,35 @@ namespace EveMarketMonitorApp.GUIElements
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(12, 264);
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.Location = new System.Drawing.Point(11, 299);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(260, 40);
+            this.label7.Size = new System.Drawing.Size(354, 29);
             this.label7.TabIndex = 20;
             this.label7.Text = "(If enabled then the report will only contain items that are on the list of trade" +
                 "d items, configured in settings -> traded items)";
+            // 
+            // label8
+            // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label8.Location = new System.Drawing.Point(11, 164);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(354, 32);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "When calculating \'cost of units sold\' only include buy orders within the start an" +
+                "d end dates given above";
+            // 
+            // chkRestrictedCostCalc
+            // 
+            this.chkRestrictedCostCalc.AutoSize = true;
+            this.chkRestrictedCostCalc.Location = new System.Drawing.Point(11, 144);
+            this.chkRestrictedCostCalc.Name = "chkRestrictedCostCalc";
+            this.chkRestrictedCostCalc.Size = new System.Drawing.Size(359, 17);
+            this.chkRestrictedCostCalc.TabIndex = 21;
+            this.chkRestrictedCostCalc.Text = "Calculate \'cost of units sold\' from buy orders in the specified time period";
+            this.chkRestrictedCostCalc.UseVisualStyleBackColor = true;
             // 
             // RptParamsItems
             // 
@@ -225,7 +262,9 @@ namespace EveMarketMonitorApp.GUIElements
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(289, 563);
+            this.ClientSize = new System.Drawing.Size(383, 584);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.chkRestrictedCostCalc);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.chkTradedItems);
             this.Controls.Add(this.label6);
@@ -274,5 +313,7 @@ namespace EveMarketMonitorApp.GUIElements
         private System.Windows.Forms.CheckBox chkUseRecentBuyPrices;
         private System.Windows.Forms.CheckBox chkTradedItems;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox chkRestrictedCostCalc;
     }
 }
