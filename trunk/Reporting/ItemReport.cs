@@ -22,6 +22,7 @@ namespace EveMarketMonitorApp.Reporting
         private List<long> _stationIDs;
         private List<int> _itemIDs;
         private bool _useMostRecentBuyPrice;
+        private bool _restrictedCostCalc;
 
         public ItemReport(bool byGroup)
         {
@@ -29,7 +30,7 @@ namespace EveMarketMonitorApp.Reporting
             _title = "Item Report";
             _allowSort = !byGroup;
 
-            _expectedParams = new string[10];
+            _expectedParams = new string[11];
             _expectedParams[0] = "StartDate";
             _expectedParams[1] = "EndDate";
             _expectedParams[2] = "RegionIDs";
@@ -40,6 +41,7 @@ namespace EveMarketMonitorApp.Reporting
             _expectedParams[7] = "FinanceAccessParams";
             _expectedParams[8] = "AssetAccessParams";
             _expectedParams[9] = "TradedItemsOnly";
+            _expectedParams[10] = "RestrictedCostCalc";
 
             _byItemGroup = byGroup;
         }
@@ -175,6 +177,7 @@ namespace EveMarketMonitorApp.Reporting
                     if (_expectedParams[i].Equals("ItemIDs")) _itemIDs = (List<int>)paramValue;
                     if (_expectedParams[i].Equals("ColumnsVisible")) columnsVisible = (bool[])paramValue;
                     if (_expectedParams[i].Equals("UseMostRecentBuyPrice")) _useMostRecentBuyPrice = (bool)paramValue;
+                    if (_expectedParams[i].Equals("RestrictedCostCalc")) _restrictedCostCalc = (bool)paramValue;
                     if (_expectedParams[i].Equals("FinanceAccessParams"))
                         _financeAccessParams = (List<FinanceAccessParams>)paramValue;
                     if (_expectedParams[i].Equals("AssetAccessParams"))
@@ -299,7 +302,7 @@ namespace EveMarketMonitorApp.Reporting
                     _financeAccessParams, itemIDList, _regionIDs, _stationIDs, _startDate, _endDate,
                     ref avgSellPrice, ref avgBuyPrice, ref totBuyVolume, ref totSellVolume,
                     ref brokerBuyFees, ref brokerSellFees, ref transFees, ref transportCosts, ref avgSellProfit,
-                    true, true, false);
+                    true, true, false, _useMostRecentBuyPrice, _restrictedCostCalc);
 
                 Diagnostics.StopTimer("ItemReport.Part1");
 

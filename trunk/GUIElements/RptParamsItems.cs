@@ -157,6 +157,7 @@ namespace EveMarketMonitorApp.GUIElements
                 }
                 _parameters.Add("ColumnsVisible", colsVisible);
                 _parameters.Add("UseMostRecentBuyPrice", chkUseRecentBuyPrices.Checked);
+                _parameters.Add("RestrictedCostCalc", chkRestrictedCostCalc.Checked);
                 _parameters.Add("TradedItemsOnly", chkTradedItems.Checked);
 
                 _report = new ItemReport(chkItemsByGroup.Checked);

@@ -316,9 +316,24 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetItemTransData(accessParams, itemIDs, regionIDs, stationIDs, startDate, endDate, 0, 0,
                 ref avgSellPrice, ref blank1, ref avgBuyPrice, ref blank2, ref unitsBought, ref unitsSold,
                 ref brokerBuyFees, ref brokerSellFees, ref transactionTax, ref transportCosts, ref avgSellProfit,
-                calcBrokerFees, calcTransTax, true, true, false, true, useReprocessData);
+                calcBrokerFees, calcTransTax, true, true, false, true, useReprocessData, false, false);
         }
 
+        public static void GetItemTransData(List<FinanceAccessParams> accessParams, List<int> itemIDs,
+             List<long> regionIDs, List<long> stationIDs, DateTime startDate, DateTime endDate,
+            ref decimal avgSellPrice, ref decimal avgBuyPrice, ref long unitsBought, ref long unitsSold,
+            ref decimal brokerBuyFees, ref decimal brokerSellFees, ref decimal transactionTax,
+            ref decimal transportCosts, ref decimal avgSellProfit,
+            bool calcBrokerFees, bool calcTransTax, bool useReprocessData, bool useMostRecentBuyPrice,
+            bool restrictedCostCalc)
+        {
+            decimal blank1 = 0, blank2 = 0;
+            GetItemTransData(accessParams, itemIDs, regionIDs, stationIDs, startDate, endDate, 0, 0,
+                ref avgSellPrice, ref blank1, ref avgBuyPrice, ref blank2, ref unitsBought, ref unitsSold,
+                ref brokerBuyFees, ref brokerSellFees, ref transactionTax, ref transportCosts, ref avgSellProfit,
+                calcBrokerFees, calcTransTax, true, true, false, true, useReprocessData, useMostRecentBuyPrice,
+                restrictedCostCalc);
+        }
         public static void GetItemTransData(List<FinanceAccessParams> accessParams, List<int> itemIDs,
             long quantity, long recentBuyUnitsToIgnore,
             ref decimal avgSellPrice, ref decimal avgBuyPrice, ref long unitsBought, ref long unitsSold,
@@ -332,7 +347,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetItemTransData(accessParams, itemIDs, new List<long>(), new List<long>(), startDate, endDate,
                 quantity, recentBuyUnitsToIgnore, ref avgSellPrice, ref blank1, ref avgBuyPrice, ref blank2,
                 ref unitsBought, ref unitsSold, ref brokerBuyFees, ref brokerSellFees, ref transactionTax,
-                ref blank3, ref blank4, calcBrokerFees, calcTransTax, true, true, false, false, useReprocessData);
+                ref blank3, ref blank4, calcBrokerFees, calcTransTax, true, true, false, false, useReprocessData, false, false);
         }
 
         public static void GetAverageBuyPrice(List<FinanceAccessParams> accessParams, List<int> itemIDs,
@@ -348,7 +363,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetItemTransData(accessParams, itemIDs, regionIDs, stationIDs, startDate, endDate,
                 quantity, recentBuyUnitsToIgnore, ref blank1, ref blank7, ref avgBuyPrice, ref blank8,
                 ref blank3, ref blank4, ref brokerBuyFees, ref blank5, ref blank6, ref blank9, ref blank10,
-                true, false, true, false, false, false, useReprocessData);
+                true, false, true, false, false, false, useReprocessData, false, false);
         }
 
         public static void GetAverageBuyPrice(List<FinanceAccessParams> accessParams, int itemID,
@@ -365,7 +380,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetItemTransData(accessParams, itemIDs, regionIDs, stationIDs, startDate, endDate,
                 quantity, recentBuyUnitsToIgnore, ref blank1, ref blank7, ref avgBuyPrice, ref blank8,
                 ref blank3, ref blank4, ref blank10, ref blank5, ref blank6, ref blank9, ref blank11,
-                false, false, true, false, false, false, false);
+                false, false, true, false, false, false, false, false, false);
         }
 
         public static void GetMedianSellPrice(List<FinanceAccessParams> accessParams, List<int> itemIDs,
@@ -377,7 +392,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetItemTransData(accessParams, itemIDs, regionIDs, new List<long>(), startDate, endDate,
                 0, 0, ref blank1, ref medianSellPrice, ref blank2, ref blank5, ref blank3, ref blank4,
                 ref blank6, ref blank7, ref blank8, ref blank9, ref blank10,
-                false, false, false, true, true, false, true);
+                false, false, false, true, true, false, true, false, false);
         }
 
         public static void GetMedianBuyPrice(List<FinanceAccessParams> accessParams, List<int> itemIDs,
@@ -390,7 +405,7 @@ namespace EveMarketMonitorApp.DatabaseClasses
             GetItemTransData(accessParams, itemIDs, regionIDs, new List<long>(), startDate, endDate,
                 0, 0, ref blank1, ref blank5, ref blank2, ref medianBuyPrice, ref blank3, ref blank4,
                 ref blank6, ref blank7, ref blank8, ref blank9, ref blank10,
-                false, false, true, false, true, false, useReprocessData);
+                false, false, true, false, true, false, useReprocessData, false, false);
         }
 
         private static void GetItemTransData(List<FinanceAccessParams> accessParams, List<int> itemIDs,
@@ -401,7 +416,8 @@ namespace EveMarketMonitorApp.DatabaseClasses
             ref decimal brokerBuyFees, ref decimal brokerSellFees, ref decimal transactionTax,
             ref decimal transportCosts, ref decimal avgSellProfit,
             bool calcBrokerFees, bool calcTransTax, bool getBuyData, bool getSellData, bool getMedians,
-            bool calcTransportCosts, bool useReprocessData)
+            bool calcTransportCosts, bool useReprocessData, bool useMostRecentBuyPrice,
+            bool restrictedCostCalc)
         {
             long totBuy = 0, totSell = 0;
             decimal totIskBuy = 0, totIskSell = 0, totIskSellProfit = 0;
@@ -825,12 +841,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     quantityRemaining -= quantityToUse;
                 }
 
-                if (recentBuyUnitsToIgnore == 0 && totSell > 0)
+                if ((useMostRecentBuyPrice || restrictedCostCalc) && totSell > 0)
                 {
                     decimal totIsk = 0;
                     long q = 0;
                     transactions = GetTransData(accessParams, itemIDs, regionIDs, stationIDs, startDate, endDate, "Buy");
-                    transactions.OrderByDescending(t => t.DateTime);
+                    if (useMostRecentBuyPrice)
+                    {
+                        transactions.OrderByDescending(t => t.DateTime);
+                    }
+                    else if (restrictedCostCalc)
+                    {
+                        transactions.OrderBy(t => t.DateTime);
+                    }
 
                     for (int i = 0; i < transactions.Count; i++)
                     {
