@@ -562,7 +562,11 @@ namespace EveMarketMonitorApp.GUIElements
                         _buyOrders.ItemFilter = "ItemID = " + itemID;
                         foreach (Order o in _sellOrders.FiltredItems)
                         {
-                            o.BuyOrderExistsForThisItem = _buyOrders.FiltredItems.Count > 0;
+                            SortableCollection buyOrders = _buyOrders.FiltredItems;
+                            if (buyOrders.Count > 0) 
+                            {                                
+                                o.BuyOrderExistsForThisItem = (buyOrders[0] as Order).Station != "NO ORDER";
+                            }
                         }
                     }
                 }
