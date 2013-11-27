@@ -846,18 +846,19 @@ namespace EveMarketMonitorApp.DatabaseClasses
                     decimal totIsk = 0;
                     long q = 0;
                     transactions = GetTransData(accessParams, itemIDs, regionIDs, stationIDs, startDate, endDate, "Buy");
+                    OrderedEnumerableRowCollection<EMMADataSet.TransactionsRow> orderedTransactions = null;
                     if (useMostRecentBuyPrice)
                     {
-                        transactions.OrderByDescending(t => t.DateTime);
+                        orderedTransactions = transactions.OrderByDescending(t => t.DateTime);
                     }
                     else if (restrictedCostCalc)
                     {
-                        transactions.OrderBy(t => t.DateTime);
+                        orderedTransactions = transactions.OrderBy(t => t.DateTime);
                     }
 
-                    for (int i = 0; i < transactions.Count; i++)
+                    foreach(EMMADataSet.TransactionsRow trans in orderedTransactions)
                     {
-                        EMMADataSet.TransactionsRow trans = transactions[i];
+                        //EMMADataSet.TransactionsRow trans = transactions[i];
                         long qToUse = (q + trans.Quantity > totSell) ? (totSell - q) : trans.Quantity;
                         q += qToUse;
                         totIsk += trans.Price * qToUse;

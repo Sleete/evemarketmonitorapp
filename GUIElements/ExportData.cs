@@ -83,7 +83,8 @@ namespace EveMarketMonitorApp.GUIElements
                 FolderBrowserDialog dlg = new FolderBrowserDialog();
                 dlg.Description = "Select the folder to export to";
                 dlg.ShowNewFolderButton = true;
-                string dir =  @"%APPDATA%\EMMA\Exports\EMMA_1_6_Data";
+                string dir =  Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData),
+                    Path.Combine("EMMA", Path.Combine("Exports", "EMMA_1_6_Data")));
                 if(!Directory.Exists(dir)) { Directory.CreateDirectory(dir);}
                 dlg.SelectedPath = dir;
                 if (dlg.ShowDialog() != System.Windows.Forms.DialogResult.Cancel)
