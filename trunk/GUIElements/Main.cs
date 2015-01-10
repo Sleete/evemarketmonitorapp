@@ -1806,7 +1806,7 @@ namespace EveMarketMonitorApp.GUIElements
                 {
                     string pingserver = updateServers[serverIndex];
                     Globals.EMMAUpdateServer = pingserver;
-                    if (pingserver.Equals("www.eve-files.com"))
+                    if (pingserver.ToLower().Equals("www.eve-files.com"))
                     {
                         Globals.EMMAUpdateServer = "go-dl.eve-files.com";
                     }
