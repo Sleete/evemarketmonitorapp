@@ -589,6 +589,7 @@ namespace EveMarketMonitorApp.AbstractionClasses
                 }
                 catch (WebException webEx)
                 {
+                    Globals.EveAPIDown = true;
                     throw new EMMAEveAPIException(ExceptionSeverity.Error,
                         "Problem retrieving data from Eve web service", webEx);
                 }

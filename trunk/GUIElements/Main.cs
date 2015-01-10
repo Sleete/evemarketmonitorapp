@@ -1758,16 +1758,18 @@ namespace EveMarketMonitorApp.GUIElements
         {
             if (!Properties.Settings.Default.SkipConnectionCheck)
             {
-                try { Ping("api.eveonline.com"); }
-                catch (EMMAException)
-                {
-                    Globals.EveAPIDown = true;
-                    //UpdateStatus(0, 0, "Done", "", true);
-                    splash.ShowMessage(
-                        "Failed to contact the Eve API.\r\nAPI updates will be disabled until EMMA is restarted.\r\n" +
-                        "(See " + EMMAException.logFile + " for more detailed information)",
-                        "Communication failure", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                // Note - the eve api site now seems to block ping requests so instead, we just set 'EveAPIDown' to true
+                // if it fails in the EveAPI.GetXml method.
+                //try { Ping("api.eveonline.com"); }
+                //catch (EMMAException)
+                //{
+                //    Globals.EveAPIDown = true;
+                //    //UpdateStatus(0, 0, "Done", "", true);
+                //    splash.ShowMessage(
+                //        "Failed to contact the Eve API.\r\nAPI updates will be disabled until EMMA is restarted.\r\n" +
+                //        "(See " + EMMAException.logFile + " for more detailed information)",
+                //        "Communication failure", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //}
 
                 // Note - the eve-central site seems to block ping requests so instead, we just set 'EveCentralDown' to true
                 // if it fails in the EveCentral.GetXml method.
